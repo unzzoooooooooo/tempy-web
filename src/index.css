@@ -1699,3 +1699,244 @@ body::-webkit-scrollbar:horizontal,
     display: none;
   }
 }
+
+/* Discover page */
+.discover-page {
+  min-height: 100vh;
+  padding-top: 86px;
+  overflow: hidden;
+  color: #07142b;
+  background: #f3f4f0;
+}
+
+.discover-page__intro {
+  position: relative;
+  z-index: 2;
+  padding: 66px 5.2vw 48px;
+}
+
+.discover-page__eyebrow {
+  margin: 0 0 12px;
+  color: #2759ed;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.discover-page__title {
+  margin: 0;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(72px, 8.4vw, 150px);
+  font-weight: 400;
+  line-height: 0.8;
+  letter-spacing: -0.035em;
+}
+
+.discover-page__description {
+  max-width: 620px;
+  margin: 34px 0 0;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.discover-page__visual {
+  position: relative;
+  height: clamp(270px, 29vw, 470px);
+  overflow: hidden;
+  border-top: 1px solid rgba(7, 20, 43, 0.2);
+}
+
+.discover-page__record {
+  position: absolute;
+  top: 28px;
+  width: clamp(440px, 48vw, 820px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle, transparent 0 7px, rgba(255, 255, 255, 0.14) 8px 9px),
+    #07142b;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+.discover-page__record::before,
+.discover-page__record::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.discover-page__record::before {
+  width: 31%;
+  aspect-ratio: 1;
+  background: #ff343c;
+}
+
+.discover-page__record::after {
+  width: 6%;
+  aspect-ratio: 1;
+  background: #f3f4f0;
+}
+
+.discover-page__record--left {
+  left: -7vw;
+}
+
+.discover-page__record--right {
+  right: -7vw;
+}
+
+.discover-page__record-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  color: #07142b;
+  font-size: clamp(10px, 0.85vw, 14px);
+  font-weight: 800;
+  line-height: 0.9;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.discover-page__record-hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #07142b;
+  transform: translate(-50%, -50%);
+}
+
+.discover-page__cards {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding: 0 5.2vw 74px;
+  margin-top: -52px;
+}
+
+.discover-page__card {
+  display: flex;
+  min-height: 380px;
+  padding: 26px 28px 24px;
+  flex-direction: column;
+  color: #ffffff;
+  background: #2759ed;
+  border: 1px solid #07142b;
+}
+
+.discover-page__card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.62);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.discover-page__card-copy {
+  flex: 1;
+  padding-top: 38px;
+}
+
+.discover-page__card-copy h2 {
+  margin: 0 0 20px;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(54px, 5.5vw, 92px);
+  font-weight: 400;
+  line-height: 0.78;
+  letter-spacing: -0.025em;
+}
+
+.discover-page__card-copy p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.discover-page__card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.discover-page__arrow {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+  font-size: 17px;
+}
+
+@media (max-width: 800px) {
+  .discover-page {
+    padding-top: 50px;
+  }
+
+  .discover-page__intro {
+    padding: 52px 22px 38px;
+  }
+
+  .discover-page__visual {
+    height: 260px;
+  }
+
+  .discover-page__record {
+    top: 34px;
+    width: 410px;
+  }
+
+  .discover-page__record--left {
+    left: -230px;
+  }
+
+  .discover-page__record--right {
+    right: -230px;
+  }
+
+  .discover-page__cards {
+    grid-template-columns: 1fr;
+    padding: 0 22px 50px;
+    margin-top: -34px;
+  }
+
+  .discover-page__card {
+    min-height: 330px;
+  }
+}
+
+@media (max-width: 480px) {
+  .discover-page__title {
+    font-size: 68px;
+  }
+
+  .discover-page__description {
+    margin-top: 24px;
+    font-size: 14px;
+  }
+
+  .discover-page__card {
+    padding: 22px 20px;
+  }
+
+  .discover-page__card-topline span:last-child {
+    max-width: 190px;
+    text-align: right;
+  }
+}
