@@ -4046,3 +4046,88 @@ body::-webkit-scrollbar:horizontal,
     margin-top: auto;
   }
 }
+
+/* Time Set album interaction */
+.time-set-interaction__trigger {
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.time-set-interaction__trigger:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 5px;
+}
+
+.time-set-interaction__trigger--active {
+  padding: 0;
+  overflow: hidden;
+  border-color: #ffffff;
+}
+
+.time-set-interaction__trigger--active::after {
+  display: none;
+}
+
+.time-set-interaction__trigger .time-set-interaction__cover {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+  font-size: initial;
+  line-height: normal;
+}
+
+.time-set-interaction__cover > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 220ms ease, transform 300ms ease;
+}
+
+.time-set-interaction__trigger .time-set-interaction__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  padding: 18%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 50%;
+  color: #ffffff;
+  background: rgba(7, 20, 43, 0.18);
+  font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+  font-size: initial;
+  line-height: 1.2;
+  opacity: 0;
+  transition: opacity 220ms ease, background-color 220ms ease;
+}
+
+.time-set-interaction__trigger .time-set-interaction__overlay strong {
+  font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(13px, 1.35vw, 21px);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.time-set-interaction__trigger .time-set-interaction__overlay small {
+  position: static;
+  margin-top: 9px;
+  font-size: clamp(9px, 0.8vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.time-set-interaction__trigger--active:hover .time-set-interaction__cover > img {
+  filter: brightness(0.52);
+  transform: scale(1.035);
+}
+
+.time-set-interaction__trigger--active:hover .time-set-interaction__overlay {
+  background: rgba(7, 20, 43, 0.42);
+  opacity: 1;
+}

@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 function DiscoverTimeSet() {
+  const [showAlbum, setShowAlbum] = useState(false);
+
   return (
     <main className="time-set-detail">
       <section className="time-set-detail__intro">
@@ -28,10 +32,27 @@ function DiscoverTimeSet() {
           <div className="time-set-detail__vinyl">
             <span className="time-set-detail__groove time-set-detail__groove--outer" />
             <span className="time-set-detail__groove time-set-detail__groove--inner" />
-            <button className="time-set-detail__record-center" type="button" aria-label="Time Set 선택">
-              <span>TIME</span>
-              <strong>SET</strong>
-              <small>ENTER ↗</small>
+            <button
+              className={`time-set-detail__record-center time-set-interaction__trigger ${showAlbum ? "time-set-interaction__trigger--active" : ""}`}
+              type="button"
+              aria-label={showAlbum ? "The Fate of Ophelia by Taylor Swift" : "Time Set 앨범 보기"}
+              onClick={() => setShowAlbum(true)}
+            >
+              {showAlbum ? (
+                <span className="time-set-interaction__cover">
+                  <img src="/images/album-01.png" alt="The Fate of Ophelia album cover" />
+                  <span className="time-set-interaction__overlay">
+                    <strong>The Fate of Ophelia</strong>
+                    <small>Taylor Swift</small>
+                  </span>
+                </span>
+              ) : (
+                <>
+                  <span>TIME</span>
+                  <strong>SET</strong>
+                  <small>ENTER ↗</small>
+                </>
+              )}
             </button>
           </div>
         </div>
