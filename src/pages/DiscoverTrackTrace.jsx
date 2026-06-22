@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function DiscoverTrackTrace() {
   const tracks = [
     {
@@ -67,9 +69,19 @@ function DiscoverTrackTrace() {
                   <h2>{track.title}</h2>
                   <span>{track.artist}</span>
                 </div>
-                <button className="track-trace-detail__arrow" type="button" aria-label={`${track.title} 보기`}>
-                  →
-                </button>
+                {index === 0 ? (
+                  <Link
+                    className="track-trace-detail__arrow"
+                    to="/discover/track-trace/detail"
+                    aria-label={`${track.title} 코멘트 보기`}
+                  >
+                    →
+                  </Link>
+                ) : (
+                  <button className="track-trace-detail__arrow" type="button" aria-label={`${track.title} 보기`}>
+                    →
+                  </button>
+                )}
               </div>
             </article>
           ))}
