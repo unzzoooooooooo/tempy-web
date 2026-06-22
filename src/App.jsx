@@ -7,6 +7,7 @@ import Discover from "./pages/Discover";
 import DiscoverTimeSet from "./pages/DiscoverTimeSet";
 import DiscoverTrackTrace from "./pages/DiscoverTrackTrace";
 import TrackTraceDetail from "./pages/TrackTraceDetail";
+import TrackTraceAlbum from "./pages/TrackTraceAlbum";
 import Curator from "./pages/Curator";
 import Create from "./pages/Create";
 import Archive from "./pages/Archive";
@@ -48,6 +49,7 @@ function App() {
         <Route path="/discover/time-set" element={<DiscoverTimeSet />} />
         <Route path="/discover/track-trace" element={<DiscoverTrackTrace />} />
         <Route path="/discover/track-trace/detail" element={<TrackTraceDetail />} />
+        <Route path="/discover/track-trace/album" element={<TrackTraceAlbum />} />
         <Route path="/curator" element={<Curator />} />
         <Route path="/create" element={<Create />} />
         <Route path="/archive" element={<Archive />} />

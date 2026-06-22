@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const segmentBars = [18, 24, 28, 23, 32, 42, 38, 52, 68, 92, 100, 86, 64, 48, 36, 31, 26, 20];
 
@@ -49,6 +50,7 @@ const similarSongs = [
 
 function TrackTraceDetail() {
   const [activeTab, setActiveTab] = useState("popular");
+  const navigate = useNavigate();
 
   return (
     <main className="track-comment-detail">
@@ -71,10 +73,14 @@ function TrackTraceDetail() {
 
         <div className="track-comment-detail__actions">
           <button className="track-comment-detail__play" type="button">
-            <span aria-hidden="true">▶</span> PLAY
+            Track Trace 보기
           </button>
-          <button className="track-comment-detail__keep" type="button">
-            KEEP <span aria-hidden="true">＋</span>
+          <button
+            className="track-comment-detail__keep"
+            type="button"
+            onClick={() => navigate("/discover/track-trace/album")}
+          >
+            앨범 소개 보러가기 <span aria-hidden="true">→</span>
           </button>
         </div>
       </aside>
