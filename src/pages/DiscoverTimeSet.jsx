@@ -1,7 +1,65 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+
+const timeSetRecords = [
+  {
+    cover: "/images/album-01.png",
+    title: "The Fate of Ophelia",
+    artist: "Taylor Swift",
+    color: "#2759ed",
+  },
+  {
+    cover: "/images/album-03.png",
+    title: "BIRDS OF A FEATHER",
+    artist: "Billie Eilish",
+    color: "#ff343c",
+  },
+  {
+    cover: "/images/album-06.png",
+    title: "Confetti Dream",
+    artist: "HONNE",
+    color: "#f2cb28",
+  },
+  {
+    cover: "/images/album-08.png",
+    title: "Upside Mood",
+    artist: "Ariana Grande",
+    color: "#1f9c75",
+  },
+];
 
 function DiscoverTimeSet() {
+  const [activeIndex, setActiveIndex] = useState(0);
   const [showAlbum, setShowAlbum] = useState(false);
+  const lastWheelTime = useRef(0);
+  const activeRecord = timeSetRecords[activeIndex];
+
+  const moveCarousel = (direction) => {
+    setShowAlbum(false);
+    setActiveIndex((currentIndex) => (
+      currentIndex + direction + timeSetRecords.length
+    ) % timeSetRecords.length);
+  };
+
+  const handleWheel = (event) => {
+    const movement = Math.abs(event.deltaX) > Math.abs(event.deltaY)
+      ? event.deltaX
+      : event.deltaY;
+
+    if (Math.abs(movement) < 8) return;
+
+    const now = Date.now();
+    if (now - lastWheelTime.current < 650) return;
+
+    lastWheelTime.current = now;
+    moveCarousel(movement > 0 ? 1 : -1);
+  };
+
+  const getRecordPosition = (index) => {
+    if (index === activeIndex) return "active";
+    if (index === (activeIndex - 1 + timeSetRecords.length) % timeSetRecords.length) return "previous";
+    if (index === (activeIndex + 1) % timeSetRecords.length) return "next";
+    return "hidden";
+  };
 
   return (
     <main className="time-set-detail">
@@ -23,42 +81,64 @@ function DiscoverTimeSet() {
         <p className="time-set-detail__index">01 / 02</p>
       </section>
 
-      <section className="time-set-detail__records" aria-label="Time Set records">
-        <div className="time-set-detail__side-record time-set-detail__side-record--left" aria-hidden="true">
-          <span />
-        </div>
+      <section
+        className="time-set-detail__records time-set-carousel"
+        aria-label="Time Set records"
+        onWheel={handleWheel}
+      >
+        {timeSetRecords.map((record, index) => {
+          const position = getRecordPosition(index);
+          const isActive = position === "active";
 
-        <div className="time-set-detail__main-record">
-          <div className="time-set-detail__vinyl">
-            <span className="time-set-detail__groove time-set-detail__groove--outer" />
-            <span className="time-set-detail__groove time-set-detail__groove--inner" />
-            <button
-              className={`time-set-detail__record-center time-set-interaction__trigger ${showAlbum ? "time-set-interaction__trigger--active" : ""}`}
-              type="button"
-              aria-label={showAlbum ? "The Fate of Ophelia by Taylor Swift" : "Time Set 앨범 보기"}
-              onClick={() => setShowAlbum(true)}
+          return (
+            <div
+              className={`time-set-detail__main-record time-set-carousel__item time-set-carousel__item--${position}`}
+              style={{ "--time-set-lp-color": record.color }}
+              aria-hidden={!isActive}
+              key={record.title}
             >
-              {showAlbum ? (
-                <span className="time-set-interaction__cover">
-                  <img src="/images/album-01.png" alt="The Fate of Ophelia album cover" />
-                  <span className="time-set-interaction__overlay">
-                    <strong>The Fate of Ophelia</strong>
-                    <small>Taylor Swift</small>
-                  </span>
-                </span>
-              ) : (
-                <>
-                  <span>TIME</span>
-                  <strong>SET</strong>
-                  <small>ENTER ↗</small>
-                </>
-              )}
-            </button>
-          </div>
-        </div>
+              <div className="time-set-detail__vinyl time-set-carousel__vinyl">
+                <span className="time-set-detail__groove time-set-detail__groove--outer" />
+                <span className="time-set-detail__groove time-set-detail__groove--inner" />
 
-        <div className="time-set-detail__side-record time-set-detail__side-record--right" aria-hidden="true">
-          <span />
+                {isActive ? (
+                  <button
+                    className={`time-set-detail__record-center time-set-interaction__trigger ${showAlbum ? "time-set-interaction__trigger--active" : ""}`}
+                    type="button"
+                    aria-label={showAlbum ? `${activeRecord.title} by ${activeRecord.artist}` : "Time Set 앨범 보기"}
+                    onClick={() => setShowAlbum(true)}
+                  >
+                    {showAlbum ? (
+                      <span className="time-set-interaction__cover">
+                        <img src={activeRecord.cover} alt={`${activeRecord.title} album cover`} />
+                        <span className="time-set-interaction__overlay">
+                          <strong>{activeRecord.title}</strong>
+                          <small>{activeRecord.artist}</small>
+                        </span>
+                      </span>
+                    ) : (
+                      <>
+                        <span>TIME</span>
+                        <strong>SET</strong>
+                        <small>ENTER ↗</small>
+                      </>
+                    )}
+                  </button>
+                ) : (
+                  <div className="time-set-carousel__side-center" aria-hidden="true">
+                    <span>TIME</span>
+                    <strong>SET</strong>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        <div className="time-set-carousel__status" aria-live="polite">
+          <span>{String(activeIndex + 1).padStart(2, "0")}</span>
+          <i />
+          <span>{String(timeSetRecords.length).padStart(2, "0")}</span>
         </div>
       </section>
     </main>
