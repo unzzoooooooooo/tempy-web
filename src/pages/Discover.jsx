@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Discover() {
   return (
     <main className="discover-page">
@@ -21,7 +23,7 @@ function Discover() {
       </section>
 
       <section className="discover-page__cards" aria-label="Discover modes">
-        <article className="discover-page__card">
+        <Link className="discover-page__card" to="/discover/time-set">
           <div className="discover-page__card-topline">
             <span>01</span>
             <span>SAME TIME · DIFFERENT SONGS</span>
@@ -37,9 +39,9 @@ function Discover() {
             <span>같은 순간의 노래 듣기</span>
             <span className="discover-page__arrow">↗</span>
           </div>
-        </article>
+        </Link>
 
-        <article className="discover-page__card">
+        <Link className="discover-page__card" to="/discover/track-trace">
           <div className="discover-page__card-topline">
             <span>02</span>
             <span>SAME SONG · DIFFERENT MOMENTS</span>
@@ -55,7 +57,7 @@ function Discover() {
             <span>같은 노래의 순간 보기</span>
             <span className="discover-page__arrow">↗</span>
           </div>
-        </article>
+        </Link>
       </section>
     </main>
   );

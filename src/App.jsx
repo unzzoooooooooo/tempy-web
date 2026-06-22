@@ -4,6 +4,8 @@ import logoNav from "./assets/Tempy!_logo_nav.svg";
 import Home from "./pages/Home";
 import Now from "./pages/Now";
 import Discover from "./pages/Discover";
+import DiscoverTimeSet from "./pages/DiscoverTimeSet";
+import DiscoverTrackTrace from "./pages/DiscoverTrackTrace";
 import Curator from "./pages/Curator";
 import Create from "./pages/Create";
 import Archive from "./pages/Archive";
@@ -42,6 +44,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/now" element={<Now />} />
         <Route path="/discover" element={<Discover />} />
+        <Route path="/discover/time-set" element={<DiscoverTimeSet />} />
+        <Route path="/discover/track-trace" element={<DiscoverTrackTrace />} />
         <Route path="/curator" element={<Curator />} />
         <Route path="/create" element={<Create />} />
         <Route path="/archive" element={<Archive />} />

@@ -1831,6 +1831,7 @@ body::-webkit-scrollbar:horizontal,
   color: #ffffff;
   background: #2759ed;
   border: 1px solid #07142b;
+  text-decoration: none;
 }
 
 .discover-page__card-topline {
