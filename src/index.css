@@ -5509,6 +5509,10 @@ body::-webkit-scrollbar:horizontal,
   box-shadow: 0 16px 24px rgba(7, 20, 43, 0.16);
 }
 
+.lifestyle-curator__card--clickable {
+  cursor: pointer;
+}
+
 .lifestyle-curator__card-main {
   position: relative;
   min-width: 0;
@@ -5717,4 +5721,297 @@ body::-webkit-scrollbar:horizontal,
 @media (prefers-reduced-motion: reduce) {
   .lifestyle-curator__card { transition-duration: 1ms; }
   .lifestyle-curator__lp { animation: none; }
+}
+
+/* LifestylePlaylistDetail page */
+.lifestyle-playlist-detail {
+  position: relative;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  color: #07142b;
+  background: #f3f4f0;
+  font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+}
+
+.lifestyle-playlist-detail__back {
+  position: absolute;
+  top: 112px;
+  left: 4.2vw;
+  z-index: 5;
+  display: inline-flex;
+  padding: 0;
+  align-items: center;
+  gap: 11px;
+  color: #07142b;
+  background: transparent;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.lifestyle-playlist-detail__back span:first-child {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border: 1px solid #07142b;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.lifestyle-playlist-detail__panel {
+  position: absolute;
+  top: 174px;
+  bottom: 56px;
+  left: 4.2vw;
+  z-index: 3;
+  display: flex;
+  width: clamp(320px, 27vw, 410px);
+  padding: clamp(26px, 2.4vw, 36px);
+  justify-content: flex-start;
+  flex-direction: column;
+  color: #fff1cf;
+  background: #2759ed;
+  box-shadow: 12px 12px 0 #07142b;
+}
+
+.lifestyle-playlist-detail__eyebrow {
+  margin: 0 0 18px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+}
+
+.lifestyle-playlist-detail__panel h1 {
+  margin: 0;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(34px, 2.6vw, 40px);
+  font-weight: 400;
+  line-height: 1.15;
+  word-break: keep-all;
+}
+
+.lifestyle-playlist-detail__meta {
+  margin: 18px 0 14px;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.lifestyle-playlist-detail__host {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.lifestyle-playlist-detail__host span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid rgba(255, 241, 207, 0.7);
+  border-radius: 50%;
+  font-size: 9px;
+}
+
+.lifestyle-playlist-detail__host strong { font-size: 10px; }
+
+.lifestyle-playlist-detail__controller {
+  margin-top: auto;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 241, 207, 0.45);
+  border-bottom: 1px solid rgba(255, 241, 207, 0.45);
+}
+
+.lifestyle-playlist-detail__progress {
+  height: 3px;
+  background: rgba(255, 241, 207, 0.35);
+}
+
+.lifestyle-playlist-detail__progress span {
+  display: block;
+  width: 38%;
+  height: 100%;
+  background: #fff1cf;
+}
+
+.lifestyle-playlist-detail__small-controls {
+  display: flex;
+  margin-top: 14px;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.lifestyle-playlist-detail__small-controls button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #fff1cf;
+  border-radius: 50%;
+  color: #fff1cf;
+  background: transparent;
+}
+
+.lifestyle-playlist-detail__actions {
+  display: grid;
+  grid-template-columns: 1fr 44px 44px;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.lifestyle-playlist-detail__actions button {
+  min-height: 42px;
+  padding: 0 15px;
+  border-radius: 999px;
+  color: #07142b;
+  background: #fff1cf;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.lifestyle-playlist-detail__actions button:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.lifestyle-playlist-detail__viewport {
+  position: absolute;
+  top: 174px;
+  right: 0;
+  bottom: 56px;
+  left: calc(4.2vw + clamp(320px, 27vw, 410px));
+  overflow: hidden;
+  cursor: grab;
+  overscroll-behavior: none;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.lifestyle-playlist-detail__viewport:active { cursor: grabbing; }
+
+.lifestyle-playlist-detail__track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  padding: 42px 0 0 28px;
+  align-items: flex-start;
+  gap: clamp(25px, 2.5vw, 42px);
+  transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.lifestyle-playlist-detail__track--direct { transition: none; }
+
+.lifestyle-playlist-detail__item {
+  position: relative;
+  width: clamp(200px, 15.8vw, 280px);
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.lifestyle-playlist-detail__item:nth-child(even) { margin-top: 46px; }
+
+.lifestyle-playlist-detail__number {
+  display: block;
+  margin-bottom: 12px;
+  color: #7b817e;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.lifestyle-playlist-detail__lp {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 31%, rgba(255,255,255,.05) 31.4%, transparent 31.8%, transparent 55%, rgba(255,255,255,.045) 55.4%, transparent 55.8%, transparent 76%, rgba(255,255,255,.035) 76.3%, transparent 76.7%),
+    #07142b;
+  box-shadow: inset 0 0 32px rgba(0, 0, 0, 0.4);
+  animation: lifestyle-playlist-detail-spin 10s linear infinite;
+  animation-play-state: paused;
+}
+
+.lifestyle-playlist-detail__lp:hover { animation-play-state: running; }
+
+.lifestyle-playlist-detail__groove {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.lifestyle-playlist-detail__groove--outer { width: 82%; aspect-ratio: 1; }
+.lifestyle-playlist-detail__groove--inner { width: 60%; aspect-ratio: 1; }
+
+.lifestyle-playlist-detail__lp img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 38%;
+  aspect-ratio: 1;
+  border: 5px solid #07142b;
+  border-radius: 50%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+}
+
+.lifestyle-playlist-detail__hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff1cf;
+  transform: translate(-50%, -50%);
+}
+
+.lifestyle-playlist-detail__item h2 {
+  margin: 20px 0 7px;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(27px, 2.25vw, 38px);
+  font-weight: 400;
+  line-height: 0.78;
+}
+
+.lifestyle-playlist-detail__item p {
+  margin: 0;
+  color: #656d7a;
+  font-size: 10px;
+}
+
+@keyframes lifestyle-playlist-detail-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 900px) {
+  .lifestyle-playlist-detail__back { top: 72px; left: 20px; }
+
+  .lifestyle-playlist-detail__panel {
+    top: 116px;
+    bottom: 24px;
+    left: 20px;
+    width: 300px;
+    padding: 28px;
+  }
+
+  .lifestyle-playlist-detail__viewport {
+    top: 116px;
+    bottom: 24px;
+    left: 320px;
+  }
+
+  .lifestyle-playlist-detail__item { width: min(42vw, 250px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lifestyle-playlist-detail__track { transition-duration: 1ms; }
+  .lifestyle-playlist-detail__lp { animation: none; }
 }

@@ -11,6 +11,7 @@ import TrackTraceAlbum from "./pages/TrackTraceAlbum";
 import ArtistProfile from "./pages/ArtistProfile";
 import Curator from "./pages/Curator";
 import LifestyleCurator from "./pages/LifestyleCurator";
+import LifestylePlaylistDetail from "./pages/LifestylePlaylistDetail";
 import Create from "./pages/Create";
 import Archive from "./pages/Archive";
 
@@ -55,6 +56,7 @@ function App() {
         <Route path="/artist/taylor-swift" element={<ArtistProfile />} />
         <Route path="/curator" element={<Curator />} />
         <Route path="/curator/lifestyle" element={<LifestyleCurator />} />
+        <Route path="/curator/lifestyle/playlist" element={<LifestylePlaylistDetail />} />
         <Route path="/create" element={<Create />} />
         <Route path="/archive" element={<Archive />} />
       </Routes>

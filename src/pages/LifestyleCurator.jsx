@@ -40,7 +40,19 @@ function LifestyleCurator() {
 
       <section className="lifestyle-curator__grid" aria-label="Lifestyle curator playlists">
         {lifestylePlaylists.map((playlist, index) => (
-          <article className="lifestyle-curator__card" key={`${playlist.title}-${index}`}>
+          <article
+            className={`lifestyle-curator__card${index === 0 ? " lifestyle-curator__card--clickable" : ""}`}
+            key={`${playlist.title}-${index}`}
+            role={index === 0 ? "button" : undefined}
+            tabIndex={index === 0 ? 0 : undefined}
+            onClick={index === 0 ? () => navigate("/curator/lifestyle/playlist") : undefined}
+            onKeyDown={index === 0 ? (event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                navigate("/curator/lifestyle/playlist");
+              }
+            } : undefined}
+          >
             <span className="lifestyle-curator__clip lifestyle-curator__clip--left" />
             <span className="lifestyle-curator__clip lifestyle-curator__clip--right" />
             {index === 0 && <span className="lifestyle-curator__ribbon">EDITOR'S PICK</span>}
