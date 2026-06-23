@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Curator() {
+  const navigate = useNavigate();
   const [translateX, setTranslateX] = useState(0);
   const [isTrackpadActive, setIsTrackpadActive] = useState(false);
   const galleryRef = useRef(null);
@@ -8,6 +10,8 @@ function Curator() {
   const translateXRef = useRef(0);
   const maxTranslateRef = useRef(0);
   const dragStartX = useRef(null);
+  const dragPointerId = useRef(null);
+  const isDragging = useRef(false);
   const wheelFrame = useRef(null);
   const pendingWheelDelta = useRef(0);
   const trackpadEndTimer = useRef(null);
@@ -148,7 +152,17 @@ function Curator() {
   const handlePointerDown = (event) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
     dragStartX.current = event.clientX;
-    event.currentTarget.setPointerCapture(event.pointerId);
+    dragPointerId.current = event.pointerId;
+    isDragging.current = false;
+  };
+
+  const handlePointerMove = (event) => {
+    if (dragStartX.current === null || dragPointerId.current !== event.pointerId) return;
+
+    if (!isDragging.current && Math.abs(event.clientX - dragStartX.current) >= 8) {
+      isDragging.current = true;
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
   };
 
   const handlePointerUp = (event) => {
@@ -156,6 +170,8 @@ function Curator() {
 
     const distance = event.clientX - dragStartX.current;
     dragStartX.current = null;
+    dragPointerId.current = null;
+    isDragging.current = false;
 
     if (Math.abs(distance) >= 60) {
       moveTo(distance < 0 ? maxTranslateRef.current : 0);
@@ -164,7 +180,11 @@ function Curator() {
 
   const handlePointerCancel = () => {
     dragStartX.current = null;
+    dragPointerId.current = null;
+    isDragging.current = false;
   };
+
+  const goToLifestyleCurator = () => navigate("/curator/lifestyle");
 
   return (
     <main className="curator-page">
@@ -181,6 +201,7 @@ function Curator() {
         ref={galleryRef}
         aria-label="Moment curator categories"
         onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
         onDragStart={(event) => event.preventDefault()}
@@ -196,10 +217,37 @@ function Curator() {
                 <span>{curator.number} / 03</span>
                 <h2>{curator.title}</h2>
                 <p>{curator.description}</p>
-                <span className="curator-page__item-arrow" aria-hidden="true">↗</span>
+                {curator.number === "01" ? (
+                  <button
+                    className="curator-page__item-arrow"
+                    type="button"
+                    aria-label="Lifestyle Curator 상세 보기"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      goToLifestyleCurator();
+                    }}
+                  >
+                    ↗
+                  </button>
+                ) : (
+                  <span className="curator-page__item-arrow" aria-hidden="true">↗</span>
+                )}
               </div>
 
-              <div className={`curator-page__record curator-page__record--${curator.tone}`}>
+              <div
+                className={`curator-page__record curator-page__record--${curator.tone}`}
+                role={curator.number === "01" ? "button" : undefined}
+                tabIndex={curator.number === "01" ? 0 : undefined}
+                aria-label={curator.number === "01" ? "Lifestyle Curator 상세 보기" : undefined}
+                style={curator.number === "01" ? { cursor: "pointer" } : undefined}
+                onClick={curator.number === "01" ? goToLifestyleCurator : undefined}
+                onKeyDown={curator.number === "01" ? (event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    goToLifestyleCurator();
+                  }
+                } : undefined}
+              >
                 <span className="curator-page__groove curator-page__groove--outer" />
                 <span className="curator-page__groove curator-page__groove--inner" />
                 <div className="curator-page__record-label">

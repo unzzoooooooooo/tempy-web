@@ -2143,6 +2143,8 @@ body::-webkit-scrollbar:horizontal,
   border: 1px solid #07142b;
   border-radius: 50%;
   font-size: 19px;
+  color: inherit;
+  background: transparent;
 }
 
 @media (max-width: 800px) {
@@ -5394,4 +5396,325 @@ body::-webkit-scrollbar:horizontal,
 @media (prefers-reduced-motion: reduce) {
   .curator-page__track { transition-duration: 1ms; }
   .curator-page__record { animation: none; }
+}
+
+/* LifestyleCurator page */
+.lifestyle-curator {
+  display: grid;
+  min-height: 100vh;
+  padding: 126px 4.2vw 90px;
+  grid-template-columns: minmax(300px, 0.72fr) minmax(660px, 1.28fr);
+  gap: clamp(50px, 6vw, 104px);
+  color: #07142b;
+  background: #f3f4f0;
+  font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+}
+
+.lifestyle-curator__intro {
+  position: sticky;
+  top: 126px;
+  display: flex;
+  height: calc(100vh - 172px);
+  min-height: 580px;
+  align-self: start;
+  flex-direction: column;
+}
+
+.lifestyle-curator__back {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0;
+  align-items: center;
+  gap: 12px;
+  color: #07142b;
+  background: transparent;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  cursor: pointer;
+}
+
+.lifestyle-curator__back span:first-child {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid #07142b;
+  border-radius: 50%;
+  font-size: 15px;
+}
+
+.lifestyle-curator__intro-copy {
+  margin-top: clamp(80px, 12vh, 132px);
+}
+
+.lifestyle-curator__eyebrow {
+  margin: 0 0 15px;
+  color: #2759ed;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.lifestyle-curator__intro h1 {
+  margin: 0;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(76px, 7.5vw, 128px);
+  font-weight: 400;
+  line-height: 0.68;
+  letter-spacing: -0.035em;
+}
+
+.lifestyle-curator__intro-copy > p:last-child {
+  max-width: 430px;
+  margin: 34px 0 0;
+  color: #555e6e;
+  font-size: 13px;
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+.lifestyle-curator__count {
+  margin-top: auto;
+  padding-top: 17px;
+  border-top: 1px solid #07142b;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.lifestyle-curator__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 28px 24px;
+}
+
+.lifestyle-curator__card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 312px;
+  overflow: visible;
+  grid-template-columns: minmax(0, 1fr) 66px;
+  border: 1px solid #07142b;
+  background: #2759ed;
+  box-shadow: 0 8px 0 rgba(7, 20, 43, 0.08);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.lifestyle-curator__card:hover {
+  z-index: 2;
+  transform: translateY(-5px);
+  box-shadow: 0 16px 24px rgba(7, 20, 43, 0.16);
+}
+
+.lifestyle-curator__card-main {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.lifestyle-curator__card-copy {
+  position: relative;
+  z-index: 3;
+  padding: 22px 20px;
+  color: #fff4d6;
+}
+
+.lifestyle-curator__card-copy > span {
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.lifestyle-curator__card-copy h2 {
+  max-width: 270px;
+  margin: 12px 0 14px;
+  font-size: clamp(14px, 1.25vw, 19px);
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
+.lifestyle-curator__host {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.lifestyle-curator__host span {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border: 1px solid rgba(255, 244, 214, 0.7);
+  border-radius: 50%;
+  font-size: 8px;
+}
+
+.lifestyle-curator__host strong {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.lifestyle-curator__lp {
+  position: absolute;
+  left: 50%;
+  bottom: -16%;
+  width: 68%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff1cf;
+  box-shadow: inset 0 0 22px rgba(7, 20, 43, 0.12);
+  transform: translateX(-50%);
+  animation: lifestyle-curator-lp-spin 11s linear infinite;
+  animation-play-state: paused;
+}
+
+.lifestyle-curator__lp:hover {
+  animation-play-state: running;
+}
+
+.lifestyle-curator__lp-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(7, 20, 43, 0.14);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.lifestyle-curator__lp-line--outer { width: 82%; aspect-ratio: 1; }
+.lifestyle-curator__lp-line--inner { width: 59%; aspect-ratio: 1; }
+
+.lifestyle-curator__lp img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 35%;
+  aspect-ratio: 1;
+  border: 4px solid #fff1cf;
+  border-radius: 50%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+}
+
+.lifestyle-curator__lp-hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #07142b;
+  transform: translate(-50%, -50%);
+}
+
+.lifestyle-curator__play-rail {
+  display: flex;
+  padding: 18px 0 14px;
+  align-items: center;
+  flex-direction: column;
+  color: #ff343c;
+  background: #07142b;
+}
+
+.lifestyle-curator__play-rail > span,
+.lifestyle-curator__play-rail small {
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.lifestyle-curator__play-rail button {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  margin: auto 0;
+  padding: 0 0 0 2px;
+  place-items: center;
+  border: 1px solid #ff343c;
+  border-radius: 50%;
+  color: #ff343c;
+  background: transparent;
+  font-size: 9px;
+}
+
+.lifestyle-curator__play-rail small {
+  writing-mode: vertical-rl;
+}
+
+.lifestyle-curator__clip {
+  position: absolute;
+  top: -9px;
+  z-index: 5;
+  width: 34px;
+  height: 13px;
+  background: #07142b;
+}
+
+.lifestyle-curator__clip--left { left: 24px; }
+.lifestyle-curator__clip--right { left: 68px; width: 18px; }
+
+.lifestyle-curator__ribbon {
+  position: absolute;
+  top: 40px;
+  right: 34px;
+  z-index: 6;
+  width: 138px;
+  padding: 8px 0;
+  color: #fff4d6;
+  background: #ff343c;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-align: center;
+  transform: translate(35px, -5px) rotate(35deg);
+  box-shadow: 0 2px 0 rgba(7, 20, 43, 0.2);
+}
+
+@keyframes lifestyle-curator-lp-spin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to { transform: translateX(-50%) rotate(360deg); }
+}
+
+@media (max-width: 1100px) {
+  .lifestyle-curator {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 42px;
+  }
+
+  .lifestyle-curator__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .lifestyle-curator {
+    display: block;
+    padding: 104px 20px 64px;
+  }
+
+  .lifestyle-curator__intro {
+    position: static;
+    height: auto;
+    min-height: 0;
+  }
+
+  .lifestyle-curator__intro-copy {
+    margin-top: 58px;
+  }
+
+  .lifestyle-curator__count {
+    margin-top: 48px;
+  }
+
+  .lifestyle-curator__grid {
+    margin-top: 50px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lifestyle-curator__card { transition-duration: 1ms; }
+  .lifestyle-curator__lp { animation: none; }
 }
