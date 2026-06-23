@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const featuredTracks = [
@@ -28,8 +29,21 @@ const reports = [
   { number: "03", value: "NIGHT", label: "PRIMARY MOOD" },
 ];
 
+const rankingTracks = [
+  { cover: "/images/album-01.png", title: "The Fate of Ophelia", time: "23:10", likes: "12.8K", moments: "12,842", peak: "23:10", leftMoment: "After the curtain", album: "The Life of A Showgirl", released: "2025", totalTempy: "18.4K", tags: ["#NIGHT", "#AFTERGLOW", "#MEMORY"] },
+  { cover: "/images/album-04.png", title: "Cruel Summer", time: "19:30", likes: "10.4K", moments: "10,421", peak: "19:30", leftMoment: "Summer drive", album: "Lover", released: "2019", totalTempy: "15.7K", tags: ["#SUMMER", "#DRIVE", "#LOVE"] },
+  { cover: "/images/album-07.png", title: "cardigan", time: "01:20", likes: "9.7K", moments: "9,738", peak: "01:20", leftMoment: "Quiet room", album: "folklore", released: "2020", totalTempy: "14.2K", tags: ["#DAWN", "#RAIN", "#MEMORY"] },
+  { cover: "/images/album-03.png", title: "Anti-Hero", time: "07:20", likes: "8.9K", moments: "8,904", peak: "07:20", leftMoment: "First light", album: "Midnights", released: "2022", totalTempy: "13.6K", tags: ["#MORNING", "#SELF", "#CITY"] },
+  { cover: "/images/album-09.png", title: "Love Story", time: "17:45", likes: "7.2K", moments: "7,216", peak: "17:45", leftMoment: "Golden hour", album: "Fearless", released: "2008", totalTempy: "11.9K", tags: ["#LOVE", "#SUNSET", "#STORY"] },
+];
+
 function ArtistProfile() {
   const navigate = useNavigate();
+  const [expandedTrackIndex, setExpandedTrackIndex] = useState(null);
+
+  const toggleTrack = (index) => {
+    setExpandedTrackIndex((currentIndex) => currentIndex === index ? null : index);
+  };
 
   return (
     <main className="artist-profile">
@@ -133,9 +147,62 @@ function ArtistProfile() {
           </div>
           <div className="artist-profile__ranking">
             <div><p className="artist-profile__label">TOP 05</p><h3>Track Moment Ranking</h3></div>
-            {featuredTracks.concat({ cover: "/images/album-09.png", title: "Love Story", time: "17:45", likes: "7.2K" }).map((track, index) => (
-              <article key={track.title}><span>0{index + 1}</span><img src={track.cover} alt="" /><strong>{track.title}<small>Taylor Swift</small></strong><time>{track.time}</time><span>♥ {track.likes}</span></article>
-            ))}
+            {rankingTracks.map((track, index) => {
+              const isExpanded = expandedTrackIndex === index;
+
+              return (
+                <div className={`artist-profile__ranking-accordion${isExpanded ? " artist-profile__ranking-accordion--open" : ""}`} key={track.title}>
+                  <article className="artist-profile__ranking-row">
+                    <span>0{index + 1}</span>
+                    <img src={track.cover} alt="" />
+                    <strong>{track.title}<small>Taylor Swift</small></strong>
+                    <time>{track.time}</time>
+                    <span>♥ {track.likes}</span>
+                    <button
+                      className="artist-profile__ranking-toggle"
+                      type="button"
+                      aria-expanded={isExpanded}
+                      aria-label={`${track.title} 상세 ${isExpanded ? "접기" : "펼치기"}`}
+                      onClick={() => toggleTrack(index)}
+                    >
+                      <span aria-hidden="true">{isExpanded ? "↑" : "↓"}</span>
+                    </button>
+                  </article>
+
+                  {isExpanded && (
+                    <div className="artist-profile__ranking-detail">
+                      <img className="artist-profile__ranking-cover" src={track.cover} alt={`${track.title} album cover`} />
+                      <div className="artist-profile__ranking-detail-copy">
+                        <p className="artist-profile__ranking-kicker">TRACK MOMENT · 0{index + 1}</p>
+                        <h4>{track.title}</h4>
+                        <p className="artist-profile__ranking-artist">Taylor Swift</p>
+
+                        <div className="artist-profile__ranking-stats">
+                          <div><small>MOMENTS</small><strong>{track.moments}</strong></div>
+                          <div><small>PEAK TIME</small><strong>{track.peak}</strong></div>
+                          <div><small>MOST LEFT MOMENT</small><strong>{track.leftMoment}</strong></div>
+                        </div>
+
+                        <p className="artist-profile__ranking-description">
+                          이 트랙과 함께 남겨진 시간과 감정의 기록입니다. 가장 많이 기억된 순간과
+                          리스너들이 반복해서 돌아온 장면을 한눈에 살펴보세요.
+                        </p>
+
+                        <dl className="artist-profile__ranking-info">
+                          <div><dt>ALBUMS</dt><dd>{track.album}</dd></div>
+                          <div><dt>RELEASED</dt><dd>{track.released}</dd></div>
+                          <div><dt>TOTAL TEMPY</dt><dd>{track.totalTempy}</dd></div>
+                        </dl>
+
+                        <div className="artist-profile__ranking-tags">
+                          {track.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
