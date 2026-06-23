@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const albumFlow = [
   { number: "01", label: "OPENING", title: "First Light", length: "00:00 — 11:42" },
@@ -23,10 +23,12 @@ const listeningOrder = [
 ];
 
 function TrackTraceAlbum() {
+  const navigate = useNavigate();
+
   return (
     <main className="track-trace-album">
       <section className="track-trace-album__hero">
-        <button className="track-trace-album__back" type="button" aria-label="Track detail로 돌아가기">
+        <button className="track-trace-album__back" type="button" aria-label="Track detail로 돌아가기" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
           <span>BACK TO TRACK DETAIL</span>
         </button>

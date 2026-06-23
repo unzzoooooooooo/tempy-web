@@ -55,7 +55,7 @@ function TrackTraceDetail() {
   return (
     <main className="track-comment-detail">
       <aside className="track-comment-detail__song">
-        <button className="track-comment-detail__back" type="button" aria-label="Track Trace로 돌아가기">
+        <button className="track-comment-detail__back" type="button" aria-label="Track Trace로 돌아가기" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
           <span>BACK TO TRACK TRACE</span>
         </button>

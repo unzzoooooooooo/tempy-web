@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function DiscoverTrackTrace() {
+  const navigate = useNavigate();
   const tracks = [
     {
       image: "/images/album-03.png",
@@ -25,7 +26,7 @@ function DiscoverTrackTrace() {
   return (
     <main className="track-trace-detail">
       <section className="track-trace-detail__intro">
-        <button className="track-trace-detail__back" type="button" aria-label="Discover로 돌아가기">
+        <button className="track-trace-detail__back" type="button" aria-label="Discover로 돌아가기" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
           <span>BACK TO DISCOVER</span>
         </button>

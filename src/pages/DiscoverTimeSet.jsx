@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const timeSetRecords = [
   {
@@ -28,6 +29,7 @@ const timeSetRecords = [
 ];
 
 function DiscoverTimeSet() {
+  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const [showAlbum, setShowAlbum] = useState(false);
   const lastWheelTime = useRef(0);
@@ -64,7 +66,7 @@ function DiscoverTimeSet() {
   return (
     <main className="time-set-detail">
       <section className="time-set-detail__intro">
-        <button className="time-set-detail__back" type="button" aria-label="Discover로 돌아가기">
+        <button className="time-set-detail__back" type="button" aria-label="Discover로 돌아가기" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
           <span>BACK TO DISCOVER</span>
         </button>
