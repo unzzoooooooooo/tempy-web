@@ -4952,14 +4952,14 @@ body::-webkit-scrollbar:horizontal,
 .artist-profile__track-list strong small { display: block; margin-top: 5px; color: #858a87; font-size: 8px; font-weight: 400; }
 .artist-profile__track-list button { width: 24px; height: 24px; padding: 0; border: 1px solid #07142b; border-radius: 50%; background: transparent; font-size: 7px; }
 
-.artist-profile__report-grid { display: grid; margin-top: 52px; grid-template-columns: .9fr 1.1fr; gap: 52px; }
+.artist-profile__report-grid { display: grid; margin-top: 52px; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 52px; }
 .artist-profile__trace-reports { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .artist-profile__trace-reports article { display: flex; min-width: 0; min-height: 290px; padding: 22px; flex-direction: column; border: 1px solid #07142b; }
 .artist-profile__trace-reports article > span { font-size: 8px; }
 .artist-profile__trace-reports small { margin-top: 50px; color: #2759ed; font-size: 7px; font-weight: 700; }
 .artist-profile__trace-reports strong { margin-top: 16px; font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: clamp(36px, 3.3vw, 54px); font-weight: 400; line-height: .8; }
 .artist-profile__trace-reports p { margin-top: auto; color: #858a87; font-size: 8px; }
-.artist-profile__ranking > div { display: flex; align-items: flex-end; justify-content: space-between; }
+.artist-profile__ranking-heading { display: flex; align-items: flex-end; justify-content: space-between; }
 .artist-profile__ranking h3 { margin: 0 0 10px; font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: 46px; font-weight: 400; line-height: .8; }
 .artist-profile__ranking article { display: grid; min-height: 76px; grid-template-columns: 24px 48px minmax(120px, 1fr) 42px 58px; align-items: center; gap: 12px; border-top: 1px solid #c7cac7; font-size: 9px; }
 .artist-profile__ranking article img { width: 48px; height: 48px; object-fit: cover; }
@@ -4998,14 +4998,31 @@ body::-webkit-scrollbar:horizontal,
 }
 
 /* ArtistProfile report accordion */
+.artist-profile__ranking {
+  width: 100%;
+  min-width: 0;
+}
+
 .artist-profile__ranking-accordion {
+  display: block;
+  width: 100%;
+  min-width: 0;
   border-top: 1px solid #c7cac7;
 }
 
 .artist-profile__ranking-accordion .artist-profile__ranking-row {
+  width: 100%;
+  min-width: 0;
   min-height: 76px;
   border-top: 0;
-  grid-template-columns: 24px 48px minmax(120px, 1fr) 42px 58px 28px;
+  grid-template-columns: 24px 48px minmax(0, 1fr) 42px 58px 28px;
+}
+
+.artist-profile__ranking-row strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .artist-profile__ranking-toggle {
@@ -5028,24 +5045,34 @@ body::-webkit-scrollbar:horizontal,
 
 .artist-profile__ranking-detail {
   display: grid;
-  padding: 28px 0 34px;
-  grid-template-columns: minmax(180px, 250px) minmax(0, 1fr);
-  gap: 34px;
+  width: 100%;
+  min-width: 0;
+  padding: 26px 0 30px;
+  align-items: flex-start;
+  grid-template-columns: minmax(150px, 210px) minmax(0, 1fr);
+  gap: clamp(22px, 3vw, 34px);
+}
+
+.artist-profile__ranking-detail-media {
+  width: 100%;
+  min-width: 0;
 }
 
 .artist-profile__ranking-cover {
   display: block;
   width: 100%;
+  max-width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
 }
 
 .artist-profile__ranking-detail-copy {
+  width: 100%;
   min-width: 0;
 }
 
 .artist-profile__ranking-kicker {
-  margin: 0 0 12px;
+  margin: 16px 0 10px;
   color: #2759ed;
   font-size: 7px;
   font-weight: 700;
@@ -5055,20 +5082,20 @@ body::-webkit-scrollbar:horizontal,
 .artist-profile__ranking-detail h4 {
   margin: 0;
   font-family: "GalgoVF", "Arial Narrow", sans-serif;
-  font-size: clamp(42px, 4.4vw, 68px);
+  font-size: clamp(36px, 3.5vw, 54px);
   font-weight: 400;
   line-height: 0.74;
 }
 
 .artist-profile__ranking-artist {
-  margin: 12px 0 0;
+  margin: 9px 0 0;
   font-size: 10px;
   font-weight: 600;
 }
 
 .artist-profile__ranking-stats {
   display: grid;
-  margin-top: 28px;
+  margin-top: 0;
   grid-template-columns: 0.8fr 0.7fr 1.5fr;
   border-top: 1px solid #07142b;
   border-bottom: 1px solid #c7cac7;
@@ -5103,7 +5130,7 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .artist-profile__ranking-description {
-  margin: 22px 0;
+  margin: 18px 0;
   color: #616764;
   font-size: 10px;
   line-height: 1.7;
@@ -5128,7 +5155,7 @@ body::-webkit-scrollbar:horizontal,
 
 .artist-profile__ranking-tags {
   display: flex;
-  margin-top: 22px;
+  margin-top: 18px;
   flex-wrap: wrap;
   gap: 6px;
 }
@@ -5151,6 +5178,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .artist-profile__ranking-detail {
+    width: 100%;
     grid-template-columns: 1fr;
   }
 

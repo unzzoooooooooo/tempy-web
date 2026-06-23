@@ -146,7 +146,7 @@ function ArtistProfile() {
             {reports.map((report) => <article key={report.number}><span>{report.number}</span><small>{report.label}</small><strong>{report.value}</strong><p>Taylor Swift listener archive</p></article>)}
           </div>
           <div className="artist-profile__ranking">
-            <div><p className="artist-profile__label">TOP 05</p><h3>Track Moment Ranking</h3></div>
+            <div className="artist-profile__ranking-heading"><p className="artist-profile__label">TOP 05</p><h3>Track Moment Ranking</h3></div>
             {rankingTracks.map((track, index) => {
               const isExpanded = expandedTrackIndex === index;
 
@@ -171,12 +171,14 @@ function ArtistProfile() {
 
                   {isExpanded && (
                     <div className="artist-profile__ranking-detail">
-                      <img className="artist-profile__ranking-cover" src={track.cover} alt={`${track.title} album cover`} />
-                      <div className="artist-profile__ranking-detail-copy">
+                      <div className="artist-profile__ranking-detail-media">
+                        <img className="artist-profile__ranking-cover" src={track.cover} alt={`${track.title} album cover`} />
                         <p className="artist-profile__ranking-kicker">TRACK MOMENT · 0{index + 1}</p>
                         <h4>{track.title}</h4>
                         <p className="artist-profile__ranking-artist">Taylor Swift</p>
+                      </div>
 
+                      <div className="artist-profile__ranking-detail-copy">
                         <div className="artist-profile__ranking-stats">
                           <div><small>MOMENTS</small><strong>{track.moments}</strong></div>
                           <div><small>PEAK TIME</small><strong>{track.peak}</strong></div>
