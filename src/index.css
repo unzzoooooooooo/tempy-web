@@ -4375,6 +4375,31 @@ body::-webkit-scrollbar:horizontal,
   text-transform: uppercase;
 }
 
+.track-trace-album__artist-link {
+  display: inline-flex;
+  margin-bottom: 18px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.track-trace-album__artist-link img {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #07142b;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.track-trace-album__artist-link span:last-child {
+  margin-left: 2px;
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1;
+}
+
 .track-trace-album__intro h1 {
   margin: 0;
   font-family: "GalgoVF", "Arial Narrow", sans-serif;
@@ -4760,5 +4785,139 @@ body::-webkit-scrollbar:horizontal,
   .track-trace-album__footer small {
     width: 100%;
     margin-top: auto;
+  }
+}
+
+/* ArtistProfile page */
+.artist-profile {
+  min-height: 100vh;
+  padding: 128px 5.2vw 96px;
+  color: #07142b;
+  background: #f3f4f0;
+}
+
+.artist-profile__back {
+  display: inline-flex;
+  padding: 0;
+  align-items: center;
+  gap: 12px;
+  color: #07142b;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.artist-profile__back span:first-child {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid #07142b;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
+.artist-profile__hero {
+  display: grid;
+  max-width: 1120px;
+  margin: 64px auto 96px;
+  grid-template-columns: minmax(260px, 420px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(48px, 8vw, 120px);
+}
+
+.artist-profile__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.artist-profile__label {
+  margin: 0 0 14px;
+  color: #2759ed;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.artist-profile__intro h1 {
+  margin: 0;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(88px, 10vw, 160px);
+  font-weight: 400;
+  line-height: 0.72;
+  letter-spacing: -0.035em;
+}
+
+.artist-profile__description {
+  max-width: 520px;
+  margin: 38px 0 0;
+  font-size: 14px;
+  line-height: 1.8;
+  word-break: keep-all;
+}
+
+.artist-profile__works {
+  display: grid;
+  border-top: 1px solid #07142b;
+  border-bottom: 1px solid #07142b;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.artist-profile__section {
+  min-height: 300px;
+  padding: 42px;
+}
+
+.artist-profile__section + .artist-profile__section {
+  border-left: 1px solid #07142b;
+}
+
+.artist-profile__section h2 {
+  margin: 0 0 46px;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(48px, 5vw, 78px);
+  font-weight: 400;
+  line-height: 0.78;
+}
+
+.artist-profile__placeholder {
+  min-height: 82px;
+  padding: 28px 0;
+  border-top: 1px solid #c8cbc8;
+  color: #858a87;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .artist-profile {
+    padding: 116px 20px 64px;
+  }
+
+  .artist-profile__hero,
+  .artist-profile__works {
+    grid-template-columns: 1fr;
+  }
+
+  .artist-profile__hero {
+    margin: 44px 0 68px;
+    gap: 42px;
+  }
+
+  .artist-profile__image {
+    width: min(78vw, 380px);
+  }
+
+  .artist-profile__section {
+    min-height: 240px;
+    padding: 36px 0;
+  }
+
+  .artist-profile__section + .artist-profile__section {
+    border-top: 1px solid #07142b;
+    border-left: 0;
   }
 }

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const albumFlow = [
   { number: "01", label: "OPENING", title: "First Light", length: "00:00 — 11:42" },
   { number: "02", label: "SPOTLIGHT", title: "Main Stage", length: "11:43 — 27:18" },
@@ -36,6 +38,11 @@ function TrackTraceAlbum() {
           </div>
 
           <div className="track-trace-album__intro">
+            <Link className="track-trace-album__artist-link" to="/artist/taylor-swift">
+              <img src="/images/album-01.png" alt="Taylor Swift" />
+              <span>Taylor Swift</span>
+              <span aria-hidden="true">›</span>
+            </Link>
             <p className="track-trace-album__eyebrow">Taylor Swift · Studio Album</p>
             <h1>The Life of<br />A Showgirl</h1>
 
