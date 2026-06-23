@@ -4791,9 +4791,13 @@ body::-webkit-scrollbar:horizontal,
 /* ArtistProfile page */
 .artist-profile {
   min-height: 100vh;
-  padding: 128px 5.2vw 96px;
   color: #07142b;
   background: #f3f4f0;
+  font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+}
+
+.artist-profile__top {
+  padding: 124px 5.2vw 96px;
 }
 
 .artist-profile__back {
@@ -4820,11 +4824,11 @@ body::-webkit-scrollbar:horizontal,
 
 .artist-profile__hero {
   display: grid;
-  max-width: 1120px;
-  margin: 64px auto 96px;
-  grid-template-columns: minmax(260px, 420px) minmax(0, 1fr);
+  max-width: 1080px;
+  margin: 56px auto 0;
+  grid-template-columns: minmax(260px, 390px) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(48px, 8vw, 120px);
+  gap: clamp(48px, 7vw, 104px);
 }
 
 .artist-profile__image {
@@ -4846,78 +4850,149 @@ body::-webkit-scrollbar:horizontal,
 .artist-profile__intro h1 {
   margin: 0;
   font-family: "GalgoVF", "Arial Narrow", sans-serif;
-  font-size: clamp(88px, 10vw, 160px);
+  font-size: clamp(74px, 7.8vw, 122px);
   font-weight: 400;
   line-height: 0.72;
   letter-spacing: -0.035em;
 }
 
+.artist-profile__popularity {
+  display: flex;
+  margin-top: 24px;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.artist-profile__popularity strong { font-size: 19px; }
+.artist-profile__popularity span { color: #7e8380; font-size: 8px; font-weight: 700; letter-spacing: .1em; }
+
+.artist-profile__tags { display: flex; margin-top: 22px; flex-wrap: wrap; gap: 7px; }
+.artist-profile__tags span { padding: 7px 10px; border: 1px solid #9da19e; border-radius: 30px; font-size: 8px; font-weight: 700; }
+
 .artist-profile__description {
   max-width: 520px;
-  margin: 38px 0 0;
-  font-size: 14px;
-  line-height: 1.8;
+  margin: 24px 0 0;
+  font-size: 13px;
+  line-height: 1.75;
   word-break: keep-all;
 }
 
-.artist-profile__works {
+.artist-profile__actions { display: grid; max-width: 430px; margin-top: 28px; grid-template-columns: 1fr 1fr; gap: 8px; }
+.artist-profile__actions button { display: flex; min-height: 46px; padding: 0 15px; align-items: center; justify-content: space-between; border: 1px solid #07142b; color: #07142b; background: transparent; font-size: 9px; font-weight: 700; text-transform: uppercase; }
+.artist-profile__actions button:first-child { color: #fff; background: #07142b; }
+
+.artist-profile__content-section { padding: 94px 5.2vw 104px; border-top: 1px solid #07142b; }
+.artist-profile__heading { max-width: 720px; }
+.artist-profile__heading h2,
+.artist-profile__release h2,
+.artist-profile__most-left h2 {
+  margin: 0;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(54px, 5.8vw, 88px);
+  font-weight: 400;
+  line-height: .78;
+}
+.artist-profile__heading > p:last-child { margin: 24px 0 0; color: #656b68; font-size: 13px; }
+.artist-profile__heading--row { display: flex; max-width: none; align-items: flex-end; justify-content: space-between; }
+.artist-profile__heading--row > span { padding-bottom: 5px; font-size: 8px; font-weight: 700; letter-spacing: .1em; }
+
+.artist-profile__summary { background: #e8eae6; }
+.artist-profile__summary-grid { display: grid; margin-top: 54px; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.artist-profile__summary-grid article { display: flex; min-height: 260px; padding: 28px; flex-direction: column; color: #fff; background: #07142b; }
+.artist-profile__summary-grid small { color: #ff343c; font-size: 8px; font-weight: 700; letter-spacing: .1em; }
+.artist-profile__summary-grid strong { margin-top: 50px; font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: clamp(62px, 6vw, 92px); font-weight: 400; line-height: .7; }
+.artist-profile__summary-grid p { margin: 12px 0; color: #b4bac4; font-size: 11px; }
+.artist-profile__summary-grid article > span { margin-top: auto; padding-top: 16px; border-top: 1px solid #3b4659; font-size: 8px; letter-spacing: .08em; }
+.artist-profile__tag-cloud { display: flex; margin: 42px 0 25px; flex-wrap: wrap; gap: 8px; }
+.artist-profile__tag-cloud b { padding: 9px 12px; border: 1px solid #677083; border-radius: 40px; font-size: 10px; }
+
+.artist-profile__featured { overflow: hidden; }
+.artist-profile__track-flow { display: flex; width: max-content; margin-top: 50px; gap: 12px; }
+.artist-profile__track-card { display: grid; width: min(720px, 70vw); min-height: 210px; padding: 18px; grid-template-columns: 174px minmax(210px, 1fr) 150px; align-items: center; gap: 25px; border: 1px solid #07142b; background: #f8f8f5; }
+.artist-profile__track-card > img { width: 174px; aspect-ratio: 1; object-fit: cover; }
+.artist-profile__track-copy small { color: #2759ed; font-size: 8px; font-weight: 700; letter-spacing: .08em; }
+.artist-profile__track-copy h3 { margin: 20px 0 6px; font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: 44px; font-weight: 400; line-height: .78; }
+.artist-profile__track-copy p { margin: 0; font-size: 11px; }
+.artist-profile__track-meta { display: flex; height: 100%; flex-direction: column; justify-content: space-between; align-items: flex-end; }
+.artist-profile__track-meta > span { font-size: 10px; font-weight: 700; }
+.artist-profile__track-meta > span:first-child { font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: 34px; font-weight: 400; }
+.artist-profile__track-meta span small { display: block; margin-top: 5px; font-family: "Pretendard"; font-size: 7px; text-align: right; }
+.artist-profile__track-meta button { width: 100%; min-height: 40px; color: #fff; background: #07142b; font-size: 8px; font-weight: 700; }
+
+.artist-profile__route { background: #e8eae6; }
+.artist-profile__timeline { position: relative; display: grid; margin-top: 74px; grid-template-columns: repeat(5, 1fr); }
+.artist-profile__timeline::before { content: ""; position: absolute; top: 75px; left: 5%; right: 5%; height: 1px; background: #07142b; }
+.artist-profile__timeline article { position: relative; display: flex; align-items: center; flex-direction: column; }
+.artist-profile__timeline-number { margin-bottom: 18px; font-size: 8px; font-weight: 700; }
+.artist-profile__timeline img { z-index: 1; width: clamp(76px, 9vw, 124px); aspect-ratio: 1; border: 5px solid #e8eae6; border-radius: 50%; object-fit: cover; }
+.artist-profile__timeline div { margin-top: 18px; text-align: center; }
+.artist-profile__timeline small { display: block; margin-bottom: 5px; color: #747976; font-size: 7px; font-weight: 700; letter-spacing: .09em; }
+.artist-profile__timeline strong { font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: 28px; font-weight: 400; }
+
+.artist-profile__library {
   display: grid;
   border-top: 1px solid #07142b;
   border-bottom: 1px solid #07142b;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+.artist-profile__release, .artist-profile__most-left { min-width: 0; padding: 80px 5.2vw 92px; }
+.artist-profile__release { border-right: 1px solid #07142b; }
+.artist-profile__release-card { display: grid; margin-top: 46px; grid-template-columns: minmax(180px, 280px) 1fr; align-items: end; gap: 28px; }
+.artist-profile__release-card img { width: 100%; }
+.artist-profile__release-card small { color: #2759ed; font-size: 8px; font-weight: 700; }
+.artist-profile__release-card h3 { margin: 18px 0; font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: clamp(44px, 4vw, 66px); font-weight: 400; line-height: .72; }
+.artist-profile__release-card p { font-size: 9px; }
+.artist-profile__release-card button { display: flex; width: 100%; min-height: 44px; margin-top: 28px; padding: 0 14px; align-items: center; justify-content: space-between; color: #fff; background: #07142b; font-size: 8px; font-weight: 700; }
+.artist-profile__filters { display: flex; margin: 44px 0 18px; gap: 6px; }
+.artist-profile__filters button { padding: 7px 12px; border: 1px solid #07142b; border-radius: 30px; color: #07142b; background: transparent; font-size: 7px; font-weight: 700; }
+.artist-profile__filters button:first-child { color: #fff; background: #07142b; }
+.artist-profile__track-list { margin: 0; padding: 0; list-style: none; }
+.artist-profile__track-list li { display: grid; min-height: 72px; grid-template-columns: 25px minmax(100px, 1fr) 45px 58px 25px; align-items: center; gap: 10px; border-top: 1px solid #c7cac7; font-size: 9px; }
+.artist-profile__track-list strong { font-size: 11px; }
+.artist-profile__track-list strong small { display: block; margin-top: 5px; color: #858a87; font-size: 8px; font-weight: 400; }
+.artist-profile__track-list button { width: 24px; height: 24px; padding: 0; border: 1px solid #07142b; border-radius: 50%; background: transparent; font-size: 7px; }
 
-.artist-profile__section {
-  min-height: 300px;
-  padding: 42px;
+.artist-profile__report-grid { display: grid; margin-top: 52px; grid-template-columns: .9fr 1.1fr; gap: 52px; }
+.artist-profile__trace-reports { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.artist-profile__trace-reports article { display: flex; min-width: 0; min-height: 290px; padding: 22px; flex-direction: column; border: 1px solid #07142b; }
+.artist-profile__trace-reports article > span { font-size: 8px; }
+.artist-profile__trace-reports small { margin-top: 50px; color: #2759ed; font-size: 7px; font-weight: 700; }
+.artist-profile__trace-reports strong { margin-top: 16px; font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: clamp(36px, 3.3vw, 54px); font-weight: 400; line-height: .8; }
+.artist-profile__trace-reports p { margin-top: auto; color: #858a87; font-size: 8px; }
+.artist-profile__ranking > div { display: flex; align-items: flex-end; justify-content: space-between; }
+.artist-profile__ranking h3 { margin: 0 0 10px; font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: 46px; font-weight: 400; line-height: .8; }
+.artist-profile__ranking article { display: grid; min-height: 76px; grid-template-columns: 24px 48px minmax(120px, 1fr) 42px 58px; align-items: center; gap: 12px; border-top: 1px solid #c7cac7; font-size: 9px; }
+.artist-profile__ranking article img { width: 48px; height: 48px; object-fit: cover; }
+.artist-profile__ranking article strong { font-size: 11px; }
+.artist-profile__ranking article strong small { display: block; margin-top: 4px; color: #858a87; font-size: 8px; font-weight: 400; }
+
+.artist-profile__footer { display: grid; min-height: 330px; padding: 66px 5.2vw 32px; grid-template-columns: 1fr auto; align-items: end; gap: 30px 50px; color: #ff343c; background: #07142b; }
+.artist-profile__footer p { margin: 0 0 18px; font-size: 8px; font-weight: 700; letter-spacing: .11em; }
+.artist-profile__footer strong { font-family: "GalgoVF", "Arial Narrow", sans-serif; font-size: clamp(70px, 8vw, 126px); font-weight: 400; line-height: .7; }
+.artist-profile__footer > div:nth-child(2) { display: flex; gap: 28px; font-size: 9px; font-weight: 700; }
+.artist-profile__footer small { grid-column: 1 / -1; padding-top: 18px; border-top: 1px solid rgba(255,52,60,.45); font-size: 8px; }
+
+@media (max-width: 900px) {
+  .artist-profile__hero { grid-template-columns: minmax(220px, 320px) 1fr; }
+  .artist-profile__summary-grid, .artist-profile__library, .artist-profile__report-grid { grid-template-columns: 1fr; }
+  .artist-profile__release { border-right: 0; border-bottom: 1px solid #07142b; }
+  .artist-profile__track-card { width: 82vw; }
 }
 
-.artist-profile__section + .artist-profile__section {
-  border-left: 1px solid #07142b;
-}
-
-.artist-profile__section h2 {
-  margin: 0 0 46px;
-  font-family: "GalgoVF", "Arial Narrow", sans-serif;
-  font-size: clamp(48px, 5vw, 78px);
-  font-weight: 400;
-  line-height: 0.78;
-}
-
-.artist-profile__placeholder {
-  min-height: 82px;
-  padding: 28px 0;
-  border-top: 1px solid #c8cbc8;
-  color: #858a87;
-  font-size: 12px;
-}
-
-@media (max-width: 760px) {
-  .artist-profile {
-    padding: 116px 20px 64px;
-  }
-
-  .artist-profile__hero,
-  .artist-profile__works {
+@media (max-width: 650px) {
+  .artist-profile__top, .artist-profile__content-section { padding-right: 20px; padding-left: 20px; }
+  .artist-profile__hero, .artist-profile__summary-grid, .artist-profile__trace-reports {
     grid-template-columns: 1fr;
   }
-
-  .artist-profile__hero {
-    margin: 44px 0 68px;
-    gap: 42px;
-  }
-
-  .artist-profile__image {
-    width: min(78vw, 380px);
-  }
-
-  .artist-profile__section {
-    min-height: 240px;
-    padding: 36px 0;
-  }
-
-  .artist-profile__section + .artist-profile__section {
-    border-top: 1px solid #07142b;
-    border-left: 0;
-  }
+  .artist-profile__image { width: min(78vw, 340px); }
+  .artist-profile__heading--row { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .artist-profile__track-card { width: 88vw; grid-template-columns: 100px 1fr; }
+  .artist-profile__track-card > img { width: 100px; }
+  .artist-profile__track-meta { grid-column: 1 / -1; height: auto; align-items: center; flex-direction: row; gap: 12px; }
+  .artist-profile__track-meta button { width: 100px; }
+  .artist-profile__timeline { overflow-x: auto; grid-template-columns: repeat(5, 130px); }
+  .artist-profile__release, .artist-profile__most-left { padding: 64px 20px; }
+  .artist-profile__release-card { grid-template-columns: 1fr; }
+  .artist-profile__footer { display: flex; min-height: 360px; padding: 60px 20px 28px; align-items: flex-start; flex-direction: column; }
+  .artist-profile__footer small { width: 100%; margin-top: auto; }
 }
