@@ -185,6 +185,7 @@ function Curator() {
   };
 
   const goToLifestyleCurator = () => navigate("/curator/lifestyle");
+  const goToArtistCurator = () => navigate("/curator/artist");
 
   return (
     <main className="curator-page">
@@ -217,14 +218,15 @@ function Curator() {
                 <span>{curator.number} / 03</span>
                 <h2>{curator.title}</h2>
                 <p>{curator.description}</p>
-                {curator.number === "01" ? (
+                {curator.number === "01" || curator.number === "02" ? (
                   <button
                     className="curator-page__item-arrow"
                     type="button"
-                    aria-label="Lifestyle Curator 상세 보기"
+                    aria-label={`${curator.title} 상세 보기`}
                     onClick={(event) => {
                       event.stopPropagation();
-                      goToLifestyleCurator();
+                      if (curator.number === "01") goToLifestyleCurator();
+                      if (curator.number === "02") goToArtistCurator();
                     }}
                   >
                     ↗
@@ -236,15 +238,20 @@ function Curator() {
 
               <div
                 className={`curator-page__record curator-page__record--${curator.tone}`}
-                role={curator.number === "01" ? "button" : undefined}
-                tabIndex={curator.number === "01" ? 0 : undefined}
-                aria-label={curator.number === "01" ? "Lifestyle Curator 상세 보기" : undefined}
-                style={curator.number === "01" ? { cursor: "pointer" } : undefined}
-                onClick={curator.number === "01" ? goToLifestyleCurator : undefined}
-                onKeyDown={curator.number === "01" ? (event) => {
+                role={curator.number === "01" || curator.number === "02" ? "button" : undefined}
+                tabIndex={curator.number === "01" || curator.number === "02" ? 0 : undefined}
+                aria-label={curator.number === "01" || curator.number === "02" ? `${curator.title} 상세 보기` : undefined}
+                style={curator.number === "01" || curator.number === "02" ? { cursor: "pointer" } : undefined}
+                onClick={curator.number === "01"
+                  ? goToLifestyleCurator
+                  : curator.number === "02"
+                    ? goToArtistCurator
+                    : undefined}
+                onKeyDown={curator.number === "01" || curator.number === "02" ? (event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
-                    goToLifestyleCurator();
+                    if (curator.number === "01") goToLifestyleCurator();
+                    if (curator.number === "02") goToArtistCurator();
                   }
                 } : undefined}
               >
