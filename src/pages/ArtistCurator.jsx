@@ -96,6 +96,7 @@ function ArtistCurator() {
   const wheelFrame = useRef(null);
   const inputEndTimer = useRef(null);
   const dragState = useRef(null);
+  const didDrag = useRef(false);
 
   const moveTo = (nextTranslate) => {
     const clamped = Math.min(maxTranslateRef.current, Math.max(0, nextTranslate));
@@ -173,6 +174,7 @@ function ArtistCurator() {
 
   const handlePointerDown = (event) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    didDrag.current = false;
     dragState.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
@@ -190,6 +192,7 @@ function ArtistCurator() {
       event.currentTarget.setPointerCapture(event.pointerId);
     }
 
+    didDrag.current = true;
     setIsDirectInput(true);
     moveTo(drag.startTranslate - distance);
   };
@@ -237,7 +240,26 @@ function ArtistCurator() {
             <article
               className="artist-curator__card"
               key={`${playlist.artist}-${playlist.title}`}
-              style={{ "--artist-card-index": index }}
+              style={{
+                "--artist-card-index": index,
+                cursor: index === 0 ? "pointer" : undefined,
+              }}
+              role={index === 0 ? "button" : undefined}
+              tabIndex={index === 0 ? 0 : undefined}
+              aria-label={index === 0 ? "제니의 아티스트 플레이리스트 상세 보기" : undefined}
+              onClick={index === 0 ? () => {
+                if (didDrag.current) {
+                  didDrag.current = false;
+                  return;
+                }
+                navigate("/curator/artist/playlist");
+              } : undefined}
+              onKeyDown={index === 0 ? (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  navigate("/curator/artist/playlist");
+                }
+              } : undefined}
             >
               <div className="artist-curator__card-copy">
                 <span className="artist-curator__card-number">
