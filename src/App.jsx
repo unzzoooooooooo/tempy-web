@@ -17,6 +17,7 @@ import ArtistPlaylistDetail from "./pages/ArtistPlaylistDetail";
 import SimilarCurator from "./pages/SimilarCurator";
 import Create from "./pages/Create";
 import Archive from "./pages/Archive";
+import ArchiveBlindPick from "./pages/ArchiveBlindPick";
 
 function Header() {
   return (
@@ -65,6 +66,7 @@ function App() {
         <Route path="/curator/similar" element={<SimilarCurator />} />
         <Route path="/create" element={<Create />} />
         <Route path="/archive" element={<Archive />} />
+        <Route path="/archive/blind-pick" element={<ArchiveBlindPick />} />
       </Routes>
     </div>
   );
