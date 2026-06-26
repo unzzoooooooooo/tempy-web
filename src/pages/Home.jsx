@@ -1,4 +1,5 @@
 import logoMain from "../assets/Tempy!_logo_main.svg";
+import { Link } from "react-router-dom";
 
 function Home() {
   const albums = [
@@ -286,19 +287,27 @@ function Home() {
                 <img src="/images/moment-04.png" alt="archive moment 3" />
               </div>
             </article>
-            <article className="archive-card archive-similar-card">
-              <div className="archive-text">
-                <h3>Similar like you</h3>
-                <p>당신과 가장 비슷한 큐레이터를 만나보세요.</p>
-                <button>큐레이터 보러가기</button>
+            <Link className="archive-card archive-similar-card archive-blind-pick-card" to="/archive/blind-pick">
+              <div className="archive-text archive-blind-pick__text">
+                <h3>Blind Pick</h3>
+                <p>기록된 시간, 날씨, 감정만 보고<br />오늘의 노래를 먼저 골라보세요.</p>
+                <span className="archive-blind-pick__button">블라인드 픽 시작하기</span>
               </div>
-              <div className="similar-stack">
-                <img src="/images/profile-03.png" alt="similar curator 1" />
-                <img src="/images/profile-01.png" alt="similar curator 2" />
-                <img src="/images/profile-02.png" alt="similar curator 3" />
-                <img src="/images/profile-06.png" alt="similar curator 4" />
+              <div className="archive-blind-pick__visual" aria-hidden="true">
+                <div className="archive-blind-pick__bars">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div className="archive-blind-pick__album">
+                  <span>?</span>
+                </div>
+                <div className="archive-blind-pick__cover archive-blind-pick__cover--back" />
+                <div className="archive-blind-pick__cover archive-blind-pick__cover--front">
+                  <span />
+                </div>
               </div>
-            </article>
+            </Link>
           </div>
         </section>
       </main>
