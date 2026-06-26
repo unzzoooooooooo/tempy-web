@@ -186,6 +186,7 @@ function Curator() {
 
   const goToLifestyleCurator = () => navigate("/curator/lifestyle");
   const goToArtistCurator = () => navigate("/curator/artist");
+  const goToSimilarCurator = () => navigate("/curator/similar");
 
   return (
     <main className="curator-page">
@@ -218,7 +219,7 @@ function Curator() {
                 <span>{curator.number} / 03</span>
                 <h2>{curator.title}</h2>
                 <p>{curator.description}</p>
-                {curator.number === "01" || curator.number === "02" ? (
+                {curator.number === "01" || curator.number === "02" || curator.number === "03" ? (
                   <button
                     className="curator-page__item-arrow"
                     type="button"
@@ -227,6 +228,7 @@ function Curator() {
                       event.stopPropagation();
                       if (curator.number === "01") goToLifestyleCurator();
                       if (curator.number === "02") goToArtistCurator();
+                      if (curator.number === "03") goToSimilarCurator();
                     }}
                   >
                     ↗
@@ -238,20 +240,23 @@ function Curator() {
 
               <div
                 className={`curator-page__record curator-page__record--${curator.tone}`}
-                role={curator.number === "01" || curator.number === "02" ? "button" : undefined}
-                tabIndex={curator.number === "01" || curator.number === "02" ? 0 : undefined}
-                aria-label={curator.number === "01" || curator.number === "02" ? `${curator.title} 상세 보기` : undefined}
-                style={curator.number === "01" || curator.number === "02" ? { cursor: "pointer" } : undefined}
+                role={curator.number === "01" || curator.number === "02" || curator.number === "03" ? "button" : undefined}
+                tabIndex={curator.number === "01" || curator.number === "02" || curator.number === "03" ? 0 : undefined}
+                aria-label={curator.number === "01" || curator.number === "02" || curator.number === "03" ? `${curator.title} 상세 보기` : undefined}
+                style={curator.number === "01" || curator.number === "02" || curator.number === "03" ? { cursor: "pointer" } : undefined}
                 onClick={curator.number === "01"
                   ? goToLifestyleCurator
                   : curator.number === "02"
                     ? goToArtistCurator
-                    : undefined}
-                onKeyDown={curator.number === "01" || curator.number === "02" ? (event) => {
+                    : curator.number === "03"
+                      ? goToSimilarCurator
+                      : undefined}
+                onKeyDown={curator.number === "01" || curator.number === "02" || curator.number === "03" ? (event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
                     if (curator.number === "01") goToLifestyleCurator();
                     if (curator.number === "02") goToArtistCurator();
+                    if (curator.number === "03") goToSimilarCurator();
                   }
                 } : undefined}
               >

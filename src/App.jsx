@@ -14,6 +14,7 @@ import LifestyleCurator from "./pages/LifestyleCurator";
 import LifestylePlaylistDetail from "./pages/LifestylePlaylistDetail";
 import ArtistCurator from "./pages/ArtistCurator";
 import ArtistPlaylistDetail from "./pages/ArtistPlaylistDetail";
+import SimilarCurator from "./pages/SimilarCurator";
 import Create from "./pages/Create";
 import Archive from "./pages/Archive";
 
@@ -61,6 +62,7 @@ function App() {
         <Route path="/curator/lifestyle/playlist" element={<LifestylePlaylistDetail />} />
         <Route path="/curator/artist" element={<ArtistCurator />} />
         <Route path="/curator/artist/playlist" element={<ArtistPlaylistDetail />} />
+        <Route path="/curator/similar" element={<SimilarCurator />} />
         <Route path="/create" element={<Create />} />
         <Route path="/archive" element={<Archive />} />
       </Routes>
