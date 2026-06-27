@@ -4131,7 +4131,7 @@ body::-webkit-scrollbar:horizontal,
 
 .time-set-interaction__trigger--active:hover .time-set-interaction__overlay {
   background: rgba(7, 20, 43, 0.42);
-  opacity: 1;
+  opacity: var(--intro-opacity, 1);
 }
 
 /* Time Set carousel interaction */
@@ -7266,13 +7266,9 @@ body::-webkit-scrollbar:horizontal,
   height: var(--blind-bar-size);
   flex: 0 0 var(--blind-bar-size);
   margin: 0;
-  transform: translate3d(var(--intro-offset, 0px), 0, 0);
-  transition: transform 980ms cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: none;
   will-change: transform;
-}
-
-.archive-blind-page--intro-complete .archive-blind-page__bar-shell {
-  transform: translate3d(0, 0, 0);
 }
 
 .archive-blind-page__bar {
@@ -7286,7 +7282,7 @@ body::-webkit-scrollbar:horizontal,
   box-shadow: none;
   opacity: 1;
   overflow: hidden;
-  transform: translate3d(0, 0, 0) scaleY(1);
+  transform: translate3d(0, 0, 0) scaleY(var(--hover-scale, 1));
   transform-origin: bottom center;
   backface-visibility: hidden;
   will-change: transform;
@@ -7381,11 +7377,11 @@ body::-webkit-scrollbar:horizontal,
   opacity: 0;
   overflow: hidden;
   pointer-events: none;
-  transform: translate3d(0, 18px, 0);
+  transform: translate3d(0, 20px, 0) scale(0.98);
   transition:
-    opacity 420ms ease,
-    transform 560ms cubic-bezier(0.16, 1, 0.3, 1),
-    clip-path 560ms cubic-bezier(0.16, 1, 0.3, 1);
+    clip-path 820ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 820ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 820ms cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity, clip-path;
 }
 
@@ -7403,22 +7399,22 @@ body::-webkit-scrollbar:horizontal,
   clip-path: inset(0 0 0 0);
   opacity: 1;
   pointer-events: auto;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) scale(1);
   transition:
-    opacity 680ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 760ms cubic-bezier(0.16, 1, 0.3, 1),
-    clip-path 760ms cubic-bezier(0.16, 1, 0.3, 1);
+    clip-path 820ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 820ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 820ms cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
 .archive-blind-page--closing .archive-blind-page__cover-mask {
   clip-path: inset(100% 0 0 0);
-  opacity: 0;
+  opacity: 1;
   transform: translate3d(0, 20px, 0) scale(0.98);
   transition:
-    opacity 680ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 760ms cubic-bezier(0.16, 1, 0.3, 1),
-    clip-path 760ms cubic-bezier(0.16, 1, 0.3, 1);
+    clip-path 820ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 820ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 820ms cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -7527,6 +7523,60 @@ body::-webkit-scrollbar:horizontal,
   font-weight: 700;
 }
 
+.archive-blind-page__hover-hint {
+  position: absolute;
+  top: calc(50% + var(--blind-bar-size) * 0.98);
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  color: #07142b;
+  background: transparent;
+  box-shadow: none;
+  font-family: "Pretendard", sans-serif;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(var(--hint-x, 50vw), 10px, 0) translateX(-50%);
+  transition: opacity 120ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.archive-blind-page__hover-hint--visible {
+  opacity: 1;
+  transform: translate3d(var(--hint-x, 50vw), 0, 0) translateX(-50%);
+}
+
+.archive-blind-page__hover-hint-line {
+  display: inline-block;
+  width: fit-content;
+  max-width: min(520px, 58vw);
+  padding: 9px 16px 10px;
+  color: #07142b;
+  background: #89abe6;
+  font-family: "Pretendard", sans-serif;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.archive-blind-page__hover-hint-meta {
+  padding: 8px 15px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.archive-blind-page__hover-hint-text {
+  margin-top: -1px;
+  padding: 9px 18px 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 .archive-blind-page__eye {
   position: absolute;
   left: 50%;
@@ -7625,7 +7675,8 @@ body::-webkit-scrollbar:horizontal,
   .archive-blind-page__cover-mask,
   .archive-blind-page__cover-inner,
   .archive-blind-page__cover-inner img,
-  .archive-blind-page__cover-info {
+  .archive-blind-page__cover-info,
+  .archive-blind-page__hover-hint {
     transition-duration: 1ms;
   }
 

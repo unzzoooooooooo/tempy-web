@@ -1,24 +1,26 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { useNavigate } from "react-router-dom";
 
 const LOOP_COUNT = 5;
 const MIDDLE_LOOP_INDEX = Math.floor(LOOP_COUNT / 2);
 const POSITION_LERP = 0.12;
 const SCALE_LERP = 0.22;
+const HINT_LERP = 0.55;
 const REVEAL_STAGGER = 38;
-const REVEAL_DURATION = 760;
+const REVEAL_DURATION = 820;
 
 const baseBlindPickItems = [
-  { id: 1, color: "cream", cover: "/images/album-01.png", title: "It’s Me", artist: "ILLIT(아일릿)", meta: "23:42 · Rain" },
-  { id: 2, color: "blue", cover: "/images/album-02.png", title: "Blue Hour", artist: "TXT", meta: "19:12 · Cloud" },
-  { id: 3, color: "navy", cover: "/images/album-03.png", title: "BIRDS OF A FEATHER", artist: "Billie Eilish", meta: "00:08 · Fog" },
-  { id: 4, color: "red", cover: "/images/album-04.png", title: "Puppet Show", artist: "XG", meta: "17:35 · Clear" },
-  { id: 5, color: "sky", cover: "/images/album-05.png", title: "Blinding Lights", artist: "The Weeknd", meta: "21:46 · Wind" },
-  { id: 6, color: "cream", cover: "/images/album-06.png", title: "Confetti Dream", artist: "HONNE", meta: "08:20 · Sun" },
-  { id: 7, color: "blue", cover: "/images/album-07.png", title: "Traveler", artist: "Wave Club", meta: "14:09 · Clear" },
-  { id: 8, color: "navy", cover: "/images/album-08.png", title: "Upside Mood", artist: "Ariana Grande", meta: "11:17 · Cloud" },
-  { id: 9, color: "red", cover: "/images/album-09.png", title: "Tattoo City", artist: "Night Loop", meta: "02:32 · Rain" },
-  { id: 10, color: "sky", cover: "/images/moment-01.png", title: "Night Walk", artist: "HYUKOH", meta: "22:10 · Rain" },
+  { id: 1, color: "cream", cover: "/images/album-01.png", title: "It’s Me", artist: "ILLIT(아일릿)", meta: "23:42 · Rain", hintMeta: "23:42 · Rain", hintText: "비 오는 밤, 조용히 나를 선명하게 만드는 노래" },
+  { id: 2, color: "blue", cover: "/images/album-02.png", title: "Blue Hour", artist: "TXT", meta: "19:12 · Cloud", hintMeta: "Dusk · Cloud", hintText: "하루의 끝에서 마음의 색을 천천히 바꾸는 리듬" },
+  { id: 3, color: "navy", cover: "/images/album-03.png", title: "BIRDS OF A FEATHER", artist: "Billie Eilish", meta: "00:08 · Fog", hintMeta: "00:08 · Fog", hintText: "말수가 줄어드는 새벽에 감정의 윤곽을 남기는 사운드" },
+  { id: 4, color: "red", cover: "/images/album-04.png", title: "Puppet Show", artist: "XG", meta: "17:35 · Clear", hintMeta: "17:35 · Clear", hintText: "선명한 공기 속에서 발걸음을 조금 더 대담하게 만드는 박자" },
+  { id: 5, color: "sky", cover: "/images/album-05.png", title: "Blinding Lights", artist: "The Weeknd", meta: "21:46 · Wind", hintMeta: "Night Drive · Wind", hintText: "창밖의 불빛이 길게 번질 때 속도를 올려주는 무드" },
+  { id: 6, color: "cream", cover: "/images/album-06.png", title: "Confetti Dream", artist: "HONNE", meta: "08:20 · Sun", hintMeta: "08:20 · Sun", hintText: "가벼운 햇빛 아래 오늘을 조금 부드럽게 시작하는 노래" },
+  { id: 7, color: "blue", cover: "/images/album-07.png", title: "Traveler", artist: "Wave Club", meta: "14:09 · Clear", hintMeta: "Afternoon · Clear", hintText: "낯선 동네를 지나며 생각보다 멀리 가고 싶어지는 리듬" },
+  { id: 8, color: "navy", cover: "/images/album-08.png", title: "Upside Mood", artist: "Ariana Grande", meta: "11:17 · Cloud", hintMeta: "Late Morning · Soft", hintText: "흐린 마음을 가볍게 뒤집어 작은 농담처럼 띄우는 사운드" },
+  { id: 9, color: "red", cover: "/images/album-09.png", title: "Tattoo City", artist: "Night Loop", meta: "02:32 · Rain", hintMeta: "02:32 · Rain", hintText: "잠들지 않는 거리에서 감정을 더 진하게 새기는 비트" },
+  { id: 10, color: "sky", cover: "/images/moment-01.png", title: "Night Walk", artist: "HYUKOH", meta: "22:10 · Rain", hintMeta: "Late Night · Soft", hintText: "혼자 걷는 길에 속도를 조금 늦춰주는 리듬" },
 ];
 
 function ArchiveBlindPick() {
@@ -33,6 +35,10 @@ function ArchiveBlindPick() {
   const targetPositionRef = useRef(0);
   const pointerXRef = useRef(null);
   const pointerActiveRef = useRef(false);
+  const hoveredBarRef = useRef(null);
+  const hintRef = useRef(null);
+  const hintXRef = useRef(typeof window === "undefined" ? 0 : window.innerWidth / 2);
+  const targetHintXRef = useRef(typeof window === "undefined" ? 0 : window.innerWidth / 2);
   const currentScalesRef = useRef([]);
   const targetScalesRef = useRef([]);
   const isRevealedRef = useRef(false);
@@ -41,7 +47,11 @@ function ArchiveBlindPick() {
   const [selectedId, setSelectedId] = useState(null);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [isIntroComplete, setIsIntroComplete] = useState(false);
+  const [hoverHint, setHoverHint] = useState({
+    visible: false,
+    meta: "",
+    text: "",
+  });
 
   const loopItems = useMemo(() => (
     Array.from({ length: LOOP_COUNT }, (_, loopIndex) => (
@@ -64,7 +74,7 @@ function ArchiveBlindPick() {
   const applyScale = useCallback((renderIndex, scale) => {
     const bar = barRefs.current[renderIndex];
     if (!bar) return;
-    bar.style.transform = `translate3d(0, 0, 0) scaleY(${scale})`;
+    bar.style.setProperty("--hover-scale", scale);
   }, []);
 
   const resetBarScales = useCallback(() => {
@@ -72,6 +82,52 @@ function ArchiveBlindPick() {
     targetScalesRef.current = loopItems.map(() => 1);
     loopItems.forEach((item) => applyScale(item.renderIndex, 1));
   }, [applyScale, loopItems]);
+
+  const updateHintPosition = useCallback((immediate = false) => {
+    const bar = hoveredBarRef.current;
+    const hint = hintRef.current;
+    if (!bar || !hint) return true;
+
+    const rect = bar.getBoundingClientRect();
+    targetHintXRef.current = rect.left + (rect.width / 2);
+
+    if (immediate) {
+      hintXRef.current = targetHintXRef.current;
+    } else {
+      hintXRef.current += (targetHintXRef.current - hintXRef.current) * HINT_LERP;
+    }
+
+    hint.style.setProperty("--hint-x", `${hintXRef.current}px`);
+    return Math.abs(targetHintXRef.current - hintXRef.current) < 0.25;
+  }, []);
+
+  const updateHoverHint = useCallback((bar) => {
+    if (!bar) {
+      setHoverHint((current) => (current.visible ? { ...current, visible: false } : current));
+      return;
+    }
+
+    const item = loopItems[Number(bar.dataset.renderIndex)];
+    if (!item) return;
+
+    flushSync(() => {
+      setHoverHint((current) => {
+        if (
+          current.visible
+          && current.meta === item.hintMeta
+          && current.text === item.hintText
+        ) {
+          return current;
+        }
+
+        return {
+          visible: true,
+          meta: item.hintMeta,
+          text: item.hintText,
+        };
+      });
+    });
+  }, [loopItems]);
 
   const updateRevealDelays = useCallback(() => {
     const track = trackRef.current;
@@ -99,22 +155,6 @@ function ArchiveBlindPick() {
     });
 
     return visibleBars.length;
-  }, []);
-
-  const applyIntroSpread = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const viewportCenter = window.innerWidth / 2;
-    const maxSpread = Math.min(Math.max(window.innerWidth * 0.16, 90), 280);
-    const shells = Array.from(track.querySelectorAll(".archive-blind-page__bar-shell"));
-
-    shells.forEach((shell) => {
-      const rect = shell.getBoundingClientRect();
-      const shellCenter = rect.left + (rect.width / 2);
-      const normalized = Math.max(-1, Math.min(1, (shellCenter - viewportCenter) / viewportCenter));
-      shell.style.setProperty("--intro-offset", `${normalized * maxSpread}px`);
-    });
   }, []);
 
   const measureAndCenter = useCallback(() => {
@@ -190,9 +230,12 @@ function ArchiveBlindPick() {
     applyOffset(currentPositionRef.current);
 
     const scalesSettled = updateBarScales();
+    const hintSettled = pointerActiveRef.current && hoveredBarRef.current
+      ? updateHintPosition()
+      : true;
     const positionSettled = Math.abs(targetPositionRef.current - currentPositionRef.current) < 0.01;
 
-    if (positionSettled && scalesSettled) {
+    if (positionSettled && scalesSettled && hintSettled) {
       animationFrameRef.current = null;
       return;
     }
@@ -213,25 +256,10 @@ function ArchiveBlindPick() {
   }, [isRevealed, resetBarScales]);
 
   useLayoutEffect(() => {
-    let secondFrame = null;
-    const firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => setIsIntroComplete(true));
-    });
-
-    return () => {
-      window.cancelAnimationFrame(firstFrame);
-      if (secondFrame !== null) {
-        window.cancelAnimationFrame(secondFrame);
-      }
-    };
-  }, []);
-
-  useLayoutEffect(() => {
     measureAndCenter();
-    applyIntroSpread();
+
     const handleResize = () => {
       measureAndCenter();
-      window.requestAnimationFrame(applyIntroSpread);
       if (isRevealedRef.current) {
         window.requestAnimationFrame(updateRevealDelays);
       }
@@ -249,7 +277,7 @@ function ArchiveBlindPick() {
         closingTimeoutRef.current = null;
       }
     };
-  }, [applyIntroSpread, measureAndCenter, updateRevealDelays]);
+  }, [measureAndCenter, updateRevealDelays]);
 
   const handleWheel = (event) => {
     event.preventDefault();
@@ -266,19 +294,26 @@ function ArchiveBlindPick() {
     const hoveredBar = event.target.closest?.(".archive-blind-page__bar");
     if (!hoveredBar) {
       pointerActiveRef.current = false;
+      hoveredBarRef.current = null;
       pointerXRef.current = null;
+      updateHoverHint(null);
       startAnimation();
       return;
     }
 
     pointerActiveRef.current = true;
+    hoveredBarRef.current = hoveredBar;
     pointerXRef.current = event.clientX;
+    updateHintPosition(!hoverHint.visible);
+    updateHoverHint(hoveredBar);
     startAnimation();
   };
 
   const handlePointerLeave = () => {
     pointerActiveRef.current = false;
+    hoveredBarRef.current = null;
     pointerXRef.current = null;
+    updateHoverHint(null);
     startAnimation();
   };
 
@@ -288,7 +323,9 @@ function ArchiveBlindPick() {
     setSelectedId(null);
     const visibleCount = updateRevealDelays();
     pointerActiveRef.current = false;
+    hoveredBarRef.current = null;
     pointerXRef.current = null;
+    updateHoverHint(null);
     resetBarScales();
     startAnimation();
 
@@ -299,7 +336,7 @@ function ArchiveBlindPick() {
     }
 
     setIsClosing(true);
-    const closeDuration = REVEAL_DURATION + (Math.max(visibleCount, 1) * REVEAL_STAGGER) + 120;
+    const closeDuration = REVEAL_DURATION + (Math.max(visibleCount, 1) * REVEAL_STAGGER) + 160;
     closingTimeoutRef.current = window.setTimeout(() => {
       setIsRevealed(false);
       setIsClosing(false);
@@ -311,7 +348,6 @@ function ArchiveBlindPick() {
     "archive-blind-page",
     isRevealed ? "archive-blind-page--revealed is-revealed" : "",
     isClosing ? "archive-blind-page--closing is-closing" : "",
-    isIntroComplete ? "archive-blind-page--intro-complete is-intro-complete" : "",
   ].filter(Boolean).join(" ");
 
   return (
@@ -344,6 +380,7 @@ function ArchiveBlindPick() {
                 <span className="archive-blind-page__bar-shell">
                   <span
                     className="archive-blind-page__bar"
+                    data-render-index={item.renderIndex}
                     ref={(node) => {
                       barRefs.current[item.renderIndex] = node;
                     }}
@@ -383,6 +420,19 @@ function ArchiveBlindPick() {
             <small>{selectedItem.artist}</small>
           </div>
         )}
+
+        <div
+          className={`archive-blind-page__hover-hint${hoverHint.visible ? " archive-blind-page__hover-hint--visible" : ""}`}
+          ref={hintRef}
+          aria-hidden={!hoverHint.visible}
+        >
+          <span className="archive-blind-page__hover-hint-line archive-blind-page__hover-hint-meta">
+            {hoverHint.meta}
+          </span>
+          <span className="archive-blind-page__hover-hint-line archive-blind-page__hover-hint-text">
+            {hoverHint.text}
+          </span>
+        </div>
       </section>
 
       <button
