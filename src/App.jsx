@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import "./index.css";
 import logoNav from "./assets/Tempy!_logo_nav.svg";
@@ -45,9 +46,99 @@ function Header() {
   );
 }
 
+function TempyCursor() {
+  const cursorRef = useRef(null);
+
+  useEffect(() => {
+    const canUseCursor = window.matchMedia("(pointer: fine)").matches
+      && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!canUseCursor) return undefined;
+
+    const cursor = cursorRef.current;
+    if (!cursor) return undefined;
+
+    let targetX = -50;
+    let targetY = -50;
+    let currentX = -50;
+    let currentY = -50;
+    let animationFrame = null;
+    const interactiveSelector = [
+      "a",
+      "button",
+      "[role='button']",
+      "input",
+      "textarea",
+      "select",
+      "label",
+      "summary",
+      ".header",
+      ".header *",
+      ".nav a",
+      ".top-nav a",
+      ".archive-page__created-card",
+      ".archive-card",
+      ".archive-card *",
+      ".archive-blind-page__bar",
+      ".archive-blind-page__bar *",
+      ".blind-pick-bar",
+      ".blind-pick-bar *",
+      ".create-card",
+      ".create-start-card",
+      ".create-detail-action",
+      ".create-detail-secondary-action",
+      ".track-card",
+      ".album-card",
+      ".album-card *",
+      ".artist-card",
+      ".playlist-row",
+      ".leftnow-card",
+      ".curator-item",
+    ].join(",");
+
+    const render = () => {
+      currentX += (targetX - currentX) * 0.32;
+      currentY += (targetY - currentY) * 0.32;
+      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+      animationFrame = window.requestAnimationFrame(render);
+    };
+
+    const handlePointerMove = (event) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+      cursor.classList.add("is-visible");
+      cursor.classList.toggle("is-hovering", Boolean(event.target.closest?.(interactiveSelector)));
+    };
+
+    const handlePointerEnter = () => {
+      cursor.classList.add("is-visible");
+    };
+
+    const handlePointerLeave = () => {
+      cursor.classList.remove("is-visible", "is-hovering");
+    };
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerenter", handlePointerEnter);
+    window.addEventListener("pointerleave", handlePointerLeave);
+    animationFrame = window.requestAnimationFrame(render);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerenter", handlePointerEnter);
+      window.removeEventListener("pointerleave", handlePointerLeave);
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, []);
+
+  return <div className="tempy-cursor" ref={cursorRef} aria-hidden="true" />;
+}
+
 function App() {
   return (
     <div className="app">
+      <TempyCursor />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

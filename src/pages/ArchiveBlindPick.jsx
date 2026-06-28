@@ -36,9 +36,11 @@ function ArchiveBlindPick() {
   const pointerXRef = useRef(null);
   const pointerActiveRef = useRef(false);
   const hoveredBarRef = useRef(null);
+  const hoveredRenderIndexRef = useRef(null);
   const hintRef = useRef(null);
   const hintXRef = useRef(typeof window === "undefined" ? 0 : window.innerWidth / 2);
   const targetHintXRef = useRef(typeof window === "undefined" ? 0 : window.innerWidth / 2);
+  const hintVisibleRef = useRef(false);
   const currentScalesRef = useRef([]);
   const targetScalesRef = useRef([]);
   const isRevealedRef = useRef(false);
@@ -103,13 +105,24 @@ function ArchiveBlindPick() {
 
   const updateHoverHint = useCallback((bar) => {
     if (!bar) {
+      hintVisibleRef.current = false;
+      hoveredRenderIndexRef.current = null;
       setHoverHint((current) => (current.visible ? { ...current, visible: false } : current));
       return;
     }
 
-    const item = loopItems[Number(bar.dataset.renderIndex)];
+    const renderIndex = Number(bar.dataset.renderIndex);
+    const item = loopItems[renderIndex];
     if (!item) return;
+    if (
+      hintVisibleRef.current
+      && hoveredRenderIndexRef.current === renderIndex
+    ) {
+      return;
+    }
 
+    hintVisibleRef.current = true;
+    hoveredRenderIndexRef.current = renderIndex;
     flushSync(() => {
       setHoverHint((current) => {
         if (
@@ -159,22 +172,30 @@ function ArchiveBlindPick() {
 
   const measureAndCenter = useCallback(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track) return false;
 
     const firstItem = track.children[0];
     const nextSetItem = track.children[baseBlindPickItems.length];
     const middleSetItem = track.children[baseBlindPickItems.length * MIDDLE_LOOP_INDEX];
-    if (!firstItem || !nextSetItem || !middleSetItem) return;
+    if (!firstItem || !nextSetItem || !middleSetItem) return false;
 
-    setWidthRef.current = nextSetItem.offsetLeft - firstItem.offsetLeft;
-    barSizeRef.current = firstItem.offsetWidth || 160;
-    middleStartRef.current = middleSetItem.offsetLeft;
+    const measuredBarSize = firstItem.offsetWidth || 160;
+    const measuredSetWidth = nextSetItem.offsetLeft - firstItem.offsetLeft;
+    const setWidth = measuredSetWidth > 0
+      ? measuredSetWidth
+      : measuredBarSize * baseBlindPickItems.length;
+    const middleStart = middleSetItem.offsetLeft || setWidth * MIDDLE_LOOP_INDEX;
+
+    setWidthRef.current = setWidth;
+    barSizeRef.current = measuredBarSize;
+    middleStartRef.current = middleStart;
     currentPositionRef.current = middleStartRef.current;
     targetPositionRef.current = middleStartRef.current;
     currentScalesRef.current = loopItems.map(() => 1);
     targetScalesRef.current = loopItems.map(() => 1);
     applyOffset(currentPositionRef.current);
     resetBarScales();
+    return true;
   }, [applyOffset, loopItems, resetBarScales]);
 
   function normalizePosition() {
@@ -256,7 +277,23 @@ function ArchiveBlindPick() {
   }, [isRevealed, resetBarScales]);
 
   useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+    pointerActiveRef.current = false;
+    hoveredBarRef.current = null;
+    hoveredRenderIndexRef.current = null;
+    pointerXRef.current = null;
+    hintVisibleRef.current = false;
+    hintXRef.current = window.innerWidth / 2;
+    targetHintXRef.current = window.innerWidth / 2;
+    hintRef.current?.style.setProperty("--hint-x", `${hintXRef.current}px`);
     measureAndCenter();
+
+    const firstMeasureFrame = window.requestAnimationFrame(() => {
+      measureAndCenter();
+    });
+    const secondMeasureFrame = window.requestAnimationFrame(() => {
+      measureAndCenter();
+    });
 
     const handleResize = () => {
       measureAndCenter();
@@ -267,6 +304,8 @@ function ArchiveBlindPick() {
     window.addEventListener("resize", handleResize);
 
     return () => {
+      window.cancelAnimationFrame(firstMeasureFrame);
+      window.cancelAnimationFrame(secondMeasureFrame);
       window.removeEventListener("resize", handleResize);
       if (animationFrameRef.current !== null) {
         window.cancelAnimationFrame(animationFrameRef.current);
@@ -301,10 +340,11 @@ function ArchiveBlindPick() {
       return;
     }
 
+    const isNewBar = hoveredBarRef.current !== hoveredBar;
     pointerActiveRef.current = true;
     hoveredBarRef.current = hoveredBar;
     pointerXRef.current = event.clientX;
-    updateHintPosition(!hoverHint.visible);
+    updateHintPosition(isNewBar || !hintVisibleRef.current);
     updateHoverHint(hoveredBar);
     startAnimation();
   };
@@ -312,6 +352,7 @@ function ArchiveBlindPick() {
   const handlePointerLeave = () => {
     pointerActiveRef.current = false;
     hoveredBarRef.current = null;
+    hoveredRenderIndexRef.current = null;
     pointerXRef.current = null;
     updateHoverHint(null);
     startAnimation();
@@ -324,6 +365,7 @@ function ArchiveBlindPick() {
     const visibleCount = updateRevealDelays();
     pointerActiveRef.current = false;
     hoveredBarRef.current = null;
+    hoveredRenderIndexRef.current = null;
     pointerXRef.current = null;
     updateHoverHint(null);
     resetBarScales();

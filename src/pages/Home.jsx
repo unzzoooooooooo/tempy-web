@@ -1,19 +1,10 @@
 import logoMain from "../assets/Tempy!_logo_main.svg";
 import { Link } from "react-router-dom";
+import { useContextRecommendations } from "../utils/context";
 
 function Home() {
-  const albums = [
-    { image: "/images/album-01.png", title: "The Fate of Ophelia", artist: "Taylor Swift" },
-    { image: "/images/album-02.png", title: "Drop dead", artist: "Only Astrologic" },
-    { image: "/images/album-03.png", title: "BIRDS OF A FEATHER", artist: "Billie Eilish" },
-    { image: "/images/album-04.png", title: "Puppet Show", artist: "XG" },
-    { image: "/images/album-05.png", title: "Blinding Lights", artist: "The Weeknd" },
-    { image: "/images/album-06.png", title: "Confetti Dream", artist: "HONNE" },
-    { image: "/images/album-07.png", title: "Traveler", artist: "Wave Club" },
-    { image: "/images/album-08.png", title: "Upside Mood", artist: "Ariana Grande" },
-    { image: "/images/album-09.png", title: "Tattoo City", artist: "Night Loop" },
-    { image: "/images/moment-02.png", title: "City Light", artist: "hostless" },
-  ];
+  const { context, tracks: tempoTracks } = useContextRecommendations(6);
+  const tempoAlbums = tempoTracks.slice(0, 5);
 
   const artistCards = [
     {
@@ -130,16 +121,16 @@ function Home() {
             <p>오늘 이 시간·이 날씨·이 위치의 순간의 사람들이 듣고 있는 음악</p>
           </div>
           <div className="tag-row">
-            <span className="tag">TODAY · 2026.05.16 토요일</span>
-            <span className="tag">19:42</span>
-            <span className="tag">서울 강북구</span>
-            <span className="tag">비 · 18°C</span>
+            <span className="tag">TODAY · {context.currentDate} {context.dayLabel}</span>
+            <span className="tag">{context.currentTime}</span>
+            <span className="tag">{context.locationLabel}</span>
+            <span className="tag">{context.weatherLabel} · {context.temperature}</span>
           </div>
           <div className="album-row">
-            {albums.map((album, index) => (
-              <article className="album-card" key={`${album.image}-${index}`}>
+            {tempoAlbums.map((album, index) => (
+              <article className="album-card" key={`${album.id}-${index}`}>
                 <div className="album-image-wrap">
-                  <img className="album-image" src={album.image} alt={`${album.title} album cover`} />
+                  <img className="album-image" src={album.cover || album.image} alt={`${album.title} album cover`} />
                 </div>
                 <div className="album-meta">
                   <button className="album-play" aria-label={`Play ${album.title}`}>{index === 4 ? 3 : index + 1}</button>
@@ -236,7 +227,7 @@ function Home() {
               <article className="leftnow-card" key={`${image}-${index}`}>
                 <div className="leftnow-text">
                   <strong>비 오는 날 퇴근길에 한 곡</strong>
-                  <span>비 · 18°C · 19시</span>
+                  <span>{context.weatherLabel} · {context.temperature} · {context.currentTime}</span>
                   <span>● hostless</span>
                 </div>
                 <img className="leftnow-image" src={image} alt={`Moment card ${index + 1}`} />
