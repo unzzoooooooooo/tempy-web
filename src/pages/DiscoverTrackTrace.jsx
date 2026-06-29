@@ -4,19 +4,19 @@ function DiscoverTrackTrace() {
   const navigate = useNavigate();
   const tracks = [
     {
-      image: "/images/album-03.png",
+      image: "/images/album-19.png",
       title: "BIRDS OF A FEATHER",
       artist: "Billie Eilish",
       comments: 128,
     },
     {
-      image: "/images/album-06.png",
+      image: "/images/album-20.png",
       title: "Confetti Dream",
       artist: "HONNE",
       comments: 84,
     },
     {
-      image: "/images/album-08.png",
+      image: "/images/album-21.png",
       title: "Upside Mood",
       artist: "Ariana Grande",
       comments: 56,

@@ -40,12 +40,12 @@ const trackMoments = [
 ];
 
 const similarSongs = [
-  { image: "/images/album-01.png", title: "The Fate of Ophelia", artist: "Taylor Swift" },
-  { image: "/images/album-02.png", title: "Drop dead", artist: "Only Astrologic" },
-  { image: "/images/album-04.png", title: "Blue Hour", artist: "Tomorrow X Together" },
-  { image: "/images/album-05.png", title: "Slow Motion", artist: "Matt Champion" },
-  { image: "/images/album-07.png", title: "Afterglow", artist: "The Marías" },
-  { image: "/images/album-09.png", title: "City Lights", artist: "Wave to Earth" },
+  { image: "/images/album-26.png", title: "The Fate of Ophelia", artist: "Taylor Swift" },
+  { image: "/images/album-27.png", title: "Drop dead", artist: "Only Astrologic" },
+  { image: "/images/album-28.png", title: "Blue Hour", artist: "Tomorrow X Together" },
+  { image: "/images/album-29.png", title: "Slow Motion", artist: "Matt Champion" },
+  { image: "/images/album-30.png", title: "Afterglow", artist: "The Marías" },
+  { image: "/images/album-31.png", title: "City Lights", artist: "Wave to Earth" },
 ];
 
 function TrackTraceDetail() {
@@ -61,7 +61,7 @@ function TrackTraceDetail() {
         </button>
 
         <div className="track-comment-detail__album">
-          <img src="/images/album-03.png" alt="BIRDS OF A FEATHER album cover" />
+          <img src="/images/album-19.png" alt="BIRDS OF A FEATHER album cover" />
           <span>01</span>
         </div>
 

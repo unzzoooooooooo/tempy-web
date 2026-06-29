@@ -35,13 +35,13 @@ function TrackTraceAlbum() {
 
         <div className="track-trace-album__hero-grid">
           <div className="track-trace-album__cover">
-            <img src="/images/album-01.png" alt="The Life of A Showgirl album cover" />
+            <img src="/images/album-26.png" alt="The Life of A Showgirl album cover" />
             <span>ALBUM · 2025</span>
           </div>
 
           <div className="track-trace-album__intro">
             <Link className="track-trace-album__artist-link" to="/artist/taylor-swift">
-              <img src="/images/album-01.png" alt="Taylor Swift" />
+              <img src="/images/artist-07.png" alt="Taylor Swift" />
               <span>Taylor Swift</span>
               <span aria-hidden="true">›</span>
             </Link>

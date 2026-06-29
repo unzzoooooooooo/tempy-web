@@ -129,10 +129,10 @@ function Archive() {
   ];
 
   const artists = [
-    { image: "/images/artist-01.png", name: "Jennie", count: "32 TIMES" },
-    { image: "/images/artist-02.png", name: "AKMU", count: "28 TIMES" },
-    { image: "/images/artist-03.png", name: "Hanroro", count: "21 TIMES" },
-    { image: "/images/album-03.png", name: "Billie Eilish", count: "18 TIMES" },
+    { image: "/images/artist-04.png", name: "Jennie", count: "32 TIMES" },
+    { image: "/images/artist-05.png", name: "AKMU", count: "28 TIMES" },
+    { image: "/images/artist-06.png", name: "Hanroro", count: "21 TIMES" },
+    { image: "/images/artist-07.png", name: "Billie Eilish", count: "18 TIMES" },
   ];
 
   const likedCurators = [

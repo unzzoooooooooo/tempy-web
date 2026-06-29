@@ -2,17 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const playlistTracks = [
-  { title: "The Fate of Ophelia", artist: "Taylor Swift", cover: "/images/album-01.png" },
-  { title: "Blue Hour", artist: "Tomorrow X Together", cover: "/images/album-04.png" },
-  { title: "BIRDS OF A FEATHER", artist: "Billie Eilish", cover: "/images/album-03.png" },
-  { title: "Confetti Dream", artist: "HONNE", cover: "/images/album-06.png" },
-  { title: "Afterglow", artist: "Wave to Earth", cover: "/images/album-09.png" },
-  { title: "Velvet Morning", artist: "The Marías", cover: "/images/album-02.png" },
-  { title: "Coffee at Dawn", artist: "beabadoobee", cover: "/images/album-05.png" },
-  { title: "Slow Motion", artist: "Laufey", cover: "/images/album-07.png" },
-  { title: "Window Seat", artist: "Rex Orange County", cover: "/images/album-08.png" },
-  { title: "First Light", artist: "Hozier", cover: "/images/album-01.png" },
-  { title: "Quiet Hours", artist: "Men I Trust", cover: "/images/album-06.png" },
+  { title: "The Fate of Ophelia", artist: "Taylor Swift", cover: "/images/album-20.png" },
+  { title: "Blue Hour", artist: "Tomorrow X Together", cover: "/images/album-21.png" },
+  { title: "BIRDS OF A FEATHER", artist: "Billie Eilish", cover: "/images/album-22.png" },
+  { title: "Confetti Dream", artist: "HONNE", cover: "/images/album-23.png" },
+  { title: "Afterglow", artist: "Wave to Earth", cover: "/images/album-24.png" },
+  { title: "Velvet Morning", artist: "The Marías", cover: "/images/album-25.png" },
+  { title: "Coffee at Dawn", artist: "beabadoobee", cover: "/images/album-26.png" },
+  { title: "Slow Motion", artist: "Laufey", cover: "/images/album-27.png" },
+  { title: "Window Seat", artist: "Rex Orange County", cover: "/images/album-28.png" },
+  { title: "First Light", artist: "Hozier", cover: "/images/album-29.png" },
+  { title: "Quiet Hours", artist: "Men I Trust", cover: "/images/album-30.png" },
 ];
 
 function LifestylePlaylistDetail() {

@@ -3,25 +3,25 @@ import { useNavigate } from "react-router-dom";
 
 const timeSetRecords = [
   {
-    cover: "/images/album-01.png",
+    cover: "/images/album-22.png",
     title: "The Fate of Ophelia",
     artist: "Taylor Swift",
     color: "#2759ed",
   },
   {
-    cover: "/images/album-03.png",
+    cover: "/images/album-23.png",
     title: "BIRDS OF A FEATHER",
     artist: "Billie Eilish",
     color: "#ff343c",
   },
   {
-    cover: "/images/album-06.png",
+    cover: "/images/album-24.png",
     title: "Confetti Dream",
     artist: "HONNE",
     color: "#f2cb28",
   },
   {
-    cover: "/images/album-08.png",
+    cover: "/images/album-25.png",
     title: "Upside Mood",
     artist: "Ariana Grande",
     color: "#1f9c75",

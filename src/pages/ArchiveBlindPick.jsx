@@ -11,16 +11,16 @@ const REVEAL_STAGGER = 38;
 const REVEAL_DURATION = 820;
 
 const baseBlindPickItems = [
-  { id: 1, color: "cream", cover: "/images/album-01.png", title: "It’s Me", artist: "ILLIT(아일릿)", meta: "23:42 · Rain", hintMeta: "23:42 · Rain", hintText: "비 오는 밤, 조용히 나를 선명하게 만드는 노래" },
-  { id: 2, color: "blue", cover: "/images/album-02.png", title: "Blue Hour", artist: "TXT", meta: "19:12 · Cloud", hintMeta: "Dusk · Cloud", hintText: "하루의 끝에서 마음의 색을 천천히 바꾸는 리듬" },
-  { id: 3, color: "navy", cover: "/images/album-03.png", title: "BIRDS OF A FEATHER", artist: "Billie Eilish", meta: "00:08 · Fog", hintMeta: "00:08 · Fog", hintText: "말수가 줄어드는 새벽에 감정의 윤곽을 남기는 사운드" },
-  { id: 4, color: "red", cover: "/images/album-04.png", title: "Puppet Show", artist: "XG", meta: "17:35 · Clear", hintMeta: "17:35 · Clear", hintText: "선명한 공기 속에서 발걸음을 조금 더 대담하게 만드는 박자" },
-  { id: 5, color: "sky", cover: "/images/album-05.png", title: "Blinding Lights", artist: "The Weeknd", meta: "21:46 · Wind", hintMeta: "Night Drive · Wind", hintText: "창밖의 불빛이 길게 번질 때 속도를 올려주는 무드" },
-  { id: 6, color: "cream", cover: "/images/album-06.png", title: "Confetti Dream", artist: "HONNE", meta: "08:20 · Sun", hintMeta: "08:20 · Sun", hintText: "가벼운 햇빛 아래 오늘을 조금 부드럽게 시작하는 노래" },
-  { id: 7, color: "blue", cover: "/images/album-07.png", title: "Traveler", artist: "Wave Club", meta: "14:09 · Clear", hintMeta: "Afternoon · Clear", hintText: "낯선 동네를 지나며 생각보다 멀리 가고 싶어지는 리듬" },
-  { id: 8, color: "navy", cover: "/images/album-08.png", title: "Upside Mood", artist: "Ariana Grande", meta: "11:17 · Cloud", hintMeta: "Late Morning · Soft", hintText: "흐린 마음을 가볍게 뒤집어 작은 농담처럼 띄우는 사운드" },
-  { id: 9, color: "red", cover: "/images/album-09.png", title: "Tattoo City", artist: "Night Loop", meta: "02:32 · Rain", hintMeta: "02:32 · Rain", hintText: "잠들지 않는 거리에서 감정을 더 진하게 새기는 비트" },
-  { id: 10, color: "sky", cover: "/images/moment-01.png", title: "Night Walk", artist: "HYUKOH", meta: "22:10 · Rain", hintMeta: "Late Night · Soft", hintText: "혼자 걷는 길에 속도를 조금 늦춰주는 리듬" },
+  { id: 1, color: "cream", cover: "/images/album-20.png", title: "It’s Me", artist: "ILLIT(아일릿)", meta: "23:42 · Rain", hintMeta: "23:42 · Rain", hintText: "비 오는 밤, 조용히 나를 선명하게 만드는 노래" },
+  { id: 2, color: "blue", cover: "/images/album-21.png", title: "Blue Hour", artist: "TXT", meta: "19:12 · Cloud", hintMeta: "Dusk · Cloud", hintText: "하루의 끝에서 마음의 색을 천천히 바꾸는 리듬" },
+  { id: 3, color: "navy", cover: "/images/album-22.png", title: "BIRDS OF A FEATHER", artist: "Billie Eilish", meta: "00:08 · Fog", hintMeta: "00:08 · Fog", hintText: "말수가 줄어드는 새벽에 감정의 윤곽을 남기는 사운드" },
+  { id: 4, color: "red", cover: "/images/album-23.png", title: "Puppet Show", artist: "XG", meta: "17:35 · Clear", hintMeta: "17:35 · Clear", hintText: "선명한 공기 속에서 발걸음을 조금 더 대담하게 만드는 박자" },
+  { id: 5, color: "sky", cover: "/images/album-24.png", title: "Blinding Lights", artist: "The Weeknd", meta: "21:46 · Wind", hintMeta: "Night Drive · Wind", hintText: "창밖의 불빛이 길게 번질 때 속도를 올려주는 무드" },
+  { id: 6, color: "cream", cover: "/images/album-25.png", title: "Confetti Dream", artist: "HONNE", meta: "08:20 · Sun", hintMeta: "08:20 · Sun", hintText: "가벼운 햇빛 아래 오늘을 조금 부드럽게 시작하는 노래" },
+  { id: 7, color: "blue", cover: "/images/album-26.png", title: "Traveler", artist: "Wave Club", meta: "14:09 · Clear", hintMeta: "Afternoon · Clear", hintText: "낯선 동네를 지나며 생각보다 멀리 가고 싶어지는 리듬" },
+  { id: 8, color: "navy", cover: "/images/album-27.png", title: "Upside Mood", artist: "Ariana Grande", meta: "11:17 · Cloud", hintMeta: "Late Morning · Soft", hintText: "흐린 마음을 가볍게 뒤집어 작은 농담처럼 띄우는 사운드" },
+  { id: 9, color: "red", cover: "/images/album-28.png", title: "Tattoo City", artist: "Night Loop", meta: "02:32 · Rain", hintMeta: "02:32 · Rain", hintText: "잠들지 않는 거리에서 감정을 더 진하게 새기는 비트" },
+  { id: 10, color: "sky", cover: "/images/moment-06.png", title: "Night Walk", artist: "HYUKOH", meta: "22:10 · Rain", hintMeta: "Late Night · Soft", hintText: "혼자 걷는 길에 속도를 조금 늦춰주는 리듬" },
 ];
 
 function ArchiveBlindPick() {

@@ -8,9 +8,9 @@ const similarPlaylists = [
     meta: "12곡 · 42 min",
     likes: "1.5k",
     tracks: [
-      { title: "Coffee at Dawn", artist: "beabadoobee", cover: "/images/album-01.png" },
-      { title: "Velvet Morning", artist: "The Marias", cover: "/images/album-04.png" },
-      { title: "Afterglow", artist: "Wave to Earth", cover: "/images/album-06.png" },
+      { title: "Coffee at Dawn", artist: "beabadoobee", cover: "/images/album-10.png" },
+      { title: "Velvet Morning", artist: "The Marias", cover: "/images/album-11.png" },
+      { title: "Afterglow", artist: "Wave to Earth", cover: "/images/album-12.png" },
     ],
   },
   {
@@ -19,8 +19,8 @@ const similarPlaylists = [
     meta: "10곡 · 34 min",
     likes: "982",
     tracks: [
-      { title: "City Light", artist: "ADOY", cover: "/images/album-02.png" },
-      { title: "Window Seat", artist: "Rex Orange County", cover: "/images/album-07.png" },
+      { title: "City Light", artist: "ADOY", cover: "/images/album-13.png" },
+      { title: "Window Seat", artist: "Rex Orange County", cover: "/images/album-14.png" },
       { title: "Night Walk", artist: "HYUKOH", cover: "/images/moment-01.png" },
     ],
   },
@@ -30,8 +30,8 @@ const similarPlaylists = [
     meta: "11곡 · 39 min",
     likes: "1.2k",
     tracks: [
-      { title: "Paper Rain", artist: "Laufey", cover: "/images/album-03.png" },
-      { title: "Quiet Hours", artist: "Men I Trust", cover: "/images/album-08.png" },
+      { title: "Paper Rain", artist: "Laufey", cover: "/images/album-15.png" },
+      { title: "Quiet Hours", artist: "Men I Trust", cover: "/images/album-16.png" },
       { title: "First Page", artist: "HONNE", cover: "/images/moment-02.png" },
     ],
   },
@@ -41,8 +41,8 @@ const similarPlaylists = [
     meta: "9곡 · 31 min",
     likes: "744",
     tracks: [
-      { title: "Blue Hour", artist: "TXT", cover: "/images/album-04.png" },
-      { title: "Slow Motion", artist: "Laufey", cover: "/images/album-09.png" },
+      { title: "Blue Hour", artist: "TXT", cover: "/images/album-17.png" },
+      { title: "Slow Motion", artist: "Laufey", cover: "/images/album-18.png" },
       { title: "Last Scene", artist: "Silica Gel", cover: "/images/moment-03.png" },
     ],
   },
@@ -52,9 +52,9 @@ const similarPlaylists = [
     meta: "13곡 · 46 min",
     likes: "1.1k",
     tracks: [
-      { title: "Golden Roll", artist: "The Marias", cover: "/images/album-05.png" },
+      { title: "Golden Roll", artist: "The Marias", cover: "/images/album-19.png" },
       { title: "Summer Film", artist: "AKMU", cover: "/images/moment-04.png" },
-      { title: "Soft Focus", artist: "ADOY", cover: "/images/album-01.png" },
+      { title: "Soft Focus", artist: "ADOY", cover: "/images/album-20.png" },
     ],
   },
   {
@@ -63,9 +63,9 @@ const similarPlaylists = [
     meta: "10곡 · 36 min",
     likes: "889",
     tracks: [
-      { title: "Green Room", artist: "Wave to Earth", cover: "/images/album-06.png" },
+      { title: "Green Room", artist: "Wave to Earth", cover: "/images/album-21.png" },
       { title: "Sunny Side", artist: "백예린", cover: "/images/moment-05.png" },
-      { title: "Bloom", artist: "LUCY", cover: "/images/album-02.png" },
+      { title: "Bloom", artist: "LUCY", cover: "/images/album-22.png" },
     ],
   },
   {
@@ -74,9 +74,9 @@ const similarPlaylists = [
     meta: "12곡 · 44 min",
     likes: "1.4k",
     tracks: [
-      { title: "Last Call", artist: "The Black Skirts", cover: "/images/album-07.png" },
+      { title: "Last Call", artist: "The Black Skirts", cover: "/images/album-23.png" },
       { title: "Amber Light", artist: "Crush", cover: "/images/moment-06.png" },
-      { title: "Goodnight", artist: "DPR IAN", cover: "/images/album-03.png" },
+      { title: "Goodnight", artist: "DPR IAN", cover: "/images/album-24.png" },
     ],
   },
   {
@@ -85,9 +85,9 @@ const similarPlaylists = [
     meta: "8곡 · 28 min",
     likes: "638",
     tracks: [
-      { title: "Kitchen Light", artist: "Hozier", cover: "/images/album-08.png" },
-      { title: "Small Table", artist: "Stella Jang", cover: "/images/album-04.png" },
-      { title: "Warm Rice", artist: "10CM", cover: "/images/album-09.png" },
+      { title: "Kitchen Light", artist: "Hozier", cover: "/images/album-25.png" },
+      { title: "Small Table", artist: "Stella Jang", cover: "/images/album-26.png" },
+      { title: "Warm Rice", artist: "10CM", cover: "/images/album-27.png" },
     ],
   },
   {
@@ -97,8 +97,8 @@ const similarPlaylists = [
     likes: "1.0k",
     tracks: [
       { title: "Hostel Blue", artist: "JANNABI", cover: "/images/moment-01.png" },
-      { title: "Map Fold", artist: "The Marias", cover: "/images/album-05.png" },
-      { title: "Far Window", artist: "검정치마", cover: "/images/album-01.png" },
+      { title: "Map Fold", artist: "The Marias", cover: "/images/album-28.png" },
+      { title: "Far Window", artist: "검정치마", cover: "/images/album-29.png" },
     ],
   },
   {
@@ -107,9 +107,9 @@ const similarPlaylists = [
     meta: "11곡 · 41 min",
     likes: "920",
     tracks: [
-      { title: "Deep Work", artist: "FKJ", cover: "/images/album-02.png" },
+      { title: "Deep Work", artist: "FKJ", cover: "/images/album-30.png" },
       { title: "Midnight Push", artist: "O3ohn", cover: "/images/moment-02.png" },
-      { title: "New Branch", artist: "HONNE", cover: "/images/album-06.png" },
+      { title: "New Branch", artist: "HONNE", cover: "/images/album-31.png" },
     ],
   },
 ];

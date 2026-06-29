@@ -3,24 +3,24 @@ import { Link } from "react-router-dom";
 import { useContextRecommendations } from "../utils/context";
 
 function Home() {
-  const { context, tracks: tempoTracks } = useContextRecommendations(6);
-  const tempoAlbums = tempoTracks.slice(0, 5);
+  const { context, tracks: tempoTracks } = useContextRecommendations(10);
+  const tempoAlbums = tempoTracks.slice(0, 10);
 
   const artistCards = [
     {
-      image: "/images/artist-01.png",
+      image: "/images/artist-04.png",
       title: "제니의 무대 전 워밍업 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "Jennie",
     },
     {
-      image: "/images/artist-02.png",
+      image: "/images/artist-05.png",
       title: "악뮤의 작업할 때 영감을 많이 받았던 곡",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "AKMU",
     },
     {
-      image: "/images/artist-03.png",
+      image: "/images/artist-06.png",
       title: "한로로의 카페에서 듣는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "Hanroro",
@@ -47,17 +47,17 @@ function Home() {
 
   const playlistItems = [
     { image: null, title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-01.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-02.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-06.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-05.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-08.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-19.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-20.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-21.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-22.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-23.png", title: "유독 여유가 심한 날", artist: "hostless" },
     { image: "/images/moment-04.png", title: "유독 여유가 심한 날", artist: "hostless" },
     { image: "/images/moment-02.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-03.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-09.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-04.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-07.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-24.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-25.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-26.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: "/images/album-27.png", title: "유독 여유가 심한 날", artist: "hostless" },
   ];
 
   const moments = [
@@ -67,11 +67,11 @@ function Home() {
     "/images/moment-04.png",
     "/images/moment-05.png",
     "/images/moment-06.png",
-    "/images/album-06.png",
-    "/images/album-07.png",
-    "/images/album-08.png",
-    "/images/album-09.png",
-    "/images/album-05.png",
+    "/images/album-28.png",
+    "/images/album-29.png",
+    "/images/album-30.png",
+    "/images/album-31.png",
+    "/images/album-19.png",
   ];
 
   const curators = [
@@ -133,7 +133,7 @@ function Home() {
                   <img className="album-image" src={album.cover || album.image} alt={`${album.title} album cover`} />
                 </div>
                 <div className="album-meta">
-                  <button className="album-play" aria-label={`Play ${album.title}`}>{index === 4 ? 3 : index + 1}</button>
+                  <button className="album-play" aria-label={`Play ${album.title}`}>{index + 1}</button>
                   <div>
                     <strong>{album.title}</strong>
                     <span>{album.artist}</span>
@@ -268,12 +268,12 @@ function Home() {
                 <button>아카이브 보러가기</button>
               </div>
               <div className="archive-mosaic">
-                <img src="/images/album-09.png" alt="archive album 1" />
+                <img src="/images/album-28.png" alt="archive album 1" />
                 <img src="/images/moment-02.png" alt="archive moment" />
-                <img src="/images/album-06.png" alt="archive album 2" />
-                <img src="/images/album-07.png" alt="archive album 3" />
-                <img src="/images/album-08.png" alt="archive album 4" />
-                <img src="/images/album-05.png" alt="archive album 5" />
+                <img src="/images/album-29.png" alt="archive album 2" />
+                <img src="/images/album-30.png" alt="archive album 3" />
+                <img src="/images/album-31.png" alt="archive album 4" />
+                <img src="/images/album-27.png" alt="archive album 5" />
                 <img src="/images/moment-03.png" alt="archive moment 2" />
                 <img src="/images/moment-04.png" alt="archive moment 3" />
               </div>

@@ -32,7 +32,7 @@ const artistPlaylists = [
     meta: "13곡 · 47 min",
     likes: "1.5k",
     author: "WAVE TO EARTH",
-    image: "/images/moment-01.png",
+    image: "/images/artist-04.png",
   },
   {
     title: "A QUIET SUNDAY MORNING",
@@ -40,7 +40,7 @@ const artistPlaylists = [
     meta: "9곡 · 29 min",
     likes: "1.3k",
     author: "LAUFEY",
-    image: "/images/moment-02.png",
+    image: "/images/artist-05.png",
   },
   {
     title: "WINDOWS DOWN, MUSIC UP",
@@ -48,7 +48,7 @@ const artistPlaylists = [
     meta: "14곡 · 51 min",
     likes: "1.1k",
     author: "THE MARÍAS",
-    image: "/images/moment-03.png",
+    image: "/images/artist-06.png",
   },
   {
     title: "BLUE HOUR DIARY",
@@ -56,7 +56,7 @@ const artistPlaylists = [
     meta: "10곡 · 36 min",
     likes: "984",
     author: "ADOY",
-    image: "/images/moment-04.png",
+    image: "/images/artist-07.png",
   },
   {
     title: "SONGS FOR LONG WALKS",
@@ -64,7 +64,7 @@ const artistPlaylists = [
     meta: "12곡 · 44 min",
     likes: "912",
     author: "YERIN BAEK",
-    image: "/images/moment-05.png",
+    image: "/images/moment-03.png",
   },
   {
     title: "OUR LITTLE ESCAPE",
@@ -72,7 +72,7 @@ const artistPlaylists = [
     meta: "8곡 · 27 min",
     likes: "845",
     author: "HYUKOH",
-    image: "/images/moment-06.png",
+    image: "/images/moment-04.png",
   },
   {
     title: "FIRST LIGHT, LAST SONG",
@@ -80,7 +80,7 @@ const artistPlaylists = [
     meta: "11곡 · 40 min",
     likes: "806",
     author: "THE BLACK SKIRTS",
-    image: "/images/album-09.png",
+    image: "/images/moment-06.png",
   },
 ];
 

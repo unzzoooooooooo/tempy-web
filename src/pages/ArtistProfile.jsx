@@ -2,18 +2,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const featuredTracks = [
-  { cover: "/images/album-01.png", title: "The Fate of Ophelia", time: "23:10", likes: "12.8K" },
-  { cover: "/images/album-04.png", title: "Cruel Summer", time: "19:30", likes: "10.4K" },
-  { cover: "/images/album-07.png", title: "cardigan", time: "01:20", likes: "9.7K" },
-  { cover: "/images/album-03.png", title: "Anti-Hero", time: "07:20", likes: "8.9K" },
+  { cover: "/images/album-21.png", title: "The Fate of Ophelia", time: "23:10", likes: "12.8K" },
+  { cover: "/images/album-22.png", title: "Cruel Summer", time: "19:30", likes: "10.4K" },
+  { cover: "/images/album-23.png", title: "cardigan", time: "01:20", likes: "9.7K" },
+  { cover: "/images/album-24.png", title: "Anti-Hero", time: "07:20", likes: "8.9K" },
 ];
 
 const routeMoments = [
-  { time: "07:20", label: "MORNING", cover: "/images/album-03.png" },
-  { time: "12:40", label: "NOON", cover: "/images/album-06.png" },
-  { time: "19:30", label: "EVENING", cover: "/images/album-04.png" },
-  { time: "23:10", label: "NIGHT", cover: "/images/album-01.png" },
-  { time: "01:20", label: "DAWN", cover: "/images/album-07.png" },
+  { time: "07:20", label: "MORNING", cover: "/images/album-25.png" },
+  { time: "12:40", label: "NOON", cover: "/images/album-26.png" },
+  { time: "19:30", label: "EVENING", cover: "/images/album-27.png" },
+  { time: "23:10", label: "NIGHT", cover: "/images/album-28.png" },
+  { time: "01:20", label: "DAWN", cover: "/images/album-29.png" },
 ];
 
 const leftTracks = [
@@ -30,11 +30,11 @@ const reports = [
 ];
 
 const rankingTracks = [
-  { cover: "/images/album-01.png", title: "The Fate of Ophelia", time: "23:10", likes: "12.8K", moments: "12,842", peak: "23:10", leftMoment: "After the curtain", album: "The Life of A Showgirl", released: "2025", totalTempy: "18.4K", tags: ["#NIGHT", "#AFTERGLOW", "#MEMORY"] },
-  { cover: "/images/album-04.png", title: "Cruel Summer", time: "19:30", likes: "10.4K", moments: "10,421", peak: "19:30", leftMoment: "Summer drive", album: "Lover", released: "2019", totalTempy: "15.7K", tags: ["#SUMMER", "#DRIVE", "#LOVE"] },
-  { cover: "/images/album-07.png", title: "cardigan", time: "01:20", likes: "9.7K", moments: "9,738", peak: "01:20", leftMoment: "Quiet room", album: "folklore", released: "2020", totalTempy: "14.2K", tags: ["#DAWN", "#RAIN", "#MEMORY"] },
-  { cover: "/images/album-03.png", title: "Anti-Hero", time: "07:20", likes: "8.9K", moments: "8,904", peak: "07:20", leftMoment: "First light", album: "Midnights", released: "2022", totalTempy: "13.6K", tags: ["#MORNING", "#SELF", "#CITY"] },
-  { cover: "/images/album-09.png", title: "Love Story", time: "17:45", likes: "7.2K", moments: "7,216", peak: "17:45", leftMoment: "Golden hour", album: "Fearless", released: "2008", totalTempy: "11.9K", tags: ["#LOVE", "#SUNSET", "#STORY"] },
+  { cover: "/images/album-21.png", title: "The Fate of Ophelia", time: "23:10", likes: "12.8K", moments: "12,842", peak: "23:10", leftMoment: "After the curtain", album: "The Life of A Showgirl", released: "2025", totalTempy: "18.4K", tags: ["#NIGHT", "#AFTERGLOW", "#MEMORY"] },
+  { cover: "/images/album-22.png", title: "Cruel Summer", time: "19:30", likes: "10.4K", moments: "10,421", peak: "19:30", leftMoment: "Summer drive", album: "Lover", released: "2019", totalTempy: "15.7K", tags: ["#SUMMER", "#DRIVE", "#LOVE"] },
+  { cover: "/images/album-23.png", title: "cardigan", time: "01:20", likes: "9.7K", moments: "9,738", peak: "01:20", leftMoment: "Quiet room", album: "folklore", released: "2020", totalTempy: "14.2K", tags: ["#DAWN", "#RAIN", "#MEMORY"] },
+  { cover: "/images/album-24.png", title: "Anti-Hero", time: "07:20", likes: "8.9K", moments: "8,904", peak: "07:20", leftMoment: "First light", album: "Midnights", released: "2022", totalTempy: "13.6K", tags: ["#MORNING", "#SELF", "#CITY"] },
+  { cover: "/images/album-30.png", title: "Love Story", time: "17:45", likes: "7.2K", moments: "7,216", peak: "17:45", leftMoment: "Golden hour", album: "Fearless", released: "2008", totalTempy: "11.9K", tags: ["#LOVE", "#SUNSET", "#STORY"] },
 ];
 
 function ArtistProfile() {
@@ -54,7 +54,7 @@ function ArtistProfile() {
         </button>
 
         <div className="artist-profile__hero">
-          <img className="artist-profile__image" src="/images/album-01.png" alt="Taylor Swift" />
+          <img className="artist-profile__image" src="/images/artist-07.png" alt="Taylor Swift" />
           <div className="artist-profile__intro">
             <p className="artist-profile__label">ARTIST PROFILE · POP</p>
             <h1>Taylor Swift</h1>
@@ -125,7 +125,7 @@ function ArtistProfile() {
         <article className="artist-profile__release">
           <div className="artist-profile__heading"><p className="artist-profile__label">NEW FROM TAYLOR</p><h2>Latest Release</h2></div>
           <div className="artist-profile__release-card">
-            <img src="/images/album-01.png" alt="The Life of A Showgirl" />
+            <img src="/images/album-31.png" alt="The Life of A Showgirl" />
             <div><small>ALBUM · 2025</small><h3>The Life of<br />A Showgirl</h3><p>12 Songs · 41 min 06 sec</p><button type="button">PLAY ALBUM <span>▶</span></button></div>
           </div>
         </article>
