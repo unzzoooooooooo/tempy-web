@@ -19,13 +19,14 @@ import SimilarCurator from "./pages/SimilarCurator";
 import Create from "./pages/Create";
 import Archive from "./pages/Archive";
 import ArchiveBlindPick from "./pages/ArchiveBlindPick";
+import Profile from "./pages/Profile";
 
 function Header() {
   return (
     <header className="header">
       <div className="header-left">
         <Link className="logo-small" to="/" aria-label="Go to Home">
-          <img src={logoNav} alt="Tempy!" />
+          <img src={logoNav} alt="Tempy!" draggable={false} />
         </Link>
       </div>
       <div className="header-right">
@@ -36,11 +37,9 @@ function Header() {
           <Link to="/create">Create</Link>
           <Link to="/archive">Archive</Link>
         </nav>
-        <div className="top-icons">
-          <span className="dot"></span>
-          <span className="dot"></span>
-          <span className="dot"></span>
-        </div>
+        <Link className="top-profile-button" to="/profile" aria-label="Go to My Profile">
+          <img src="/images/artist-04.png" alt="" draggable={false} />
+        </Link>
       </div>
     </header>
   );
@@ -158,6 +157,7 @@ function App() {
         <Route path="/create" element={<Create />} />
         <Route path="/archive" element={<Archive />} />
         <Route path="/archive/blind-pick" element={<ArchiveBlindPick />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
