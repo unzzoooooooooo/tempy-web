@@ -37,9 +37,12 @@ function Header() {
           <Link to="/create">Create</Link>
           <Link to="/archive">Archive</Link>
         </nav>
-        <Link className="top-profile-button" to="/profile" aria-label="Go to My Profile">
-          <img src="/images/artist-04.png" alt="" draggable={false} />
-        </Link>
+        <div className="header-profile-actions">
+          <button className="header-logout-button" type="button">로그아웃</button>
+          <Link className="top-profile-button" to="/profile" aria-label="Go to My Profile">
+            <img src="/images/artist-04.png" alt="" draggable={false} />
+          </Link>
+        </div>
       </div>
     </header>
   );

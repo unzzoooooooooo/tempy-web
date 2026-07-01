@@ -230,6 +230,24 @@ header.header {
   gap: 16px;
 }
 
+.header-profile-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logout-button {
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  color: #fff1cf;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
 .top-profile-button {
   width: 38px;
   height: 38px;
@@ -2365,8 +2383,18 @@ body::-webkit-scrollbar:horizontal,
   letter-spacing: 0.1em;
 }
 
-.archive-page__year strong {
+.archive-page__year select {
+  min-width: 82px;
+  border: 0;
+  outline: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  color: #07142b;
+  background: transparent;
+  font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
   font-size: 25px;
+  font-weight: 800;
+  text-align: right;
 }
 
 .archive-page__calendar {
@@ -2504,9 +2532,29 @@ body::-webkit-scrollbar:horizontal,
   gap: clamp(18px, 3vw, 52px);
 }
 
+.archive-page__people--scroll {
+  display: flex;
+  gap: clamp(18px, 2.4vw, 42px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-left: 66px;
+  padding-bottom: 8px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.archive-page__people--scroll::-webkit-scrollbar {
+  display: none;
+}
+
 .archive-page__person {
   min-width: 0;
   text-align: center;
+}
+
+.archive-page__people--scroll .archive-page__person {
+  flex: 0 0 clamp(124px, 10.5vw, 166px);
 }
 
 .archive-page__person > div {
@@ -2562,12 +2610,23 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .archive-page__artists {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-left: 66px;
+  padding-bottom: 8px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.archive-page__artists::-webkit-scrollbar {
+  display: none;
 }
 
 .archive-page__artist {
+  flex: 0 0 clamp(210px, 19vw, 280px);
   border: 1px solid #07142b;
   background: #ffffff;
 }
@@ -5846,7 +5905,8 @@ body::-webkit-scrollbar:horizontal,
   letter-spacing: -0.028em;
 }
 
-.profile-hero__intro button,
+.profile-year-select,
+.profile-year-select select,
 .profile-hero__actions button,
 .profile-section-head a {
   border: 1px solid #07142b;
@@ -5858,21 +5918,38 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .profile-hero__intro-actions {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  position: relative;
 }
 
-.profile-hero__intro button {
-  min-width: 98px;
+.profile-year-select {
+  display: inline-grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 112px;
   height: 40px;
+  padding: 0 14px 0 18px;
   border-radius: 999px;
-  font-size: 13px;
+  background: transparent;
 }
 
-.profile-hero__intro-actions button:nth-child(2) {
-  min-width: 104px;
+.profile-year-select select {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  appearance: none;
+  -webkit-appearance: none;
   background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.profile-year-select span {
+  color: #07142b;
+  font-size: 12px;
+  pointer-events: none;
 }
 
 .profile-hero__identity {

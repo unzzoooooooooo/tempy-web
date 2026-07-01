@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CREATED_ITEMS_KEY = "tempyCreatedItems";
 const archiveDefaultTags = ["비", "버스", "성북구"];
@@ -93,6 +93,9 @@ function Archive() {
   const [createdItems, setCreatedItems] = useState(() => readCreatedItems());
   const [selectedCreatedId, setSelectedCreatedId] = useState(null);
   const [isEditingCreated, setIsEditingCreated] = useState(false);
+  const [selectedYear, setSelectedYear] = useState("2026");
+  const curatorScrollerRef = useRef(null);
+  const artistScrollerRef = useRef(null);
 
   useEffect(() => {
     const handleStorage = (event) => {
@@ -121,11 +124,16 @@ function Archive() {
   const tags = ["비 오는 저녁", "퇴근길", "새벽 감성", "서울", "혼자 걷기", "반복 재생"];
 
   const recommendedCurators = [
-    { image: "/images/profile-01.png", name: "만두두왕" },
-    { image: "/images/profile-02.png", name: "오늘은까눌레" },
-    { image: "/images/profile-03.png", name: "hostless" },
-    { image: "/images/profile-06.png", name: "waveclub" },
-    { image: "/images/profile-08.png", name: "nightloop" },
+    { image: "/images/profile-01.png", name: "만두두왕", match: "92%", note: "RAINY EVENING" },
+    { image: "/images/profile-02.png", name: "오늘은까눌레", match: "88%", note: "SOFT TEMPO" },
+    { image: "/images/profile-03.png", name: "hostless", match: "84%", note: "CITY WALK" },
+    { image: "/images/profile-06.png", name: "waveclub", match: "80%", note: "NIGHT LOOP" },
+    { image: "/images/profile-08.png", name: "nightloop", match: "76%", note: "LATE MOOD" },
+    { image: "/images/profile-04.png", name: "dawnzip", match: "72%", note: "DAWN ARCHIVE" },
+    { image: "/images/profile-05.png", name: "rainyroom", match: "69%", note: "RAIN CURATOR" },
+    { image: "/images/profile-07.png", name: "bluehour", match: "67%", note: "BLUE HOUR" },
+    { image: "/images/artist-04.png", name: "slowtempo", match: "64%", note: "SLOW TEMPO" },
+    { image: "/images/moment-05.png", name: "cloudtea", match: "61%", note: "CLOUD TEA" },
   ];
 
   const artists = [
@@ -133,6 +141,12 @@ function Archive() {
     { image: "/images/artist-05.png", name: "AKMU", count: "28 TIMES" },
     { image: "/images/artist-06.png", name: "Hanroro", count: "21 TIMES" },
     { image: "/images/artist-07.png", name: "Billie Eilish", count: "18 TIMES" },
+    { image: "/images/album-20.png", name: "Wave to Earth", count: "16 TIMES" },
+    { image: "/images/album-21.png", name: "HONNE", count: "15 TIMES" },
+    { image: "/images/album-22.png", name: "HYUKOH", count: "13 TIMES" },
+    { image: "/images/album-23.png", name: "The Marías", count: "12 TIMES" },
+    { image: "/images/album-24.png", name: "Men I Trust", count: "10 TIMES" },
+    { image: "/images/album-25.png", name: "Laufey", count: "9 TIMES" },
   ];
 
   const likedCurators = [
@@ -144,6 +158,25 @@ function Archive() {
   ];
 
   const selectedCreatedItem = createdItems.find((item) => item.id === selectedCreatedId) || null;
+
+  const scrollHorizontal = (scroller, event) => {
+    if (!scroller) return;
+
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (Math.abs(delta) < 2) return;
+
+    event.preventDefault();
+    const limitedDelta = Math.max(-140, Math.min(140, delta));
+    scroller.scrollBy({ left: limitedDelta * 0.9, behavior: "smooth" });
+  };
+
+  const handleCuratorWheel = (event) => {
+    scrollHorizontal(curatorScrollerRef.current, event);
+  };
+
+  const handleArtistWheel = (event) => {
+    scrollHorizontal(artistScrollerRef.current, event);
+  };
 
   const refreshCreatedItems = () => {
     setCreatedItems(readCreatedItems());
@@ -201,11 +234,16 @@ function Archive() {
             내가 어떤 시간에 어떤 음악을 들었는지<br />
             나만의 시간 기록으로 돌아보세요.
           </p>
-          <div className="archive-page__year" aria-label="Selected year">
+          <label className="archive-page__year" aria-label="Selected year">
             <span>YEAR</span>
-            <strong>2026</strong>
+            <select value={selectedYear} onChange={(event) => setSelectedYear(event.target.value)}>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+            </select>
             <span aria-hidden="true">⌄</span>
-          </div>
+          </label>
         </div>
 
         <div className="archive-page__calendar">
@@ -244,11 +282,15 @@ function Archive() {
           <span>02</span>
           <div><h2>Curators like you</h2><p>나와 가장 비슷한 시간과 취향을 가진 큐레이터</p></div>
         </div>
-        <div className="archive-page__people">
-          {recommendedCurators.map((curator, index) => (
+        <div
+          className="archive-page__people archive-page__people--scroll"
+          ref={curatorScrollerRef}
+          onWheel={handleCuratorWheel}
+        >
+          {recommendedCurators.map((curator) => (
             <article className="archive-page__person" key={curator.name}>
-              <div><img src={curator.image} alt={`${curator.name} profile`} /><span>{92 - index * 4}%</span></div>
-              <strong>{curator.name}</strong><small>SIMILAR CURATOR</small>
+              <div><img src={curator.image} alt={`${curator.name} profile`} /><span>{curator.match}</span></div>
+              <strong>{curator.name}</strong><small>{curator.note}</small>
             </article>
           ))}
         </div>
@@ -259,7 +301,11 @@ function Archive() {
           <span>03</span>
           <div><h2>Most played artists</h2><p>이번 달 가장 자주 찾은 아티스트</p></div>
         </div>
-        <div className="archive-page__artists">
+        <div
+          className="archive-page__artists"
+          ref={artistScrollerRef}
+          onWheel={handleArtistWheel}
+        >
           {artists.map((artist, index) => (
             <article className="archive-page__artist" key={artist.name}>
               <img src={artist.image} alt={artist.name} />
