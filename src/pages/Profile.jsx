@@ -69,7 +69,10 @@ function Profile() {
             내가 어떤 시간에 어떤 음악을 들었는지<br />
             나만의 시간 기록으로 돌아보세요
           </p>
-          <button type="button">2026</button>
+          <div className="profile-hero__intro-actions">
+            <button type="button">2026</button>
+            <button type="button">로그아웃</button>
+          </div>
         </div>
 
         <div className="profile-hero__identity">
