@@ -184,6 +184,10 @@ function ArtistPlaylistDetail() {
           {playlistTracks.map((track, index) => (
             <article
               className="artist-playlist-detail__item"
+              data-tempy-playable
+              data-tempy-title={track.title}
+              data-tempy-artist={track.artist}
+              data-tempy-cover={track.cover}
               key={`${track.title}-${index}`}
               style={{ "--artist-playlist-index": index }}
             >

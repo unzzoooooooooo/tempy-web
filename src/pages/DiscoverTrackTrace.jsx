@@ -51,7 +51,14 @@ function DiscoverTrackTrace() {
 
         <div className="track-trace-detail__track">
           {tracks.map((track, index) => (
-            <article className="track-trace-detail__card" key={track.title}>
+            <article
+              className="track-trace-detail__card"
+              data-tempy-playable
+              data-tempy-title={track.title}
+              data-tempy-artist={track.artist}
+              data-tempy-cover={track.image}
+              key={track.title}
+            >
               <div className="track-trace-detail__artwork">
                 <img src={track.image} alt={`${track.title} album cover`} />
                 <div className="track-trace-detail__artwork-meta">

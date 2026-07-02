@@ -102,6 +102,289 @@ button {
   height: 18px;
 }
 
+.global-player {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 200;
+  width: min(860px, calc(100vw - 80px));
+  height: 128px;
+  pointer-events: none;
+  color: #07142b;
+  transform: translate(-50%, 40px);
+  animation: global-player-in 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.global-player__card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 128px;
+  padding: 0;
+  overflow: visible;
+  border: 1px solid rgba(7, 20, 43, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 45px rgba(7, 20, 43, 0.1);
+  backdrop-filter: blur(18px);
+  pointer-events: auto;
+}
+
+.global-player__copy {
+  position: absolute;
+  left: 32px;
+  top: 50%;
+  z-index: 5;
+  width: min(38%, 318px);
+  min-width: 0;
+  transform: translateY(-50%);
+}
+
+.global-player__copy span {
+  display: block;
+  margin-bottom: 10px;
+  color: #2759ed;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.global-player__copy strong {
+  display: block;
+  overflow: hidden;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.global-player__copy p {
+  margin: 6px 0 0;
+  overflow: hidden;
+  color: rgba(7, 20, 43, 0.62);
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.global-player__vinyl-clip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -14px;
+  z-index: 2;
+  width: 100%;
+  height: 142px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.global-player__vinyl-wrap {
+  position: absolute;
+  left: 55%;
+  bottom: -148px;
+  width: 270px;
+  height: 270px;
+  opacity: 0;
+  transform: translateX(-50%);
+  translate: 0 0;
+  pointer-events: auto;
+  animation: global-vinyl-rise 560ms cubic-bezier(0.22, 0.8, 0.24, 1) forwards;
+  transition: translate 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.global-player__card:hover .global-player__vinyl-wrap {
+  translate: 0 -8px;
+}
+
+.global-player__vinyl {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(7, 20, 43, 0.72);
+  box-shadow: 0 18px 34px rgba(7, 20, 43, 0.14);
+  animation: global-vinyl-spin 12s linear infinite;
+  animation-play-state: paused;
+  transform-origin: 50% 50%;
+}
+
+.global-player--playing .global-player__vinyl {
+  animation-play-state: running;
+}
+
+.global-player__vinyl::before {
+  content: "";
+  position: absolute;
+  inset: -2%;
+  border-radius: inherit;
+  background: var(--global-player-cover) center / cover;
+  filter: blur(18px) saturate(1.25) brightness(0.82);
+  opacity: 0.72;
+  transform: scale(1.08);
+}
+
+.global-player__vinyl::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    repeating-radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0 1px, transparent 2px 9px),
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.62) 0 17%, rgba(255, 255, 255, 0.28) 24%, rgba(7, 20, 43, 0.3) 48%, rgba(7, 20, 43, 0.68) 100%);
+  opacity: 0.76;
+  pointer-events: none;
+}
+
+.global-player__vinyl-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: 86px;
+  height: 86px;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(7, 20, 43, 0.18);
+  transform: translate(-50%, -50%);
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 520ms ease;
+}
+
+.global-player__vinyl-center img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.global-player__vinyl-center::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #f3f4f0;
+  box-shadow: 0 0 0 1px rgba(7, 20, 43, 0.18);
+  transform: translate(-50%, -50%);
+}
+
+.global-player__controls {
+  position: absolute;
+  right: 88px;
+  top: 50%;
+  z-index: 6;
+  display: grid;
+  justify-items: end;
+  gap: 13px;
+  transform: translateY(-50%);
+}
+
+.global-player__controls time {
+  color: rgba(7, 20, 43, 0.64);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.global-player__toggle {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid #07142b;
+  border-radius: 50%;
+  color: #fff;
+  background: #07142b;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.global-player__close {
+  position: absolute;
+  right: 22px;
+  top: 20px;
+  z-index: 7;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid rgba(7, 20, 43, 0.14);
+  border-radius: 50%;
+  color: rgba(7, 20, 43, 0.68);
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+@keyframes global-player-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 40px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes global-vinyl-rise {
+  from {
+    bottom: -190px;
+    opacity: 0;
+  }
+  to {
+    bottom: -148px;
+    opacity: 1;
+  }
+}
+
+@keyframes global-vinyl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+[data-tempy-playable],
+.album-card,
+.now-page__selected,
+.now-page__queue-item,
+.artist-wide-card,
+.playlist-row,
+.leftnow-card,
+.track-trace-detail__card,
+.track-comment-detail__song,
+.track-detail-lower__song-card,
+.artist-profile__track-card,
+.artist-profile__release-card,
+.artist-profile__track-list li,
+.artist-playlist-detail__item,
+.lifestyle-playlist-detail__item,
+.profile-moment-card,
+.profile-playlist-card,
+.archive-blind-page__bar,
+.archive-created-track,
+.create-result-track {
+  cursor: pointer;
+}
+
+.album-card:hover,
+.now-page__queue-item:hover,
+.artist-wide-card:hover,
+.playlist-row:hover,
+.leftnow-card:hover,
+.track-detail-lower__song-card:hover,
+.profile-moment-card:hover,
+.profile-playlist-card:hover {
+  opacity: 0.96;
+}
+
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
   html,
   body,
@@ -236,7 +519,7 @@ header.header {
   gap: 10px;
 }
 
-.header-logout-button {
+.header-auth-button {
   height: 32px;
   padding: 0 16px;
   border: 1px solid rgba(255, 255, 255, 0.55);
@@ -246,6 +529,13 @@ header.header {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: -0.02em;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.header-auth-button:hover {
+  border-color: rgba(255, 48, 56, 0.78);
+  color: #ff3038;
+  background: rgba(255, 241, 207, 0.08);
 }
 
 .top-profile-button {
@@ -5859,6 +6149,241 @@ body::-webkit-scrollbar:horizontal,
   border-radius: 30px;
   font-size: 7px;
   font-weight: 700;
+}
+
+/* Login */
+.login-page,
+.login-success-page {
+  min-height: 100vh;
+  padding: 136px 24px 72px;
+  background:
+    linear-gradient(180deg, rgba(243, 244, 240, 0.96), rgba(251, 250, 245, 0.98)),
+    #f3f4f0;
+  color: #07142b;
+}
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: min(100%, 430px);
+  padding: 44px 38px 34px;
+  border: 1px solid rgba(7, 20, 43, 0.16);
+  background: #fbfaf5;
+}
+
+.login-brand {
+  display: grid;
+  justify-items: center;
+  gap: 13px;
+  text-align: center;
+}
+
+.login-brand img,
+.login-success-card img {
+  width: 128px;
+  height: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.login-brand p,
+.login-success-card p {
+  margin: 0;
+  color: rgba(7, 20, 43, 0.62);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.login-divider {
+  position: relative;
+  height: 34px;
+  margin: 27px 0 24px;
+}
+
+.login-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(7, 20, 43, 0.2);
+}
+
+.login-divider span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #ff3038;
+  transform: translate(-50%, -50%);
+}
+
+.login-form {
+  display: grid;
+  gap: 16px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.login-form label > span {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.login-form input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid rgba(7, 20, 43, 0.24);
+  border-radius: 0;
+  outline: none;
+  padding: 0 15px;
+  color: #07142b;
+  background: #ffffff;
+  font: 600 13px/1 "Pretendard", "Helvetica Neue", Arial, sans-serif;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.login-form input:focus {
+  border-color: #07142b;
+  background: #fff;
+}
+
+.login-password-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 58px;
+  border: 1px solid rgba(7, 20, 43, 0.24);
+  background: #ffffff;
+}
+
+.login-password-field:focus-within {
+  border-color: #07142b;
+}
+
+.login-password-field input {
+  border: 0;
+  background: transparent;
+}
+
+.login-password-field button {
+  color: rgba(7, 20, 43, 0.66);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.login-error {
+  margin: -3px 0 0;
+  color: #ff3038;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.login-submit {
+  height: 50px;
+  margin-top: 4px;
+  color: #fff;
+  background: #07142b;
+  font-size: 13px;
+  font-weight: 800;
+  transition: opacity 150ms ease, background 150ms ease;
+}
+
+.login-submit:disabled {
+  color: rgba(7, 20, 43, 0.42);
+  background: #e3e1da;
+}
+
+.login-helper {
+  display: flex;
+  margin-top: 22px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: rgba(7, 20, 43, 0.58);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.login-helper button {
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.login-helper span button {
+  color: #ff3038;
+}
+
+.login-success-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-success-orbit {
+  display: flex;
+  width: min(78vw, 620px);
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #d9e8ff;
+}
+
+.login-success-card {
+  display: grid;
+  width: min(82%, 390px);
+  min-height: 390px;
+  padding: 42px 34px;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  border: 1px solid rgba(7, 20, 43, 0.14);
+  background: #ffffff;
+  text-align: center;
+}
+
+.login-success-card h1 {
+  margin: 18px 0 0;
+  font-family: "GalgoVF", "Arial Narrow", sans-serif;
+  font-size: clamp(82px, 9vw, 126px);
+  font-weight: 400;
+  line-height: 0.76;
+}
+
+.login-success-card span {
+  max-width: 280px;
+  color: rgba(7, 20, 43, 0.64);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.login-success-card button {
+  min-width: 154px;
+  height: 44px;
+  margin-top: 10px;
+  border-radius: 999px;
+  color: #fff;
+  background: #07142b;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 /* My Profile */

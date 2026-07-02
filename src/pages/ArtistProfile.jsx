@@ -96,7 +96,14 @@ function ArtistProfile() {
         </div>
         <div className="artist-profile__track-flow">
           {featuredTracks.map((track, index) => (
-            <article className="artist-profile__track-card" key={track.title}>
+            <article
+              className="artist-profile__track-card"
+              data-tempy-playable
+              data-tempy-title={track.title}
+              data-tempy-artist="Taylor Swift"
+              data-tempy-cover={track.cover}
+              key={track.title}
+            >
               <img src={track.cover} alt="" />
               <div className="artist-profile__track-copy"><small>0{index + 1} · FEATURED TRACK</small><h3>{track.title}</h3><p>Taylor Swift</p></div>
               <div className="artist-profile__track-meta"><span>{track.time}<small>MOMENT</small></span><span>♥ {track.likes}</span><button type="button">PLAY ▶</button></div>
@@ -124,7 +131,14 @@ function ArtistProfile() {
       <section className="artist-profile__library">
         <article className="artist-profile__release">
           <div className="artist-profile__heading"><p className="artist-profile__label">NEW FROM TAYLOR</p><h2>Latest Release</h2></div>
-          <div className="artist-profile__release-card">
+          <div
+            className="artist-profile__release-card"
+            data-tempy-playable
+            data-tempy-title="The Life of A Showgirl"
+            data-tempy-artist="Taylor Swift"
+            data-tempy-cover="/images/album-31.png"
+            data-tempy-duration="41:06"
+          >
             <img src="/images/album-31.png" alt="The Life of A Showgirl" />
             <div><small>ALBUM · 2025</small><h3>The Life of<br />A Showgirl</h3><p>12 Songs · 41 min 06 sec</p><button type="button">PLAY ALBUM <span>▶</span></button></div>
           </div>
@@ -134,7 +148,7 @@ function ArtistProfile() {
           <div className="artist-profile__heading"><p className="artist-profile__label">LISTENER ARCHIVE</p><h2>Most Left Tracks</h2></div>
           <div className="artist-profile__filters"><button type="button">ALL</button><button type="button">NIGHT</button><button type="button">LOVE</button><button type="button">MEMORY</button></div>
           <ol className="artist-profile__track-list">
-            {leftTracks.map((track) => <li key={track.number}><span>{track.number}</span><strong>{track.title}<small>Taylor Swift</small></strong><time>{track.time}</time><span>♥ {track.likes}</span><button type="button">▶</button></li>)}
+            {leftTracks.map((track) => <li data-tempy-playable data-tempy-title={track.title} data-tempy-artist="Taylor Swift" data-tempy-cover="/images/album-21.png" key={track.number}><span>{track.number}</span><strong>{track.title}<small>Taylor Swift</small></strong><time>{track.time}</time><span>♥ {track.likes}</span><button type="button">▶</button></li>)}
           </ol>
         </article>
       </section>
@@ -152,7 +166,7 @@ function ArtistProfile() {
 
               return (
                 <div className={`artist-profile__ranking-accordion${isExpanded ? " artist-profile__ranking-accordion--open" : ""}`} key={track.title}>
-                  <article className="artist-profile__ranking-row">
+                  <article className="artist-profile__ranking-row" data-tempy-playable data-tempy-title={track.title} data-tempy-artist="Taylor Swift" data-tempy-cover={track.cover}>
                     <span>0{index + 1}</span>
                     <img src={track.cover} alt="" />
                     <strong>{track.title}<small>Taylor Swift</small></strong>

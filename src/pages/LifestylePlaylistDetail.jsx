@@ -168,7 +168,14 @@ function LifestylePlaylistDetail() {
           style={{ transform: `translateX(${-translateX}px)` }}
         >
           {playlistTracks.map((track, index) => (
-            <article className="lifestyle-playlist-detail__item" key={`${track.title}-${index}`}>
+            <article
+              className="lifestyle-playlist-detail__item"
+              data-tempy-playable
+              data-tempy-title={track.title}
+              data-tempy-artist={track.artist}
+              data-tempy-cover={track.cover}
+              key={`${track.title}-${index}`}
+            >
               <span className="lifestyle-playlist-detail__number">{String(index + 1).padStart(2, "0")}</span>
               <div className="lifestyle-playlist-detail__lp">
                 <span className="lifestyle-playlist-detail__groove lifestyle-playlist-detail__groove--outer" />

@@ -128,7 +128,16 @@ function Home() {
           </div>
           <div className="album-row">
             {tempoAlbums.map((album, index) => (
-              <article className="album-card" key={`${album.id}-${index}`}>
+              <article
+                className="album-card"
+                data-tempy-playable
+                data-tempy-id={album.id}
+                data-tempy-title={album.title}
+                data-tempy-artist={album.artist}
+                data-tempy-cover={album.cover || album.image}
+                data-tempy-duration={album.duration}
+                key={`${album.id}-${index}`}
+              >
                 <div className="album-image-wrap">
                   <img className="album-image" src={album.cover || album.image} alt={`${album.title} album cover`} />
                 </div>
@@ -176,7 +185,15 @@ function Home() {
           </div>
           <div className="artist-row">
             {artistCards.map((artist, index) => (
-              <article className="artist-card artist-wide-card" key={`${artist.name}-${index}`}>
+              <article
+                className="artist-card artist-wide-card"
+                data-tempy-playable
+                data-tempy-title={artist.title}
+                data-tempy-artist={artist.name}
+                data-tempy-cover={artist.image}
+                data-tempy-duration="21:03"
+                key={`${artist.name}-${index}`}
+              >
                 <img className="artist-art" src={artist.image} alt={`${artist.name} artist moment`} />
                 <div className="artist-copy" style={{ backgroundImage: `url(${artist.image})` }}>
                   <strong>{artist.title}</strong>
@@ -201,7 +218,14 @@ function Home() {
           </div>
           <div className="playlist-grid">
             {playlistItems.map((item, index) => (
-              <article className="playlist-row" key={`${item.title}-${index}`}>
+              <article
+                className="playlist-row"
+                data-tempy-playable
+                data-tempy-title={item.title}
+                data-tempy-artist={item.artist}
+                data-tempy-cover={item.image || "/images/album-10.png"}
+                key={`${item.title}-${index}`}
+              >
                 {item.image ? (
                   <img src={item.image} alt="playlist cover" />
                 ) : (
@@ -224,7 +248,14 @@ function Home() {
           </div>
           <div className="leftnow-row">
             {moments.map((image, index) => (
-              <article className="leftnow-card" key={`${image}-${index}`}>
+              <article
+                className="leftnow-card"
+                data-tempy-playable
+                data-tempy-title="비 오는 날 퇴근길에 한 곡"
+                data-tempy-artist="hostless"
+                data-tempy-cover={image}
+                key={`${image}-${index}`}
+              >
                 <div className="leftnow-text">
                   <strong>비 오는 날 퇴근길에 한 곡</strong>
                   <span>{context.weatherLabel} · {context.temperature} · {context.currentTime}</span>

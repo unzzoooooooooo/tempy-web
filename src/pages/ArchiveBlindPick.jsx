@@ -422,6 +422,10 @@ function ArchiveBlindPick() {
                 <span className="archive-blind-page__bar-shell">
                   <span
                     className="archive-blind-page__bar"
+                    data-tempy-playable
+                    data-tempy-title={item.title}
+                    data-tempy-artist={item.artist}
+                    data-tempy-cover={item.cover}
                     data-render-index={item.renderIndex}
                     ref={(node) => {
                       barRefs.current[item.renderIndex] = node;

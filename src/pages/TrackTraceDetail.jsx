@@ -54,7 +54,13 @@ function TrackTraceDetail() {
 
   return (
     <main className="track-comment-detail">
-      <aside className="track-comment-detail__song">
+      <aside
+        className="track-comment-detail__song"
+        data-tempy-playable
+        data-tempy-title="BIRDS OF A FEATHER"
+        data-tempy-artist="Billie Eilish"
+        data-tempy-cover="/images/album-19.png"
+      >
         <button className="track-comment-detail__back" type="button" aria-label="Track Trace로 돌아가기" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
           <span>BACK TO TRACK TRACE</span>
@@ -216,7 +222,14 @@ function TrackTraceDetail() {
 
           <div className="track-detail-lower__song-grid">
             {similarSongs.map((song, index) => (
-              <article className="track-detail-lower__song-card" key={song.title}>
+              <article
+                className="track-detail-lower__song-card"
+                data-tempy-playable
+                data-tempy-title={song.title}
+                data-tempy-artist={song.artist}
+                data-tempy-cover={song.image}
+                key={song.title}
+              >
                 <div className="track-detail-lower__song-artwork">
                   <img src={song.image} alt={`${song.title} album cover`} />
                   <span>0{index + 1}</span>

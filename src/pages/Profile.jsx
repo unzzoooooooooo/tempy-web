@@ -126,7 +126,14 @@ function Profile() {
 
         <div className="profile-moment-grid">
           {momentCards.map((card, index) => (
-            <article className="profile-moment-card" key={card.title}>
+            <article
+              className="profile-moment-card"
+              data-tempy-playable
+              data-tempy-title={card.track}
+              data-tempy-artist={card.artist}
+              data-tempy-cover={card.image}
+              key={card.title}
+            >
               <div className="profile-moment-card__top">
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <button type="button" aria-label={`${card.title} 좋아요`}>♡</button>
@@ -157,7 +164,15 @@ function Profile() {
 
         <div className="profile-playlist-row">
           {playlists.map((playlist, index) => (
-            <article className="profile-playlist-card" key={playlist.title}>
+            <article
+              className="profile-playlist-card"
+              data-tempy-playable
+              data-tempy-title={playlist.title}
+              data-tempy-artist="만찐두빵"
+              data-tempy-cover={playlist.image}
+              data-tempy-duration={playlist.time}
+              key={playlist.title}
+            >
               <div className="profile-playlist-card__lp">
                 <span />
                 <span />

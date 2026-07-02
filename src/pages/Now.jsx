@@ -24,7 +24,15 @@ function Now() {
       </section>
 
       <section className="now-page__content" aria-label="Now Clock music">
-        <article className="now-page__selected">
+        <article
+          className="now-page__selected"
+          data-tempy-playable
+          data-tempy-id={selectedTrack.id}
+          data-tempy-title={selectedTrack.title}
+          data-tempy-artist={selectedTrack.artist}
+          data-tempy-cover={selectedTrack.cover || selectedTrack.image}
+          data-tempy-duration={selectedTrack.duration}
+        >
           <div className="now-page__card-heading">
             <div>
               <span>SELECTED NOW</span>
@@ -69,7 +77,16 @@ function Now() {
 
           <div className="now-page__queue-list">
             {queue.map((track, index) => (
-              <div className="now-page__queue-item" key={track.id}>
+              <div
+                className="now-page__queue-item"
+                data-tempy-playable
+                data-tempy-id={track.id}
+                data-tempy-title={track.title}
+                data-tempy-artist={track.artist}
+                data-tempy-cover={track.cover || track.image}
+                data-tempy-duration={track.duration}
+                key={track.id}
+              >
                 <span className="now-page__queue-number">{String(index + 2).padStart(2, "0")}</span>
                 <img src={track.cover || track.image} alt={`${track.title} album cover`} />
                 <div className="now-page__queue-copy">
