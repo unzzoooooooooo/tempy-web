@@ -9739,3 +9739,108 @@ body::-webkit-scrollbar:horizontal,
     padding: 70px 38px;
   }
 }
+
+@media (min-width: 1920px) and (min-height: 1000px) {
+  /* iMac 27inch fullscreen only */
+  .hero-section {
+    height: clamp(900px, 88vh, 980px);
+    min-height: 0;
+  }
+
+  .hero-inner {
+    max-width: 1680px;
+    margin: 0 auto;
+  }
+
+  .lp-large {
+    right: clamp(132px, 9vw, 184px);
+    top: clamp(128px, 10vh, 154px);
+    width: clamp(860px, 45vw, 980px);
+    height: clamp(860px, 45vw, 980px);
+  }
+
+  .hero-visual::after {
+    right: calc(clamp(132px, 9vw, 184px) + (clamp(860px, 45vw, 980px) / 2) - 9px);
+    top: calc(clamp(128px, 10vh, 154px) + (clamp(860px, 45vw, 980px) / 2) - 9px);
+  }
+
+  .hero-bar {
+    top: clamp(700px, 67vh, 724px);
+  }
+
+  .hero-section::after {
+    top: calc(clamp(700px, 67vh, 724px) + 104px);
+  }
+
+  .section,
+  .now-page__intro,
+  .now-page__content,
+  .discover-page__intro,
+  .discover-page__cards,
+  .archive-page__hero,
+  .archive-page__section,
+  .archive-page__footer,
+  .profile-hero,
+  .profile-tags-section,
+  .profile-moment-section,
+  .profile-playlist-section,
+  .profile-footer {
+    max-width: 1680px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .now-page__selected,
+  .now-page__queue {
+    min-height: clamp(540px, 42vh, 610px);
+  }
+
+  .discover-page__visual {
+    height: clamp(330px, 22vw, 430px);
+  }
+
+  .discover-page__card {
+    min-height: clamp(330px, 20vw, 380px);
+  }
+
+  .archive-page__hero {
+    min-height: clamp(640px, 62vh, 720px);
+  }
+
+  .profile-hero {
+    min-height: clamp(420px, 26vw, 480px);
+  }
+
+  .profile-sentence-card,
+  .profile-tag-orbits {
+    min-height: clamp(240px, 15vw, 260px);
+  }
+
+  .profile-moment-card {
+    min-height: clamp(260px, 16vw, 286px);
+  }
+
+  .curator-page {
+    height: clamp(820px, 86vh, 980px);
+  }
+
+  .curator-page__intro {
+    max-width: 1680px;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .curator-page__gallery {
+    padding-top: clamp(140px, 12vh, 168px);
+    padding-left: max(4.2vw, calc((100vw - 1680px) / 2 + 4.2vw));
+  }
+
+  .curator-page__item {
+    width: clamp(430px, 32vw, 660px);
+  }
+
+  .curator-page__record {
+    width: min(100%, clamp(430px, 42vh, 540px));
+  }
+}
