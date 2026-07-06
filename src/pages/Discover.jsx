@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 function Discover() {
   return (
     <main className="discover-page">
-      <section className="discover-page__intro">
-        <p className="discover-page__eyebrow">DISCOVER</p>
-        <h1 className="discover-page__title">Discover Time</h1>
-        <p className="discover-page__description">
+      <section className="discover-page__intro page-intro">
+        <p className="discover-page__eyebrow page-kicker">DISCOVER</p>
+        <h1 className="discover-page__title page-title">Discover Time</h1>
+        <p className="discover-page__description page-description">
           같은 순간의 다른 노래, 같은 노래에 남은 서로 다른 순간을 발견해보세요.
         </p>
       </section>

@@ -190,10 +190,10 @@ function Curator() {
 
   return (
     <main className="curator-page">
-      <section className="curator-page__intro">
-        <p className="curator-page__eyebrow">CURATOR</p>
-        <h1 className="curator-page__title">Moment Curator</h1>
-        <p className="curator-page__description">
+      <section className="curator-page__intro page-intro">
+        <p className="curator-page__eyebrow page-kicker">CURATOR</p>
+        <h1 className="curator-page__title page-title">Moment Curator</h1>
+        <p className="curator-page__description page-description">
           저마다의 시간과 취향을 음악으로 기록하는 큐레이터를 만나보세요.
         </p>
       </section>

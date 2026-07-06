@@ -227,10 +227,10 @@ function Archive() {
   return (
     <main className="archive-page">
       <section className="archive-page__hero">
-        <div className="archive-page__intro">
-          <p className="archive-page__eyebrow">MY MUSIC ARCHIVE</p>
-          <h1 className="archive-page__title">Archive<br />your time</h1>
-          <p className="archive-page__description">
+        <div className="archive-page__intro page-intro">
+          <p className="archive-page__eyebrow page-kicker">MY MUSIC ARCHIVE</p>
+          <h1 className="archive-page__title page-title">Archive your time</h1>
+          <p className="archive-page__description page-description">
             내가 어떤 시간에 어떤 음악을 들었는지<br />
             나만의 시간 기록으로 돌아보세요.
           </p>

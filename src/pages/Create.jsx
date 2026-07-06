@@ -182,7 +182,7 @@ function Create() {
           position: relative !important;
           display: flex !important;
           min-height: 100vh !important;
-          padding: 166px 54px 80px 62px !important;
+          padding: 166px 5.2vw 80px !important;
           flex-direction: column !important;
           justify-content: center !important;
           align-items: flex-start !important;
@@ -190,28 +190,39 @@ function Create() {
           border-right: 0 !important;
         }
 
+        .create-start-page .create-start-kicker {
+          display: block !important;
+          margin: 0 0 12px !important;
+          color: var(--tempy-blue) !important;
+          font-size: 13px !important;
+          line-height: 1.2 !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.16em !important;
+          text-transform: uppercase !important;
+        }
+
         .create-start-page .create-start-intro h1,
         .create-detail-page .create-detail-side h1 {
           max-width: 420px !important;
-          margin: 0 !important;
+          margin: 0 0 10px !important;
           color: var(--tempy-navy) !important;
           font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
-          font-size: clamp(72px, 5.3vw, 108px) !important;
-          line-height: 0.82 !important;
+          font-size: clamp(76px, 7vw, 124px) !important;
+          line-height: 0.9 !important;
           font-weight: 400 !important;
-          letter-spacing: -0.035em !important;
+          letter-spacing: 0.004em !important;
           text-align: left !important;
         }
 
         .create-start-page .create-start-intro p,
         .create-detail-page .create-detail-side p {
-          max-width: 340px !important;
-          margin: 34px 0 0 !important;
+          max-width: 660px !important;
+          margin: 0 !important;
           color: var(--tempy-navy) !important;
-          font-size: clamp(20px, 1.45vw, 26px) !important;
+          font-size: 18px !important;
           line-height: 1.55 !important;
-          font-weight: 850 !important;
-          letter-spacing: -0.052em !important;
+          font-weight: 600 !important;
+          letter-spacing: 0 !important;
           word-break: keep-all !important;
           text-align: left !important;
         }
@@ -888,9 +899,10 @@ function CreateChoice({ onSelect }) {
   return (
     <main className="create-start-page">
       <section className="create-start-shell">
-        <aside className="create-start-intro">
-          <h1>Create Moment</h1>
-          <p>
+        <aside className="create-start-intro page-intro">
+          <span className="create-start-kicker page-kicker">CREATE</span>
+          <h1 className="page-title">Create Moment</h1>
+          <p className="page-description">
             지금 듣는 노래와 나의 순간을<br />
             나만의 방식으로 남겨 보세요.
           </p>

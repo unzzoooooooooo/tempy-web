@@ -8,10 +8,10 @@ function Now() {
 
   return (
     <main className="now-page">
-      <section className="now-page__intro">
-        <p className="now-page__eyebrow">LIVE MOMENT</p>
-        <h1 className="now-page__title">Now Clock</h1>
-        <p className="now-page__description">
+      <section className="now-page__intro page-intro">
+        <p className="now-page__eyebrow page-kicker">LIVE MOMENT</p>
+        <h1 className="now-page__title page-title">Now Clock</h1>
+        <p className="now-page__description page-description">
           지금 이 시간, 같은 날씨와 위치에서 사람들이 듣고 있는 음악을 만나보세요.
         </p>
         <div className="now-page__tags" aria-label="시간, 위치, 날씨 기반 추천 정보">
