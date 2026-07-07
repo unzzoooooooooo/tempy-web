@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { useContextRecommendations } from "../utils/context";
+import { saveReturnLocation } from "../utils/returnLocation";
 
 const heroLogoPaths = [
   "M19.0581 16.7783H0V0H56.8717V16.7783H38.1162V174.12H19.0581V16.7783Z",
@@ -15,6 +16,16 @@ function Home() {
   const { context, tracks: tempoTracks } = useContextRecommendations(10);
   const tempoAlbums = tempoTracks.slice(0, 10);
   const heroLogoFrame = useRef(null);
+
+  const scrollToHomeSection = (sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo({ top: target.offsetTop, behavior: "auto" });
+    document.documentElement.style.scrollBehavior = previousScrollBehavior;
+  };
 
   const handleHeroLogoMove = (event) => {
     const target = event.currentTarget;
@@ -224,7 +235,7 @@ function Home() {
               <div className="discover-copy">
                 <h3>Time Set</h3>
                 <span>같은 순간 · 날씨 · 위치 안에서 다른 사람들이 선택한 음악을<br />감상해보세요</span>
-                <button className="small-button">같은 순간의 노래 듣기</button>
+                <Link className="small-button" to="/discover/time-set" onClick={saveReturnLocation}>같은 순간의 노래 듣기</Link>
               </div>
               <div className="discover-art blue"><span></span></div>
             </article>
@@ -232,7 +243,7 @@ function Home() {
               <div className="discover-copy">
                 <h3>Track Trace</h3>
                 <span>하나의 노래가 다른 사람에게 어떤 시간과 장면으로 남았는지<br />따라가보세요</span>
-                <button className="small-button">같은 노래의 순간 보기</button>
+                <Link className="small-button" to="/discover/track-trace" onClick={saveReturnLocation}>같은 노래의 순간 보기</Link>
               </div>
               <div className="discover-art red"><span></span></div>
             </article>
@@ -398,9 +409,9 @@ function Home() {
       <footer className="footer">
         <div className="footer-brand">Tempy!</div>
         <div className="footer-nav">
-          <a href="#tempo">TIME SET</a>
-          <a href="#discover">TRACK TRACE</a>
-          <a href="#archive">ARCHIVE</a>
+          <button type="button" onClick={() => scrollToHomeSection("tempo")}>TIME SET</button>
+          <button type="button" onClick={() => scrollToHomeSection("discover")}>TRACK TRACE</button>
+          <button type="button" onClick={() => scrollToHomeSection("archive")}>ARCHIVE</button>
         </div>
       </footer>
     </>

@@ -1,32 +1,87 @@
 import { Link, useNavigate } from "react-router-dom";
+import { consumeReturnLocation, setPendingScrollRestore } from "../utils/returnLocation";
 
 function DiscoverTrackTrace() {
   const navigate = useNavigate();
   const tracks = [
     {
-      image: "/images/album-19.png",
+      image: "/images/album-01.png",
       title: "BIRDS OF A FEATHER",
       artist: "Billie Eilish",
       comments: 128,
     },
     {
-      image: "/images/album-20.png",
+      image: "/images/album-02.png",
       title: "Confetti Dream",
       artist: "HONNE",
       comments: 84,
     },
     {
-      image: "/images/album-21.png",
+      image: "/images/album-03.png",
       title: "Upside Mood",
       artist: "Ariana Grande",
       comments: 56,
     },
+    {
+      image: "/images/album-04.png",
+      title: "Traveler",
+      artist: "Wave Club",
+      comments: 73,
+    },
+    {
+      image: "/images/album-05.png",
+      title: "Night Walk",
+      artist: "HYUKOH",
+      comments: 92,
+    },
+    {
+      image: "/images/album-06.png",
+      title: "The Fate of Ophelia",
+      artist: "Taylor Swift",
+      comments: 141,
+    },
+    {
+      image: "/images/album-07.png",
+      title: "Coffee at Dawn",
+      artist: "beabadoobee",
+      comments: 67,
+    },
+    {
+      image: "/images/album-08.png",
+      title: "Puppet Show",
+      artist: "XG",
+      comments: 88,
+    },
+    {
+      image: "/images/album-09.png",
+      title: "City Light",
+      artist: "ADOY",
+      comments: 61,
+    },
+    {
+      image: "/images/album-10.png",
+      title: "Late Blue",
+      artist: "Night Loop",
+      comments: 49,
+    },
   ];
+
+  const handleBackToDiscover = () => {
+    const returnLocation = consumeReturnLocation();
+
+    if (!returnLocation) {
+      navigate(-1);
+      return;
+    }
+
+    setPendingScrollRestore(returnLocation.scrollY);
+    navigate(`${returnLocation.pathname}${returnLocation.search}`, { replace: true });
+  };
 
   return (
     <main className="track-trace-detail">
       <section className="track-trace-detail__intro">
-        <button className="track-trace-detail__back" type="button" aria-label="Discover로 돌아가기" onClick={() => navigate(-1)}>
+        <button className="track-trace-detail__back" type="button" aria-label="Discover로 돌아가기" onClick={handleBackToDiscover}>
           <span aria-hidden="true">←</span>
           <span>BACK TO DISCOVER</span>
         </button>
@@ -46,7 +101,7 @@ function DiscoverTrackTrace() {
       <section className="track-trace-detail__gallery" aria-label="Track Trace albums">
         <div className="track-trace-detail__gallery-heading">
           <span>TRACK ARCHIVE</span>
-          <span>03 TRACKS</span>
+          <span>10 TRACKS</span>
         </div>
 
         <div className="track-trace-detail__track">
@@ -67,7 +122,7 @@ function DiscoverTrackTrace() {
                   </button>
                   <span>COMMENTS {track.comments}</span>
                 </div>
-                <span className="track-trace-detail__number">0{index + 1}</span>
+                <span className="track-trace-detail__number">{String(index + 1).padStart(2, "0")}</span>
               </div>
 
               <div className="track-trace-detail__card-info">

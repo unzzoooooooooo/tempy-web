@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import logoNav from "./assets/Tempy!_logo_nav.svg";
 import Home from "./pages/Home";
@@ -21,6 +21,7 @@ import Archive from "./pages/Archive";
 import ArchiveBlindPick from "./pages/ArchiveBlindPick";
 import Profile from "./pages/Profile";
 import Login, { LoginSuccess } from "./pages/Login";
+import { consumePendingScrollRestore } from "./utils/returnLocation";
 
 const AUTH_STORAGE_KEY = "isLoggedIn";
 
@@ -89,6 +90,22 @@ function Header() {
       </div>
     </header>
   );
+}
+
+function ReturnScrollRestorer() {
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    const scrollY = consumePendingScrollRestore();
+    if (scrollY === null) return;
+
+    const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo({ top: scrollY, behavior: "auto" });
+    document.documentElement.style.scrollBehavior = previousScrollBehavior;
+  }, [location.pathname, location.search]);
+
+  return null;
 }
 
 function TempyCursor() {
@@ -421,6 +438,7 @@ function App() {
   return (
     <div className="app">
       <TempyCursor />
+      <ReturnScrollRestorer />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

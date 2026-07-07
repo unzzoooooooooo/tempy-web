@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { saveReturnLocation } from "../utils/returnLocation";
 
 function Discover() {
   return (
@@ -22,7 +23,7 @@ function Discover() {
         </section>
 
         <section className="discover-page__cards" aria-label="Discover modes">
-          <Link className="discover-page__card" to="/discover/time-set">
+          <Link className="discover-page__card" to="/discover/time-set" onClick={saveReturnLocation}>
             <div className="discover-page__card-topline">
               <span>01</span>
               <span>SAME TIME · DIFFERENT SONGS</span>
@@ -40,7 +41,7 @@ function Discover() {
             </div>
           </Link>
 
-          <Link className="discover-page__card" to="/discover/track-trace">
+          <Link className="discover-page__card" to="/discover/track-trace" onClick={saveReturnLocation}>
             <div className="discover-page__card-topline">
               <span>02</span>
               <span>SAME SONG · DIFFERENT MOMENTS</span>

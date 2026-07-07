@@ -158,7 +158,8 @@ function Create() {
           --tempy-paper: #f3f4f0;
           --tempy-white: #ffffff;
           --tempy-line: rgba(7, 20, 43, 0.12);
-          min-height: 100vh !important;
+          height: 100vh !important;
+          min-height: 0 !important;
           width: 100% !important;
           margin: 0 !important;
           padding: 0 !important;
@@ -172,7 +173,8 @@ function Create() {
         .create-detail-page .create-detail-shell {
           display: grid !important;
           width: 100% !important;
-          min-height: 100vh !important;
+          height: 100vh !important;
+          min-height: 0 !important;
           grid-template-columns: minmax(360px, 28vw) minmax(0, 1fr) !important;
           background: var(--tempy-paper) !important;
         }
@@ -181,8 +183,9 @@ function Create() {
         .create-detail-page .create-detail-side {
           position: relative !important;
           display: flex !important;
-          min-height: 100vh !important;
-          padding: 166px 5.2vw 80px !important;
+          height: 100vh !important;
+          min-height: 0 !important;
+          padding: 136px 5.2vw 58px !important;
           flex-direction: column !important;
           justify-content: center !important;
           align-items: flex-start !important;
@@ -230,8 +233,9 @@ function Create() {
         .create-start-page .create-start-options {
           position: relative !important;
           display: grid !important;
-          min-height: 100vh !important;
-          padding: 216px 78px 120px 120px !important;
+          height: 100vh !important;
+          min-height: 0 !important;
+          padding: 154px 70px 66px 108px !important;
           grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           gap: 38px !important;
           align-items: center !important;
@@ -242,8 +246,8 @@ function Create() {
           position: relative !important;
           display: flex !important;
           width: 100% !important;
-          min-height: clamp(500px, 38vw, 650px) !important;
-          padding: clamp(105px, 10vw, 170px) clamp(54px, 4.3vw, 78px) !important;
+          min-height: clamp(420px, 33vw, 540px) !important;
+          padding: clamp(76px, 7vw, 116px) clamp(46px, 4vw, 70px) !important;
           flex-direction: column !important;
           justify-content: center !important;
           align-items: flex-start !important;
@@ -299,7 +303,7 @@ function Create() {
 
         .create-detail-page .create-detail-back {
           position: absolute !important;
-          top: 120px !important;
+          top: 104px !important;
           left: 80px !important;
           display: grid !important;
           width: 48px !important;
@@ -325,8 +329,9 @@ function Create() {
         .create-detail-page .create-detail-workspace {
           position: relative !important;
           display: flex !important;
-          min-height: 100vh !important;
-          padding: 128px 72px 120px 78px !important;
+          height: 100vh !important;
+          min-height: 0 !important;
+          padding: 108px 64px 74px 72px !important;
           flex-direction: column !important;
           background: var(--tempy-soft-blue) !important;
           overflow: hidden !important;
@@ -352,7 +357,7 @@ function Create() {
           position: relative !important;
           z-index: 1 !important;
           display: flex !important;
-          min-height: calc(100vh - 254px) !important;
+          min-height: 0 !important;
           flex-direction: column !important;
         }
 
@@ -383,7 +388,7 @@ function Create() {
 
         .create-detail-page .create-detail-grid {
           display: grid !important;
-          margin-top: 48px !important;
+          margin-top: 30px !important;
           grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
           gap: 22px !important;
           align-items: stretch !important;
@@ -396,8 +401,8 @@ function Create() {
         .create-detail-page .create-detail-card {
           position: relative !important;
           display: flex !important;
-          min-height: 370px !important;
-          padding: 32px !important;
+          min-height: 330px !important;
+          padding: 26px !important;
           flex-direction: column !important;
           background: var(--tempy-cream) !important;
           color: var(--tempy-navy) !important;
@@ -428,7 +433,7 @@ function Create() {
         }
 
         .create-detail-page .create-detail-card h3 {
-          margin: 10px 0 28px !important;
+          margin: 6px 0 20px !important;
           color: var(--tempy-navy) !important;
           font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
           font-size: clamp(34px, 2.45vw, 48px) !important;
@@ -442,7 +447,7 @@ function Create() {
           display: grid !important;
           width: 100% !important;
           aspect-ratio: 1 / 1 !important;
-          min-height: 190px !important;
+          min-height: 160px !important;
           place-items: center !important;
           border: 1px solid rgba(7, 20, 43, 0.14) !important;
           background:
@@ -518,7 +523,7 @@ function Create() {
 
         .create-detail-page .create-detail-field {
           display: flex !important;
-          margin-bottom: 20px !important;
+          margin-bottom: 16px !important;
           flex-direction: column !important;
           gap: 8px !important;
         }
@@ -557,7 +562,7 @@ function Create() {
         }
 
         .create-detail-page .create-detail-field textarea {
-          min-height: 150px !important;
+          min-height: 120px !important;
           padding: 14px 15px !important;
           resize: none !important;
           background:
@@ -616,7 +621,7 @@ function Create() {
 
         .create-detail-page .create-detail-stamps {
           margin-top: auto !important;
-          padding-top: 28px !important;
+          padding-top: 18px !important;
         }
 
         .create-detail-page .create-detail-track-list {
@@ -683,7 +688,7 @@ function Create() {
           z-index: 1 !important;
           display: flex !important;
           margin-top: auto !important;
-          padding-top: 44px !important;
+          padding-top: 26px !important;
           justify-content: flex-end !important;
           gap: 12px !important;
         }
@@ -704,14 +709,14 @@ function Create() {
         .create-result-preview {
           display: grid !important;
           width: min(760px, 100%) !important;
-          margin-top: 48px !important;
+          margin-top: 30px !important;
           grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.1fr) !important;
           background: var(--tempy-cream) !important;
         }
 
         .create-result-cover {
           display: grid !important;
-          min-height: 380px !important;
+          min-height: 320px !important;
           place-items: center !important;
           border-right: 1px solid rgba(7, 20, 43, 0.1) !important;
           background:

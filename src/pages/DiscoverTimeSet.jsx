@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { consumeReturnLocation, setPendingScrollRestore } from "../utils/returnLocation";
 
 const timeSetRecords = [
   {
@@ -63,10 +64,22 @@ function DiscoverTimeSet() {
     return "hidden";
   };
 
+  const handleBackToDiscover = () => {
+    const returnLocation = consumeReturnLocation();
+
+    if (!returnLocation) {
+      navigate(-1);
+      return;
+    }
+
+    setPendingScrollRestore(returnLocation.scrollY);
+    navigate(`${returnLocation.pathname}${returnLocation.search}`, { replace: true });
+  };
+
   return (
     <main className="time-set-detail">
       <section className="time-set-detail__intro">
-        <button className="time-set-detail__back" type="button" aria-label="Discover로 돌아가기" onClick={() => navigate(-1)}>
+        <button className="time-set-detail__back" type="button" aria-label="Discover로 돌아가기" onClick={handleBackToDiscover}>
           <span aria-hidden="true">←</span>
           <span>BACK TO DISCOVER</span>
         </button>
