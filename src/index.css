@@ -662,7 +662,7 @@ header.header {
 .lp-large {
   position: absolute;
   right: clamp(132px, 8.4vw, 164px);
-  top: 154px;
+  top: 72px;
   z-index: 2;
   width: clamp(820px, 54vw, 1038px);
   height: clamp(820px, 54vw, 1038px);
@@ -670,6 +670,8 @@ header.header {
   display: grid;
   place-items: center;
   background: #759bdd;
+  animation: hero-lp-rise 1.9s cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+  will-change: transform, opacity;
 }
 
 .lp-center {
@@ -696,13 +698,15 @@ header.header {
   content: "";
   position: absolute;
   right: calc(clamp(132px, 8.4vw, 164px) + (clamp(820px, 54vw, 1038px) / 2) - 9px);
-  top: calc(154px + (clamp(820px, 54vw, 1038px) / 2) - 9px);
+  top: calc(72px + (clamp(820px, 54vw, 1038px) / 2) - 9px);
   z-index: 9;
   width: 18px;
   height: 18px;
   border-radius: 50%;
   background: #07142b;
   pointer-events: none;
+  animation: hero-lp-rise 1.9s cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+  will-change: transform, opacity;
 }
 
 .hero-bar {
@@ -1713,7 +1717,7 @@ body::-webkit-scrollbar:horizontal,
 
   .lp-large {
     right: -90px;
-    top: 160px;
+    top: 82px;
     width: 330px;
     height: 330px;
   }
@@ -1784,18 +1788,26 @@ body::-webkit-scrollbar:horizontal,
   overflow: visible;
 }
 
-.hero-wordmark img {
+.hero-wordmark__svg {
   display: block;
   width: 100%;
   height: auto;
-  object-fit: contain;
+  overflow: visible;
+}
+
+.hero-wordmark__letter {
+  transform: translate(0, 0) rotate(0deg);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: none;
+  will-change: transform;
 }
 
 @media (min-width: 2200px) {
   .hero-section {
     --hero-lp-size: clamp(1038px, 54vw, 1384px);
     --hero-lp-right: clamp(164px, 8.4vw, 215px);
-    --hero-lp-top: clamp(154px, 8vw, 205px);
+    --hero-lp-top: clamp(72px, 4.6vw, 123px);
     --hero-bar-height: clamp(104px, 5.42vw, 139px);
     --hero-bar-top: clamp(724px, 37.7vw, 965px);
     height: 100vh;
@@ -1850,6 +1862,36 @@ body::-webkit-scrollbar:horizontal,
 
   .hero-bar-text {
     font-size: clamp(64px, 3.35vw, 86px);
+  }
+}
+
+@keyframes hero-lp-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(150px);
+  }
+
+  22% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-large,
+  .hero-visual::after {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-wordmark__letter {
+    transition: none;
+    transform: none;
   }
 }
 
