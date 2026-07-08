@@ -437,7 +437,7 @@ function Home() {
         <section id="archive" className="section archive-section">
           <div className="section-head">
             <h2>Archive your Time</h2>
-            <p>내가 어떤 시간에 어떤 음악을 들었는지 나만의 시간 기록으로 돌아보세요.</p>
+            <p>내가 어떤 시간에 무슨 음악을 들었는지 나만의 시간 기록으로 돌아보세요.</p>
           </div>
           <div className="archive-grid">
             <article className="archive-card archive-identity-card">
