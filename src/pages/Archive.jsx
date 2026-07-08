@@ -229,7 +229,7 @@ function Archive() {
       <section className="archive-page__hero">
         <div className="archive-page__intro">
           <p className="archive-page__eyebrow">MY MUSIC ARCHIVE</p>
-          <h1 className="archive-page__title">Archive<br />your time</h1>
+          <h1 className="archive-page__title">Archive your time</h1>
           <p className="archive-page__description">
             내가 어떤 시간에 어떤 음악을 들었는지<br />
             나만의 시간 기록으로 돌아보세요.
@@ -320,7 +320,7 @@ function Archive() {
           <span>04</span>
           <div><h2>Curators you liked</h2><p>내가 좋아요를 남긴 큐레이터</p></div>
         </div>
-        <div className="archive-page__people">
+        <div className="archive-page__people archive-page__people--liked">
           {likedCurators.map((curator) => (
             <article className="archive-page__person" key={curator.name}>
               <div><img src={curator.image} alt={`${curator.name} profile`} /><span>♡</span></div>
@@ -379,11 +379,13 @@ function Archive() {
         )}
       </section>
 
-      <footer className="archive-page__footer">
-        <strong>Tempy!</strong>
-        <p>Catch your Tempo, Meet your Moment</p>
-        <div><span>TIME SET</span><span>TRACK TRACE</span><span>ARCHIVE</span></div>
-        <small>© 2026 TEMPY. ALL RIGHTS RESERVED.</small>
+      <footer className="archive-page__footer tempy-footer">
+        <div className="tempy-footer__copy">
+          <p>ONE ALBUM. A DAY OF MOMENTS</p>
+          <strong>Listen through time.</strong>
+        </div>
+        <div className="tempy-footer__links"><span>DISCOVER</span><span>CURATOR</span><span>ARCHIVE</span></div>
+        <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
       </footer>
     </main>
   );
@@ -713,7 +715,7 @@ function ArchiveCreatedDetailStyle() {
           radial-gradient(circle at center, transparent 0 48%, rgba(7, 20, 43, 0.065) 49% 49.6%, transparent 50.5%),
           #fbfaf5;
         color: rgba(7, 20, 43, 0.34);
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 800;
         letter-spacing: 0.12em;
       }

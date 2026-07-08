@@ -482,13 +482,17 @@ function Home() {
         </section>
       </main>
 
-      <footer className="footer">
-        <div className="footer-brand">Tempy!</div>
-        <div className="footer-nav">
-          <a href="#tempo">TIME SET</a>
-          <a href="#discover">TRACK TRACE</a>
+      <footer className="footer tempy-footer">
+        <div className="tempy-footer__copy">
+          <p>ONE ALBUM. A DAY OF MOMENTS</p>
+          <strong>Listen through time.</strong>
+        </div>
+        <div className="footer-nav tempy-footer__links">
+          <a href="#discover">DISCOVER</a>
+          <a href="#curator">CURATOR</a>
           <a href="#archive">ARCHIVE</a>
         </div>
+        <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
       </footer>
     </>
   );

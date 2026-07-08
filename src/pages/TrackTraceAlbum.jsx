@@ -46,7 +46,7 @@ function TrackTraceAlbum() {
               <span aria-hidden="true">›</span>
             </Link>
             <p className="track-trace-album__eyebrow">Taylor Swift · Studio Album</p>
-            <h1>The Life of<br />A Showgirl</h1>
+            <h1>The Life of A Showgirl</h1>
 
             <dl className="track-trace-album__meta">
               <div><dt>RELEASE</dt><dd>October 3, 2025</dd></div>
@@ -126,12 +126,12 @@ function TrackTraceAlbum() {
         </div>
       </section>
 
-      <footer className="track-trace-album__footer">
-        <div>
-          <p>ONE ALBUM, A DAY OF MOMENTS</p>
+      <footer className="track-trace-album__footer tempy-footer">
+        <div className="tempy-footer__copy">
+          <p>ONE ALBUM. A DAY OF MOMENTS</p>
           <strong>Listen through time.</strong>
         </div>
-        <div className="track-trace-album__footer-links">
+        <div className="track-trace-album__footer-links tempy-footer__links">
           <span>DISCOVER</span>
           <span>CURATOR</span>
           <span>ARCHIVE</span>

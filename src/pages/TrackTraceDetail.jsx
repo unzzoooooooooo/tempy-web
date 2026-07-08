@@ -246,12 +246,12 @@ function TrackTraceDetail() {
           </div>
         </section>
 
-        <footer className="track-detail-lower__footer">
-          <div>
-            <p>ONE SONG, MANY MOMENTS</p>
-            <strong>Keep tracing time.</strong>
+        <footer className="track-detail-lower__footer tempy-footer">
+          <div className="tempy-footer__copy">
+            <p>ONE ALBUM. A DAY OF MOMENTS</p>
+            <strong>Listen through time.</strong>
           </div>
-          <div className="track-detail-lower__footer-links">
+          <div className="track-detail-lower__footer-links tempy-footer__links">
             <span>DISCOVER</span>
             <span>CURATOR</span>
             <span>ARCHIVE</span>

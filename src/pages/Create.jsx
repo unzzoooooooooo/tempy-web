@@ -192,26 +192,26 @@ function Create() {
 
         .create-start-page .create-start-intro h1,
         .create-detail-page .create-detail-side h1 {
-          max-width: 420px !important;
+          max-width: 620px !important;
           margin: 0 !important;
           color: var(--tempy-navy) !important;
           font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
-          font-size: clamp(72px, 5.3vw, 108px) !important;
-          line-height: 0.82 !important;
+          font-size: clamp(72px, 8.4vw, 150px) !important;
+          line-height: 0.8 !important;
           font-weight: 400 !important;
-          letter-spacing: -0.035em !important;
+          letter-spacing: var(--galgo-page-title-spacing) !important;
           text-align: left !important;
         }
 
         .create-start-page .create-start-intro p,
         .create-detail-page .create-detail-side p {
-          max-width: 340px !important;
-          margin: 34px 0 0 !important;
+          max-width: 660px !important;
+          margin: 18px 0 0 !important;
           color: var(--tempy-navy) !important;
-          font-size: clamp(20px, 1.45vw, 26px) !important;
-          line-height: 1.55 !important;
-          font-weight: 850 !important;
-          letter-spacing: -0.052em !important;
+          font-size: 17px !important;
+          line-height: 1.6 !important;
+          font-weight: 500 !important;
+          letter-spacing: 0 !important;
           word-break: keep-all !important;
           text-align: left !important;
         }
@@ -250,8 +250,49 @@ function Create() {
             background-color 560ms cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
 
+        .create-start-page .create-start-card::before {
+          content: "" !important;
+          position: absolute !important;
+          right: clamp(28px, 3vw, 48px) !important;
+          top: clamp(28px, 3vw, 48px) !important;
+          width: clamp(58px, 5vw, 86px) !important;
+          aspect-ratio: 1 !important;
+          border: 1px solid rgba(7, 20, 43, 0.2) !important;
+          border-radius: 50% !important;
+          background:
+            radial-gradient(circle at center, transparent 0 28%, rgba(47, 91, 234, 0.12) 29% 30%, transparent 31% 100%) !important;
+          pointer-events: none !important;
+        }
+
+        .create-start-page .create-start-card::after {
+          position: absolute !important;
+          left: clamp(28px, 3vw, 48px) !important;
+          top: clamp(28px, 3vw, 48px) !important;
+          z-index: 1 !important;
+          color: var(--tempy-blue) !important;
+          font-size: 12px !important;
+          line-height: 1 !important;
+          font-weight: 900 !important;
+          letter-spacing: 0.12em !important;
+        }
+
+        .create-start-page .create-start-card:nth-child(1)::after {
+          content: "01" !important;
+        }
+
         .create-start-page .create-start-card:nth-child(2) {
           box-shadow: none !important;
+        }
+
+        .create-start-page .create-start-card:nth-child(2)::before {
+          border-color: rgba(255, 52, 60, 0.28) !important;
+          background:
+            radial-gradient(circle at center, transparent 0 28%, rgba(255, 52, 60, 0.12) 29% 30%, transparent 31% 100%) !important;
+        }
+
+        .create-start-page .create-start-card:nth-child(2)::after {
+          content: "02" !important;
+          color: #ff343c !important;
         }
 
         .create-start-page .create-start-card:hover {
@@ -262,13 +303,13 @@ function Create() {
         .create-start-page .create-start-card h2 {
           position: relative !important;
           z-index: 1 !important;
-          margin: 0 !important;
+          margin: 28px 0 0 !important;
           color: var(--tempy-navy) !important;
           font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
-          font-size: clamp(68px, 5.1vw, 96px) !important;
-          line-height: 0.82 !important;
+          font-size: clamp(82px, 6.1vw, 118px) !important;
+          line-height: 0.8 !important;
           font-weight: 400 !important;
-          letter-spacing: -0.03em !important;
+          letter-spacing: -0.008em !important;
           text-align: left !important;
         }
 
@@ -276,7 +317,7 @@ function Create() {
           position: relative !important;
           z-index: 1 !important;
           max-width: 460px !important;
-          margin: 40px 0 0 !important;
+          margin: 28px 0 0 !important;
           color: var(--tempy-navy) !important;
           font-size: clamp(18px, 1.25vw, 23px) !important;
           line-height: 1.55 !important;

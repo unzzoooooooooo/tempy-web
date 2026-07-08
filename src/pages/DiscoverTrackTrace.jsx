@@ -33,7 +33,7 @@ function DiscoverTrackTrace() {
 
         <div className="track-trace-detail__copy">
           <p className="track-trace-detail__eyebrow">SAME SONG · DIFFERENT MOMENTS</p>
-          <h1 className="track-trace-detail__title">Track<br />Trace</h1>
+          <h1 className="track-trace-detail__title">Track Trace</h1>
           <p className="track-trace-detail__description">
             하나의 노래가 다른 사람에게<br />
             어떤 시간과 장면으로 남았는지 따라가보세요.

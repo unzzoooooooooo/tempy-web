@@ -223,9 +223,9 @@ function ArtistProfile() {
         </div>
       </section>
 
-      <footer className="artist-profile__footer">
-        <div><p>ONE ARTIST, COUNTLESS MOMENTS</p><strong>Leave your moment.</strong></div>
-        <div><span>DISCOVER</span><span>CURATOR</span><span>ARCHIVE</span></div>
+      <footer className="artist-profile__footer tempy-footer">
+        <div className="tempy-footer__copy"><p>ONE ALBUM. A DAY OF MOMENTS</p><strong>Listen through time.</strong></div>
+        <div className="tempy-footer__links"><span>DISCOVER</span><span>CURATOR</span><span>ARCHIVE</span></div>
         <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
       </footer>
     </main>
