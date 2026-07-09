@@ -250,22 +250,57 @@ const parseTrackDuration = (durationValue) => {
   return Number.isFinite(numericDuration) ? numericDuration : 15;
 };
 
-const getCircularPointStyle = (seconds, totalSeconds) => {
+const PLAYER_RING_CENTER = 50;
+const PLAYER_RING_RADIUS = 46;
+const PLAYER_RING_CIRCUMFERENCE = 2 * Math.PI * PLAYER_RING_RADIUS;
+
+const getCircularPoint = (seconds, totalSeconds) => {
   const safeTotal = Number.isFinite(totalSeconds) && totalSeconds > 0 ? totalSeconds : 1;
   const progress = Math.min(1, Math.max(0, seconds / safeTotal));
-  const angle = (progress * 360) - 90;
-  const radians = (angle * Math.PI) / 180;
-  const radius = 47;
-  const x = 50 + (Math.cos(radians) * radius);
-  const y = 50 + (Math.sin(radians) * radius);
+  const radians = (progress * 2 * Math.PI) - (Math.PI / 2);
+  const x = PLAYER_RING_CENTER + (Math.cos(radians) * PLAYER_RING_RADIUS);
+  const y = PLAYER_RING_CENTER + (Math.sin(radians) * PLAYER_RING_RADIUS);
 
   return {
-    left: `${x}%`,
-    top: `${y}%`,
+    x,
+    y,
   };
 };
 
+const getCircularProgressFromPointer = (event, element) => {
+  const svg = element.ownerSVGElement || element;
+  const rect = svg.getBoundingClientRect();
+  const x = ((event.clientX - rect.left) / rect.width) * 100;
+  const y = ((event.clientY - rect.top) / rect.height) * 100;
+  const angle = Math.atan2(y - PLAYER_RING_CENTER, x - PLAYER_RING_CENTER) * (180 / Math.PI);
+  return ((angle + 90 + 360) % 360) / 360;
+};
+
+const fullPlayerExtraTracks = [
+  { id: "track-11", image: "/images/album-19.png", cover: "/images/album-19.png", title: "Soft Static", artist: "Yerin Baek", duration: "03:37" },
+  { id: "track-12", image: "/images/album-20.png", cover: "/images/album-20.png", title: "Glass Hour", artist: "wave to earth", duration: "03:11" },
+  { id: "track-13", image: "/images/album-21.png", cover: "/images/album-21.png", title: "After Curtain", artist: "Silica Gel", duration: "04:02" },
+  { id: "track-14", image: "/images/album-22.png", cover: "/images/album-22.png", title: "Blue Signal", artist: "NewJeans", duration: "02:55" },
+  { id: "track-15", image: "/images/album-23.png", cover: "/images/album-23.png", title: "Room Tone", artist: "O3ohn", duration: "03:28" },
+  { id: "track-16", image: "/images/album-24.png", cover: "/images/album-24.png", title: "First Light", artist: "Crush", duration: "03:19" },
+  { id: "track-17", image: "/images/album-25.png", cover: "/images/album-25.png", title: "Lazy Orbit", artist: "AKMU", duration: "03:33" },
+  { id: "track-18", image: "/images/album-26.png", cover: "/images/album-26.png", title: "Late Checkout", artist: "JANNABI", duration: "04:10" },
+  { id: "track-19", image: "/images/album-27.png", cover: "/images/album-27.png", title: "City Bloom", artist: "LE SSERAFIM", duration: "02:47" },
+  { id: "track-20", image: "/images/album-28.png", cover: "/images/album-28.png", title: "Warm Noise", artist: "Daniel Caesar", duration: "03:44" },
+  { id: "track-21", image: "/images/album-29.png", cover: "/images/album-29.png", title: "Moon Receipt", artist: "SZA", duration: "03:26" },
+  { id: "track-22", image: "/images/album-30.png", cover: "/images/album-30.png", title: "Amber Drive", artist: "DPR IAN", duration: "03:52" },
+  { id: "track-23", image: "/images/album-31.png", cover: "/images/album-31.png", title: "Rain Check", artist: "Keshi", duration: "02:59" },
+  { id: "track-24", image: "/images/album-32.jpg", cover: "/images/album-32.jpg", title: "Quiet Frame", artist: "Laufey", duration: "03:35" },
+  { id: "track-25", image: "/images/moment-01.png", cover: "/images/moment-01.png", title: "Sunday Echo", artist: "Frank Ocean", duration: "03:21" },
+  { id: "track-26", image: "/images/moment-02.png", cover: "/images/moment-02.png", title: "Neon Table", artist: "The 1975", duration: "03:48" },
+  { id: "track-27", image: "/images/moment-03.png", cover: "/images/moment-03.png", title: "Small Weather", artist: "beabadoobee", duration: "02:52" },
+  { id: "track-28", image: "/images/moment-04.png", cover: "/images/moment-04.png", title: "Window Seat", artist: "Raveena", duration: "03:39" },
+  { id: "track-29", image: "/images/moment-06.png", cover: "/images/moment-06.png", title: "Night Soda", artist: "Mitski", duration: "02:46" },
+  { id: "track-30", image: "/images/album-10.png", cover: "/images/album-10.png", title: "Slow Return", artist: "Japanese Breakfast", duration: "03:57" },
+];
+
 function GlobalPlayer() {
+  const isSeekingRef = useRef(false);
   const audioRef = useRef(null);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -303,7 +338,7 @@ function GlobalPlayer() {
     },
   ]);
 
-  const playlist = localTracks.map((track) => ({
+  const playlist = [...localTracks, ...fullPlayerExtraTracks].map((track) => ({
     ...track,
     cover: track.cover || track.image || "/images/album-10.png",
   }));
@@ -385,20 +420,6 @@ function GlobalPlayer() {
   }, [volume]);
 
   useEffect(() => {
-    if (!currentTrack || currentTrack.audioSrc) return undefined;
-    if (!isPlaying) return undefined;
-
-    const timer = window.setInterval(() => {
-      setCurrentTime((time) => {
-        const nextTime = time + 0.5;
-        return nextTime >= duration ? 0 : nextTime;
-      });
-    }, 500);
-
-    return () => window.clearInterval(timer);
-  }, [currentTrack, duration, isPlaying]);
-
-  useEffect(() => {
     if (!currentTrack) return undefined;
     if (!isPlaying) return undefined;
 
@@ -409,12 +430,23 @@ function GlobalPlayer() {
     const renderProgress = (now) => {
       const audio = audioRef.current;
 
+      if (isSeekingRef.current) {
+        lastFrameAt = now;
+        animationFrame = window.requestAnimationFrame(renderProgress);
+        return;
+      }
+
       if (currentTrack.audioSrc && audio) {
+        setCurrentTime(audio.currentTime);
         setProgressTime(audio.currentTime);
       } else {
         const elapsed = (now - lastFrameAt) / 1000;
         lastFrameAt = now;
-        setProgressTime((time) => (time + elapsed) % safeTotal);
+        setProgressTime((time) => {
+          const nextTime = (time + elapsed) % safeTotal;
+          setCurrentTime(nextTime);
+          return nextTime;
+        });
       }
 
       animationFrame = window.requestAnimationFrame(renderProgress);
@@ -522,19 +554,46 @@ function GlobalPlayer() {
   const vinylStyle = { "--global-player-cover": `url(${currentTrack.cover})` };
   const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : parseTrackDuration(currentTrack.duration);
   const playProgress = Math.min(1, Math.max(0, progressTime / safeDuration));
-  const progressStyle = {
-    "--full-player-progress": `${playProgress * 360}deg`,
-  };
-  const progressDotStyle = getCircularPointStyle(progressTime, safeDuration);
+  const progressDashOffset = PLAYER_RING_CIRCUMFERENCE * (1 - playProgress);
+  const progressDotPoint = getCircularPoint(progressTime, safeDuration);
   const momentMarkers = moments.map((moment) => ({
     ...moment,
-    pointStyle: getCircularPointStyle(parseTrackDuration(moment.time), safeDuration),
+    point: getCircularPoint(parseTrackDuration(moment.time), safeDuration),
   }));
   const fullPlayerClassName = [
     "full-player",
     isPlaying ? "full-player--playing" : "",
     isFullPlayerExpanded ? "full-player--expanded" : "",
   ].filter(Boolean).join(" ");
+
+  const seekToProgress = (progress) => {
+    const nextTime = Math.min(safeDuration, Math.max(0, progress * safeDuration));
+    const audio = audioRef.current;
+    if (audio && currentTrack.audioSrc) {
+      audio.currentTime = nextTime;
+    }
+    setCurrentTime(nextTime);
+    setProgressTime(nextTime);
+  };
+
+  const handleProgressPointerDown = (event) => {
+    event.preventDefault();
+    isSeekingRef.current = true;
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    seekToProgress(getCircularProgressFromPointer(event, event.currentTarget));
+  };
+
+  const handleProgressPointerMove = (event) => {
+    if (!isSeekingRef.current) return;
+    seekToProgress(getCircularProgressFromPointer(event, event.currentTarget));
+  };
+
+  const handleProgressPointerEnd = (event) => {
+    if (!isSeekingRef.current) return;
+    seekToProgress(getCircularProgressFromPointer(event, event.currentTarget));
+    isSeekingRef.current = false;
+    event.currentTarget.releasePointerCapture?.(event.pointerId);
+  };
 
   return (
     <>
@@ -557,29 +616,66 @@ function GlobalPlayer() {
             </button>
             <div className="full-player__disc-area">
               <div className="full-player__disc-wrap">
-                <div className="full-player__disc-shell">
-                  <div className="full-player__disc" style={vinylStyle}>
+                <div className="full-player__disc-shell full-player-vinyl">
+                  <div className="full-player__disc vinyl-rotating-disc" style={vinylStyle}>
                     <div className="full-player__disc-label">
                       <img src={currentTrack.cover} alt="" draggable={false} />
                     </div>
                   </div>
-                  <div
+                  <svg
                     className="full-player__progress-ring"
-                    style={progressStyle}
+                    viewBox="0 0 100 100"
                     aria-label={`Playback progress ${Math.round(playProgress * 100)}%`}
+                    role="slider"
+                    tabIndex="0"
+                    aria-valuemin="0"
+                    aria-valuemax={Math.round(safeDuration)}
+                    aria-valuenow={Math.round(progressTime)}
                   >
-                    <span className="full-player__start-dot" aria-hidden="true" />
-                    <span className="full-player__progress-dot" style={progressDotStyle} aria-hidden="true" />
+                    <circle className="progress-base-circle" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER} r={PLAYER_RING_RADIUS} />
+                    <circle
+                      className="progress-active-circle"
+                      cx={PLAYER_RING_CENTER}
+                      cy={PLAYER_RING_CENTER}
+                      r={PLAYER_RING_RADIUS}
+                      strokeDasharray={PLAYER_RING_CIRCUMFERENCE}
+                      strokeDashoffset={progressDashOffset}
+                      strokeOpacity={playProgress > 0.001 ? 1 : 0}
+                    />
+                    <circle className="full-player__start-dot" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER - PLAYER_RING_RADIUS} r="1.2" aria-hidden="true" />
+                    <circle
+                      className="full-player__progress-dot"
+                      cx={progressDotPoint.x}
+                      cy={progressDotPoint.y}
+                      r="1.25"
+                      aria-hidden="true"
+                      onPointerDown={handleProgressPointerDown}
+                      onPointerMove={handleProgressPointerMove}
+                      onPointerUp={handleProgressPointerEnd}
+                      onPointerCancel={handleProgressPointerEnd}
+                    />
                     {momentMarkers.map((moment) => (
-                      <span
+                      <circle
                         className="full-player__moment-dot"
                         key={moment.id}
-                        style={moment.pointStyle}
+                        cx={moment.point.x}
+                        cy={moment.point.y}
+                        r="0.85"
                         title={`${moment.name} · ${moment.time}`}
                         aria-hidden="true"
                       />
                     ))}
-                  </div>
+                    <circle
+                      className="full-player__seek-hit"
+                      cx={PLAYER_RING_CENTER}
+                      cy={PLAYER_RING_CENTER}
+                      r={PLAYER_RING_RADIUS}
+                      onPointerDown={handleProgressPointerDown}
+                      onPointerMove={handleProgressPointerMove}
+                      onPointerUp={handleProgressPointerEnd}
+                      onPointerCancel={handleProgressPointerEnd}
+                    />
+                  </svg>
                   <div className="full-player__disc-copy">
                     <strong>{currentTrack.title}</strong>
                     <p>{currentTrack.artist}</p>
