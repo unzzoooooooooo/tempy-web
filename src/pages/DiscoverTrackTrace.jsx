@@ -21,6 +21,72 @@ function DiscoverTrackTrace() {
       artist: "Ariana Grande",
       comments: 56,
     },
+    {
+      image: "/images/album-22.png",
+      title: "Night Walk",
+      artist: "HYUKOH",
+      comments: 72,
+    },
+    {
+      image: "/images/album-23.png",
+      title: "Soft Static",
+      artist: "Yerin Baek",
+      comments: 91,
+    },
+    {
+      image: "/images/album-24.png",
+      title: "First Light",
+      artist: "Crush",
+      comments: 64,
+    },
+    {
+      image: "/images/album-25.png",
+      title: "Lazy Orbit",
+      artist: "AKMU",
+      comments: 77,
+    },
+    {
+      image: "/images/album-26.png",
+      title: "Late Checkout",
+      artist: "JANNABI",
+      comments: 118,
+    },
+    {
+      image: "/images/album-27.png",
+      title: "City Bloom",
+      artist: "LE SSERAFIM",
+      comments: 69,
+    },
+    {
+      image: "/images/album-28.png",
+      title: "Warm Noise",
+      artist: "Daniel Caesar",
+      comments: 83,
+    },
+    {
+      image: "/images/album-29.png",
+      title: "Moon Receipt",
+      artist: "SZA",
+      comments: 95,
+    },
+    {
+      image: "/images/album-30.png",
+      title: "Amber Drive",
+      artist: "DPR IAN",
+      comments: 61,
+    },
+    {
+      image: "/images/album-31.png",
+      title: "Rain Check",
+      artist: "Keshi",
+      comments: 74,
+    },
+    {
+      image: "/images/album-32.jpg",
+      title: "Quiet Frame",
+      artist: "Laufey",
+      comments: 102,
+    },
   ];
 
   return (
@@ -46,7 +112,7 @@ function DiscoverTrackTrace() {
       <section className="track-trace-detail__gallery" aria-label="Track Trace albums">
         <div className="track-trace-detail__gallery-heading">
           <span>TRACK ARCHIVE</span>
-          <span>03 TRACKS</span>
+          <span>14 TRACKS</span>
         </div>
 
         <div className="track-trace-detail__track">

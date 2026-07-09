@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import logoNav from "./assets/Tempy!_logo_nav.svg";
 import Home from "./pages/Home";
@@ -300,6 +300,8 @@ const fullPlayerExtraTracks = [
 ];
 
 function GlobalPlayer() {
+  const location = useLocation();
+  const previousPathRef = useRef(location.pathname);
   const isSeekingRef = useRef(false);
   const audioRef = useRef(null);
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -342,6 +344,13 @@ function GlobalPlayer() {
     ...track,
     cover: track.cover || track.image || "/images/album-10.png",
   }));
+
+  useEffect(() => {
+    if (previousPathRef.current === location.pathname) return;
+    previousPathRef.current = location.pathname;
+    setIsFullPlayerOpen(false);
+    setIsFullPlayerExpanded(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handlePlayRequest = (event) => {

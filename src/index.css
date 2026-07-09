@@ -1080,7 +1080,7 @@ header.header {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 1000;
   width: 100%;
   height: 86px;
   padding: 0 58px 0 60px;
@@ -1090,6 +1090,14 @@ header.header {
   transform: none;
   background: #07142b;
   color: #ff3038;
+  pointer-events: auto;
+}
+
+.header a,
+.header button,
+.header-profile-actions,
+.top-nav {
+  pointer-events: auto;
 }
 
 .logo-small {
@@ -2531,13 +2539,13 @@ body::-webkit-scrollbar:horizontal,
 /* Now page */
 .now-page {
   min-height: 100vh;
-  padding: 150px 5.2vw 18px;
+  padding: 146px 5.2vw 42px;
   color: #07142b;
   background: #f3f4f0;
 }
 
 .now-page__intro {
-  padding-bottom: 34px;
+  padding-bottom: 24px;
 }
 
 .now-page__eyebrow {
@@ -2586,12 +2594,12 @@ body::-webkit-scrollbar:horizontal,
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
   gap: 18px;
-  padding-top: 34px;
+  padding-top: 24px;
 }
 
 .now-page__selected,
 .now-page__queue {
-  min-height: clamp(540px, 48vh, 640px);
+  min-height: clamp(680px, 62vh, 840px);
   border: 1px solid #07142b;
   border-radius: 4px;
   overflow: hidden;
@@ -2601,7 +2609,7 @@ body::-webkit-scrollbar:horizontal,
 .now-page__selected {
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: clamp(26px, 1.8vw, 34px);
   color: #ffffff;
   background: #2759ed;
 }
@@ -2634,16 +2642,16 @@ body::-webkit-scrollbar:horizontal,
 
 .now-page__selected-body {
   display: grid;
-  grid-template-columns: minmax(220px, 50%) 1fr;
-  align-items: end;
-  gap: 22px;
+  grid-template-columns: minmax(280px, 53%) 1fr;
+  align-items: center;
+  gap: clamp(24px, 2.2vw, 42px);
   flex: 1;
-  padding: 24px 0;
+  padding: clamp(30px, 4vh, 58px) 0 clamp(24px, 3vh, 44px);
 }
 
 .now-page__cover-wrap {
   position: relative;
-  width: min(100%, 420px);
+  width: min(100%, 520px);
   aspect-ratio: 1;
 }
 
@@ -2679,13 +2687,13 @@ body::-webkit-scrollbar:horizontal,
 
 .now-page__track-info h3 {
   margin: 0 0 8px;
-  font-size: clamp(24px, 2vw, 36px);
+  font-size: clamp(30px, 2.35vw, 46px);
   line-height: 1;
   letter-spacing: -0.04em;
 }
 
 .now-page__track-info > span {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .now-page__player {
@@ -2728,13 +2736,21 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .now-page__queue {
-  padding: 24px 24px 12px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: 24px 24px 14px;
 }
 
 .now-page__queue-heading {
   min-height: 78px;
   padding-bottom: 18px;
   border-bottom: 1px solid #07142b;
+}
+
+.now-page__queue-list {
+  min-height: 0;
+  padding-top: 12px;
+  overflow-y: auto;
 }
 
 .now-page__queue-heading h2 {
@@ -2910,7 +2926,7 @@ body::-webkit-scrollbar:horizontal,
 /* Discover page */
 .discover-page {
   min-height: 100vh;
-  padding: 150px 5.2vw 40px;
+  padding: 146px 5.2vw 50px;
   overflow: hidden;
   color: #07142b;
   background: #f3f4f0;
@@ -2948,7 +2964,7 @@ body::-webkit-scrollbar:horizontal,
 
 .discover-page__showcase {
   width: 100%;
-  margin-top: 40px;
+  margin-top: clamp(42px, 4.2vh, 72px);
 }
 
 .discover-page__visual {
@@ -2956,7 +2972,7 @@ body::-webkit-scrollbar:horizontal,
   grid-template-columns: repeat(2, minmax(520px, 1fr));
   gap: clamp(20px, 1.8vw, 36px);
   align-items: end;
-  height: clamp(320px, 21vw, 430px);
+  height: clamp(430px, 28vw, 610px);
   overflow: visible;
 }
 
@@ -2969,10 +2985,15 @@ body::-webkit-scrollbar:horizontal,
   border-radius: 50%;
   background:
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.045) 0 18%, transparent 18.5% 100%),
+    radial-gradient(circle at 50% 50%, transparent 0 23%, rgba(255, 255, 255, 0.075) 23.15% 23.45%, transparent 23.8% 27%),
     radial-gradient(circle at 50% 50%, transparent 0 28%, rgba(255, 255, 255, 0.1) 28.25% 28.7%, transparent 29.1% 37%),
+    radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(255, 255, 255, 0.055) 34.15% 34.4%, transparent 34.75% 39%),
     radial-gradient(circle at 50% 50%, transparent 0 42%, rgba(255, 255, 255, 0.07) 42.25% 42.65%, transparent 43.05% 51%),
+    radial-gradient(circle at 50% 50%, transparent 0 49%, rgba(255, 255, 255, 0.05) 49.15% 49.45%, transparent 49.8% 54%),
     radial-gradient(circle at 50% 50%, transparent 0 56%, rgba(255, 255, 255, 0.085) 56.25% 56.7%, transparent 57.1% 65%),
+    radial-gradient(circle at 50% 50%, transparent 0 64%, rgba(255, 255, 255, 0.052) 64.15% 64.45%, transparent 64.8% 69%),
     radial-gradient(circle at 50% 50%, transparent 0 72%, rgba(255, 255, 255, 0.07) 72.25% 72.65%, transparent 73.05% 80%),
+    radial-gradient(circle at 50% 50%, transparent 0 81%, rgba(255, 255, 255, 0.045) 81.15% 81.4%, transparent 81.75% 86%),
     radial-gradient(circle at 50% 50%, transparent 0 88%, rgba(255, 255, 255, 0.055) 88.25% 88.65%, transparent 89.05% 100%),
     #07142b;
   box-shadow:
@@ -3031,13 +3052,13 @@ body::-webkit-scrollbar:horizontal,
   display: grid;
   grid-template-columns: repeat(2, minmax(520px, 1fr));
   gap: clamp(20px, 1.8vw, 36px);
-  padding: 0 0 28px;
-  margin-top: clamp(-92px, -4.2vw, -64px);
+  padding: 0 0 20px;
+  margin-top: clamp(-146px, -6vw, -96px);
 }
 
 .discover-page__card {
   display: flex;
-  min-height: clamp(320px, 19vw, 400px);
+  min-height: clamp(390px, 23vw, 510px);
   padding: clamp(24px, 1.8vw, 34px);
   flex-direction: column;
   color: #ffffff;
@@ -4440,7 +4461,7 @@ body::-webkit-scrollbar:horizontal,
 /* Discover Time Set detail */
 .time-set-detail {
   display: grid;
-  grid-template-columns: minmax(330px, 38%) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 32%) minmax(0, 1fr);
   min-height: 100vh;
   padding-top: 86px;
   overflow: hidden;
@@ -4529,7 +4550,7 @@ body::-webkit-scrollbar:horizontal,
   position: relative;
   z-index: 2;
   display: grid;
-  width: min(48vw, 680px);
+  width: min(58vw, 920px);
   aspect-ratio: 1;
   padding: clamp(22px, 2.2vw, 34px);
   place-items: center;
@@ -4625,10 +4646,10 @@ body::-webkit-scrollbar:horizontal,
 
 .time-set-detail__side-record {
   position: absolute;
-  bottom: -18%;
+  bottom: -14%;
   z-index: 1;
   display: grid;
-  width: min(25vw, 350px);
+  width: min(31vw, 500px);
   aspect-ratio: 1;
   place-items: center;
   border: clamp(12px, 1.3vw, 20px) solid #ffffff;
@@ -4655,11 +4676,11 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .time-set-detail__side-record--left {
-  left: -11%;
+  left: -8%;
 }
 
 .time-set-detail__side-record--right {
-  right: -11%;
+  right: -8%;
 }
 
 @media (max-width: 900px) {
@@ -4722,7 +4743,7 @@ body::-webkit-scrollbar:horizontal,
 /* Discover Track Trace detail */
 .track-trace-detail {
   display: grid;
-  grid-template-columns: minmax(330px, 38%) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 32%) minmax(0, 1fr);
   min-height: 100vh;
   padding-top: 86px;
   overflow: hidden;
@@ -4800,9 +4821,11 @@ body::-webkit-scrollbar:horizontal,
 
 .track-trace-detail__gallery {
   position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   min-width: 0;
   min-height: calc(100vh - 86px);
-  padding: 44px 0 42px 44px;
+  padding: 46px 0 42px 44px;
   overflow: hidden;
   color: #ffffff;
   background: #2759ed;
@@ -4820,18 +4843,26 @@ body::-webkit-scrollbar:horizontal,
 
 .track-trace-detail__track {
   display: flex;
-  width: max-content;
-  gap: 18px;
-  margin-top: 34px;
+  width: 100%;
+  min-width: 0;
+  align-self: center;
+  gap: 22px;
+  margin-top: 0;
+  padding: 28px 44px 36px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
 }
 
 .track-trace-detail__card {
-  width: clamp(280px, 24vw, 360px);
+  width: clamp(340px, 28vw, 460px);
   flex: 0 0 auto;
   overflow: hidden;
   border: 1px solid #07142b;
   color: #ffffff;
   background: #07142b;
+  scroll-snap-align: start;
 }
 
 .track-trace-detail__artwork {
@@ -4898,8 +4929,8 @@ body::-webkit-scrollbar:horizontal,
 .track-trace-detail__card-info {
   position: relative;
   display: grid;
-  min-height: 145px;
-  padding: 22px 20px;
+  min-height: 162px;
+  padding: 24px 22px;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   overflow: hidden;
@@ -5033,7 +5064,7 @@ body::-webkit-scrollbar:horizontal,
 /* Track Trace comment detail page */
 .track-comment-detail {
   display: grid;
-  grid-template-columns: minmax(350px, 34%) minmax(0, 1fr);
+  grid-template-columns: minmax(340px, 36%) minmax(0, 1fr);
   min-height: 100vh;
   padding-top: 86px;
   color: #07142b;
@@ -5044,7 +5075,7 @@ body::-webkit-scrollbar:horizontal,
   position: relative;
   display: flex;
   min-height: calc(100vh - 86px);
-  padding: 42px 3.4vw 38px;
+  padding: 42px 3.2vw 38px 5.2vw;
   flex-direction: column;
   border-right: 1px solid #07142b;
 }
@@ -5074,8 +5105,8 @@ body::-webkit-scrollbar:horizontal,
 
 .track-comment-detail__album {
   position: relative;
-  width: min(100%, 420px);
-  margin: clamp(34px, 5vh, 62px) auto 0;
+  width: min(100%, 500px);
+  margin: clamp(34px, 5vh, 62px) 0 0;
   aspect-ratio: 1;
   overflow: hidden;
   border: 1px solid #07142b;
@@ -5117,7 +5148,7 @@ body::-webkit-scrollbar:horizontal,
 
 .track-comment-detail__song-copy h1 {
   margin: 0 0 7px;
-  font-size: clamp(24px, 2.2vw, 36px);
+  font-size: clamp(30px, 2.45vw, 44px);
   line-height: 1.05;
   letter-spacing: -0.035em;
 }
@@ -5393,7 +5424,7 @@ body::-webkit-scrollbar:horizontal,
 
 .track-detail-tabs__popular {
   display: flex;
-  padding: 62px 5vw 48px;
+  padding: 46px 5vw 42px;
   flex-direction: column;
 }
 
@@ -5419,7 +5450,7 @@ body::-webkit-scrollbar:horizontal,
 .track-detail-tabs__popular-copy h2 {
   margin: 0;
   font-family: "GalgoVF", "Arial Narrow", sans-serif;
-  font-size: clamp(94px, 10vw, 164px);
+  font-size: clamp(88px, 9vw, 148px);
   font-weight: 400;
   line-height: 0.7;
   letter-spacing: var(--galgo-time-spacing);
@@ -5427,15 +5458,15 @@ body::-webkit-scrollbar:horizontal,
 
 .track-detail-tabs__popular-copy > span {
   display: block;
-  margin-top: 34px;
+  margin-top: 22px;
   font-size: 14px;
   line-height: 1.7;
 }
 
 .track-detail-tabs__chart {
-  min-height: 270px;
-  margin-top: auto;
-  padding-top: 34px;
+  min-height: 330px;
+  margin-top: clamp(46px, 7vh, 90px);
+  padding-top: 22px;
 }
 
 .track-detail-tabs__chart-scale {
@@ -5451,7 +5482,7 @@ body::-webkit-scrollbar:horizontal,
 
 .track-detail-tabs__bars {
   display: flex;
-  height: 172px;
+  height: 210px;
   padding: 20px 0 0;
   align-items: flex-end;
   gap: clamp(4px, 0.75vw, 12px);

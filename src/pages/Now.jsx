@@ -1,9 +1,15 @@
 import { getTimeLabel, useContextRecommendations } from "../utils/context";
 
 function Now() {
-  const { context, tracks } = useContextRecommendations(6);
+  const { context, tracks } = useContextRecommendations(10);
   const selectedTrack = tracks[0];
-  const queue = tracks.slice(1, 6);
+  const queue = Array.from({ length: 15 }, (_, index) => {
+    const track = tracks[(index + 1) % tracks.length];
+    return {
+      ...track,
+      id: `${track.id}-now-queue-${index + 1}`,
+    };
+  });
   const weatherSummary = `${context.weatherLabel} · ${context.temperature}`;
 
   return (

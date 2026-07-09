@@ -26,6 +26,42 @@ const timeSetRecords = [
     artist: "Ariana Grande",
     color: "#1f9c75",
   },
+  {
+    cover: "/images/album-26.png",
+    title: "Night Walk",
+    artist: "HYUKOH",
+    color: "#2759ed",
+  },
+  {
+    cover: "/images/album-27.png",
+    title: "Soft Static",
+    artist: "Yerin Baek",
+    color: "#ff343c",
+  },
+  {
+    cover: "/images/album-28.png",
+    title: "Glass Hour",
+    artist: "wave to earth",
+    color: "#f2cb28",
+  },
+  {
+    cover: "/images/album-29.png",
+    title: "After Curtain",
+    artist: "Silica Gel",
+    color: "#1f9c75",
+  },
+  {
+    cover: "/images/album-30.png",
+    title: "Blue Signal",
+    artist: "NewJeans",
+    color: "#2759ed",
+  },
+  {
+    cover: "/images/album-31.png",
+    title: "Room Tone",
+    artist: "O3ohn",
+    color: "#ff343c",
+  },
 ];
 
 function DiscoverTimeSet() {
