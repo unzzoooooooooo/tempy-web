@@ -93,10 +93,21 @@ function DiscoverTimeSet() {
   };
 
   const getRecordPosition = (index) => {
-    if (index === activeIndex) return "active";
-    if (index === (activeIndex - 1 + timeSetRecords.length) % timeSetRecords.length) return "previous";
-    if (index === (activeIndex + 1) % timeSetRecords.length) return "next";
-    return "hidden";
+    const offset = getRecordOffset(index);
+
+    if (offset === 0) return "active";
+    if (offset === -1) return "previous";
+    if (offset === 1) return "next";
+    return "distant";
+  };
+
+  const getRecordOffset = (index) => {
+    let offset = index - activeIndex;
+    const half = timeSetRecords.length / 2;
+
+    if (offset > half) offset -= timeSetRecords.length;
+    if (offset < -half) offset += timeSetRecords.length;
+    return offset;
   };
 
   return (
@@ -131,7 +142,10 @@ function DiscoverTimeSet() {
           return (
             <div
               className={`time-set-detail__main-record time-set-carousel__item time-set-carousel__item--${position}`}
-              style={{ "--time-set-lp-color": record.color }}
+              style={{
+                "--time-set-lp-color": record.color,
+                "--time-set-offset": getRecordOffset(index),
+              }}
               aria-hidden={!isActive}
               key={record.title}
             >
