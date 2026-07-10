@@ -206,11 +206,11 @@ function Create() {
         .create-start-page .create-start-intro p,
         .create-detail-page .create-detail-side p {
           max-width: 660px !important;
-          margin: 18px 0 0 !important;
+          margin: 10px 0 18px !important;
           color: var(--tempy-navy) !important;
-          font-size: 17px !important;
+          font-size: 20px !important;
           line-height: 1.6 !important;
-          font-weight: 500 !important;
+          font-weight: 400 !important;
           letter-spacing: 0 !important;
           word-break: keep-all !important;
           text-align: left !important;

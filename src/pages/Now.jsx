@@ -1,8 +1,64 @@
+import { useEffect, useState } from "react";
 import { getTimeLabel, useContextRecommendations } from "../utils/context";
+
+const parseDuration = (duration) => {
+  const [minutes = "0", seconds = "0"] = duration.split(":");
+  return Number(minutes) * 60 + Number(seconds);
+};
 
 function Now() {
   const { context, tracks } = useContextRecommendations(10);
-  const selectedTrack = tracks[0];
+  const [selectedTrackIndex, setSelectedTrackIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const safeTrackIndex = tracks.length ? selectedTrackIndex % tracks.length : 0;
+  const selectedTrack = tracks[safeTrackIndex] || tracks[0];
+  const durationSeconds = parseDuration(selectedTrack.duration);
+  const progressPercent = durationSeconds ? Math.min((elapsedSeconds / durationSeconds) * 100, 100) : 0;
+
+  useEffect(() => {
+    if (!isPlaying) {
+      return undefined;
+    }
+
+    const progressTimer = window.setInterval(() => {
+      setElapsedSeconds((current) => {
+        if (current + 1 >= durationSeconds) {
+          window.clearInterval(progressTimer);
+          setIsPlaying(false);
+          return durationSeconds;
+        }
+
+        return current + 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(progressTimer);
+  }, [durationSeconds, isPlaying]);
+
+  const moveTrack = (direction) => {
+    if (!tracks.length) {
+      return;
+    }
+
+    setSelectedTrackIndex((current) => {
+      const nextIndex = (current + direction + tracks.length) % tracks.length;
+      return nextIndex;
+    });
+    setElapsedSeconds(0);
+  };
+
+  const togglePlayback = () => {
+    setIsPlaying((current) => {
+      if (current) {
+        return false;
+      }
+
+      setElapsedSeconds(0);
+      return true;
+    });
+  };
+
   const queue = Array.from({ length: 15 }, (_, index) => {
     const track = tracks[(index + 1) % tracks.length];
     return {
@@ -64,10 +120,35 @@ function Now() {
           </div>
 
           <div className="now-page__player">
-            <button type="button" aria-label="Previous track">↤</button>
-            <button className="now-page__play" type="button" aria-label="Play">▶</button>
-            <button type="button" aria-label="Next track">↦</button>
-            <div className="now-page__progress"><span /></div>
+            <button
+              className="now-page__skip"
+              type="button"
+              aria-label="Previous track"
+              data-now-player-control
+              onClick={() => moveTrack(-1)}
+            >
+              ↤
+            </button>
+            <button
+              className="now-page__play"
+              type="button"
+              aria-label={isPlaying ? "Pause" : "Play"}
+              aria-pressed={isPlaying}
+              data-now-player-control
+              onClick={togglePlayback}
+            >
+              {isPlaying ? "Ⅱ" : "▶"}
+            </button>
+            <button
+              className="now-page__skip"
+              type="button"
+              aria-label="Next track"
+              data-now-player-control
+              onClick={() => moveTrack(1)}
+            >
+              ↦
+            </button>
+            <div className="now-page__progress"><span style={{ width: `${progressPercent}%` }} /></div>
             <time>{selectedTrack.duration}</time>
           </div>
         </article>

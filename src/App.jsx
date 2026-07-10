@@ -370,6 +370,7 @@ function GlobalPlayer() {
     const handleGlobalClick = (event) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
+      if (target.closest("[data-now-player-control]")) return;
 
       const action = target.closest("button, [role='button']");
       const actionText = action?.textContent?.trim().toLowerCase() || "";
