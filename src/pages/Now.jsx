@@ -15,6 +15,7 @@ function Now() {
   const selectedTrack = tracks[safeTrackIndex] || tracks[0];
   const durationSeconds = parseDuration(selectedTrack.duration);
   const progressPercent = durationSeconds ? Math.min((elapsedSeconds / durationSeconds) * 100, 100) : 0;
+  const selectedTrackMeta = `${context.currentTime} · ${context.weatherLabel} · ${context.locationLabel}에서 지금 듣는 노래`;
 
   useEffect(() => {
     if (!isPlaying) {
@@ -103,7 +104,7 @@ function Now() {
             <span className="now-page__live">LIVE</span>
           </div>
 
-          <div className="now-page__selected-body">
+          <div className="now-page__selected-body" key={selectedTrack.id}>
             <div className="now-page__cover-wrap">
               <img
                 className="now-page__selected-cover"
@@ -113,7 +114,7 @@ function Now() {
               <span className="now-page__cover-number">01</span>
             </div>
             <div className="now-page__track-info">
-              <p>{selectedTrack.moodText}</p>
+              <p>{selectedTrackMeta}</p>
               <h3>{selectedTrack.title}</h3>
               <span>{selectedTrack.artist}</span>
             </div>
