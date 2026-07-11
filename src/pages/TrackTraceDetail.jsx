@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const segmentBars = [18, 24, 28, 23, 32, 42, 38, 52, 68, 92, 100, 86, 64, 48, 36, 31, 26, 20];
+const segmentBars = [
+  28, 42, 35, 57, 31, 48, 39, 64, 44, 53, 36, 61, 47, 32,
+  55, 71, 43, 66, 52, 78, 59, 46, 69, 54, 82, 67, 94, 76,
+  88, 63, 79, 56, 72, 49, 65, 41, 58, 73, 51, 68, 45, 62,
+  38, 54, 70, 47, 65, 42, 59, 35, 52, 31, 46, 27, 41, 33,
+];
 
 const songMetrics = [
   { label: "Melodicness", value: "82%" },
@@ -133,11 +138,14 @@ function TrackTraceDetail() {
                 <div className="track-detail-tabs__bars">
                   {segmentBars.map((height, index) => (
                     <span
-                      className={index >= 8 && index <= 11 ? "track-detail-tabs__bar--active" : ""}
+                      className={index >= 24 && index <= 29 ? "track-detail-tabs__bar--active" : ""}
                       style={{ height: `${height}%` }}
                       key={`${height}-${index}`}
                     />
                   ))}
+                </div>
+                <div className="track-detail-tabs__progress" aria-hidden="true">
+                  <i />
                 </div>
                 <div className="track-detail-tabs__timeline">
                   <span>00:00</span>

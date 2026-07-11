@@ -5555,7 +5555,7 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .track-detail-tabs__chart {
-  min-height: 330px;
+  min-height: clamp(300px, 20vw, 350px);
   margin-top: clamp(28px, 4vh, 44px);
   padding-top: 22px;
 }
@@ -5572,20 +5572,25 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .track-detail-tabs__bars {
-  display: flex;
-  height: 210px;
+  display: grid;
+  width: 100%;
+  height: clamp(170px, 13vw, 240px);
+  margin: 0 auto;
   padding: 20px 0 0;
+  grid-template-columns: repeat(56, minmax(0, 1fr));
   align-items: flex-end;
-  gap: clamp(4px, 0.75vw, 12px);
-  border-bottom: 1px solid #07142b;
+  gap: clamp(3px, 0.25vw, 6px);
+  overflow: hidden;
   background-image: linear-gradient(to bottom, rgba(7, 20, 43, 0.1) 1px, transparent 1px);
   background-size: 100% 25%;
 }
 
 .track-detail-tabs__bars > span {
+  width: clamp(8px, 0.6vw, 15px);
   min-width: 4px;
+  max-width: 15px;
   height: 20%;
-  flex: 1;
+  justify-self: center;
   background: #b9bdbb;
 }
 
@@ -5593,9 +5598,29 @@ body::-webkit-scrollbar:horizontal,
   background: #2759ed;
 }
 
+.track-detail-tabs__progress {
+  position: relative;
+  width: 100%;
+  height: clamp(14px, 1vw, 18px);
+  margin: 0 auto;
+  overflow: hidden;
+  background: #4d7bff;
+}
+
+.track-detail-tabs__progress i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 42.5%;
+  width: 12%;
+  background: linear-gradient(90deg, rgba(71, 108, 243, 0.6) 0%, rgba(131, 102, 220, 0.72) 55%, rgba(220, 115, 182, 0.66) 100%);
+}
+
 .track-detail-tabs__timeline {
   position: relative;
   display: flex;
+  width: 100%;
+  margin: 0 auto;
   padding-top: 12px;
   justify-content: space-between;
   color: #8c918e;
@@ -5713,7 +5738,11 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .track-detail-tabs__bars {
-    gap: 4px;
+    gap: 2px;
+  }
+
+  .track-detail-tabs__bars > span {
+    min-width: 2px;
   }
 
   .track-detail-tabs__metadata dl > div {
@@ -6116,17 +6145,29 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .track-detail-tabs__chart {
-    min-height: 292px;
+    min-height: 350px;
     margin-top: 24px;
   }
 
   .track-detail-tabs__bars {
-    height: 188px;
+    height: 240px;
   }
 
   .track-detail-lower__moments,
   .track-detail-lower__similar {
     padding: 66px 5.2vw 92px;
+  }
+}
+
+@media (min-width: 1800px) {
+  .track-detail-tabs__bars {
+    height: clamp(200px, 9vw, 230px);
+    gap: clamp(4px, 0.25vw, 7px);
+  }
+
+  .track-detail-tabs__bars > span {
+    width: clamp(10px, 0.6vw, 15px);
+    max-width: 15px;
   }
 }
 
