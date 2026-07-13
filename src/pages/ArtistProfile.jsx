@@ -54,25 +54,63 @@ function ArtistProfile() {
         </button>
 
         <div className="artist-profile__hero">
-          <img className="artist-profile__image" src="/images/artist-07.png" alt="Taylor Swift" />
-          <div className="artist-profile__intro">
-            <p className="artist-profile__label">ARTIST PROFILE · POP</p>
-            <h1>Taylor Swift</h1>
-            <div className="artist-profile__popularity">
-              <strong>18.4K</strong><span>LIKED MOMENTS</span>
-            </div>
-            <div className="artist-profile__tags">
-              <span>#NIGHT</span><span>#AFTERGLOW</span><span>#STORYTELLING</span>
-            </div>
-            <p className="artist-profile__description">
-              선명한 장면과 섬세한 감정을 노래로 기록하는 아티스트. Taylor Swift의 음악은
-              아침의 첫 빛부터 늦은 밤의 고요까지, 서로 다른 순간의 기억을 하나의 이야기로 이어줍니다.
-            </p>
-            <div className="artist-profile__actions">
-              <button type="button">View Track Trace <span>↗</span></button>
-              <button type="button">Add Moment <span>＋</span></button>
+          <div className="artist-profile__hero-main">
+            <img className="artist-profile__image" src="/images/artist-07.png" alt="Taylor Swift" />
+            <div className="artist-profile__intro">
+              <p className="artist-profile__label">ARTIST PROFILE · POP</p>
+              <h1>Taylor Swift</h1>
+              <div className="artist-profile__popularity">
+                <strong>18.4K</strong><span>LIKED MOMENTS</span>
+              </div>
+              <div className="artist-profile__tags">
+                <span>#NIGHT</span><span>#AFTERGLOW</span><span>#STORYTELLING</span>
+              </div>
+              <p className="artist-profile__description">
+                선명한 장면과 섬세한 감정을 노래로 기록하는 아티스트. Taylor Swift의 음악은
+                아침의 첫 빛부터 늦은 밤의 고요까지, 서로 다른 순간의 기억을 하나의 이야기로 이어줍니다.
+              </p>
+              <div className="artist-profile__actions">
+                <button type="button">View Track Trace <span>↗</span></button>
+                <button type="button">Add Moment <span>＋</span></button>
+              </div>
             </div>
           </div>
+
+          <aside className="artist-profile__portrait" aria-label="Taylor Swift listening portrait">
+            <div className="artist-profile__portrait-head">
+              <div>
+                <p className="artist-profile__label">LISTENING PORTRAIT</p>
+                <h2>Afterglow Hours</h2>
+              </div>
+              <span aria-hidden="true">TS · 01</span>
+            </div>
+
+            <div className="artist-profile__portrait-time">
+              <span>MOST ACTIVE TIME</span>
+              <strong>23:10</strong>
+              <p>하루가 조용해진 뒤, 가장 많은 기억이 이 음악에 머뭅니다.</p>
+            </div>
+
+            <div className="artist-profile__portrait-moods">
+              <div>
+                <span>REFLECTIVE</span><strong>64%</strong>
+                <i><b style={{ width: "64%" }} /></i>
+              </div>
+              <div>
+                <span>ROMANTIC</span><strong>48%</strong>
+                <i><b style={{ width: "48%" }} /></i>
+              </div>
+              <div>
+                <span>ENERGETIC</span><strong>31%</strong>
+                <i><b style={{ width: "31%" }} /></i>
+              </div>
+            </div>
+
+            <div className="artist-profile__portrait-foot">
+              <span>RECENT MOMENT WORDS</span>
+              <div><b>rainy drive</b><b>midnight</b><b>recovery</b></div>
+            </div>
+          </aside>
         </div>
       </section>
 
@@ -83,9 +121,30 @@ function ArtistProfile() {
           <p>리스너들이 Taylor Swift의 음악과 함께 남긴 시간과 감정의 기록입니다.</p>
         </div>
         <div className="artist-profile__summary-grid">
-          <article><small>ARTIST MOMENT SUMMARY</small><strong>12,842</strong><p>moments collected</p><span>+ 18% THIS MONTH</span></article>
-          <article><small>MOST REMEMBERED TIME</small><strong>23:10</strong><p>late night listening</p><span>NIGHT · AFTERGLOW</span></article>
-          <article><small>ARTIST MOMENT TAGS</small><div className="artist-profile__tag-cloud"><b>#NIGHT</b><b>#LOVE</b><b>#MEMORY</b><b>#DRIVE</b></div><span>42 ACTIVE TAGS</span></article>
+          <article>
+            <div className="artist-profile__summary-card-head"><small>ARTIST MOMENT SUMMARY</small><span>01</span></div>
+            <div className="artist-profile__summary-card-body">
+              <strong>12,842</strong><p>moments collected</p>
+              <div className="artist-profile__summary-meter"><i style={{ width: "78%" }} /></div>
+            </div>
+            <div className="artist-profile__summary-card-foot"><span>+ 18% THIS MONTH</span><small>LISTENER ARCHIVE</small></div>
+          </article>
+          <article>
+            <div className="artist-profile__summary-card-head"><small>MOST REMEMBERED TIME</small><span>02</span></div>
+            <div className="artist-profile__summary-card-body">
+              <strong>23:10</strong><p>late night listening</p>
+              <div className="artist-profile__summary-time-dots" aria-hidden="true"><i /><i /><i /><i /><i /></div>
+            </div>
+            <div className="artist-profile__summary-card-foot"><span>NIGHT · AFTERGLOW</span><small>PEAK LISTENING</small></div>
+          </article>
+          <article>
+            <div className="artist-profile__summary-card-head"><small>ARTIST MOMENT TAGS</small><span>03</span></div>
+            <div className="artist-profile__summary-card-body artist-profile__summary-card-body--tags">
+              <div className="artist-profile__tag-cloud"><b>#NIGHT</b><b>#LOVE</b><b>#MEMORY</b><b>#DRIVE</b></div>
+              <p>기억과 밤의 장면이 가장 자주 함께 기록됩니다.</p>
+            </div>
+            <div className="artist-profile__summary-card-foot"><span>42 ACTIVE TAGS</span><small>UPDATED TODAY</small></div>
+          </article>
         </div>
       </section>
 

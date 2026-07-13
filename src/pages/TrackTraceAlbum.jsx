@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const albumFlow = [
@@ -17,13 +18,28 @@ const tracklist = [
 
 const listeningOrder = [
   { time: "07:20", label: "MORNING", text: "A quiet opening" },
-  { time: "13:45", label: "AFTERNOON", text: "Into the spotlight" },
-  { time: "19:30", label: "EVENING", text: "The brightest scene" },
-  { time: "23:10", label: "NIGHT", text: "After the curtain" },
+  { time: "10:40", label: "LATE MORNING", text: "A gentle lift" },
+  { time: "14:10", label: "AFTERNOON", text: "Into the spotlight" },
+  { time: "18:20", label: "EVENING", text: "The brightest scene" },
+  { time: "21:35", label: "NIGHT", text: "After the curtain" },
+  { time: "00:15", label: "LATE NIGHT", text: "The final afterglow" },
 ];
 
 function TrackTraceAlbum() {
+  const [activeTrackId, setActiveTrackId] = useState(null);
+  const [isTrackPlaying, setIsTrackPlaying] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handlePlayerProgress = (event) => {
+      const trackId = event.detail?.trackId;
+      setActiveTrackId(typeof trackId === "string" && trackId.startsWith("showgirl-track-") ? trackId : null);
+      setIsTrackPlaying(Boolean(event.detail?.isPlaying));
+    };
+
+    window.addEventListener("tempy-player-progress", handlePlayerProgress);
+    return () => window.removeEventListener("tempy-player-progress", handlePlayerProgress);
+  }, []);
 
   return (
     <main className="track-trace-album">
@@ -61,7 +77,17 @@ function TrackTraceAlbum() {
             </p>
 
             <div className="track-trace-album__actions">
-              <button type="button"><span aria-hidden="true">▶</span> PLAY ALBUM</button>
+              <button
+                type="button"
+                data-tempy-playable
+                data-tempy-id="showgirl-track-01"
+                data-tempy-title={tracklist[0].title}
+                data-tempy-artist="Taylor Swift"
+                data-tempy-cover="/images/album-26.png"
+                data-tempy-duration={tracklist[0].duration}
+              >
+                <span aria-hidden="true">▶</span> PLAY ALBUM
+              </button>
               <button type="button">KEEP ALBUM <span aria-hidden="true">＋</span></button>
             </div>
           </div>
@@ -93,14 +119,51 @@ function TrackTraceAlbum() {
           </div>
 
           <ol className="track-trace-album__tracklist">
-            {tracklist.map((track) => (
-              <li key={track.number}>
+            {tracklist.map((track) => {
+              const trackId = `showgirl-track-${track.number}`;
+              const isActive = activeTrackId === trackId;
+
+              return (
+              <li
+                className={isActive ? "track-trace-album__track--active" : ""}
+                data-tempy-playable
+                data-tempy-id={trackId}
+                data-tempy-title={track.title}
+                data-tempy-artist="Taylor Swift"
+                data-tempy-cover="/images/album-26.png"
+                data-tempy-duration={track.duration}
+                key={track.number}
+              >
                 <span>{track.number}</span>
                 <strong>{track.title}</strong>
                 <time>{track.duration}</time>
-                <span aria-hidden="true">▶</span>
+                <button
+                  type="button"
+                  data-now-player-control
+                  aria-label={`${track.title} ${isActive && isTrackPlaying ? "일시정지" : "재생"}`}
+                  aria-pressed={isActive && isTrackPlaying}
+                  onClick={() => {
+                    if (isActive) {
+                      window.dispatchEvent(new CustomEvent("tempy-toggle-playback"));
+                      return;
+                    }
+
+                    window.dispatchEvent(new CustomEvent("tempy-play-track", {
+                      detail: {
+                        id: trackId,
+                        title: track.title,
+                        artist: "Taylor Swift",
+                        cover: "/images/album-26.png",
+                        duration: track.duration,
+                      },
+                    }));
+                  }}
+                >
+                  <span aria-hidden="true">{isActive && isTrackPlaying ? "Ⅱ" : "▶"}</span>
+                </button>
               </li>
-            ))}
+              );
+            })}
           </ol>
         </div>
       </section>

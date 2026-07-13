@@ -331,25 +331,47 @@ function Create() {
           position: absolute !important;
           top: 120px !important;
           left: 80px !important;
+          display: inline-flex !important;
+          width: fit-content !important;
+          min-height: 32px !important;
+          padding: 0 !important;
+          align-items: center !important;
+          gap: 12px !important;
+          border: 0 !important;
+          background: transparent !important;
+          color: var(--tempy-navy) !important;
+          font-size: 12px !important;
+          line-height: 1 !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.09em !important;
+          box-shadow: none !important;
+          cursor: pointer !important;
+          transition: color 230ms ease, transform 230ms ease !important;
+        }
+
+        .create-detail-page .create-detail-back span:first-child {
           display: grid !important;
-          width: 48px !important;
-          height: 48px !important;
+          width: 32px !important;
+          height: 32px !important;
           place-items: center !important;
           border: 1px solid var(--tempy-navy) !important;
           border-radius: 50% !important;
-          background: var(--tempy-blue) !important;
           color: var(--tempy-navy) !important;
-          font-size: 28px !important;
-          line-height: 1 !important;
-          font-weight: 900 !important;
-          box-shadow: none !important;
-          cursor: pointer !important;
-          transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), background-color 220ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+          background: transparent !important;
+          font-size: 16px !important;
+          font-weight: 400 !important;
+          transition: color 230ms ease, background-color 230ms ease, transform 230ms ease !important;
         }
 
         .create-detail-page .create-detail-back:hover {
-          transform: translate3d(-5px, 0, 0) !important;
-          background: #89abe6 !important;
+          color: var(--tempy-blue) !important;
+          transform: translateX(-1px) !important;
+        }
+
+        .create-detail-page .create-detail-back:hover span:first-child {
+          color: #ffffff !important;
+          background: var(--tempy-navy) !important;
+          transform: translateX(-2px) !important;
         }
 
         .create-detail-page .create-detail-workspace {
@@ -973,7 +995,8 @@ function CreateDetail({
       <section className="create-detail-shell">
         <aside className="create-detail-side">
           <button className="create-detail-back" type="button" onClick={onBack} aria-label="선택 화면으로 돌아가기">
-            ←
+            <span aria-hidden="true">←</span>
+            <span>BACK</span>
           </button>
           <h1>{isMoment ? "Moment Card" : "Playlist"}</h1>
           <p>
@@ -1279,7 +1302,8 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
       <section className="create-detail-shell">
         <aside className="create-detail-side">
           <button className="create-detail-back" type="button" onClick={onRetry} aria-label="작성 화면으로 돌아가기">
-            ←
+            <span aria-hidden="true">←</span>
+            <span>BACK</span>
           </button>
           <h1>{isMoment ? "Moment Card" : "Playlist"}</h1>
           <p>

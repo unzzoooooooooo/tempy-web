@@ -303,6 +303,7 @@ function GlobalPlayer() {
   const location = useLocation();
   const previousPathRef = useRef(location.pathname);
   const isSeekingRef = useRef(false);
+  const pendingSeekTimeRef = useRef(null);
   const audioRef = useRef(null);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -365,6 +366,53 @@ function GlobalPlayer() {
     window.addEventListener("tempy-play-track", handlePlayRequest);
     return () => window.removeEventListener("tempy-play-track", handlePlayRequest);
   }, []);
+
+  useEffect(() => {
+    const handleSeekRequest = (event) => {
+      const track = event.detail?.track;
+      const requestedTime = Number(event.detail?.startTime);
+      if (!track || !Number.isFinite(requestedTime)) return;
+
+      const nextDuration = parseTrackDuration(track.duration);
+      const nextTime = Math.min(nextDuration, Math.max(0, requestedTime));
+      pendingSeekTimeRef.current = track.audioSrc ? nextTime : null;
+      setCurrentTrack(track);
+      setDuration(nextDuration);
+      setCurrentTime(nextTime);
+      setProgressTime(nextTime);
+      setIsPlaying(true);
+      setIsSaved(false);
+
+      const audio = audioRef.current;
+      if (audio && track.audioSrc && audio.readyState >= 1) {
+        audio.currentTime = nextTime;
+        audio.play().catch(() => setIsPlaying(false));
+      }
+    };
+
+    window.addEventListener("tempy-seek-track", handleSeekRequest);
+    return () => window.removeEventListener("tempy-seek-track", handleSeekRequest);
+  }, []);
+
+  useEffect(() => {
+    const handlePlaybackToggle = () => {
+      setIsPlaying((currentlyPlaying) => !currentlyPlaying);
+    };
+
+    window.addEventListener("tempy-toggle-playback", handlePlaybackToggle);
+    return () => window.removeEventListener("tempy-toggle-playback", handlePlaybackToggle);
+  }, []);
+
+  useEffect(() => {
+    if (!currentTrack) return;
+    window.dispatchEvent(new CustomEvent("tempy-player-progress", {
+      detail: {
+        trackId: currentTrack.id,
+        currentTime,
+        isPlaying,
+      },
+    }));
+  }, [currentTime, currentTrack, isPlaying]);
 
   useEffect(() => {
     const handleGlobalClick = (event) => {
@@ -488,7 +536,17 @@ function GlobalPlayer() {
   const handleAudioLoaded = () => {
     const audio = audioRef.current;
     if (!audio) return;
-    setDuration(Number.isFinite(audio.duration) ? audio.duration : 15);
+    const loadedDuration = Number.isFinite(audio.duration) ? audio.duration : 15;
+    setDuration(loadedDuration);
+
+    if (pendingSeekTimeRef.current !== null) {
+      const nextTime = Math.min(loadedDuration, pendingSeekTimeRef.current);
+      audio.currentTime = nextTime;
+      setCurrentTime(nextTime);
+      setProgressTime(nextTime);
+      pendingSeekTimeRef.current = null;
+      audio.play().catch(() => setIsPlaying(false));
+    }
   };
 
   const handleClosePlayer = () => {
