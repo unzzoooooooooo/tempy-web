@@ -3068,7 +3068,7 @@ body::-webkit-scrollbar:horizontal,
   grid-template-columns: repeat(2, minmax(520px, 1fr));
   gap: clamp(20px, 1.8vw, 36px);
   align-items: end;
-  height: clamp(320px, 21vw, 430px);
+  height: clamp(340px, 22vw, 450px);
   overflow: visible;
 }
 
@@ -3076,17 +3076,10 @@ body::-webkit-scrollbar:horizontal,
   position: relative;
   justify-self: center;
   align-self: end;
-  width: clamp(450px, 27.5vw, 620px);
+  width: clamp(480px, 29vw, 650px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.045) 0 18%, transparent 18.5% 100%),
-    radial-gradient(circle at 50% 50%, transparent 0 28%, rgba(255, 255, 255, 0.1) 28.25% 28.7%, transparent 29.1% 37%),
-    radial-gradient(circle at 50% 50%, transparent 0 42%, rgba(255, 255, 255, 0.07) 42.25% 42.65%, transparent 43.05% 51%),
-    radial-gradient(circle at 50% 50%, transparent 0 56%, rgba(255, 255, 255, 0.085) 56.25% 56.7%, transparent 57.1% 65%),
-    radial-gradient(circle at 50% 50%, transparent 0 72%, rgba(255, 255, 255, 0.07) 72.25% 72.65%, transparent 73.05% 80%),
-    radial-gradient(circle at 50% 50%, transparent 0 88%, rgba(255, 255, 255, 0.055) 88.25% 88.65%, transparent 89.05% 100%),
-    #07142b;
+  background: #07142b;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.14),
     0 18px 34px rgba(7, 20, 43, 0.08);
@@ -3144,12 +3137,12 @@ body::-webkit-scrollbar:horizontal,
   grid-template-columns: repeat(2, minmax(520px, 1fr));
   gap: clamp(20px, 1.8vw, 36px);
   padding: 0;
-  margin-top: clamp(-92px, -4.2vw, -64px);
+  margin-top: clamp(-126px, -6vw, -92px);
 }
 
 .discover-page__card {
   display: flex;
-  min-height: clamp(320px, 19vw, 400px);
+  min-height: clamp(370px, 21vw, 440px);
   padding: clamp(24px, 1.8vw, 34px);
   flex-direction: column;
   color: #ffffff;
@@ -3164,20 +3157,20 @@ body::-webkit-scrollbar:horizontal,
   justify-content: space-between;
   padding-bottom: 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.62);
-  font-size: 12px;
+  font-size: clamp(13px, 0.72vw, 15px);
   font-weight: 700;
   letter-spacing: 0.09em;
 }
 
 .discover-page__card-copy {
   flex: 1;
-  padding-top: 28px;
+  padding-top: clamp(38px, 2.7vw, 54px);
 }
 
 .discover-page__card-copy h2 {
   margin: 0 0 14px;
   font-family: "GalgoVF", "Arial Narrow", sans-serif;
-  font-size: clamp(62px, 5.4vw, 96px);
+  font-size: clamp(72px, 5.8vw, 108px);
   font-weight: 400;
   line-height: 0.8;
   letter-spacing: -0.008em;
@@ -3185,8 +3178,8 @@ body::-webkit-scrollbar:horizontal,
 
 .discover-page__card-copy p {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: clamp(16px, 0.94vw, 19px);
+  line-height: 1.6;
 }
 
 .discover-page__card-bottom {
@@ -3195,7 +3188,7 @@ body::-webkit-scrollbar:horizontal,
   justify-content: space-between;
   padding-top: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.62);
-  font-size: 13px;
+  font-size: clamp(14px, 0.78vw, 16px);
   font-weight: 600;
 }
 
@@ -3229,7 +3222,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .discover-page__record {
-    width: min(52vw, 230px);
+    width: min(56vw, 250px);
   }
 
   .discover-page__cards {
@@ -3239,7 +3232,19 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .discover-page__card {
-    min-height: 330px;
+    min-height: clamp(340px, 92vw, 380px);
+  }
+
+  .discover-page__card-copy {
+    padding-top: 32px;
+  }
+
+  .discover-page__card-copy h2 {
+    font-size: clamp(68px, 20vw, 88px);
+  }
+
+  .discover-page__card-copy p {
+    font-size: clamp(15px, 3.8vw, 17px);
   }
 }
 
@@ -3249,30 +3254,30 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .discover-page__visual {
-    height: clamp(230px, 18vw, 280px);
+    height: clamp(270px, 19vw, 320px);
   }
 
   .discover-page__record {
-    width: clamp(360px, 25vw, 460px);
+    width: clamp(400px, 27vw, 500px);
   }
 
   .discover-page__cards {
     padding-bottom: 20px;
-    margin-top: clamp(-70px, -3.5vw, -48px);
+    margin-top: clamp(-110px, -5.5vw, -82px);
   }
 
   .discover-page__card {
-    min-height: clamp(260px, 16vw, 300px);
+    min-height: clamp(330px, 19vw, 370px);
     padding: clamp(20px, 1.5vw, 28px);
   }
 
   .discover-page__card-copy {
-    padding-top: 22px;
+    padding-top: clamp(32px, 2.2vw, 42px);
   }
 
   .discover-page__card-copy h2 {
     margin-bottom: 12px;
-    font-size: clamp(56px, 4.8vw, 82px);
+    font-size: clamp(68px, 5.2vw, 92px);
   }
 }
 
@@ -3288,6 +3293,10 @@ body::-webkit-scrollbar:horizontal,
 
   .discover-page__card {
     padding: 22px 20px;
+  }
+
+  .discover-page__card-topline {
+    font-size: 12px;
   }
 
   .discover-page__card-topline span:last-child {
@@ -6075,7 +6084,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .discover-page__card {
-    min-height: clamp(360px, 21vw, 440px);
+    min-height: clamp(400px, 22vw, 470px);
   }
 
   .time-set-detail,
