@@ -28,7 +28,7 @@ function LifestyleCurator() {
 
         <div className="lifestyle-curator__intro-copy">
           <p className="lifestyle-curator__eyebrow">MOMENT CURATOR · 01</p>
-          <h1>Lifestyle<br />Curator</h1>
+          <h1>Lifestyle<br />{" "}Curator</h1>
           <p>
             일상의 취향과 장면을 음악으로 기록하는 사람들의 플레이리스트를 만나보세요.
             익숙한 하루가 조금 다르게 들리는 순간을 모았습니다.

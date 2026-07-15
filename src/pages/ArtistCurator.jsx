@@ -217,7 +217,7 @@ function ArtistCurator() {
       <aside className="artist-curator__intro">
         <p className="artist-curator__eyebrow">MOMENT CURATOR · 02</p>
         <h1>Artist Curator</h1>
-        <p>당신이 살아보지 못한 순간의 삶을 사는 사람들의<br />다양한 음악을 감상해보세요</p>
+        <p>당신이 살아보지 못한 순간의 삶을 사는 사람들의<br />{" "}다양한 음악을 감상해보세요</p>
         <span className="artist-curator__wordmark" aria-hidden="true">ARTIST</span>
       </aside>
 
