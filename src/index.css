@@ -10168,6 +10168,65 @@ body::-webkit-scrollbar:horizontal,
   line-height: 1.4;
 }
 
+@media (min-width: 801px) {
+  .curator-page__item-copy {
+    top: -18px;
+    margin-bottom: 12px;
+  }
+
+  .curator-page__item-copy > span:first-child {
+    position: relative;
+    top: -11px;
+  }
+
+  .curator-page__item-copy .curator-page__card-title {
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: clamp(68px, 5.2vw, 96px);
+    font-weight: 400;
+    line-height: 0.8;
+    letter-spacing: -0.008em;
+  }
+
+  .curator-page__item-copy .curator-page__card-description {
+    width: min(100%, 520px);
+    max-width: 520px;
+    font-family: "Pretendard", "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    font-size: clamp(15px, 0.84vw, 17px);
+    font-weight: 500;
+    line-height: 1.55;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+
+  .curator-page__item-arrow {
+    cursor: pointer;
+    transition:
+      transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 300ms ease,
+      background-color 300ms ease,
+      color 300ms ease,
+      box-shadow 300ms ease;
+  }
+
+  .curator-page__item-arrow > span {
+    display: inline-block;
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .curator-page__item-arrow:hover {
+    color: #f3f4f0;
+    background-color: #07142b;
+    border-color: #07142b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(7, 20, 43, 0.12);
+  }
+
+  .curator-page__item-arrow:hover > span {
+    transform: translate(3px, -3px);
+  }
+}
+
 .curator-page__item-arrow {
   top: 0;
   right: 3px;

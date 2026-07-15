@@ -217,8 +217,8 @@ function Curator() {
             <article className="curator-page__item" key={curator.title}>
               <div className="curator-page__item-copy">
                 <span>{curator.number} / 03</span>
-                <h2>{curator.title}</h2>
-                <p>{curator.description}</p>
+                <h2 className="curator-page__card-title">{curator.title}</h2>
+                <p className="curator-page__card-description">{curator.description}</p>
                 {curator.number === "01" || curator.number === "02" || curator.number === "03" ? (
                   <button
                     className="curator-page__item-arrow"
@@ -231,7 +231,7 @@ function Curator() {
                       if (curator.number === "03") goToSimilarCurator();
                     }}
                   >
-                    ↗
+                    <span aria-hidden="true">↗</span>
                   </button>
                 ) : (
                   <span className="curator-page__item-arrow" aria-hidden="true">↗</span>
