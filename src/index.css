@@ -2543,6 +2543,525 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+/* Home mobile layout — isolated from every desktop/iMac rule. */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    position: relative;
+    z-index: 1002;
+    display: grid;
+    width: 40px;
+    height: 40px;
+    padding: 9px 7px;
+    flex: 0 0 40px;
+    align-content: center;
+    gap: 5px;
+    border: 1px solid rgba(255, 48, 56, 0.55);
+    border-radius: 50%;
+    color: #ff3038;
+    background: transparent;
+  }
+
+  .mobile-menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    border-radius: 99px;
+    background: currentColor;
+    transition: transform 180ms ease, opacity 180ms ease;
+  }
+
+  .mobile-menu-toggle.is-open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .mobile-menu-toggle.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-toggle.is-open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .mobile-navigation {
+    position: fixed;
+    inset: 72px 0 0;
+    z-index: 1001;
+    display: flex;
+    padding: 34px 20px 48px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    overflow-y: auto;
+    color: #ff3038;
+    background: #07142b;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+  }
+
+  .mobile-navigation.is-open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .mobile-navigation a {
+    display: flex;
+    min-height: 68px;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 48, 56, 0.32);
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: clamp(48px, 15vw, 64px);
+    font-weight: 400;
+    line-height: 0.85;
+  }
+
+  .mobile-navigation a:first-child {
+    border-top: 1px solid rgba(255, 48, 56, 0.32);
+  }
+
+  .home-page,
+  .home-page main,
+  .home-page section {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .home-page .hero-section {
+    height: 620px;
+    min-height: 620px;
+    padding-top: 72px;
+  }
+
+  .home-page .hero-inner {
+    position: relative;
+    display: block;
+    height: 472px;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .home-page .hero-copy {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    padding: 56px 20px 0;
+  }
+
+  .home-page .hero-wordmark {
+    width: clamp(196px, 56vw, 224px);
+    max-width: 100%;
+    height: auto;
+  }
+
+  .home-page .hero-subtitle {
+    max-width: 250px;
+    margin: 20px 0 0;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .home-page .hero-visual {
+    position: absolute;
+    inset: 72px 0 0;
+    width: 100%;
+    max-width: none;
+    height: 400px;
+    overflow: hidden;
+  }
+
+  .home-page .lp-large {
+    top: 138px;
+    right: -48px;
+    width: 252px;
+    height: 252px;
+  }
+
+  .home-page .lp-center {
+    width: 70px;
+    height: 70px;
+  }
+
+  .home-page .lp-center::after {
+    width: 10px;
+    height: 10px;
+  }
+
+  .home-page .hero-visual::after,
+  .home-page .hero-section::after {
+    display: none;
+  }
+
+  .home-page .hero-bar {
+    top: auto;
+    bottom: 0;
+    height: 76px;
+    padding: 0 20px;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .home-page .hero-bar-text {
+    flex: 1 1 0;
+    font-size: clamp(23px, 7.4vw, 29px);
+    line-height: 0.92;
+    text-wrap: balance;
+  }
+
+  .home-page .hero-bar-text:last-child {
+    text-align: right;
+  }
+
+  .home-page .section {
+    padding: 52px 20px 48px;
+  }
+
+  .home-page .section-head h2 {
+    max-width: 100%;
+    margin-bottom: 12px;
+    font-size: clamp(44px, 13vw, 56px);
+    line-height: 0.86;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  .home-page .section-head p {
+    max-width: 100%;
+    font-size: clamp(18px, 5vw, 20px);
+    line-height: 1.48;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .home-page .tag-row {
+    display: grid;
+    margin: 24px 0 28px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .home-page .tag {
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 13px;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .home-page :is(.album-row, .artist-row, .leftnow-row, .curator-row) {
+    width: calc(100% + 20px);
+    max-width: none;
+    padding-right: 32px;
+    overscroll-behavior-inline: contain;
+    scroll-padding-left: 0;
+    scroll-snap-type: x mandatory;
+  }
+
+  .home-page .album-row {
+    gap: 16px;
+    padding-bottom: 10px;
+  }
+
+  .home-page .album-card {
+    width: min(72vw, 280px);
+    min-width: min(72vw, 280px);
+    flex-basis: min(72vw, 280px);
+  }
+
+  .home-page .album-image-wrap {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .home-page .album-meta {
+    margin-top: 14px;
+    grid-template-columns: 42px minmax(0, 1fr);
+    column-gap: 12px;
+  }
+
+  .home-page .album-play {
+    width: 42px;
+    height: 42px;
+  }
+
+  .home-page .album-play::before {
+    width: 18px;
+    height: 18px;
+  }
+
+  .home-page .album-play::after,
+  .home-page .album-card span {
+    font-size: 14px;
+  }
+
+  .home-page .album-card strong {
+    overflow: hidden;
+    font-size: 17px;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .home-page .discover-grid {
+    margin-top: 30px;
+    gap: 16px;
+  }
+
+  .home-page .discover-card {
+    width: 100%;
+    height: auto;
+    min-height: 390px;
+    padding: 30px 24px;
+    display: block;
+    overflow: hidden;
+  }
+
+  .home-page .discover-copy {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .home-page .discover-card h3 {
+    max-width: 100%;
+    margin-bottom: 12px;
+    font-size: clamp(42px, 13vw, 52px);
+    line-height: 0.9;
+    white-space: normal;
+  }
+
+  .home-page .discover-card span {
+    max-width: 100%;
+    margin-bottom: 20px;
+    padding-right: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .home-page .discover-card br {
+    display: none;
+  }
+
+  .home-page .small-button {
+    min-width: 0;
+    height: 40px;
+    padding: 0 18px;
+    font-size: 14px;
+  }
+
+  .home-page .discover-art {
+    position: absolute;
+    right: -18px;
+    bottom: -20px;
+    width: 152px;
+    height: 152px;
+  }
+
+  .home-page .discover-art span {
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .home-page .artist-row {
+    margin-top: 30px;
+    gap: 14px;
+  }
+
+  .home-page .artist-card {
+    width: calc(100vw - 52px);
+    min-width: calc(100vw - 52px);
+    height: auto;
+    min-height: 500px;
+    flex-basis: calc(100vw - 52px);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 260px minmax(210px, auto);
+  }
+
+  .home-page .artist-art {
+    width: 100%;
+    height: 260px;
+    max-width: none;
+    object-position: center 28%;
+  }
+
+  .home-page .artist-copy {
+    min-height: 220px;
+    padding: 25px 24px 62px;
+    overflow: hidden;
+  }
+
+  .home-page .artist-copy strong {
+    max-width: 100%;
+    margin-bottom: 14px;
+    font-size: 18px;
+    line-height: 1.42;
+    word-break: keep-all;
+  }
+
+  .home-page .artist-copy span {
+    max-width: 100%;
+    font-size: 14px;
+    white-space: normal;
+  }
+
+  .home-page .artist-name {
+    left: 24px;
+    bottom: 22px;
+  }
+
+  .home-page .artist-info {
+    top: 206px;
+    bottom: auto;
+    left: 16px;
+  }
+
+  .home-page .playlist-grid {
+    margin-top: 30px;
+    gap: 14px;
+  }
+
+  .home-page .playlist-row {
+    width: 100%;
+    padding: 0 0 14px;
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .home-page :is(.playlist-row img, .playlist-thumb) {
+    width: 68px;
+    height: 68px;
+    max-width: none;
+  }
+
+  .home-page .playlist-row strong {
+    font-size: 16px;
+    line-height: 1.3;
+    word-break: keep-all;
+  }
+
+  .home-page .playlist-row span {
+    margin-top: 2px;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .home-page .leftnow-row {
+    margin-top: 30px;
+    gap: 14px;
+  }
+
+  .home-page .leftnow-card {
+    width: min(80vw, 314px);
+    min-width: min(80vw, 314px);
+    height: 430px;
+    padding: 22px 20px 0;
+    flex-basis: min(80vw, 314px);
+  }
+
+  .home-page .leftnow-text strong {
+    font-size: 16px;
+  }
+
+  .home-page .leftnow-text span {
+    font-size: 14px;
+  }
+
+  .home-page .leftnow-image {
+    width: calc(100% + 40px);
+    max-width: none;
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+
+  .home-page .curator-row {
+    margin-top: 30px;
+    gap: 22px;
+  }
+
+  .home-page .curator-item {
+    width: 108px;
+    min-width: 108px;
+    flex-basis: 108px;
+  }
+
+  .home-page .curator-circle {
+    width: 108px;
+    height: 108px;
+    max-width: none;
+    margin-bottom: 12px;
+  }
+
+  .home-page .curator-item span {
+    font-size: 14px;
+    white-space: normal;
+  }
+
+  .home-page .archive-grid {
+    margin-top: 30px;
+    gap: 16px;
+  }
+
+  .home-page .archive-card {
+    width: 100%;
+    height: auto;
+    min-height: 480px;
+    padding: 30px 24px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(210px, 1fr);
+    align-items: start;
+    gap: 26px;
+  }
+
+  .home-page .archive-text h3 {
+    max-width: 100%;
+    margin-bottom: 14px;
+    font-size: clamp(44px, 13vw, 56px);
+    line-height: 0.86;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  .home-page .archive-text p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+
+  .home-page .archive-text button,
+  .home-page .archive-blind-pick__button {
+    min-height: 40px;
+    font-size: 14px;
+  }
+
+  .home-page .archive-mosaic {
+    width: 92%;
+    max-width: 340px;
+    margin: 8px auto 0;
+    transform: rotate(-7deg);
+  }
+
+  .home-page .archive-blind-pick__visual {
+    width: 100%;
+    min-height: 230px;
+  }
+
+  .home-page .archive-blind-pick__album,
+  .home-page .archive-blind-pick__cover {
+    width: 132px;
+  }
+}
+
 /* Now page */
 .now-page {
   display: grid;

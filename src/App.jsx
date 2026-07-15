@@ -36,6 +36,8 @@ const readLoginState = () => {
 function Header() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(() => readLoginState());
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia("(max-width: 768px)").matches);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const syncLoginState = () => {
@@ -52,6 +54,34 @@ function Header() {
       window.removeEventListener("focus", syncLoginState);
     };
   }, []);
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia("(max-width: 768px)");
+    const syncMobileLayout = () => {
+      setIsMobile(mobileQuery.matches);
+      if (!mobileQuery.matches) setIsMobileMenuOpen(false);
+    };
+
+    syncMobileLayout();
+    mobileQuery.addEventListener("change", syncMobileLayout);
+    return () => mobileQuery.removeEventListener("change", syncMobileLayout);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isMobileMenuOpen]);
 
   const handleAuthClick = () => {
     if (!isLoggedIn) {
@@ -87,7 +117,34 @@ function Header() {
             <img src="/images/artist-04.png" alt="" draggable={false} />
           </Link>
         </div>
+        {isMobile && (
+          <button
+            className={`mobile-menu-toggle${isMobileMenuOpen ? " is-open" : ""}`}
+            type="button"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        )}
       </div>
+      {isMobile && (
+        <nav
+          id="mobile-navigation"
+          className={`mobile-navigation${isMobileMenuOpen ? " is-open" : ""}`}
+          aria-hidden={!isMobileMenuOpen}
+        >
+          <Link to="/now" tabIndex={isMobileMenuOpen ? 0 : -1} onClick={() => setIsMobileMenuOpen(false)}>Now</Link>
+          <Link to="/discover" tabIndex={isMobileMenuOpen ? 0 : -1} onClick={() => setIsMobileMenuOpen(false)}>Discover</Link>
+          <Link to="/curator" tabIndex={isMobileMenuOpen ? 0 : -1} onClick={() => setIsMobileMenuOpen(false)}>Curator</Link>
+          <Link to="/create" tabIndex={isMobileMenuOpen ? 0 : -1} onClick={() => setIsMobileMenuOpen(false)}>Create</Link>
+          <Link to="/archive" tabIndex={isMobileMenuOpen ? 0 : -1} onClick={() => setIsMobileMenuOpen(false)}>Archive</Link>
+        </nav>
+      )}
     </header>
   );
 }
