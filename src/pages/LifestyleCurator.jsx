@@ -119,7 +119,7 @@ function LifestyleCurator() {
                 <div className="lifestyle-curator__card-main">
                   <div className="lifestyle-curator__card-copy">
                     <span>PLAYLIST · {String(index + 1).padStart(2, "0")}</span>
-                    <h2>{playlist.title}</h2>
+                    <h2 className="lifestyle-curator__card-title">{playlist.title}</h2>
                     <div className="lifestyle-curator__host">
                       <span>H</span>
                       <strong>hostless</strong>

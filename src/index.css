@@ -10927,6 +10927,9 @@ body::-webkit-scrollbar:horizontal,
   .lifestyle-curator__grid:active { cursor: grabbing; }
 
   .lifestyle-curator__card {
+    --archive-card-padding-inline: 30px;
+    --archive-card-padding-top: 28px;
+    --archive-card-padding-bottom: 30px;
     --archive-bg: #adc2e5;
     --archive-ink: #07142b;
     --archive-muted: rgba(7, 20, 43, 0.68);
@@ -10972,7 +10975,10 @@ body::-webkit-scrollbar:horizontal,
   .lifestyle-curator__card-copy {
     position: relative;
     height: 100%;
-    padding: 36px 24px;
+    padding:
+      var(--archive-card-padding-top)
+      var(--archive-card-padding-inline)
+      var(--archive-card-padding-bottom);
     color: var(--archive-ink);
   }
 
@@ -10986,16 +10992,22 @@ body::-webkit-scrollbar:horizontal,
     line-height: 1;
   }
 
-  .lifestyle-curator__card-copy h2 {
-    max-width: 280px;
-    margin: 20px 0 14px;
+  .lifestyle-curator__card-copy .lifestyle-curator__card-title {
+    width: 100%;
+    max-width: none;
+    margin: 20px 0 11px;
     color: var(--archive-ink);
     display: -webkit-box;
-    min-height: 2.72em;
     overflow: hidden;
-    font-size: 23px;
+    font-size: clamp(19px, 0.95vw, 22px);
     font-weight: 600;
-    line-height: 1.42;
+    line-height: 1.32;
+    letter-spacing: -0.025em;
+    overflow-wrap: normal;
+    text-wrap: pretty;
+    white-space: normal;
+    word-spacing: normal;
+    word-break: keep-all;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
@@ -11021,8 +11033,10 @@ body::-webkit-scrollbar:horizontal,
     box-shadow: none;
     filter: none;
     transform: translate(-50%, -50%) rotate(0deg);
-    animation: lifestyle-curator-card-lp-spin 8s linear infinite;
+    animation: lifestyle-curator-card-lp-spin 7s linear infinite;
     animation-play-state: paused;
+    transform-origin: center;
+    will-change: transform;
   }
 
   .lifestyle-curator__lp img {
@@ -11040,12 +11054,9 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .lifestyle-curator__card:hover .lifestyle-curator__lp {
+    animation-play-state: running;
     box-shadow: none;
     filter: none;
-  }
-
-  .lifestyle-curator__lp:hover {
-    animation-play-state: running;
   }
 
   .lifestyle-curator__card:hover .lifestyle-curator__lp img {
@@ -11054,7 +11065,7 @@ body::-webkit-scrollbar:horizontal,
 
   .lifestyle-curator__play-rail {
     position: relative;
-    padding: 20px 0 16px;
+    padding: var(--archive-card-padding-top) 0 var(--archive-card-padding-bottom);
     justify-content: flex-start;
     color: #fff1cf;
     background: #07142b;
@@ -11062,10 +11073,14 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .lifestyle-curator__play-rail > span {
+    position: absolute;
+    top: var(--archive-card-padding-top);
+    right: 0;
     display: block;
+    width: 100%;
     color: rgba(255, 241, 207, 0.84);
     font-family: "GalgoVF", "Arial Narrow", sans-serif;
-    font-size: 24px;
+    font-size: clamp(34px, 2.2vw, 44px);
     font-weight: 400;
     line-height: 1;
     letter-spacing: 0;
@@ -11079,16 +11094,17 @@ body::-webkit-scrollbar:horizontal,
     width: 42px;
     height: 42px;
     margin: 0;
-    border-color: rgba(255, 241, 207, 0.82);
-    color: #ff454b;
+    border-color: currentColor;
+    color: #fff1cf;
+    background: transparent;
     transform: translate(-50%, -50%);
   }
 
   .lifestyle-curator__play-rail button:hover {
-    color: #ff454b;
+    color: #07142b;
     background: #fff1cf;
     border-color: #fff1cf;
-    transform: translate(-50%, calc(-50% - 2px));
+    transform: translate(-50%, -50%) scale(1.04);
   }
 
   .lifestyle-curator__clip {
