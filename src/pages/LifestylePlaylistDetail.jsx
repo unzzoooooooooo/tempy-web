@@ -19,6 +19,8 @@ function LifestylePlaylistDetail() {
   const navigate = useNavigate();
   const [translateX, setTranslateX] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
+  const [selectedTrack, setSelectedTrack] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
   const translateRef = useRef(0);
@@ -27,6 +29,7 @@ function LifestylePlaylistDetail() {
   const wheelFrame = useRef(null);
   const inputEndTimer = useRef(null);
   const dragState = useRef(null);
+  const didDrag = useRef(false);
 
   const moveTo = (nextTranslate) => {
     const clamped = Math.min(maxTranslateRef.current, Math.max(0, nextTranslate));
@@ -102,6 +105,7 @@ function LifestylePlaylistDetail() {
 
   const handlePointerDown = (event) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    didDrag.current = false;
     dragState.current = { pointerId: event.pointerId, startX: event.clientX, startTranslate: translateRef.current };
   };
 
@@ -113,6 +117,7 @@ function LifestylePlaylistDetail() {
     if (Math.abs(distance) < 5 && !event.currentTarget.hasPointerCapture(event.pointerId)) return;
     if (!event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.setPointerCapture(event.pointerId);
 
+    didDrag.current = true;
     setIsDirectInput(true);
     moveTo(drag.startTranslate - distance);
   };
@@ -133,8 +138,13 @@ function LifestylePlaylistDetail() {
         <div>
           <p className="lifestyle-playlist-detail__eyebrow">LIFESTYLE CURATOR · PLAYLIST 01</p>
           <h1>20년차 카페 사장님의 새벽 플레이리스트</h1>
-          <p className="lifestyle-playlist-detail__meta">10곡 · 21:03 · 2026.05.16&nbsp;&nbsp; ♡ 1.5k</p>
+          <p className="lifestyle-playlist-detail__meta">{playlistTracks.length}곡 · 21:03 · 2026.05.16&nbsp;&nbsp; ♡ 1.5k</p>
           <div className="lifestyle-playlist-detail__host"><span>H</span><strong>hostless</strong></div>
+          <div className="lifestyle-playlist-detail__now-playing">
+            <span>NOW PLAYING · {String(selectedTrack + 1).padStart(2, "0")}</span>
+            <strong>{playlistTracks[selectedTrack].title}</strong>
+            <small>{playlistTracks[selectedTrack].artist}</small>
+          </div>
         </div>
 
         <div className="lifestyle-playlist-detail__controller">
@@ -146,7 +156,14 @@ function LifestylePlaylistDetail() {
         </div>
 
         <div className="lifestyle-playlist-detail__actions">
-          <button type="button"><span>▶</span> PLAY</button>
+          <button
+            className={isPlaying ? "is-playing" : ""}
+            type="button"
+            aria-pressed={isPlaying}
+            onClick={() => setIsPlaying((playing) => !playing)}
+          >
+            <span>{isPlaying ? "Ⅱ" : "▶"}</span> {isPlaying ? "PAUSE" : "PLAY"}
+          </button>
           <button type="button" aria-label="셔플">⌘</button>
           <button type="button" aria-label="좋아요">♡</button>
         </div>
@@ -169,12 +186,24 @@ function LifestylePlaylistDetail() {
         >
           {playlistTracks.map((track, index) => (
             <article
-              className="lifestyle-playlist-detail__item"
+              className={`lifestyle-playlist-detail__item${selectedTrack === index ? " lifestyle-playlist-detail__item--active" : ""}`}
               data-tempy-playable
               data-tempy-title={track.title}
               data-tempy-artist={track.artist}
               data-tempy-cover={track.cover}
               key={`${track.title}-${index}`}
+              role="button"
+              tabIndex={0}
+              aria-current={selectedTrack === index ? "true" : undefined}
+              onClick={() => {
+                if (!didDrag.current) setSelectedTrack(index);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setSelectedTrack(index);
+                }
+              }}
             >
               <span className="lifestyle-playlist-detail__number">{String(index + 1).padStart(2, "0")}</span>
               <div className="lifestyle-playlist-detail__lp">
@@ -187,6 +216,11 @@ function LifestylePlaylistDetail() {
               <p>{track.artist}</p>
             </article>
           ))}
+        </div>
+
+        <div className="lifestyle-playlist-detail__archive-meta" aria-hidden="true">
+          <p>새벽의 문을 여는 첫 잔처럼, 천천히 이어지는 열한 곡의 기록.</p>
+          <div><span>11 TRACKS</span><span>21:03</span><span>♡ 1.5K</span></div>
         </div>
       </section>
     </main>
