@@ -53,8 +53,16 @@ html {
   --galgo-time-spacing: 0;
   --galgo-card-title-spacing: -0.02em;
   --label-title-gap: 16px;
-  --tempy-description-size: clamp(17px, 1vw, 20px);
-  --tempy-meta-label-size: clamp(14px, 0.78vw, 16px);
+  --page-display-size: clamp(72px, 8.4vw, 150px);
+  --page-display-line-height: 0.8;
+  --page-display-letter-spacing: var(--galgo-page-title-spacing);
+  --page-eyebrow-size: clamp(14px, 0.78vw, 16px);
+  --page-description-size: clamp(17px, 1vw, 20px);
+  --page-description-line-height: 1.66;
+  --split-panel-inline: clamp(44px, 3.2vw, 64px);
+  --split-archive-hint-size: clamp(14px, 0.82vw, 16px);
+  --tempy-description-size: var(--page-description-size);
+  --tempy-meta-label-size: var(--page-eyebrow-size);
   --tempy-info-label-size: clamp(13px, 0.72vw, 15px);
   --tempy-info-value-size: clamp(15px, 0.88vw, 18px);
   --tempy-track-row-size: clamp(14px, 0.8vw, 16px);
@@ -8407,7 +8415,7 @@ body::-webkit-scrollbar:horizontal,
 .artist-profile__label {
   margin: 0 0 var(--label-title-gap);
   color: #2759ed;
-  font-size: var(--tempy-meta-label-size);
+  font-size: var(--page-eyebrow-size);
   font-weight: 700;
   letter-spacing: 0.12em;
 }
@@ -10500,7 +10508,7 @@ body::-webkit-scrollbar:horizontal,
   position: absolute;
   left: 50%;
   bottom: -6%;
-  width: 52%;
+  width: 58%;
   aspect-ratio: 1;
   border-radius: 50%;
   background: #fff1cf;
@@ -10844,44 +10852,46 @@ body::-webkit-scrollbar:horizontal,
     height: calc(100vh - 86px);
     min-height: 700px;
     margin-top: 86px;
-    padding: 0 0 0 4vw;
-    grid-template-columns: clamp(400px, 28vw, 500px) minmax(0, 1fr);
-    gap: clamp(140px, 8.5vw, 180px);
+    padding: 0;
+    grid-template-columns: minmax(310px, 32%) minmax(0, 1fr);
+    gap: 0;
     overflow: hidden;
   }
 
   .lifestyle-curator__intro {
     position: static;
     top: auto;
-    display: grid;
+    display: flex;
     height: 100%;
     min-height: 0;
-    padding: 72px 0 72px;
-    grid-template-rows: auto minmax(0, 1fr);
+    padding: 54px 30px 38px 5.2vw;
+    flex-direction: column;
+    border-right: 1px solid #07142b;
   }
 
   .lifestyle-curator__intro-copy {
-    margin: 0;
-    align-self: center;
-    transform: translateY(-54px);
+    margin: auto 0;
+    transform: none;
   }
 
   .lifestyle-curator__archive {
+    --archive-content-start: 44px;
+    --archive-card-gap: clamp(24px, 1.45vw, 30px);
     display: grid;
     min-width: 0;
     height: 100%;
     min-height: 0;
-    padding: 42px 0 34px 44px;
+    padding: 44px 0 38px var(--archive-content-start);
     grid-template-rows: auto minmax(0, 1fr) auto;
-    gap: 18px;
+    gap: 16px;
     overflow: hidden;
     color: #fff1cf;
-    background: #d54147;
+    background: #f23843;
   }
 
   .lifestyle-curator__archive-head {
     display: flex;
-    padding: 0 52px 0 24px;
+    padding: 0 52px 0 0;
     align-items: center;
     justify-content: space-between;
     color: #fff1cf;
@@ -10900,9 +10910,9 @@ body::-webkit-scrollbar:horizontal,
     display: flex;
     min-width: 0;
     height: 100%;
-    padding: 18px 64px 42px 24px;
+    padding: 18px 64px 38px 0;
     align-items: center;
-    gap: clamp(24px, 1.55vw, 30px);
+    gap: var(--archive-card-gap);
     overflow-x: auto;
     overflow-y: hidden;
     cursor: grab;
@@ -10917,12 +10927,12 @@ body::-webkit-scrollbar:horizontal,
   .lifestyle-curator__grid:active { cursor: grabbing; }
 
   .lifestyle-curator__card {
-    --archive-bg: #9eb2df;
+    --archive-bg: #adc2e5;
     --archive-ink: #07142b;
     --archive-muted: rgba(7, 20, 43, 0.68);
     --archive-line: rgba(7, 20, 43, 0.2);
-    width: clamp(330px, 18vw, 390px);
-    height: clamp(520px, 58vh, 590px);
+    width: clamp(350px, 19vw, 500px);
+    height: clamp(548px, 62vh, 628px);
     min-height: 0;
     flex: 0 0 auto;
     grid-template-columns: minmax(0, 1fr) clamp(68px, 22%, 76px);
@@ -10934,22 +10944,22 @@ body::-webkit-scrollbar:horizontal,
     transition: transform 300ms ease, box-shadow 300ms ease;
   }
 
-  .lifestyle-curator__card--cream {
-    --archive-bg: #f1ead9;
+  .lifestyle-curator__card--slate-blue {
+    --archive-bg: #7d90b2;
     --archive-ink: #07142b;
-    --archive-muted: rgba(7, 20, 43, 0.64);
-    --archive-line: rgba(39, 89, 237, 0.2);
+    --archive-muted: rgba(7, 20, 43, 0.7);
+    --archive-line: rgba(7, 20, 43, 0.24);
   }
 
   .lifestyle-curator__card--navy {
-    --archive-bg: #0a1830;
+    --archive-bg: #0b1a34;
     --archive-ink: #fff1cf;
     --archive-muted: rgba(255, 241, 207, 0.68);
     --archive-line: rgba(255, 241, 207, 0.22);
   }
 
   .lifestyle-curator__card--blue {
-    --archive-bg: #3159c7;
+    --archive-bg: #496db8;
     --archive-ink: #fff1cf;
     --archive-muted: rgba(255, 241, 207, 0.74);
     --archive-line: rgba(255, 241, 207, 0.26);
@@ -10962,7 +10972,7 @@ body::-webkit-scrollbar:horizontal,
   .lifestyle-curator__card-copy {
     position: relative;
     height: 100%;
-    padding: 32px 20px;
+    padding: 36px 24px;
     color: var(--archive-ink);
   }
 
@@ -10977,7 +10987,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .lifestyle-curator__card-copy h2 {
-    max-width: 250px;
+    max-width: 280px;
     margin: 20px 0 14px;
     color: var(--archive-ink);
     display: -webkit-box;
@@ -11006,7 +11016,7 @@ body::-webkit-scrollbar:horizontal,
     right: auto;
     bottom: auto;
     left: 50%;
-    width: min(90%, 220px);
+    width: min(96%, 285px);
     background: #fff1cf;
     box-shadow: none;
     filter: none;
@@ -11101,7 +11111,7 @@ body::-webkit-scrollbar:horizontal,
 
   .lifestyle-curator__explore {
     display: grid;
-    padding: 0 52px 0 24px;
+    padding: 0 52px 0 0;
     grid-template-columns: minmax(120px, 1fr) auto;
     align-items: center;
     gap: 22px;
@@ -13023,6 +13033,107 @@ body::-webkit-scrollbar:horizontal,
 }
 
 /* Shared section header text rhythm */
+.split-page-panel__inner {
+  display: contents;
+}
+
+@media (min-width: 1101px) {
+  .split-page-panel {
+    min-width: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .split-page-panel__inner {
+    position: relative;
+    display: grid;
+    width: auto;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin-right: var(--split-panel-inline);
+    margin-left: var(--split-panel-inline);
+    overflow: hidden;
+  }
+
+  .split-page-panel__header,
+  .split-page-panel__content,
+  .split-page-panel__footer {
+    min-width: 0;
+  }
+
+  .track-trace-detail__gallery,
+  .lifestyle-curator__archive {
+    display: block;
+  }
+
+  .track-trace-detail__gallery-inner,
+  .lifestyle-curator__archive-inner {
+    padding-top: 44px;
+    padding-bottom: 38px;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 16px;
+  }
+
+  .track-trace-detail__gallery-heading,
+  .lifestyle-curator__archive-head,
+  .lifestyle-curator__explore {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .track-trace-detail__track {
+    padding-right: 0;
+  }
+
+  .track-trace-detail__hint {
+    right: 0;
+  }
+
+  .lifestyle-curator__grid {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .split-archive-panel__inner {
+    margin-right: 0;
+  }
+
+  .split-archive-panel__header,
+  .split-archive-panel__footer {
+    padding-right: var(--split-panel-inline);
+  }
+
+  .split-archive-panel__header {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.11em;
+  }
+
+  .split-archive-panel__footer {
+    font-size: var(--split-archive-hint-size);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.09em;
+  }
+
+  .split-archive-panel__viewport::after {
+    width: var(--split-panel-inline);
+    height: 1px;
+    flex: 0 0 var(--split-panel-inline);
+    content: "";
+  }
+
+  .track-trace-detail__hint.split-archive-panel__footer {
+    position: static;
+    width: 100%;
+    margin: 0;
+    justify-self: stretch;
+    text-align: right;
+  }
+}
+
 .now-page__eyebrow,
 .discover-page__eyebrow,
 .curator-page__eyebrow,
@@ -13048,14 +13159,27 @@ body::-webkit-scrollbar:horizontal,
 .curator-page__title,
 .archive-page__title,
 .time-set-detail__title,
+.track-trace-detail__title,
+.lifestyle-curator__intro h1,
+.artist-curator__intro h1,
+.similar-curator__intro h1,
 .create-page__title,
 .create-page h1 {
   margin: 0;
   font-family: "GalgoVF", "Arial Narrow", sans-serif;
-  font-size: clamp(72px, 8.4vw, 150px);
+  font-size: var(--page-display-size);
   font-weight: 400;
-  line-height: 0.8;
-  letter-spacing: var(--galgo-page-title-spacing);
+  line-height: var(--page-display-line-height);
+  letter-spacing: var(--page-display-letter-spacing);
+}
+
+:is(
+  .track-trace-detail__eyebrow,
+  .lifestyle-curator__eyebrow,
+  .artist-curator__eyebrow,
+  .similar-curator__eyebrow
+) {
+  font-size: var(--page-eyebrow-size);
 }
 
 .now-page__description,
@@ -13069,10 +13193,20 @@ body::-webkit-scrollbar:horizontal,
 .create-page__copy p {
   max-width: 660px;
   margin: 10px 0 18px;
-  font-size: var(--tempy-description-size);
+  font-size: var(--page-description-size);
   font-weight: 400;
-  line-height: 1.72;
+  line-height: var(--page-description-line-height);
   letter-spacing: 0;
+}
+
+:is(
+  .track-trace-detail__description,
+  .lifestyle-curator__intro-copy > p:last-child,
+  .artist-curator__intro > p:not(.artist-curator__eyebrow),
+  .similar-curator__intro > p:not(.similar-curator__eyebrow)
+) {
+  font-size: var(--page-description-size);
+  line-height: var(--page-description-line-height);
 }
 
 /* Shared semantic text roles */

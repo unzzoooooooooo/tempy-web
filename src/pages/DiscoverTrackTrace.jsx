@@ -109,22 +109,23 @@ function DiscoverTrackTrace() {
         <p className="track-trace-detail__index">02 / 02</p>
       </section>
 
-      <section className="track-trace-detail__gallery" aria-label="Track Trace albums">
-        <div className="track-trace-detail__gallery-heading">
-          <span>TRACK ARCHIVE</span>
-          <span>14 TRACKS</span>
-        </div>
+      <section className="track-trace-detail__gallery split-page-panel split-archive-panel" aria-label="Track Trace albums">
+        <div className="split-page-panel__inner split-archive-panel__inner track-trace-detail__gallery-inner">
+          <div className="track-trace-detail__gallery-heading split-page-panel__header split-archive-panel__header">
+            <span>TRACK ARCHIVE</span>
+            <span>14 TRACKS</span>
+          </div>
 
-        <div className="track-trace-detail__track">
-          {tracks.map((track, index) => (
-            <article
-              className="track-trace-detail__card"
-              data-tempy-playable
-              data-tempy-title={track.title}
-              data-tempy-artist={track.artist}
-              data-tempy-cover={track.image}
-              key={track.title}
-            >
+          <div className="track-trace-detail__track split-page-panel__content split-archive-panel__viewport">
+            {tracks.map((track, index) => (
+              <article
+                className="track-trace-detail__card"
+                data-tempy-playable
+                data-tempy-title={track.title}
+                data-tempy-artist={track.artist}
+                data-tempy-cover={track.image}
+                key={track.title}
+              >
               <div className="track-trace-detail__artwork">
                 <img src={track.image} alt={`${track.title} album cover`} />
                 <div className="track-trace-detail__artwork-meta">
@@ -157,11 +158,12 @@ function DiscoverTrackTrace() {
                   </button>
                 )}
               </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
 
-        <p className="track-trace-detail__hint">DRAG TO EXPLORE&nbsp;&nbsp; →</p>
+          <p className="track-trace-detail__hint split-page-panel__footer split-archive-panel__footer">DRAG TO EXPLORE&nbsp;&nbsp; →</p>
+        </div>
       </section>
     </main>
   );

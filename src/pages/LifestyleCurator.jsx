@@ -16,7 +16,7 @@ const lifestylePlaylists = [
   { title: "불을 낮춘 방에서 하루를 닫는 순간", cover: "/images/moment-06.png" },
 ];
 
-const cardTones = ["soft-blue", "cream", "navy", "blue"];
+const cardTones = ["soft-blue", "slate-blue", "navy", "blue"];
 
 function LifestyleCurator() {
   const navigate = useNavigate();
@@ -78,75 +78,77 @@ function LifestyleCurator() {
         <span className="lifestyle-curator__count">12 PLAYLISTS</span>
       </aside>
 
-      <div className="lifestyle-curator__archive">
-        <div className="lifestyle-curator__archive-head" aria-hidden="true">
-          <span>PLAYLIST ARCHIVE</span>
-          <span>01 — 12</span>
-        </div>
+      <div className="lifestyle-curator__archive split-page-panel split-archive-panel">
+        <div className="split-page-panel__inner split-archive-panel__inner lifestyle-curator__archive-inner">
+          <div className="lifestyle-curator__archive-head split-page-panel__header split-archive-panel__header" aria-hidden="true">
+            <span>PLAYLIST ARCHIVE</span>
+            <span>01 — 12</span>
+          </div>
 
-        <section
-          className="lifestyle-curator__grid"
-          ref={archiveRef}
-          aria-label="Lifestyle curator playlists"
-          onScroll={updateProgress}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={endDrag}
-          onPointerCancel={endDrag}
-          onDragStart={(event) => event.preventDefault()}
-        >
-          {lifestylePlaylists.map((playlist, index) => (
-            <article
-              className={`lifestyle-curator__card lifestyle-curator__card--${cardTones[index % cardTones.length]}${index === 0 ? " lifestyle-curator__card--clickable" : ""}`}
-              key={`${playlist.title}-${index}`}
-              role={index === 0 ? "button" : undefined}
-              tabIndex={index === 0 ? 0 : undefined}
-              onClick={index === 0 ? () => {
-                if (!didDrag.current) navigate("/curator/lifestyle/playlist");
-              } : undefined}
-              onKeyDown={index === 0 ? (event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  navigate("/curator/lifestyle/playlist");
-                }
-              } : undefined}
-            >
-              <span className="lifestyle-curator__clip lifestyle-curator__clip--left" />
-              <span className="lifestyle-curator__clip lifestyle-curator__clip--right" />
-              {index === 0 && <span className="lifestyle-curator__ribbon">EDITOR'S PICK</span>}
+          <section
+            className="lifestyle-curator__grid split-page-panel__content split-archive-panel__viewport"
+            ref={archiveRef}
+            aria-label="Lifestyle curator playlists"
+            onScroll={updateProgress}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onDragStart={(event) => event.preventDefault()}
+          >
+            {lifestylePlaylists.map((playlist, index) => (
+              <article
+                className={`lifestyle-curator__card lifestyle-curator__card--${cardTones[index % cardTones.length]}${index === 0 ? " lifestyle-curator__card--clickable" : ""}`}
+                key={`${playlist.title}-${index}`}
+                role={index === 0 ? "button" : undefined}
+                tabIndex={index === 0 ? 0 : undefined}
+                onClick={index === 0 ? () => {
+                  if (!didDrag.current) navigate("/curator/lifestyle/playlist");
+                } : undefined}
+                onKeyDown={index === 0 ? (event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    navigate("/curator/lifestyle/playlist");
+                  }
+                } : undefined}
+              >
+                <span className="lifestyle-curator__clip lifestyle-curator__clip--left" />
+                <span className="lifestyle-curator__clip lifestyle-curator__clip--right" />
+                {index === 0 && <span className="lifestyle-curator__ribbon">EDITOR'S PICK</span>}
 
-              <div className="lifestyle-curator__card-main">
-                <div className="lifestyle-curator__card-copy">
-                  <span>PLAYLIST · {String(index + 1).padStart(2, "0")}</span>
-                  <h2>{playlist.title}</h2>
-                  <div className="lifestyle-curator__host">
-                    <span>H</span>
-                    <strong>hostless</strong>
+                <div className="lifestyle-curator__card-main">
+                  <div className="lifestyle-curator__card-copy">
+                    <span>PLAYLIST · {String(index + 1).padStart(2, "0")}</span>
+                    <h2>{playlist.title}</h2>
+                    <div className="lifestyle-curator__host">
+                      <span>H</span>
+                      <strong>hostless</strong>
+                    </div>
+                  </div>
+
+                  <div className="lifestyle-curator__lp">
+                    <span className="lifestyle-curator__lp-line lifestyle-curator__lp-line--outer" />
+                    <span className="lifestyle-curator__lp-line lifestyle-curator__lp-line--inner" />
+                    <img src={playlist.cover} alt="" />
+                    <span className="lifestyle-curator__lp-hole" />
                   </div>
                 </div>
 
-                <div className="lifestyle-curator__lp">
-                  <span className="lifestyle-curator__lp-line lifestyle-curator__lp-line--outer" />
-                  <span className="lifestyle-curator__lp-line lifestyle-curator__lp-line--inner" />
-                  <img src={playlist.cover} alt="" />
-                  <span className="lifestyle-curator__lp-hole" />
+                <div className="lifestyle-curator__play-rail">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <button type="button" aria-label={`${playlist.title} 재생`}>▶</button>
+                  <small>TEMPY!</small>
                 </div>
-              </div>
+              </article>
+            ))}
+          </section>
 
-              <div className="lifestyle-curator__play-rail">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <button type="button" aria-label={`${playlist.title} 재생`}>▶</button>
-                <small>TEMPY!</small>
-              </div>
-            </article>
-          ))}
-        </section>
-
-        <div className="lifestyle-curator__explore" aria-hidden="true">
-          <div className="lifestyle-curator__scroll-line">
-            <span style={{ transform: `scaleX(${0.08 + scrollProgress * 0.92})` }} />
+          <div className="lifestyle-curator__explore split-page-panel__footer split-archive-panel__footer" aria-hidden="true">
+            <div className="lifestyle-curator__scroll-line">
+              <span style={{ transform: `scaleX(${0.08 + scrollProgress * 0.92})` }} />
+            </div>
+            <span>DRAG TO EXPLORE →</span>
           </div>
-          <span>DRAG TO EXPLORE →</span>
         </div>
       </div>
     </main>
