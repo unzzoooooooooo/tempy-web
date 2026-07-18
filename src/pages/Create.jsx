@@ -204,7 +204,7 @@ function Create() {
         }
 
         .create-start-page .create-start-intro p,
-        .create-detail-page .create-detail-side p {
+        .create-detail-page .create-detail-side p:not(.create-detail-eyebrow):not(.discover-page__eyebrow) {
           max-width: 660px !important;
           margin: 10px 0 18px !important;
           color: var(--tempy-navy) !important;
@@ -325,6 +325,7 @@ function Create() {
           align-self: center !important;
           grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           gap: clamp(22px, 1.8vw, 34px) !important;
+          transform: translateY(clamp(-22px, -1.25vw, -14px)) !important;
         }
 
         .create-start-page .create-start-card {
@@ -336,12 +337,12 @@ function Create() {
           padding: clamp(28px, 2.1vw, 40px) !important;
           grid-template-rows: auto minmax(0, 1fr) auto !important;
           align-items: stretch !important;
-          border: 1px solid rgba(7, 20, 43, 0.2) !important;
+          border: 1px solid rgba(7, 20, 43, 0.18) !important;
           border-radius: 4px !important;
           background: #fbfaf5 !important;
           color: var(--tempy-navy) !important;
           text-align: left !important;
-          box-shadow: 0 2px 8px rgba(7, 20, 43, 0.035) !important;
+          box-shadow: 0 1px 4px rgba(7, 20, 43, 0.025) !important;
           appearance: none !important;
           cursor: pointer !important;
           overflow: hidden !important;
@@ -353,10 +354,10 @@ function Create() {
         }
 
         .create-start-page .create-start-card:hover {
-          border-color: rgba(7, 20, 43, 0.34) !important;
+          border-color: rgba(7, 20, 43, 0.3) !important;
           background: #fcfbf7 !important;
-          box-shadow: 0 18px 36px rgba(7, 20, 43, 0.11) !important;
-          transform: translate3d(0, -4px, 0) !important;
+          box-shadow: 0 13px 28px rgba(7, 20, 43, 0.075) !important;
+          transform: translate3d(0, -3px, 0) !important;
         }
 
         .create-start-page .create-start-card:focus-visible {
@@ -374,58 +375,93 @@ function Create() {
           gap: 16px !important;
         }
 
+        .create-start-page .create-start-card-topline {
+          padding-bottom: 19px !important;
+          border-bottom: 1px solid rgba(7, 20, 43, 0.13) !important;
+        }
+
         .create-start-page .create-start-card-topline strong {
-          font-size: 13px !important;
-          font-weight: 800 !important;
-          letter-spacing: 0.12em !important;
+          color: rgba(7, 20, 43, 0.86) !important;
+          font-size: 12px !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.14em !important;
         }
 
         .create-start-page .create-start-card-topline small,
         .create-start-page .create-start-card-select small {
-          color: rgba(7, 20, 43, 0.52) !important;
-          font-size: 9px !important;
-          font-weight: 800 !important;
-          letter-spacing: 0.12em !important;
+          color: rgba(7, 20, 43, 0.5) !important;
+          font-size: 10px !important;
+          line-height: 1 !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.14em !important;
         }
 
         .create-start-page .create-start-card-copy {
           position: relative !important;
           z-index: 1 !important;
-          display: block !important;
+          display: flex !important;
           align-self: center !important;
+          padding: 30px 0 32px !important;
+          flex-direction: column !important;
+          justify-content: center !important;
         }
 
         .create-start-page .create-start-card h2 {
           margin: 0 !important;
           color: var(--tempy-navy) !important;
           font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
-          font-size: clamp(56px, 4vw, 78px) !important;
-          line-height: 0.84 !important;
+          font-size: clamp(76px, 5.7vw, 112px) !important;
+          line-height: 0.76 !important;
           font-weight: 400 !important;
-          letter-spacing: -0.01em !important;
+          letter-spacing: var(--galgo-card-title-spacing) !important;
           text-align: left !important;
         }
 
+        .create-start-page .create-start-card-copy-rule {
+          display: block !important;
+          width: 100% !important;
+          height: 1px !important;
+          margin: 28px 0 20px !important;
+          background: rgba(7, 20, 43, 0.13) !important;
+        }
+
         .create-start-page .create-start-card p {
-          max-width: 390px !important;
-          margin: 18px 0 0 !important;
+          max-width: none !important;
+          margin: 0 !important;
           color: rgba(7, 20, 43, 0.72) !important;
-          font-size: clamp(14px, 0.95vw, 17px) !important;
-          line-height: 1.65 !important;
+          font-size: clamp(11px, 0.78vw, 15px) !important;
+          line-height: 1.55 !important;
           font-weight: 500 !important;
-          letter-spacing: -0.015em !important;
+          letter-spacing: -0.035em !important;
           word-break: keep-all !important;
+          white-space: nowrap !important;
           text-align: left !important;
         }
 
         .create-start-page .create-start-card-select {
-          margin-top: 26px !important;
-          padding-top: 16px !important;
+          min-height: 48px !important;
+          margin-top: 0 !important;
+          padding-top: 18px !important;
           border-top: 1px solid rgba(7, 20, 43, 0.15) !important;
         }
 
+        .create-start-page .create-start-card-select-copy {
+          display: flex !important;
+          align-items: baseline !important;
+          gap: 12px !important;
+        }
+
+        .create-start-page .create-start-card-select-copy b {
+          color: rgba(7, 20, 43, 0.78) !important;
+          font-size: 11px !important;
+          line-height: 1 !important;
+          font-weight: 600 !important;
+          letter-spacing: 0.04em !important;
+        }
+
         .create-start-page .create-start-card-select i {
-          font-size: 20px !important;
+          color: rgba(7, 20, 43, 0.86) !important;
+          font-size: 19px !important;
           font-style: normal !important;
           line-height: 1 !important;
           transition: transform 260ms ease !important;
@@ -452,15 +488,19 @@ function Create() {
           }
 
           .create-start-page .create-start-card h2 {
-            font-size: clamp(52px, 3.8vw, 68px) !important;
+            font-size: clamp(70px, 5.2vw, 94px) !important;
           }
 
           .create-start-page .create-start-card p {
-            margin-top: 14px !important;
+            font-size: clamp(10px, 0.72vw, 12px) !important;
           }
 
-          .create-start-page .create-start-card-select {
-            margin-top: 18px !important;
+          .create-start-page .create-start-card-copy {
+            padding: 24px 0 26px !important;
+          }
+
+          .create-start-page .create-start-card-copy-rule {
+            margin: 22px 0 17px !important;
           }
         }
 
@@ -870,6 +910,363 @@ function Create() {
           color: #ffffff !important;
         }
 
+        @media (min-width: 1181px) {
+          .create-detail-page--moment .create-detail-shell {
+            min-height: 100vh !important;
+            padding-top: 86px !important;
+          }
+
+          .create-detail-page--moment .create-detail-side {
+            min-height: calc(100vh - 86px) !important;
+            padding: var(--detail-back-block) var(--detail-back-inline) 38px !important;
+            justify-content: flex-start !important;
+          }
+
+          .create-detail-page--moment .create-detail-back {
+            position: static !important;
+          }
+
+          .create-detail-page--moment .create-detail-side-copy {
+            width: 100% !important;
+            margin: auto 0 !important;
+          }
+
+          .create-detail-page--moment .create-detail-side h1 {
+            font-size: var(--page-display-size) !important;
+            line-height: var(--page-display-line-height) !important;
+            letter-spacing: var(--page-display-letter-spacing) !important;
+          }
+
+          .create-detail-page--moment .create-detail-description {
+            margin-top: 18px !important;
+            font-size: var(--page-description-size) !important;
+            line-height: var(--page-description-line-height) !important;
+          }
+
+          .create-detail-page--moment .create-detail-workspace {
+            height: calc(100vh - 86px) !important;
+            min-height: calc(100vh - 86px) !important;
+            padding: 0 var(--split-panel-inline) !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--moment .create-detail-content {
+            display: grid !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            grid-template-rows: minmax(0, 1fr) auto !important;
+          }
+
+          .create-detail-page--moment .create-detail-main {
+            display: grid !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: var(--detail-back-block) 0 38px !important;
+            align-content: safe center !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--moment .create-detail-header h2 {
+            font-size: clamp(86px, 5vw, 96px) !important;
+            line-height: 0.84 !important;
+          }
+
+          .create-detail-page--moment .create-detail-header p {
+            margin-top: 10px !important;
+            font-size: 17px !important;
+            line-height: 1.6 !important;
+          }
+
+          .create-detail-page--moment .create-detail-grid {
+            height: 640px !important;
+            margin-top: 28px !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: clamp(16px, 1.25vw, 24px) !important;
+            align-items: stretch !important;
+          }
+
+          .create-detail-page--moment .create-detail-card {
+            width: 100% !important;
+            height: 640px !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: clamp(30px, 1.9vw, 36px) !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--moment .create-detail-card h3 {
+            margin-bottom: 38px !important;
+            font-size: clamp(44px, 2.9vw, 56px) !important;
+            line-height: 0.88 !important;
+            letter-spacing: var(--galgo-display-spacing) !important;
+            white-space: nowrap !important;
+          }
+
+          .create-detail-page--moment .create-detail-cover-flow {
+            display: flex !important;
+            width: 100% !important;
+            align-self: flex-start !important;
+            flex-direction: column !important;
+          }
+
+          .create-detail-page--moment .create-detail-card:first-child .create-detail-cover {
+            width: 100% !important;
+            height: clamp(340px, 36vh, 390px) !important;
+            min-height: 0 !important;
+            aspect-ratio: auto !important;
+            flex: 0 0 auto !important;
+          }
+
+          .create-detail-page--moment .create-detail-card:first-child .create-detail-cover-button {
+            min-height: 50px !important;
+            margin-top: 20px !important;
+            padding: 0 26px !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--moment .create-detail-cover-empty {
+            gap: 12px !important;
+          }
+
+          .create-detail-page--moment .create-detail-cover-empty strong {
+            font-size: 32px !important;
+          }
+
+          .create-detail-page--moment .create-detail-cover-empty small {
+            font-size: 12px !important;
+          }
+
+          .create-detail-page--moment .create-detail-field {
+            margin-bottom: 28px !important;
+            gap: 12px !important;
+          }
+
+          .create-detail-page--moment .create-detail-field label,
+          .create-detail-page--moment .create-detail-label {
+            font-size: 14px !important;
+            line-height: 1.2 !important;
+          }
+
+          .create-detail-page--moment .create-detail-label--spaced {
+            margin-top: 38px !important;
+          }
+
+          .create-detail-page--moment .create-detail-tags,
+          .create-detail-page--moment .create-detail-visibility,
+          .create-detail-page--moment .create-detail-stamps {
+            gap: 10px !important;
+          }
+
+          .create-detail-page--moment .create-detail-tags,
+          .create-detail-page--moment .create-detail-visibility {
+            margin-top: 14px !important;
+          }
+
+          .create-detail-page--moment .create-detail-stamps {
+            margin-top: 16px !important;
+          }
+
+          .create-detail-page--moment .create-detail-pill {
+            min-height: 42px !important;
+            padding: 0 17px !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--moment .create-detail-field textarea {
+            min-height: 190px !important;
+            padding: 17px 18px !important;
+            font-size: 16px !important;
+          }
+
+          .create-detail-page--moment .create-tag-add {
+            margin-top: 12px !important;
+            gap: 10px !important;
+          }
+
+          .create-detail-page--moment .create-tag-add input {
+            height: 50px !important;
+            padding: 0 18px !important;
+            font-size: 16px !important;
+          }
+
+          .create-detail-page--moment .create-tag-add button {
+            min-height: 50px !important;
+            padding: 0 18px !important;
+            font-size: 13px !important;
+          }
+
+          .create-detail-page--moment .create-detail-actions {
+            min-height: 128px !important;
+            margin: 0 calc(var(--split-panel-inline) * -1) !important;
+            padding: 28px var(--split-panel-inline) !important;
+            flex: 0 0 auto !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 12px !important;
+            background: var(--tempy-blue) !important;
+          }
+
+          .create-detail-page--moment .create-detail-actions button {
+            width: 136px !important;
+            min-height: 56px !important;
+            padding: 0 28px !important;
+            border-radius: 0 !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--moment .create-detail-secondary-action {
+            border-color: rgba(255, 255, 255, 0.72) !important;
+            background: transparent !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--moment .create-detail-action {
+            border-color: var(--tempy-navy) !important;
+            background: var(--tempy-navy) !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--moment .create-detail-secondary-action:hover {
+            border-color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--moment .create-detail-action:hover {
+            border-color: #10264a !important;
+            background: #10264a !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-workspace {
+            height: 100vh !important;
+            min-height: 100vh !important;
+            padding: 140px var(--split-panel-inline) 0 !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-content {
+            display: grid !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            grid-template-rows: minmax(0, 1fr) auto !important;
+          }
+
+          .create-detail-page--moment-result .create-result-stage {
+            display: grid !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: 70px 0 138px !important;
+            align-content: safe center !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-header h2 {
+            font-size: clamp(86px, 5vw, 96px) !important;
+            line-height: 0.84 !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-header p {
+            margin-top: 10px !important;
+            font-size: 17px !important;
+            line-height: 1.6 !important;
+          }
+
+          .create-detail-page--moment-result .create-result-preview {
+            width: min(1020px, 100%) !important;
+            margin-top: 30px !important;
+            grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr) !important;
+          }
+
+          .create-detail-page--moment-result .create-result-cover {
+            min-height: 420px !important;
+          }
+
+          .create-detail-page--moment-result .create-result-body {
+            padding: 44px !important;
+          }
+
+          .create-detail-page--moment-result .create-result-kicker {
+            font-size: 13px !important;
+          }
+
+          .create-detail-page--moment-result .create-result-body h3 {
+            margin-top: 20px !important;
+            font-size: clamp(48px, 3.5vw, 72px) !important;
+          }
+
+          .create-detail-page--moment-result .create-result-body p {
+            margin-top: 24px !important;
+            font-size: 18px !important;
+          }
+
+          .create-detail-page--moment-result .create-result-meta,
+          .create-detail-page--moment-result .create-result-tags {
+            gap: 10px !important;
+          }
+
+          .create-detail-page--moment-result .create-result-meta {
+            margin-top: 28px !important;
+          }
+
+          .create-detail-page--moment-result .create-result-tags {
+            padding-top: 26px !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-pill {
+            min-height: 36px !important;
+            padding: 0 14px !important;
+            font-size: 13px !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-actions {
+            min-height: 128px !important;
+            margin: 0 calc(var(--split-panel-inline) * -1) !important;
+            padding: 28px var(--split-panel-inline) !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 12px !important;
+            background: var(--tempy-blue) !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-actions button {
+            min-width: 136px !important;
+            min-height: 56px !important;
+            padding: 0 28px !important;
+            border-radius: 0 !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-secondary-action {
+            border-color: rgba(255, 255, 255, 0.72) !important;
+            background: transparent !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-action {
+            border-color: var(--tempy-navy) !important;
+            background: var(--tempy-navy) !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-secondary-action:hover {
+            border-color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-action:hover {
+            border-color: #10264a !important;
+            background: #10264a !important;
+            color: #ffffff !important;
+          }
+        }
+
         .create-track-caption {
           margin: 14px 0 0 !important;
           color: rgba(7, 20, 43, 0.66) !important;
@@ -1099,7 +1496,15 @@ function Create() {
           }
 
           .create-start-page .create-start-card h2 {
-            font-size: clamp(54px, 15vw, 70px) !important;
+            font-size: clamp(72px, 18vw, 94px) !important;
+          }
+
+          .create-start-page .create-start-card p {
+            font-size: clamp(11px, 3vw, 14px) !important;
+          }
+
+          .create-start-page .create-start-card-select-copy b {
+            font-size: 10px !important;
           }
 
           .create-detail-page .create-detail-side {
@@ -1194,10 +1599,14 @@ function CreateChoice({ onSelect }) {
               </span>
               <span className="create-start-card-copy">
                 <h2>Moment Card</h2>
+                <span className="create-start-card-copy-rule" aria-hidden="true" />
                 <p>지금의 시간 · 날씨 · 위치를 담아 1곡짜리 순간 큐레이션을 남겨요</p>
               </span>
               <span className="create-start-card-select" aria-hidden="true">
-                <small>SELECT</small>
+                <span className="create-start-card-select-copy">
+                  <small>SELECT</small>
+                  <b>CREATE A MOMENT</b>
+                </span>
                 <i>→</i>
               </span>
             </button>
@@ -1209,10 +1618,14 @@ function CreateChoice({ onSelect }) {
               </span>
               <span className="create-start-card-copy">
                 <h2>Playlist</h2>
+                <span className="create-start-card-copy-rule" aria-hidden="true" />
                 <p>여러 곡을 하나의 순간 맥락으로 묶어 공유해보세요</p>
               </span>
               <span className="create-start-card-select" aria-hidden="true">
-                <small>SELECT</small>
+                <span className="create-start-card-select-copy">
+                  <small>SELECT</small>
+                  <b>BUILD A PLAYLIST</b>
+                </span>
                 <i>→</i>
               </span>
             </button>
@@ -1237,51 +1650,55 @@ function CreateDetail({
   const isMoment = type === "moment";
 
   return (
-    <main className="create-detail-page">
+    <main className={`create-detail-page${isMoment ? " create-detail-page--moment" : ""}`}>
       <section className="create-detail-shell">
         <aside className="create-detail-side">
           <button className="create-detail-back detail-back-link" type="button" onClick={onBack} aria-label="선택 화면으로 돌아가기">
             <span aria-hidden="true">←</span>
             <span>BACK</span>
           </button>
-          <p className="create-detail-eyebrow">CREATE STATION</p>
-          <h1>{isMoment ? "Moment Card" : "Playlist"}</h1>
-          <p className="create-detail-description">
-            {isMoment ? (
-              <>
-                지금의 시간 · 날씨 · 위치를 담아<br />
-                1곡짜리 순간 큐레이션을 남겨요
-              </>
-            ) : (
-              <>
-                여러 곡을 하나의 순간 맥락으로 묶어<br />
-                공유해보세요
-              </>
-            )}
-          </p>
+          <div className="create-detail-side-copy">
+            <p className={isMoment ? "discover-page__eyebrow" : "create-detail-eyebrow"}>CREATE STATION</p>
+            <h1>{isMoment ? "Moment Card" : "Playlist"}</h1>
+            <p className="create-detail-description">
+              {isMoment ? (
+                <>
+                  지금의 시간 · 날씨 · 위치를 담아<br />
+                  1곡짜리 순간 큐레이션을 남겨요
+                </>
+              ) : (
+                <>
+                  여러 곡을 하나의 순간 맥락으로 묶어<br />
+                  공유해보세요
+                </>
+              )}
+            </p>
+          </div>
         </aside>
 
         <section className="create-detail-workspace" aria-label={isMoment ? "Moment Card 작성" : "Playlist 작성"}>
           <div className="create-detail-content">
-            <header className="create-detail-header">
-              <h2>{isMoment ? "Create Moment Card" : "New Playlist"}</h2>
-              <p>
-                {isMoment
-                  ? "노래 1곡과 지금의 시간, 감정, 날씨를 한 장의 카드로 남겨보세요."
-                  : "여러 곡을 하나의 순간 맥락으로 묶어 공유해보세요"}
-              </p>
-            </header>
+            <div className="create-detail-main">
+              <header className="create-detail-header">
+                <h2>{isMoment ? "Create Moment Card" : "New Playlist"}</h2>
+                <p>
+                  {isMoment
+                    ? "노래 1곡과 지금의 시간, 감정, 날씨를 한 장의 카드로 남겨보세요."
+                    : "여러 곡을 하나의 순간 맥락으로 묶어 공유해보세요"}
+                </p>
+              </header>
 
-            {isMoment ? (
-              <MomentCardForm data={momentData} onChange={onMomentChange} />
-            ) : (
-              <PlaylistForm data={playlistData} onChange={onPlaylistChange} />
-            )}
+              {isMoment ? (
+                <MomentCardForm data={momentData} onChange={onMomentChange} />
+              ) : (
+                <PlaylistForm data={playlistData} onChange={onPlaylistChange} />
+              )}
+            </div>
 
-            <div className="create-detail-actions">
+            <footer className="create-detail-actions">
               <button className="create-detail-secondary-action" type="button" onClick={onSaveDraft}>임시저장</button>
               <button className="create-detail-action" type="button" onClick={onCreate}>만들기</button>
-            </div>
+            </footer>
           </div>
         </section>
       </section>
@@ -1430,8 +1847,9 @@ function MomentCardForm({ data, onChange }) {
     <section className="create-detail-grid" aria-label="Moment Card fields">
       <article className="create-detail-card">
         <h3>01 Select the Track</h3>
-        <CoverPicker image={data.coverImage} onChange={(coverImage) => update({ coverImage })} />
-        <p className="create-track-caption">{data.selectedTrack.title} · {data.selectedTrack.time}</p>
+        <div className="create-detail-cover-flow">
+          <CoverPicker image={data.coverImage} onChange={(coverImage) => update({ coverImage })} />
+        </div>
       </article>
 
       <article className="create-detail-card">
@@ -1552,7 +1970,7 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
     .filter(Boolean);
 
   return (
-    <main className="create-detail-page">
+    <main className={`create-detail-page${isMoment ? " create-detail-page--moment-result" : ""}`}>
       <section className="create-detail-shell">
         <aside className="create-detail-side">
           <button className="create-detail-back detail-back-link" type="button" onClick={onRetry} aria-label="작성 화면으로 돌아가기">
@@ -1578,66 +1996,68 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
 
         <section className="create-detail-workspace" aria-label={isMoment ? "Moment Card 결과" : "Playlist 결과"}>
           <div className="create-detail-content">
-            <header className="create-detail-header">
-              <h2>{isMoment ? "Moment Created" : "Playlist Created"}</h2>
-              <p>{isMoment ? "지금의 순간이 카드로 저장되었어요." : "여러 곡이 하나의 순간으로 묶였어요."}</p>
-            </header>
+            <div className="create-result-stage">
+              <header className="create-detail-header">
+                <h2>{isMoment ? "Moment Created" : "Playlist Created"}</h2>
+                <p>{isMoment ? "지금의 순간이 카드로 저장되었어요." : "여러 곡이 하나의 순간으로 묶였어요."}</p>
+              </header>
 
-            {isMoment ? (
-              <article className="create-result-preview create-result-preview--moment">
-                <ResultCover image={momentData.coverImage} />
-                <div className="create-result-body">
-                  <span className="create-result-kicker">
-                    {momentData.timeStamp.time} · {momentData.timeStamp.location}
-                  </span>
-                  <h3>{momentData.selectedTrack.title}</h3>
-                  <p>{momentData.momentText || "아직 한 줄 순간이 비어 있어요."}</p>
-                  <div className="create-result-meta">
-                    {[momentData.timeStamp.weather, momentData.timeStamp.temperature, momentData.visibility].map((item) => (
-                      <Pill key={item}>{item}</Pill>
-                    ))}
+              {isMoment ? (
+                <article className="create-result-preview create-result-preview--moment">
+                  <ResultCover image={momentData.coverImage} />
+                  <div className="create-result-body">
+                    <span className="create-result-kicker">
+                      {momentData.timeStamp.time} · {momentData.timeStamp.location}
+                    </span>
+                    <h3>{momentData.selectedTrack.title}</h3>
+                    <p>{momentData.momentText || "아직 한 줄 순간이 비어 있어요."}</p>
+                    <div className="create-result-meta">
+                      {[momentData.timeStamp.weather, momentData.timeStamp.temperature, momentData.visibility].map((item) => (
+                        <Pill key={item}>{item}</Pill>
+                      ))}
+                    </div>
+                    <div className="create-result-tags">
+                      {momentData.selectedTags.map((tag) => (
+                        <Pill key={tag} active>{tag}</Pill>
+                      ))}
+                    </div>
                   </div>
-                  <div className="create-result-tags">
-                    {momentData.selectedTags.map((tag) => (
-                      <Pill key={tag} active>{tag}</Pill>
-                    ))}
+                </article>
+              ) : (
+                <article className="create-result-preview create-result-preview--playlist">
+                  <ResultCover image={playlistData.coverImage} />
+                  <div className="create-result-body">
+                    <span className="create-result-kicker">{playlistData.visibility}</span>
+                    <h3>{playlistData.playlistTitle || "Untitled Playlist"}</h3>
+                    <p>{playlistData.playlistDescription || "아직 플레이리스트 설명이 비어 있어요."}</p>
+                    <div className="create-result-tags">
+                      {playlistData.selectedTags.map((tag) => (
+                        <Pill key={tag} active>{tag}</Pill>
+                      ))}
+                    </div>
+                    <div className="create-result-track-list">
+                      {playlistTracks.length ? (
+                        playlistTracks.map((track) => (
+                          <div className="create-result-track" key={track.id}>
+                            <span className="create-detail-track-cover" aria-hidden="true" />
+                            <strong>{track.title}</strong>
+                            <span>{track.time}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="create-result-empty">선택된 트랙이 없어요.</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </article>
-            ) : (
-              <article className="create-result-preview create-result-preview--playlist">
-                <ResultCover image={playlistData.coverImage} />
-                <div className="create-result-body">
-                  <span className="create-result-kicker">{playlistData.visibility}</span>
-                  <h3>{playlistData.playlistTitle || "Untitled Playlist"}</h3>
-                  <p>{playlistData.playlistDescription || "아직 플레이리스트 설명이 비어 있어요."}</p>
-                  <div className="create-result-tags">
-                    {playlistData.selectedTags.map((tag) => (
-                      <Pill key={tag} active>{tag}</Pill>
-                    ))}
-                  </div>
-                  <div className="create-result-track-list">
-                    {playlistTracks.length ? (
-                      playlistTracks.map((track) => (
-                        <div className="create-result-track" key={track.id}>
-                          <span className="create-detail-track-cover" aria-hidden="true" />
-                          <strong>{track.title}</strong>
-                          <span>{track.time}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="create-result-empty">선택된 트랙이 없어요.</p>
-                    )}
-                  </div>
-                </div>
-              </article>
-            )}
+                </article>
+              )}
+            </div>
 
-            <div className="create-detail-actions">
+            <footer className="create-detail-actions">
               <button className="create-detail-secondary-action" type="button" onClick={onRetry}>다시 만들기</button>
               <button className="create-detail-action" type="button" onClick={onBackToCreate}>Create로 돌아가기</button>
               <button className="create-detail-action" type="button" onClick={onViewArchive}>Archive에서 보기</button>
-            </div>
+            </footer>
           </div>
         </section>
       </section>
