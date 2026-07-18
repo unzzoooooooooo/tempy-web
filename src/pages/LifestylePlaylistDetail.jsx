@@ -145,18 +145,18 @@ function LifestylePlaylistDetail() {
   };
 
   return (
-    <main className="lifestyle-playlist-detail">
-      <button className="lifestyle-playlist-detail__back detail-back-link" type="button" onClick={() => navigate("/curator/lifestyle")}>
+    <main className="lifestyle-playlist-detail playlist-detail-page playlist-detail--lifestyle">
+      <button className="lifestyle-playlist-detail__back playlist-detail-back detail-back-link" type="button" onClick={() => navigate("/curator/lifestyle")}>
         <span aria-hidden="true">←</span><span>BACK TO LIFESTYLE CURATOR</span>
       </button>
 
-      <div className="lifestyle-playlist-detail__page-meta" aria-hidden="true">
+      <div className="lifestyle-playlist-detail__page-meta playlist-detail-top-meta" aria-hidden="true">
         <span>PLAYLIST ARCHIVE</span>
         <span>{String(playlistTracks.length).padStart(2, "0")} TRACKS&nbsp;&nbsp;·&nbsp;&nbsp;21:03</span>
       </div>
 
       <aside
-        className={`lifestyle-playlist-detail__panel lifestyle-playlist-detail__panel--${playlist.tone}`}
+        className={`lifestyle-playlist-detail__panel playlist-detail-left lifestyle-playlist-detail__panel--${playlist.tone}`}
         style={panelStyle}
       >
         <div>
@@ -196,7 +196,7 @@ function LifestylePlaylistDetail() {
       </aside>
 
       <section
-        className="lifestyle-playlist-detail__viewport"
+        className="lifestyle-playlist-detail__viewport playlist-detail-right"
         ref={viewportRef}
         aria-label="Playlist tracks"
         onPointerDown={handlePointerDown}
@@ -206,13 +206,13 @@ function LifestylePlaylistDetail() {
         onDragStart={(event) => event.preventDefault()}
       >
         <div
-          className={`lifestyle-playlist-detail__track${isDirectInput ? " lifestyle-playlist-detail__track--direct" : ""}`}
+          className={`lifestyle-playlist-detail__track playlist-detail-track-row${isDirectInput ? " lifestyle-playlist-detail__track--direct" : ""}`}
           ref={trackRef}
           style={{ transform: `translateX(${-translateX}px)` }}
         >
           {playlistTracks.map((track, index) => (
             <article
-              className={`lifestyle-playlist-detail__item${selectedTrack === index ? " lifestyle-playlist-detail__item--active" : ""}`}
+              className={`lifestyle-playlist-detail__item playlist-detail-track-item${selectedTrack === index ? " lifestyle-playlist-detail__item--active" : ""}`}
               data-tempy-playable
               data-tempy-title={track.title}
               data-tempy-artist={track.artist}
@@ -231,20 +231,22 @@ function LifestylePlaylistDetail() {
                 }
               }}
             >
-              <span className="lifestyle-playlist-detail__number">{String(index + 1).padStart(2, "0")}</span>
-              <div className="lifestyle-playlist-detail__lp">
+              <span className="lifestyle-playlist-detail__number playlist-detail-track-number">{String(index + 1).padStart(2, "0")}</span>
+              <div className="lifestyle-playlist-detail__lp playlist-detail-lp">
                 <span className="lifestyle-playlist-detail__groove lifestyle-playlist-detail__groove--outer" />
                 <span className="lifestyle-playlist-detail__groove lifestyle-playlist-detail__groove--inner" />
                 <img src={track.cover} alt="" />
                 <span className="lifestyle-playlist-detail__hole" />
               </div>
-              <h2>{track.title}</h2>
-              <p>{track.artist}</p>
+              <h2 className="playlist-detail-track-title">{track.title}</h2>
+              <p className="playlist-detail-track-artist">{track.artist}</p>
             </article>
           ))}
         </div>
 
-        <div className="lifestyle-playlist-detail__archive-meta">
+      </section>
+
+      <section className="lifestyle-playlist-detail__archive-meta playlist-detail-note" aria-label="Lifestyle curator note">
           <div className="lifestyle-playlist-detail__archive-copy">
             <span>CURATOR&apos;S NOTE · 04:00 AM</span>
             <blockquote>
@@ -269,7 +271,6 @@ function LifestylePlaylistDetail() {
             </div>
           </div>
           <p className="lifestyle-playlist-detail__drag-hint" aria-hidden="true">DRAG TO EXPLORE →</p>
-        </div>
       </section>
     </main>
   );

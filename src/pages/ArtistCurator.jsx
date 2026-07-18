@@ -5,10 +5,13 @@ const artistPlaylists = [
   {
     title: "JENNIE'S RUBY MOMENTS",
     artist: "JENNIE",
-    meta: "12곡 · 38 min",
-    likes: "2.8k",
+    meta: "10곡 · 21:03",
+    likes: "1.5k",
     author: "JENNIE",
     image: "/images/artist-01.png",
+    date: "2026.05.16",
+    theme: "ruby",
+    note: "무대 위의 강한 순간과 밤의 감정을 따라 이어지는 아티스트 큐레이션입니다.",
   },
   {
     title: "SAILING THROUGH SUMMER",
@@ -264,12 +267,16 @@ function ArtistCurator() {
                       didDrag.current = false;
                       return;
                     }
-                    navigate("/curator/artist/playlist");
+                    navigate("/curator/artist/playlist", {
+                      state: { playlist: { ...playlist, index } },
+                    });
                   } : undefined}
                   onKeyDown={index === 0 ? (event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      navigate("/curator/artist/playlist");
+                      navigate("/curator/artist/playlist", {
+                        state: { playlist: { ...playlist, index } },
+                      });
                     }
                   } : undefined}
                 >

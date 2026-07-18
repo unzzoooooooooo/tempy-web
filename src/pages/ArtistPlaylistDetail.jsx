@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const playlistTracks = [
   { title: "like JENNIE", artist: "JENNIE", cover: "/images/album-11.png" },
@@ -14,10 +14,26 @@ const playlistTracks = [
   { title: "Von dutch", artist: "Charli xcx", cover: "/images/album-20.png" },
 ];
 
+const fallbackPlaylist = {
+  title: "JENNIE'S RUBY MOMENTS",
+  artist: "JENNIE",
+  meta: "10곡 · 21:03",
+  likes: "1.5k",
+  author: "JENNIE",
+  image: "/images/artist-01.png",
+  date: "2026.05.16",
+  theme: "ruby",
+  note: "무대 위의 강한 순간과 밤의 감정을 따라 이어지는 아티스트 큐레이션입니다.",
+  index: 0,
+};
+
 function ArtistPlaylistDetail() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const selectedPlaylist = location.state?.playlist || fallbackPlaylist;
   const [translateX, setTranslateX] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
+  const [activeTrackIndex, setActiveTrackIndex] = useState(0);
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
   const translateRef = useRef(0);
@@ -39,8 +55,7 @@ function ArtistPlaylistDetail() {
       const track = trackRef.current;
       if (!viewport || !track) return;
 
-      const rightPadding = 56;
-      const nextMax = Math.max(0, track.scrollWidth - viewport.clientWidth + rightPadding);
+      const nextMax = Math.max(0, track.scrollWidth - viewport.clientWidth);
       maxTranslateRef.current = nextMax;
       moveTo(Math.min(translateRef.current, nextMax));
     };
@@ -130,10 +145,12 @@ function ArtistPlaylistDetail() {
     setIsDirectInput(false);
   };
 
+  const activeTrack = playlistTracks[activeTrackIndex] || playlistTracks[0];
+
   return (
-    <main className="artist-playlist-detail">
+    <main className="artist-playlist-detail playlist-detail-page playlist-detail--artist" data-playlist-theme={selectedPlaylist.theme || "ruby"}>
       <button
-        className="artist-playlist-detail__back detail-back-link"
+        className="artist-playlist-detail__back playlist-detail-back detail-back-link"
         type="button"
         onClick={() => navigate("/curator/artist")}
       >
@@ -141,38 +158,55 @@ function ArtistPlaylistDetail() {
         <span>BACK TO ARTIST CURATOR</span>
       </button>
 
-      <div className="artist-playlist-detail__page-meta" aria-hidden="true">
+      <div className="artist-playlist-detail__page-meta playlist-detail-top-meta" aria-hidden="true">
         <span>PLAYLIST TRACKS</span>
         <span>{playlistTracks.length} TRACKS · 21:03</span>
       </div>
 
-      <aside className="artist-playlist-detail__panel">
+      <aside className="artist-playlist-detail__panel playlist-detail-left">
         <div className="artist-playlist-detail__panel-copy">
-          <p>ARTIST CURATOR · PLAYLIST 01</p>
-          <h1>제니의 무대 전<br />원업 플레이리스트</h1>
+          <p>ARTIST CURATOR · PLAYLIST {String((selectedPlaylist.index || 0) + 1).padStart(2, "0")}</p>
+          <h1>{selectedPlaylist.title}</h1>
           <div className="artist-playlist-detail__meta">
-            <span>10곡 · 21:03 · 2026.05.16</span>
-            <span>♡ 1.5k</span>
+            <span>{selectedPlaylist.meta} · {selectedPlaylist.date}</span>
+            <span>♡ {selectedPlaylist.likes}</span>
           </div>
           <div className="artist-playlist-detail__author">
-            <span>J</span>
-            <strong>Jennie</strong>
+            <span>{selectedPlaylist.author?.slice(0, 1) || "J"}</span>
+            <strong>{selectedPlaylist.author}</strong>
+          </div>
+          <div className="artist-playlist-detail__now">
+            <div className="artist-playlist-detail__now-head">
+              <span>NOW PLAYING · {String(activeTrackIndex + 1).padStart(2, "0")}</span>
+              <span>21:03</span>
+            </div>
+            <strong>{activeTrack.title}</strong>
+            <small>{activeTrack.artist}</small>
+            <div className="artist-playlist-detail__progress" aria-hidden="true">
+              <span style={{ width: `${24 + activeTrackIndex * 5}%` }} />
+            </div>
           </div>
         </div>
 
         <div className="artist-playlist-detail__portrait">
-          <img src="/images/artist-01.png" alt="Jennie" />
+          <img src={selectedPlaylist.image} alt={selectedPlaylist.artist} />
         </div>
 
         <div className="artist-playlist-detail__actions">
-          <button type="button"><span aria-hidden="true">▶</span> PLAY</button>
+          <button
+            type="button"
+            data-tempy-playable
+            data-tempy-title={activeTrack.title}
+            data-tempy-artist={activeTrack.artist}
+            data-tempy-cover={activeTrack.cover}
+          ><span aria-hidden="true">▶</span> PLAY</button>
           <button type="button" aria-label="셔플">⌘</button>
           <button type="button" aria-label="좋아요">♡</button>
         </div>
       </aside>
 
       <section
-        className="artist-playlist-detail__viewport"
+        className="artist-playlist-detail__viewport playlist-detail-right"
         ref={viewportRef}
         aria-label="제니의 플레이리스트 트랙"
         onPointerDown={handlePointerDown}
@@ -182,35 +216,44 @@ function ArtistPlaylistDetail() {
         onDragStart={(event) => event.preventDefault()}
       >
         <div
-          className={`artist-playlist-detail__track${isDirectInput ? " artist-playlist-detail__track--direct" : ""}`}
+          className={`artist-playlist-detail__track playlist-detail-track-row${isDirectInput ? " artist-playlist-detail__track--direct" : ""}`}
           ref={trackRef}
           style={{ transform: `translateX(${-translateX}px)` }}
         >
           {playlistTracks.map((track, index) => (
             <article
-              className="artist-playlist-detail__item"
+              className={`artist-playlist-detail__item playlist-detail-track-item${activeTrackIndex === index ? " is-active" : ""}`}
               data-tempy-playable
               data-tempy-title={track.title}
               data-tempy-artist={track.artist}
               data-tempy-cover={track.cover}
               key={`${track.title}-${index}`}
               style={{ "--artist-playlist-index": index }}
+              onClick={() => setActiveTrackIndex(index)}
             >
-              <span className="artist-playlist-detail__number">
+              <span className="artist-playlist-detail__number playlist-detail-track-number">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <div className="artist-playlist-detail__lp">
+              <div className="artist-playlist-detail__lp playlist-detail-lp">
                 <span className="artist-playlist-detail__groove artist-playlist-detail__groove--outer" />
                 <span className="artist-playlist-detail__groove artist-playlist-detail__groove--middle" />
                 <span className="artist-playlist-detail__groove artist-playlist-detail__groove--inner" />
                 <img src={track.cover} alt="" draggable="false" />
                 <span className="artist-playlist-detail__hole" />
               </div>
-              <h2>{track.title}</h2>
-              <p>{track.artist}</p>
+              <h2 className="playlist-detail-track-title">{track.title}</h2>
+              <p className="playlist-detail-track-artist">{track.artist}</p>
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="artist-playlist-detail__note playlist-detail-note" aria-label="Artist curator note">
+        <div className="artist-playlist-detail__note-head">
+          <span>CURATOR'S NOTE · 21:03</span>
+          <span>DRAG TO EXPLORE →</span>
+        </div>
+        <p>“{selectedPlaylist.note || fallbackPlaylist.note}”</p>
       </section>
     </main>
   );
