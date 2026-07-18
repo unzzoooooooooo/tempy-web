@@ -1,22 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const lifestylePlaylists = [
-  { title: "20년차 카페 사장님의 새벽 플레이리스트", cover: "/images/album-10.png" },
-  { title: "비 오는 날 오래 머무는 창가의 음악", cover: "/images/album-11.png" },
-  { title: "느린 일요일 아침을 위한 커피와 재즈", cover: "/images/album-12.png" },
-  { title: "퇴근 후 혼자 걷는 한강의 저녁", cover: "/images/album-13.png" },
-  { title: "작은 서점의 문을 여는 첫 번째 노래", cover: "/images/album-14.png" },
-  { title: "늦은 밤 주방에서 만드는 따뜻한 한 끼", cover: "/images/album-15.png" },
-  { title: "도시를 벗어나는 주말 드라이브", cover: "/images/album-16.png" },
-  { title: "햇빛 좋은 오후의 식물과 레코드", cover: "/images/album-17.png" },
-  { title: "집중이 필요한 디자이너의 작업실", cover: "/images/album-18.png" },
-  { title: "여행 전날 밤 가방을 싸며 듣는 음악", cover: "/images/album-19.png" },
-  { title: "친구들과 나누는 늦은 여름의 식탁", cover: "/images/moment-05.png" },
-  { title: "불을 낮춘 방에서 하루를 닫는 순간", cover: "/images/moment-06.png" },
-];
-
-const cardTones = ["soft-blue", "slate-blue", "navy", "blue"];
+import { lifestylePlaylists, lifestylePlaylistThemes } from "../data/lifestylePlaylists";
 
 function LifestyleCurator() {
   const navigate = useNavigate();
@@ -56,6 +40,12 @@ function LifestyleCurator() {
   const endDrag = (event) => {
     if (dragState.current?.pointerId !== event.pointerId) return;
     dragState.current = null;
+  };
+
+  const openPlaylist = (playlist) => {
+    navigate(`/curator/lifestyle/playlist?playlist=${playlist.id}`, {
+      state: { playlistId: playlist.id },
+    });
   };
 
   return (
@@ -98,19 +88,25 @@ function LifestyleCurator() {
           >
             {lifestylePlaylists.map((playlist, index) => (
               <article
-                className={`lifestyle-curator__card lifestyle-curator__card--${cardTones[index % cardTones.length]}${index === 0 ? " lifestyle-curator__card--clickable" : ""}`}
+                className={`lifestyle-curator__card lifestyle-curator__card--${playlist.tone} lifestyle-curator__card--clickable`}
+                style={{
+                  "--archive-bg": lifestylePlaylistThemes[playlist.tone].background,
+                  "--archive-ink": lifestylePlaylistThemes[playlist.tone].ink,
+                  "--archive-muted": lifestylePlaylistThemes[playlist.tone].muted,
+                  "--archive-line": lifestylePlaylistThemes[playlist.tone].line,
+                }}
                 key={`${playlist.title}-${index}`}
-                role={index === 0 ? "button" : undefined}
-                tabIndex={index === 0 ? 0 : undefined}
-                onClick={index === 0 ? () => {
-                  if (!didDrag.current) navigate("/curator/lifestyle/playlist");
-                } : undefined}
-                onKeyDown={index === 0 ? (event) => {
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (!didDrag.current) openPlaylist(playlist);
+                }}
+                onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
-                    navigate("/curator/lifestyle/playlist");
+                    openPlaylist(playlist);
                   }
-                } : undefined}
+                }}
               >
                 <span className="lifestyle-curator__clip lifestyle-curator__clip--left" />
                 <span className="lifestyle-curator__clip lifestyle-curator__clip--right" />

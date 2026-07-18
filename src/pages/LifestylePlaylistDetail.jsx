@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  getLifestylePlaylist,
+  lifestylePlaylists,
+  lifestylePlaylistThemes,
+} from "../data/lifestylePlaylists";
 
 const playlistTracks = [
   { title: "The Fate of Ophelia", artist: "Taylor Swift", cover: "/images/album-20.png" },
@@ -17,6 +22,17 @@ const playlistTracks = [
 
 function LifestylePlaylistDetail() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const playlistId = new URLSearchParams(location.search).get("playlist") ?? location.state?.playlistId;
+  const playlist = getLifestylePlaylist(playlistId);
+  const playlistIndex = lifestylePlaylists.findIndex((item) => item.id === playlist.id);
+  const playlistTheme = lifestylePlaylistThemes[playlist.tone];
+  const panelStyle = {
+    "--playlist-panel-bg": playlistTheme.background,
+    "--playlist-panel-ink": playlistTheme.ink,
+    "--playlist-panel-muted": playlistTheme.muted,
+    "--playlist-panel-line": playlistTheme.line,
+  };
   const [translateX, setTranslateX] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState(0);
@@ -43,7 +59,7 @@ function LifestylePlaylistDetail() {
       const track = trackRef.current;
       if (!viewport || !track) return;
 
-      const rightMargin = 64;
+      const rightMargin = 0;
       const nextMax = Math.max(0, track.offsetLeft + track.scrollWidth - viewport.clientWidth + rightMargin);
       maxTranslateRef.current = nextMax;
       moveTo(Math.min(translateRef.current, nextMax));
@@ -134,10 +150,20 @@ function LifestylePlaylistDetail() {
         <span aria-hidden="true">←</span><span>BACK TO LIFESTYLE CURATOR</span>
       </button>
 
-      <aside className="lifestyle-playlist-detail__panel">
+      <div className="lifestyle-playlist-detail__page-meta" aria-hidden="true">
+        <span>PLAYLIST ARCHIVE</span>
+        <span>{String(playlistTracks.length).padStart(2, "0")} TRACKS&nbsp;&nbsp;·&nbsp;&nbsp;21:03</span>
+      </div>
+
+      <aside
+        className={`lifestyle-playlist-detail__panel lifestyle-playlist-detail__panel--${playlist.tone}`}
+        style={panelStyle}
+      >
         <div>
-          <p className="lifestyle-playlist-detail__eyebrow">LIFESTYLE CURATOR · PLAYLIST 01</p>
-          <h1>20년차 카페 사장님의 새벽 플레이리스트</h1>
+          <p className="lifestyle-playlist-detail__eyebrow">
+            LIFESTYLE CURATOR · PLAYLIST {String(playlistIndex + 1).padStart(2, "0")}
+          </p>
+          <h1>{playlist.title}</h1>
           <p className="lifestyle-playlist-detail__meta">{playlistTracks.length}곡 · 21:03 · 2026.05.16&nbsp;&nbsp; ♡ 1.5k</p>
           <div className="lifestyle-playlist-detail__host"><span>H</span><strong>hostless</strong></div>
           <div className="lifestyle-playlist-detail__now-playing">
@@ -179,6 +205,8 @@ function LifestylePlaylistDetail() {
         onPointerCancel={endDrag}
         onDragStart={(event) => event.preventDefault()}
       >
+        <p className="lifestyle-playlist-detail__drag-hint" aria-hidden="true">DRAG TO EXPLORE →</p>
+
         <div
           className={`lifestyle-playlist-detail__track${isDirectInput ? " lifestyle-playlist-detail__track--direct" : ""}`}
           ref={trackRef}
@@ -218,9 +246,30 @@ function LifestylePlaylistDetail() {
           ))}
         </div>
 
-        <div className="lifestyle-playlist-detail__archive-meta" aria-hidden="true">
-          <p>새벽의 문을 여는 첫 잔처럼, 천천히 이어지는 열한 곡의 기록.</p>
-          <div><span>11 TRACKS</span><span>21:03</span><span>♡ 1.5K</span></div>
+        <div className="lifestyle-playlist-detail__archive-meta">
+          <div className="lifestyle-playlist-detail__archive-copy">
+            <span>CURATOR&apos;S NOTE · 04:00 AM</span>
+            <blockquote>
+              “새벽 4시의 조용한 카페. 커피 향과 함께 흘러나오는 음악이 하루를 시작하게 만들어줍니다.”
+            </blockquote>
+          </div>
+          <div className="lifestyle-playlist-detail__stats" aria-label="플레이리스트 통계">
+            <div className="lifestyle-playlist-detail__stat">
+              <span aria-hidden="true">◷</span>
+              <strong>21:03</strong>
+              <small>TOTAL TIME</small>
+            </div>
+            <div className="lifestyle-playlist-detail__stat">
+              <span aria-hidden="true">≡</span>
+              <strong>{playlistTracks.length}</strong>
+              <small>TRACKS</small>
+            </div>
+            <div className="lifestyle-playlist-detail__stat">
+              <span aria-hidden="true">♡</span>
+              <strong>1.5K</strong>
+              <small>LIKES</small>
+            </div>
+          </div>
         </div>
       </section>
     </main>
