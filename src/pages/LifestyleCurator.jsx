@@ -51,7 +51,7 @@ function LifestyleCurator() {
   return (
     <main className="lifestyle-curator">
       <aside className="lifestyle-curator__intro">
-        <button className="lifestyle-curator__back" type="button" onClick={() => navigate("/curator")}>
+        <button className="lifestyle-curator__back detail-back-link" type="button" onClick={() => navigate("/curator")}>
           <span aria-hidden="true">←</span>
           <span>BACK TO CURATOR</span>
         </button>

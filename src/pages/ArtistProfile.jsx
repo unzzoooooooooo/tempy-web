@@ -120,7 +120,7 @@ function ArtistProfile() {
   return (
     <main className="artist-profile">
       <section className="artist-profile__top">
-        <button className="artist-profile__back" type="button" onClick={() => navigate(-1)}>
+        <button className="artist-profile__back detail-back-link" type="button" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
           <span>BACK</span>
         </button>

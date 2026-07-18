@@ -154,7 +154,7 @@ function TrackTraceDetail() {
         data-tempy-id="track-03"
         data-tempy-duration="03:30"
       >
-        <button className="track-comment-detail__back" type="button" aria-label="Track Trace로 돌아가기" onClick={() => navigate(-1)}>
+        <button className="track-comment-detail__back detail-back-link" type="button" aria-label="Track Trace로 돌아가기" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
           <span>BACK TO TRACK TRACE</span>
         </button>

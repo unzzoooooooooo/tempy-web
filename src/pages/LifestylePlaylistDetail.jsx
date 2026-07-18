@@ -146,7 +146,7 @@ function LifestylePlaylistDetail() {
 
   return (
     <main className="lifestyle-playlist-detail">
-      <button className="lifestyle-playlist-detail__back" type="button" onClick={() => navigate("/curator/lifestyle")}>
+      <button className="lifestyle-playlist-detail__back detail-back-link" type="button" onClick={() => navigate("/curator/lifestyle")}>
         <span aria-hidden="true">←</span><span>BACK TO LIFESTYLE CURATOR</span>
       </button>
 

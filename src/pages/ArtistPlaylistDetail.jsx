@@ -133,13 +133,18 @@ function ArtistPlaylistDetail() {
   return (
     <main className="artist-playlist-detail">
       <button
-        className="artist-playlist-detail__back"
+        className="artist-playlist-detail__back detail-back-link"
         type="button"
         onClick={() => navigate("/curator/artist")}
       >
         <span aria-hidden="true">←</span>
         <span>BACK TO ARTIST CURATOR</span>
       </button>
+
+      <div className="artist-playlist-detail__page-meta" aria-hidden="true">
+        <span>PLAYLIST TRACKS</span>
+        <span>{playlistTracks.length} TRACKS · 21:03</span>
+      </div>
 
       <aside className="artist-playlist-detail__panel">
         <div className="artist-playlist-detail__panel-copy">

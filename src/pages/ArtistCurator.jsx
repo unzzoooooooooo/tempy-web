@@ -87,6 +87,7 @@ const artistPlaylists = [
 function ArtistCurator() {
   const navigate = useNavigate();
   const [translateX, setTranslateX] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
@@ -102,6 +103,7 @@ function ArtistCurator() {
     const clamped = Math.min(maxTranslateRef.current, Math.max(0, nextTranslate));
     translateRef.current = clamped;
     setTranslateX(clamped);
+    setScrollProgress(maxTranslateRef.current > 0 ? clamped / maxTranslateRef.current : 0);
   };
 
   useEffect(() => {
@@ -206,7 +208,7 @@ function ArtistCurator() {
   return (
     <main className="artist-curator">
       <button
-        className="artist-curator__back"
+        className="artist-curator__back detail-back-link"
         type="button"
         onClick={() => navigate("/curator")}
       >
@@ -221,68 +223,90 @@ function ArtistCurator() {
         <span className="artist-curator__wordmark" aria-hidden="true">ARTIST</span>
       </aside>
 
-      <section
-        className="artist-curator__viewport"
-        ref={viewportRef}
-        aria-label="Artist curator playlists"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onDragStart={(event) => event.preventDefault()}
-      >
-        <div
-          className={`artist-curator__track${isDirectInput ? " artist-curator__track--direct" : ""}`}
-          ref={trackRef}
-          style={{ transform: `translateX(${-translateX}px)` }}
-        >
-          {artistPlaylists.map((playlist, index) => (
-            <article
-              className="artist-curator__card"
-              key={`${playlist.artist}-${playlist.title}`}
-              style={{
-                "--artist-card-index": index,
-                cursor: index === 0 ? "pointer" : undefined,
-              }}
-              role={index === 0 ? "button" : undefined}
-              tabIndex={index === 0 ? 0 : undefined}
-              aria-label={index === 0 ? "제니의 아티스트 플레이리스트 상세 보기" : undefined}
-              onClick={index === 0 ? () => {
-                if (didDrag.current) {
-                  didDrag.current = false;
-                  return;
-                }
-                navigate("/curator/artist/playlist");
-              } : undefined}
-              onKeyDown={index === 0 ? (event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  navigate("/curator/artist/playlist");
-                }
-              } : undefined}
+      <div className="artist-curator__archive split-page-panel split-archive-panel">
+        <div className="artist-curator__archive-inner split-page-panel__inner split-archive-panel__inner">
+          <div
+            className="artist-curator__archive-head split-page-panel__header split-archive-panel__header"
+            aria-hidden="true"
+          >
+            <span>PLAYLIST ARCHIVE</span>
+            <span>01 — {String(artistPlaylists.length).padStart(2, "0")}</span>
+          </div>
+
+          <section
+            className="artist-curator__viewport split-page-panel__content split-archive-panel__viewport"
+            ref={viewportRef}
+            aria-label="Artist curator playlists"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onDragStart={(event) => event.preventDefault()}
+          >
+            <div
+              className={`artist-curator__track${isDirectInput ? " artist-curator__track--direct" : ""}`}
+              ref={trackRef}
+              style={{ transform: `translateX(${-translateX}px)` }}
             >
-              <div className="artist-curator__card-copy">
-                <span className="artist-curator__card-number">
-                  {String(index + 1).padStart(2, "0")} / {String(artistPlaylists.length).padStart(2, "0")}
-                </span>
-                <h2>{playlist.title}</h2>
-                <p>{playlist.artist}</p>
-                <div className="artist-curator__card-meta">
-                  <span>{playlist.meta}</span>
-                  <span>♡ {playlist.likes}</span>
-                </div>
-                <div className="artist-curator__author">
-                  <span>{playlist.author.slice(0, 1)}</span>
-                  <strong>CURATED BY {playlist.author}</strong>
-                </div>
-              </div>
-              <div className="artist-curator__image">
-                <img src={playlist.image} alt={`${playlist.artist} 아티스트 큐레이터`} draggable="false" />
-              </div>
-            </article>
-          ))}
+              {artistPlaylists.map((playlist, index) => (
+                <article
+                  className="artist-curator__card"
+                  key={`${playlist.artist}-${playlist.title}`}
+                  style={{
+                    "--artist-card-index": index,
+                    cursor: index === 0 ? "pointer" : undefined,
+                  }}
+                  role={index === 0 ? "button" : undefined}
+                  tabIndex={index === 0 ? 0 : undefined}
+                  aria-label={index === 0 ? "제니의 아티스트 플레이리스트 상세 보기" : undefined}
+                  onClick={index === 0 ? () => {
+                    if (didDrag.current) {
+                      didDrag.current = false;
+                      return;
+                    }
+                    navigate("/curator/artist/playlist");
+                  } : undefined}
+                  onKeyDown={index === 0 ? (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      navigate("/curator/artist/playlist");
+                    }
+                  } : undefined}
+                >
+                  <div className="artist-curator__card-copy">
+                    <span className="artist-curator__card-number">
+                      {String(index + 1).padStart(2, "0")} / {String(artistPlaylists.length).padStart(2, "0")}
+                    </span>
+                    <h2>{playlist.title}</h2>
+                    <p>{playlist.artist}</p>
+                    <div className="artist-curator__card-meta">
+                      <span>{playlist.meta}</span>
+                      <span>♡ {playlist.likes}</span>
+                    </div>
+                    <div className="artist-curator__author">
+                      <span>{playlist.author.slice(0, 1)}</span>
+                      <strong>CURATED BY {playlist.author}</strong>
+                    </div>
+                  </div>
+                  <div className="artist-curator__image">
+                    <img src={playlist.image} alt={`${playlist.artist} 아티스트 큐레이터`} draggable="false" />
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <div
+            className="artist-curator__explore split-page-panel__footer split-archive-panel__footer"
+            aria-hidden="true"
+          >
+            <div className="artist-curator__scroll-line">
+              <span style={{ transform: `scaleX(${0.08 + scrollProgress * 0.92})` }} />
+            </div>
+            <span>DRAG TO EXPLORE →</span>
+          </div>
         </div>
-      </section>
+      </div>
     </main>
   );
 }

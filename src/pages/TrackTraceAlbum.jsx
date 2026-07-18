@@ -44,7 +44,7 @@ function TrackTraceAlbum() {
   return (
     <main className="track-trace-album">
       <section className="track-trace-album__hero">
-        <button className="track-trace-album__back" type="button" aria-label="Track detail로 돌아가기" onClick={() => navigate(-1)}>
+        <button className="track-trace-album__back detail-back-link" type="button" aria-label="Track detail로 돌아가기" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
           <span>BACK TO TRACK DETAIL</span>
         </button>

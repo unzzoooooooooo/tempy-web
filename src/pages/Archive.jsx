@@ -408,7 +408,7 @@ function CreatedItemDetail({ item, isEditing, onBack, onEdit, onCancelEdit, onDe
     <main className={`archive-created-detail archive-created-detail--${isPlaylist ? "playlist" : "moment"}`}>
       <ArchiveCreatedDetailStyle />
       <aside className="archive-created-detail__side">
-        <button className="archive-created-detail__back" type="button" onClick={onBack} aria-label="Archive 목록으로 돌아가기">
+        <button className="archive-created-detail__back detail-back-link" type="button" onClick={onBack} aria-label="Archive 목록으로 돌아가기">
           <span aria-hidden="true">←</span>
           <span>BACK TO ARCHIVE</span>
         </button>
@@ -666,48 +666,9 @@ function ArchiveCreatedDetailStyle() {
 
       .archive-created-detail .archive-created-detail__back {
         position: absolute;
-        top: 34px;
-        left: calc((100% - var(--archive-created-left-width)) / 2);
-        display: inline-flex;
-        width: fit-content;
-        min-height: 32px;
-        padding: 0;
-        align-items: center;
-        gap: 12px;
-        border: 0;
-        background: transparent;
-        color: #07142b;
-        font-size: 12px;
-        line-height: 1;
-        font-weight: 700;
-        letter-spacing: 0.09em;
-        cursor: pointer;
-        transition: color 230ms ease, transform 230ms ease;
-      }
-
-      .archive-created-detail .archive-created-detail__back span:first-child {
-        display: grid;
-        width: 32px;
-        height: 32px;
-        place-items: center;
-        border: 1px solid #07142b;
-        border-radius: 50%;
-        color: #07142b;
-        background: transparent;
-        font-size: 16px;
-        font-weight: 400;
-        transition: color 230ms ease, background-color 230ms ease, transform 230ms ease;
-      }
-
-      .archive-created-detail .archive-created-detail__back:hover {
-        color: #2759ed;
-        transform: translateX(-1px);
-      }
-
-      .archive-created-detail .archive-created-detail__back:hover span:first-child {
-        color: #ffffff;
-        background: #07142b;
-        transform: translateX(-2px);
+        top: var(--detail-back-block);
+        left: var(--detail-back-inline);
+        z-index: 2;
       }
 
       .archive-created-detail .archive-created-detail__info,

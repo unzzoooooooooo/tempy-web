@@ -233,7 +233,7 @@ function SimilarCurator() {
   return (
     <main className="similar-curator">
       <button
-        className="similar-curator__back"
+        className="similar-curator__back detail-back-link"
         type="button"
         onClick={() => navigate("/curator")}
       >
