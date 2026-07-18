@@ -134,9 +134,53 @@ const similarPlaylists = [
   },
 ];
 
+const similarTrackAdditions = [
+  [
+    { title: "Window Seat", artist: "Rex Orange County", cover: "/images/album-15.png" },
+    { title: "Sunday Coffee", artist: "Laufey", cover: "/images/album-16.png" },
+  ],
+  [
+    { title: "Street Lamp", artist: "O3ohn", cover: "/images/album-17.png" },
+    { title: "Homebound", artist: "HONNE", cover: "/images/album-18.png" },
+  ],
+  [
+    { title: "Paper Moon", artist: "백예린", cover: "/images/album-19.png" },
+    { title: "Rain on Glass", artist: "The Marías", cover: "/images/album-20.png" },
+  ],
+  [
+    { title: "First Train", artist: "ADOY", cover: "/images/album-21.png" },
+    { title: "Unsent Pages", artist: "Silica Gel", cover: "/images/album-22.png" },
+  ],
+  [
+    { title: "Sun Bleached", artist: "HYUKOH", cover: "/images/album-23.png" },
+    { title: "Frame by Frame", artist: "AKMU", cover: "/images/album-24.png" },
+  ],
+  [
+    { title: "Soft Green", artist: "Wave to Earth", cover: "/images/album-25.png" },
+    { title: "A New Leaf", artist: "LUCY", cover: "/images/album-26.png" },
+  ],
+  [
+    { title: "Amber Room", artist: "DPR IAN", cover: "/images/album-27.png" },
+    { title: "One More Glass", artist: "Crush", cover: "/images/album-28.png" },
+  ],
+  [
+    { title: "Kitchen Radio", artist: "10CM", cover: "/images/album-29.png" },
+    { title: "Quiet Table", artist: "Stella Jang", cover: "/images/album-30.png" },
+  ],
+  [
+    { title: "Postcard Blue", artist: "검정치마", cover: "/images/album-31.png" },
+    { title: "Shared Balcony", artist: "JANNABI", cover: "/images/album-10.png" },
+  ],
+  [
+    { title: "Night Compile", artist: "FKJ", cover: "/images/album-11.png" },
+    { title: "Dawn Release", artist: "O3ohn", cover: "/images/album-12.png" },
+  ],
+];
+
 function SimilarCurator() {
   const navigate = useNavigate();
   const [translateX, setTranslateX] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
@@ -151,6 +195,7 @@ function SimilarCurator() {
     const clamped = Math.min(maxTranslateRef.current, Math.max(0, nextTranslate));
     translateRef.current = clamped;
     setTranslateX(clamped);
+    setScrollProgress(maxTranslateRef.current > 0 ? clamped / maxTranslateRef.current : 0);
   };
 
   useEffect(() => {
@@ -260,9 +305,9 @@ function SimilarCurator() {
   };
 
   return (
-    <main className="similar-curator playlist-detail-page playlist-detail--similar">
+    <main className="similar-curator">
       <button
-        className="similar-curator__back playlist-detail-back detail-back-link"
+        className="similar-curator__back detail-back-link"
         type="button"
         onClick={() => navigate("/curator")}
       >
@@ -270,82 +315,94 @@ function SimilarCurator() {
         <span>BACK TO CURATOR</span>
       </button>
 
-      <div className="similar-curator__page-meta playlist-detail-top-meta" aria-hidden="true">
-        <span>PLAYLIST ARCHIVE</span>
-        <span>01 — {String(similarPlaylists.length).padStart(2, "0")}</span>
-      </div>
-
-      <aside className="similar-curator__intro playlist-detail-left">
+      <aside className="similar-curator__intro">
         <p className="similar-curator__eyebrow">MOMENT CURATOR · 03</p>
         <h1>Similar Curator</h1>
         <p>당신이 살아보지 못한 순간의 삶을 사는 사람들의 다양한 음악을 감상해보세요</p>
         <span className="similar-curator__watermark" aria-hidden="true">T</span>
       </aside>
 
-      <section
-        className="similar-curator__viewport"
-        ref={viewportRef}
-        aria-label="Similar curator playlists"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onDragStart={(event) => event.preventDefault()}
-      >
-        <div
-          className={`similar-curator__track${isDirectInput ? " similar-curator__track--direct" : ""}`}
-          ref={trackRef}
-          style={{ transform: `translateX(${-translateX}px)` }}
-        >
-          {similarPlaylists.map((playlist, index) => (
-            <article
-              className="similar-curator__card"
-              key={`${playlist.title}-${index}`}
-              style={{ "--similar-card-index": index }}
+      <div className="similar-curator__archive split-page-panel split-archive-panel">
+        <div className="similar-curator__archive-inner split-page-panel__inner split-archive-panel__inner">
+          <div
+            className="similar-curator__archive-head split-page-panel__header split-archive-panel__header"
+            aria-hidden="true"
+          >
+            <span>PLAYLIST ARCHIVE</span>
+            <span>01 — {String(similarPlaylists.length).padStart(2, "0")}</span>
+          </div>
+
+          <section
+            className="similar-curator__viewport split-page-panel__content split-archive-panel__viewport"
+            ref={viewportRef}
+            aria-label="Similar curator playlists"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onDragStart={(event) => event.preventDefault()}
+          >
+            <div
+              className={`similar-curator__track${isDirectInput ? " similar-curator__track--direct" : ""}`}
+              ref={trackRef}
+              style={{ transform: `translateX(${-translateX}px)` }}
             >
-              <span className="similar-curator__tab" aria-hidden="true" />
-              <div className="similar-curator__card-top">
-                <span className="similar-curator__number">
-                  {String(index + 1).padStart(2, "0")} / {String(similarPlaylists.length).padStart(2, "0")}
-                </span>
-                <h2>{playlist.title}</h2>
-                <p>CURATED BY {playlist.author}</p>
-                <div className="similar-curator__meta">
-                  <span>{playlist.meta}</span>
-                  <span>♡ {playlist.likes}</span>
-                </div>
-              </div>
-
-              <div className="similar-curator__card-bottom">
-                <div className="similar-curator__tracks">
-                  {playlist.tracks.map((track) => (
-                    <div className="similar-curator__song" key={`${playlist.title}-${track.title}`}>
-                      <img src={track.cover} alt="" draggable="false" />
-                      <div>
-                        <strong>{track.title}</strong>
-                        <span>{track.artist}</span>
-                      </div>
+              {similarPlaylists.map((playlist, index) => (
+                <article
+                  className="similar-curator__card"
+                  key={`${playlist.title}-${index}`}
+                  style={{ "--similar-card-index": index }}
+                >
+                  <span className="similar-curator__tab" aria-hidden="true" />
+                  <div className="similar-curator__card-top">
+                    <span className="similar-curator__number">
+                      {String(index + 1).padStart(2, "0")} / {String(similarPlaylists.length).padStart(2, "0")}
+                    </span>
+                    <h2>{playlist.title}</h2>
+                    <p>CURATED BY {playlist.author}</p>
+                    <div className="similar-curator__meta">
+                      <span>{playlist.meta}</span>
+                      <span>♡ {playlist.likes}</span>
                     </div>
-                  ))}
-                </div>
+                  </div>
 
-                <div className="similar-curator__actions">
-                  <button type="button" aria-label={`${playlist.title} 재생`}>
-                    <span aria-hidden="true">▶</span>
-                    PLAY
-                  </button>
-                  <button type="button" aria-label={`${playlist.title} 셔플`}>⌘</button>
-                  <button type="button" aria-label={`${playlist.title} 좋아요`}>♡</button>
-                </div>
-              </div>
-            </article>
-          ))}
+                  <div className="similar-curator__card-bottom">
+                    <div className="similar-curator__tracks" data-similar-track-scroll>
+                      {[...playlist.tracks, ...(similarTrackAdditions[index] || [])].map((track) => (
+                        <div className="similar-curator__song" key={`${playlist.title}-${track.title}`}>
+                          <img src={track.cover} alt="" draggable="false" />
+                          <div>
+                            <strong>{track.title}</strong>
+                            <span>{track.artist}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="similar-curator__actions">
+                      <button type="button" aria-label={`${playlist.title} 재생`}>
+                        <span aria-hidden="true">▶</span>
+                        PLAY
+                      </button>
+                      <button type="button" aria-label={`${playlist.title} 셔플`}>⌘</button>
+                      <button type="button" aria-label={`${playlist.title} 좋아요`}>♡</button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <div
+            className="similar-curator__explore split-page-panel__footer split-archive-panel__footer"
+            aria-hidden="true"
+          >
+            <div className="similar-curator__scroll-line">
+              <span style={{ transform: `scaleX(${0.08 + scrollProgress * 0.92})` }} />
+            </div>
+            <span>DRAG TO EXPLORE →</span>
+          </div>
         </div>
-      </section>
-
-      <div className="similar-curator__footer" aria-hidden="true">
-        <span>SIMILAR MOMENTS · 10 PLAYLISTS</span>
-        <span>DRAG TO EXPLORE →</span>
       </div>
     </main>
   );
