@@ -205,8 +205,6 @@ function LifestylePlaylistDetail() {
         onPointerCancel={endDrag}
         onDragStart={(event) => event.preventDefault()}
       >
-        <p className="lifestyle-playlist-detail__drag-hint" aria-hidden="true">DRAG TO EXPLORE →</p>
-
         <div
           className={`lifestyle-playlist-detail__track${isDirectInput ? " lifestyle-playlist-detail__track--direct" : ""}`}
           ref={trackRef}
@@ -270,6 +268,7 @@ function LifestylePlaylistDetail() {
               <small>LIKES</small>
             </div>
           </div>
+          <p className="lifestyle-playlist-detail__drag-hint" aria-hidden="true">DRAG TO EXPLORE →</p>
         </div>
       </section>
     </main>
