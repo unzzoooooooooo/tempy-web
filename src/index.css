@@ -12132,7 +12132,7 @@ body::-webkit-scrollbar:horizontal,
   .lifestyle-playlist-detail__drag-hint {
     position: absolute;
     top: 140px;
-    right: var(--lifestyle-detail-gutter);
+    right: 0;
     z-index: 2;
     display: block;
     margin: 0;
@@ -12199,9 +12199,10 @@ body::-webkit-scrollbar:horizontal,
   .lifestyle-playlist-detail__archive-meta {
     position: relative;
     display: grid;
-    width: calc(100% - var(--lifestyle-carousel-leading-gap));
+    width: auto;
     min-height: 176px;
     margin-top: 0;
+    margin-right: var(--lifestyle-detail-gutter);
     margin-left: var(--lifestyle-carousel-leading-gap);
     padding: 52px 0 0;
     grid-row: 2;
@@ -12212,12 +12213,13 @@ body::-webkit-scrollbar:horizontal,
     justify-content: initial;
     gap: 16px;
     border-top: 0;
+    box-sizing: border-box;
   }
 
   .lifestyle-playlist-detail__archive-meta::before {
     position: absolute;
     top: 92px;
-    right: var(--lifestyle-detail-gutter);
+    right: clamp(32px, 2vw, 40px);
     left: 0;
     height: 1px;
     background: rgba(7, 20, 43, 0.24);
@@ -12270,7 +12272,7 @@ body::-webkit-scrollbar:horizontal,
     display: flex;
     gap: 12px;
     justify-self: end;
-    margin-right: var(--lifestyle-detail-gutter);
+    margin-right: 0;
   }
 
   .lifestyle-playlist-detail__archive-meta .lifestyle-playlist-detail__stat {
