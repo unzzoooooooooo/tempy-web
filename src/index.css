@@ -2553,6 +2553,128 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+/* Final mobile page-intro override. These selectors match the rendered page DOM. */
+@media (max-width: 768px) {
+  .app .create-start-page .create-start-intro {
+    padding-top: 112px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .app .now-page,
+  .app .discover-page {
+    padding-top: 112px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .app .curator-page .curator-page__intro {
+    top: 72px !important;
+    padding-top: 40px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .app .archive-page {
+    padding-top: 72px !important;
+  }
+
+  .app .archive-page .archive-page__intro {
+    padding-top: 40px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-intro,
+    .app .now-page .now-page__intro,
+    .app .discover-page .discover-page__intro,
+    .app .curator-page .curator-page__intro,
+    .app .archive-page .archive-page__intro
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-eyebrow,
+    .app .now-page .now-page__eyebrow,
+    .app .discover-page .discover-page__eyebrow,
+    .app .curator-page .curator-page__eyebrow,
+    .app .archive-page .archive-page__eyebrow
+  ) {
+    margin: 0 0 16px !important;
+    color: #2759ed !important;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: normal !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-intro h1,
+    .app .now-page .now-page__title,
+    .app .discover-page .discover-page__title,
+    .app .curator-page .curator-page__title,
+    .app .archive-page .archive-page__title
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    color: #07142b !important;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
+    font-size: clamp(58px, 16vw, 82px) !important;
+    font-weight: 400 !important;
+    line-height: 0.8 !important;
+    letter-spacing: var(--galgo-page-title-spacing) !important;
+    overflow-wrap: normal !important;
+    white-space: normal !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-description,
+    .app .now-page .now-page__description,
+    .app .discover-page .discover-page__description,
+    .app .curator-page .curator-page__description,
+    .app .archive-page .archive-page__description
+  ) {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0 0 !important;
+    color: #07142b !important;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    letter-spacing: -0.035em !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .app .now-page .now-page__tags,
+  .app .archive-page .archive-page__year {
+    margin-top: 48px !important;
+  }
+
+  .app .discover-page .discover-page__intro {
+    padding-bottom: 0 !important;
+  }
+
+  .app .discover-page .discover-page__showcase {
+    margin-top: 48px !important;
+  }
+
+  .app .curator-page .curator-page__gallery {
+    inset: 72px 0 0 !important;
+    padding-top: 230px !important;
+    padding-left: 20px !important;
+  }
+}
+
 /* Home mobile layout — isolated from every desktop/iMac rule. */
 @media (max-width: 768px) {
   .mobile-menu-toggle {
@@ -10048,6 +10170,125 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+/* Rendered DOM selectors: final mobile page-intro override. */
+@media (max-width: 768px) {
+  .app .create-start-page .create-start-intro {
+    padding-top: 112px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .app .now-page,
+  .app .discover-page {
+    padding-top: 112px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .app .curator-page .curator-page__intro {
+    top: 72px !important;
+    padding: 40px 20px 0 !important;
+  }
+
+  .app .archive-page {
+    padding-top: 72px !important;
+  }
+
+  .app .archive-page .archive-page__intro {
+    padding-top: 40px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-intro,
+    .app .now-page .now-page__intro,
+    .app .discover-page .discover-page__intro,
+    .app .curator-page .curator-page__intro,
+    .app .archive-page .archive-page__intro
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-eyebrow,
+    .app .now-page .now-page__eyebrow,
+    .app .discover-page .discover-page__eyebrow,
+    .app .curator-page .curator-page__eyebrow,
+    .app .archive-page .archive-page__eyebrow
+  ) {
+    margin: 0 0 16px !important;
+    color: #2759ed !important;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: normal !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-intro h1,
+    .app .now-page .now-page__title,
+    .app .discover-page .discover-page__title,
+    .app .curator-page .curator-page__title,
+    .app .archive-page .archive-page__title
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    color: #07142b !important;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
+    font-size: clamp(58px, 16vw, 82px) !important;
+    font-weight: 400 !important;
+    line-height: 0.8 !important;
+    letter-spacing: var(--galgo-page-title-spacing) !important;
+    white-space: normal !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-description,
+    .app .now-page .now-page__description,
+    .app .discover-page .discover-page__description,
+    .app .curator-page .curator-page__description,
+    .app .archive-page .archive-page__description
+  ) {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0 0 !important;
+    color: #07142b !important;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    letter-spacing: -0.035em !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .app .now-page .now-page__tags,
+  .app .archive-page .archive-page__year {
+    margin-top: 48px !important;
+  }
+
+  .app .discover-page .discover-page__intro {
+    padding-bottom: 0 !important;
+  }
+
+  .app .discover-page .discover-page__showcase {
+    margin-top: 48px !important;
+  }
+
+  .app .curator-page .curator-page__gallery {
+    inset: 72px 0 0 !important;
+    padding-top: 230px !important;
+    padding-left: 20px !important;
+  }
+}
+
 /* Detail navigation: one shared visual and desktop position system. */
 .app .detail-back-link {
   display: inline-flex;
@@ -16806,15 +17047,350 @@ body::-webkit-scrollbar:horizontal,
 
   :is(
     .home-page .section-head p,
+    .home-page .archive-text p,
     .now-page__description,
     .discover-page__description,
     .curator-page__description,
     .archive-page__description,
-    .archive-page__section-head p
+    .archive-page__section-head p,
+    .time-set-detail__description,
+    .track-trace-detail__description,
+    .track-trace-album__description,
+    .track-trace-album__timeline-description,
+    .artist-profile__description,
+    .artist-profile__section-description,
+    .create-start-description,
+    .create-detail-description,
+    .archive-blind-page__description
   ) {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     line-height: 1.45;
+  }
+
+  /* Create mobile typography and option-header alignment. */
+  .app .create-start-page .create-start-description,
+  .app .create-start-page .create-start-card-copy p,
+  .app .create-detail-page .create-detail-description,
+  .app .create-detail-page .create-detail-header > p {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .app .create-start-page .create-start-description {
+    font-size: 18px !important;
+  }
+
+  .app .create-start-page .create-start-card-topline {
+    display: grid !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    column-gap: 16px !important;
+  }
+
+  .app .create-start-page .create-start-card-topline small {
+    max-width: 100% !important;
+    justify-self: end !important;
+    text-align: right !important;
+  }
+
+  .app .create-start-page .create-start-card-copy,
+  .app .create-start-page .create-start-card-copy p {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .app .create-start-page .create-start-card-copy p {
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .create-start-page .create-start-options-head span:first-child {
+    transform: translateX(8px) !important;
+  }
+
+  .create-start-page .create-start-options-head span:last-child {
+    transform: translateX(-8px) !important;
+  }
+
+  /* Home mobile refinements. Keep every desktop value above intact. */
+  .home-page .lp-large {
+    top: auto;
+    right: auto;
+    bottom: -168px;
+    left: 50%;
+    width: min(82vw, 320px);
+    height: min(82vw, 320px);
+    translate: -50% 0;
+  }
+
+  .home-page .hero-subtitle {
+    font-size: clamp(16px, 4.4vw, 18px);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .home-page .album-card strong {
+    font-weight: 800;
+  }
+
+  .home-page .album-card span {
+    margin-top: 5px;
+    font-weight: 700;
+  }
+
+  .home-page .discover-card {
+    min-height: 200px;
+    padding: 12px 26px;
+  }
+
+  .home-page .discover-card h3 {
+    margin-bottom: 8px;
+  }
+
+  .home-page .discover-card span {
+    margin-bottom: 18px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .home-page .discover-art {
+    right: -8px;
+    bottom: -18px;
+    width: 94px;
+    height: 94px;
+  }
+
+  .home-page .discover-art span {
+    width: 28px;
+    height: 28px;
+  }
+
+  .home-page .artist-card {
+    width: min(74vw, 288px);
+    min-width: min(74vw, 288px);
+    height: 390px;
+    min-height: 390px;
+    flex-basis: min(74vw, 288px);
+    grid-template-rows: 240px 150px;
+  }
+
+  .home-page .artist-art {
+    height: 240px;
+  }
+
+  .home-page .artist-copy {
+    min-height: 150px;
+    padding: 15px 18px 42px;
+  }
+
+  .home-page .artist-copy strong {
+    margin-bottom: 7px;
+    font-size: 15px;
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .home-page .artist-copy span {
+    margin-bottom: 2px;
+    font-size: 12px;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .home-page .artist-name {
+    left: 18px;
+    bottom: 13px;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .home-page .artist-name::before {
+    width: 20px;
+    height: 20px;
+    flex-basis: 20px;
+  }
+
+  .home-page .artist-info {
+    top: 192px;
+    left: 14px;
+    gap: 7px;
+  }
+
+  .home-page .artist-info button,
+  .home-page .artist-info button:not(:first-child) {
+    height: 32px;
+  }
+
+  .home-page .artist-info button:first-child {
+    min-width: 76px;
+    padding: 0 16px;
+  }
+
+  .home-page .artist-info button:first-child::after {
+    font-weight: 700;
+  }
+
+  .home-page .artist-info button:not(:first-child) {
+    width: 32px;
+  }
+
+  .home-page .artist-info button:nth-child(2)::before {
+    font-size: 18px;
+  }
+
+  .home-page .artist-info button:nth-child(3)::before {
+    font-size: 22px;
+  }
+
+  .home-page .playlist-grid {
+    display: grid;
+    width: calc(100% + 20px);
+    max-width: none;
+    grid-template-columns: none;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: min(82vw, 320px);
+    gap: 10px 14px;
+    padding: 0 32px 10px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .home-page .playlist-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-page .playlist-row {
+    width: 100%;
+    min-width: 0;
+    padding-bottom: 11px;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 13px;
+    scroll-snap-align: start;
+  }
+
+  .home-page :is(.playlist-row img, .playlist-thumb) {
+    width: 58px;
+    height: 58px;
+    font-size: 17px;
+  }
+
+  .home-page .playlist-row strong {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .home-page .playlist-row span {
+    font-size: 12px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .home-page .playlist-row strong + span {
+    margin-top: 5px;
+    font-weight: 700;
+  }
+
+  .home-page .playlist-row span + span {
+    margin-top: 3px;
+    color: rgba(7, 20, 43, 0.72);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .home-page .leftnow-card {
+    width: min(66vw, 260px);
+    min-width: min(66vw, 260px);
+    height: 350px;
+    padding: 18px 18px 0;
+    flex-basis: min(66vw, 260px);
+  }
+
+  .home-page .leftnow-text {
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .home-page .leftnow-text strong {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .home-page .leftnow-text span {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .home-page .leftnow-image {
+    width: calc(100% + 36px);
+    aspect-ratio: 1 / 1;
+    margin-right: -18px;
+    margin-left: -18px;
+    align-self: center;
+  }
+
+  .home-page .leftnow-bottom {
+    right: 18px;
+    bottom: 14px;
+    left: 18px;
+  }
+
+  .home-page .leftnow-bottom button,
+  .home-page .leftnow-card button {
+    height: 32px;
+  }
+
+  .home-page .curator-item span {
+    font-weight: 700;
+  }
+
+  .home-page .archive-card {
+    height: 280px;
+    min-height: 280px;
+    padding: 16px 24px;
+    grid-template-rows: auto minmax(72px, 1fr);
+    gap: 6px;
+  }
+
+  .home-page .archive-text h3 {
+    margin-bottom: 6px;
+  }
+
+  .home-page .archive-text p {
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  .home-page .archive-mosaic {
+    width: 58%;
+    max-width: 200px;
+    margin-top: 0;
+  }
+
+  .home-page .archive-blind-pick__visual {
+    min-height: 72px;
+  }
+
+  .home-page .archive-blind-pick__album,
+  .home-page .archive-blind-pick__cover {
+    width: 74px;
   }
 
   :is(
@@ -16867,6 +17443,122 @@ body::-webkit-scrollbar:horizontal,
   .track-trace-album__footer.tempy-footer strong,
   .artist-profile__footer.tempy-footer strong {
     font-size: clamp(44px, 13vw, 56px);
+  }
+
+  /* Final rendered-DOM override for the five mobile page intros. */
+  .app .create-start-page .create-start-intro {
+    padding-top: 112px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .app .now-page,
+  .app .discover-page {
+    padding-top: 112px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .app .curator-page .curator-page__intro {
+    top: 72px !important;
+    padding: 40px 20px 0 !important;
+  }
+
+  .app .archive-page {
+    padding-top: 72px !important;
+  }
+
+  .app .archive-page .archive-page__intro {
+    padding-top: 40px !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-intro,
+    .app .now-page .now-page__intro,
+    .app .discover-page .discover-page__intro,
+    .app .curator-page .curator-page__intro,
+    .app .archive-page .archive-page__intro
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-eyebrow,
+    .app .now-page .now-page__eyebrow,
+    .app .discover-page .discover-page__eyebrow,
+    .app .curator-page .curator-page__eyebrow,
+    .app .archive-page .archive-page__eyebrow
+  ) {
+    margin: 0 0 16px !important;
+    color: #2759ed !important;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: normal !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-intro h1,
+    .app .now-page .now-page__title,
+    .app .discover-page .discover-page__title,
+    .app .curator-page .curator-page__title,
+    .app .archive-page .archive-page__title
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    color: #07142b !important;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
+    font-size: clamp(58px, 16vw, 82px) !important;
+    font-weight: 400 !important;
+    line-height: 0.8 !important;
+    letter-spacing: var(--galgo-page-title-spacing) !important;
+    white-space: normal !important;
+  }
+
+  :is(
+    .app .create-start-page .create-start-description,
+    .app .now-page .now-page__description,
+    .app .discover-page .discover-page__description,
+    .app .curator-page .curator-page__description,
+    .app .archive-page .archive-page__description
+  ) {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0 0 !important;
+    color: #07142b !important;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    letter-spacing: -0.035em !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .app .now-page .now-page__tags,
+  .app .archive-page .archive-page__year {
+    margin-top: 48px !important;
+  }
+
+  .app .discover-page .discover-page__intro {
+    padding-bottom: 0 !important;
+  }
+
+  .app .discover-page .discover-page__showcase {
+    margin-top: 48px !important;
+  }
+
+  .app .curator-page .curator-page__gallery {
+    inset: 72px 0 0 !important;
+    padding-top: 230px !important;
+    padding-left: 20px !important;
   }
 }
 
