@@ -1141,6 +1141,170 @@ function Create() {
             color: #ffffff !important;
           }
 
+          /* Desktop Playlist editor: share the Moment Card workspace geometry. */
+          .create-detail-page--playlist .create-detail-workspace {
+            height: calc(100vh - 86px) !important;
+            min-height: calc(100vh - 86px) !important;
+            margin-top: 86px !important;
+            padding: 0 var(--split-panel-inline) !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--playlist .create-detail-content {
+            display: grid !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            grid-template-rows: minmax(0, 1fr) auto !important;
+          }
+
+          .create-detail-page--playlist .create-detail-main {
+            display: grid !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: var(--detail-back-block) 0 38px !important;
+            align-content: safe center !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--playlist .create-detail-header h2 {
+            font-size: clamp(86px, 5vw, 96px) !important;
+            line-height: 0.84 !important;
+          }
+
+          .create-detail-page--playlist .create-detail-header p {
+            margin-top: 10px !important;
+            font-size: 17px !important;
+            line-height: 1.6 !important;
+          }
+
+          .create-detail-page--playlist .create-detail-grid--playlist {
+            height: 640px !important;
+            margin-top: 28px !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: clamp(16px, 1.25vw, 24px) !important;
+            align-items: stretch !important;
+          }
+
+          .create-detail-page--playlist .create-detail-card {
+            width: 100% !important;
+            height: 640px !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: clamp(30px, 1.9vw, 36px) !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--playlist .create-detail-card h3 {
+            margin-bottom: 38px !important;
+            font-size: clamp(44px, 2.9vw, 56px) !important;
+            line-height: 0.88 !important;
+            letter-spacing: var(--galgo-display-spacing) !important;
+            white-space: nowrap !important;
+          }
+
+          .create-detail-page--playlist .create-detail-card:first-child .create-detail-cover {
+            width: 100% !important;
+            height: clamp(340px, 36vh, 390px) !important;
+            min-height: 0 !important;
+            aspect-ratio: auto !important;
+            flex: 0 0 auto !important;
+          }
+
+          .create-detail-page--playlist .create-detail-card:first-child .create-detail-cover-button {
+            min-height: 50px !important;
+            margin-top: 20px !important;
+            padding: 0 26px !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-field {
+            margin-bottom: 28px !important;
+            gap: 12px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-field label,
+          .create-detail-page--playlist .create-detail-label {
+            font-size: 14px !important;
+            line-height: 1.2 !important;
+          }
+
+          .create-detail-page--playlist .create-detail-label--spaced {
+            margin-top: 38px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-tags,
+          .create-detail-page--playlist .create-detail-visibility {
+            margin-top: 14px !important;
+            gap: 10px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-pill {
+            min-height: 42px !important;
+            padding: 0 17px !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-search {
+            height: 50px !important;
+            padding: 0 18px !important;
+            font-size: 16px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-track-list {
+            margin-top: 16px !important;
+            gap: 10px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-track {
+            min-height: 64px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-actions {
+            min-height: 128px !important;
+            margin: 0 calc(var(--split-panel-inline) * -1) !important;
+            padding: 28px var(--split-panel-inline) !important;
+            flex: 0 0 auto !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 12px !important;
+            background: var(--tempy-blue) !important;
+          }
+
+          .create-detail-page--playlist .create-detail-actions button {
+            width: 136px !important;
+            min-height: 56px !important;
+            padding: 0 28px !important;
+            border-radius: 0 !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--playlist .create-detail-secondary-action {
+            border-color: rgba(255, 255, 255, 0.72) !important;
+            background: transparent !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--playlist .create-detail-action {
+            border-color: var(--tempy-navy) !important;
+            background: var(--tempy-navy) !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--playlist .create-detail-secondary-action:hover {
+            border-color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--playlist .create-detail-action:hover {
+            border-color: #10264a !important;
+            background: #10264a !important;
+            color: #ffffff !important;
+          }
+
           .create-detail-page--moment-result .create-detail-workspace {
             height: 100vh !important;
             min-height: 100vh !important;
@@ -1650,7 +1814,7 @@ function CreateDetail({
   const isMoment = type === "moment";
 
   return (
-    <main className={`create-detail-page${isMoment ? " create-detail-page--moment" : ""}`}>
+    <main className={`create-detail-page${isMoment ? " create-detail-page--moment" : " create-detail-page--playlist"}`}>
       <section className="create-detail-shell">
         <aside className="create-detail-side">
           <button className="create-detail-back detail-back-link" type="button" onClick={onBack} aria-label="선택 화면으로 돌아가기">
