@@ -17627,6 +17627,1588 @@ body::-webkit-scrollbar:horizontal,
 }
 
 
+/* Home typography polish — mobile only. Desktop/iMac values above stay unchanged. */
+@media (max-width: 768px) {
+  .home-page {
+    --home-mobile-description-size: 17px;
+    --home-mobile-meta-size: 14px;
+    --home-mobile-button-size: 14px;
+  }
+
+  /* The Korean line beneath every Galgo section heading shares one rhythm. */
+  .home-page .section-head h2 {
+    margin-bottom: 6px;
+  }
+
+  .home-page .section-head p {
+    font-size: var(--home-mobile-description-size);
+    font-weight: 700;
+    line-height: 1.48;
+    letter-spacing: -0.035em;
+  }
+
+  /* Discover cards: stronger CTA and a roomier, less right-heavy LP crop. */
+  .home-page .small-button {
+    font-size: var(--home-mobile-button-size);
+    font-weight: 700;
+  }
+
+  .home-page .discover-art {
+    right: 16px;
+    bottom: -22px;
+    width: 122px;
+    height: 122px;
+  }
+
+  .home-page .discover-art span {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Artist cards use the same type scale across every horizontally-scrolling card. */
+  .home-page .artist-card {
+    height: 410px;
+    min-height: 410px;
+    grid-template-rows: 240px 170px;
+  }
+
+  .home-page .artist-copy {
+    padding: 16px 18px 44px;
+  }
+
+  .home-page .artist-copy strong {
+    margin-bottom: 8px;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .home-page .artist-copy span {
+    margin-bottom: 3px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .home-page .artist-name {
+    bottom: 14px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* Repeated supporting information never drops below the 10pt/13px floor. */
+  .home-page :is(
+    .album-card span,
+    .playlist-row span,
+    .leftnow-text span,
+    .curator-item span
+  ) {
+    font-size: var(--home-mobile-meta-size);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .home-page :is(
+    .tag,
+    .small-button,
+    .archive-text button,
+    .archive-blind-pick__button
+  ) {
+    font-size: max(13px, var(--home-mobile-button-size));
+  }
+
+  .home-page .album-play::after,
+  .home-page .artist-info button:first-child::after {
+    font-size: 13px;
+  }
+
+  .home-page .curator-item span,
+  .home-page .playlist-row span + span,
+  .home-page .leftnow-text span {
+    font-weight: 600;
+  }
+
+  /* Archive promos become compact, text-led cards on mobile. */
+  .home-page .archive-card,
+  .home-page .archive-blind-pick-card {
+    min-height: 214px;
+    padding: 24px;
+    grid-template-rows: auto;
+    align-content: start;
+  }
+
+  .home-page .archive-mosaic,
+  .home-page .archive-blind-pick__visual {
+    display: none;
+  }
+
+  .home-page .archive-text h3 {
+    margin-bottom: 7px;
+  }
+
+  .home-page .archive-text p,
+  .home-page .archive-identity-card .archive-text > p {
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    margin-bottom: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: -0.035em;
+    white-space: normal;
+  }
+
+  .home-page .archive-text button,
+  .home-page .archive-blind-pick__button {
+    min-height: 40px;
+    padding: 0 18px;
+    font-weight: 700;
+  }
+
+  /* Persistent player labels are part of the mobile UI too. */
+  .global-player__copy span,
+  .global-player__copy p,
+  .global-player__controls time,
+  .tempy-footer__copy p,
+  .tempy-footer__links,
+  .tempy-footer > small {
+    font-size: 13px;
+  }
+}
+
+/* Non-Create mobile system — route roots are explicit so Create stays untouched. */
+@media (max-width: 768px) {
+  :is(
+    .home-page,
+    .now-page,
+    .discover-page,
+    .curator-page,
+    .archive-page,
+    .time-set-detail,
+    .track-trace-detail,
+    .track-comment-detail,
+    .track-trace-album,
+    .artist-profile,
+    .profile-page,
+    .lifestyle-curator,
+    .lifestyle-playlist-detail,
+    .artist-curator,
+    .artist-playlist-detail,
+    .similar-curator,
+    .archive-blind-page,
+    .archive-created-detail,
+    .login-page,
+    .login-success-page
+  ) {
+    --mobile-page-gutter: 24px;
+    --mobile-label-size: 13px;
+    --mobile-copy-size: 16px;
+    --mobile-meta-size: 13px;
+    --mobile-touch-size: 44px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: clip;
+  }
+
+  :is(
+    .home-page,
+    .now-page,
+    .discover-page,
+    .curator-page,
+    .archive-page,
+    .time-set-detail,
+    .track-trace-detail,
+    .track-comment-detail,
+    .track-trace-album,
+    .artist-profile,
+    .profile-page,
+    .lifestyle-curator,
+    .lifestyle-playlist-detail,
+    .artist-curator,
+    .artist-playlist-detail,
+    .similar-curator,
+    .archive-blind-page,
+    .archive-created-detail,
+    .login-page,
+    .login-success-page
+  ) :is(section, article, aside, div, nav, ul, ol, li) {
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  :is(
+    .now-page,
+    .discover-page,
+    .archive-page,
+    .time-set-detail,
+    .track-trace-detail,
+    .track-comment-detail,
+    .track-trace-album,
+    .artist-profile,
+    .profile-page,
+    .lifestyle-curator,
+    .lifestyle-playlist-detail,
+    .artist-curator,
+    .artist-playlist-detail,
+    .similar-curator,
+    .archive-created-detail,
+    .login-page,
+    .login-success-page
+  ) {
+    height: auto;
+    min-height: calc(100svh - 72px);
+    overflow-y: visible;
+  }
+
+  :is(
+    .now-page__description,
+    .discover-page__description,
+    .curator-page__description,
+    .archive-page__description,
+    .time-set-detail__description,
+    .track-trace-detail__description,
+    .track-trace-album__description,
+    .artist-profile__description,
+    .lifestyle-curator__intro-copy > p:last-child,
+    .artist-curator__intro > p:not(.artist-curator__eyebrow),
+    .similar-curator__intro > p:not(.similar-curator__eyebrow),
+    .profile-hero__intro p
+  ) {
+    max-width: 100%;
+    font-size: var(--mobile-copy-size);
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: -0.035em;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  :is(
+    .now-page__eyebrow,
+    .discover-page__eyebrow,
+    .curator-page__eyebrow,
+    .archive-page__eyebrow,
+    .time-set-detail__eyebrow,
+    .track-trace-detail__eyebrow,
+    .track-trace-album__eyebrow,
+    .lifestyle-curator__eyebrow,
+    .artist-curator__eyebrow,
+    .similar-curator__eyebrow
+  ) {
+    font-size: var(--mobile-label-size);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  :is(
+    .time-set-detail__back,
+    .track-trace-detail__back,
+    .track-comment-detail__back,
+    .track-trace-album__back,
+    .artist-profile__back,
+    .lifestyle-curator__back,
+    .lifestyle-playlist-detail__back,
+    .artist-curator__back,
+    .artist-playlist-detail__back,
+    .similar-curator__back,
+    .archive-blind-page__back,
+    .archive-created-detail__back
+  ) {
+    min-height: var(--mobile-touch-size);
+    font-size: var(--mobile-meta-size);
+  }
+
+  .app .time-set-detail__back,
+  .app .track-trace-detail__back,
+  .app .track-comment-detail__back,
+  .app .track-trace-album__back,
+  .app .artist-profile__back,
+  .app .lifestyle-curator__back,
+  .app .lifestyle-playlist-detail__back,
+  .app .artist-curator__back,
+  .app .artist-playlist-detail__back,
+  .app .similar-curator__back,
+  .app .archive-blind-page__back,
+  .app .archive-created-detail__back {
+    min-height: var(--mobile-touch-size);
+    font-size: var(--mobile-meta-size);
+  }
+
+  .app :is(
+    .time-set-detail__back,
+    .track-trace-detail__back,
+    .track-comment-detail__back,
+    .track-trace-album__back,
+    .artist-profile__back,
+    .lifestyle-curator__back,
+    .lifestyle-playlist-detail__back,
+    .artist-curator__back,
+    .artist-playlist-detail__back,
+    .similar-curator__back,
+    .archive-blind-page__back,
+    .archive-created-detail__back
+  ) > span:first-child {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  /* Now: one readable vertical flow with a compact selected card and queue. */
+  .app .now-page {
+    display: block;
+    padding: 112px var(--mobile-page-gutter) 64px !important;
+  }
+
+  .now-page__intro {
+    padding-bottom: 0;
+  }
+
+  .now-page__tags {
+    margin-top: 28px !important;
+    gap: 8px;
+  }
+
+  .now-page__tag {
+    min-height: 40px;
+    padding: 8px 14px;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .now-page__content {
+    display: grid;
+    margin-top: 32px;
+    padding-top: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .now-page__selected,
+  .now-page__queue {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 22px;
+    overflow: visible;
+  }
+
+  .now-page__card-heading span,
+  .now-page__queue-heading span,
+  .now-page__live {
+    font-size: 13px;
+  }
+
+  .now-page__selected-body {
+    display: grid;
+    width: 100%;
+    margin: 24px 0 20px;
+    padding: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .now-page__cover-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .now-page__track-info {
+    width: 100%;
+    padding: 0;
+    transform: none;
+  }
+
+  .now-page__track-info p,
+  .now-page__track-info h3 {
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .now-page__track-info p,
+  .now-page__track-info > span,
+  .now-page__player time {
+    font-size: 14px;
+  }
+
+  .now-page__track-info h3 {
+    margin-bottom: 10px;
+    font-size: clamp(24px, 7.2vw, 30px);
+  }
+
+  .now-page__player {
+    display: grid;
+    padding-top: 18px;
+    grid-template-columns: 44px 52px 44px minmax(0, 1fr) auto;
+    gap: 8px;
+    transform: none;
+  }
+
+  .now-page__player button,
+  .now-page__player .now-page__skip,
+  .now-page__player .now-page__play {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 20px;
+  }
+
+  .now-page__player .now-page__play {
+    width: 52px;
+    height: 52px;
+  }
+
+  .now-page__progress {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .now-page__queue-heading {
+    min-height: 0;
+    padding-bottom: 16px;
+  }
+
+  .now-page__queue-heading h2 {
+    font-size: clamp(44px, 13vw, 54px);
+    white-space: normal;
+  }
+
+  .now-page__queue-list {
+    padding-top: 4px;
+    overflow: visible;
+  }
+
+  .now-page__queue-item {
+    min-height: 82px;
+    padding: 14px 0;
+    grid-template-columns: 24px 56px minmax(0, 1fr) 44px;
+    gap: 10px;
+    overflow: visible;
+  }
+
+  .now-page__queue-item img {
+    width: 56px;
+    height: 56px;
+    aspect-ratio: 1;
+  }
+
+  .now-page__queue-number,
+  .now-page__queue-copy span,
+  .now-page__queue-item time {
+    font-size: 13px;
+  }
+
+  .now-page__queue-copy strong {
+    font-size: 15px;
+  }
+
+  .now-page__queue-item button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .now-page__queue-item time {
+    display: none;
+  }
+
+  /* Discover main: equal compact cards and contained LP decoration. */
+  .app .discover-page {
+    padding: 112px var(--mobile-page-gutter) 72px !important;
+    overflow-y: visible;
+  }
+
+  .discover-page__showcase {
+    margin-top: 40px !important;
+  }
+
+  .discover-page__visual {
+    height: 150px;
+    gap: 12px;
+  }
+
+  .discover-page__record {
+    width: min(48vw, 180px);
+  }
+
+  .discover-page__cards {
+    display: grid;
+    margin-top: -12px;
+    padding-bottom: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .discover-page__card {
+    width: 100%;
+    min-height: 300px;
+    padding: 22px;
+  }
+
+  .discover-page__card-topline,
+  .discover-page__card-bottom {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .discover-page__card-copy {
+    padding-top: 28px;
+  }
+
+  .discover-page__card-copy h2 {
+    margin-bottom: 10px;
+    font-size: clamp(58px, 17vw, 72px);
+  }
+
+  .discover-page__card-copy p {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+
+  .discover-page__card-copy br {
+    display: none;
+  }
+
+  .discover-page__arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Discover detail routes: stack panels and preserve native horizontal swiping. */
+  .time-set-detail,
+  .track-trace-detail {
+    display: grid;
+    padding-top: 72px;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+  }
+
+  .time-set-detail__intro,
+  .track-trace-detail__intro {
+    min-height: 360px;
+    padding: 28px var(--mobile-page-gutter) 36px;
+    border-right: 0;
+  }
+
+  .time-set-detail__copy,
+  .track-trace-detail__copy {
+    margin: 46px 0 0;
+  }
+
+  .time-set-detail__title,
+  .track-trace-detail__title {
+    font-size: clamp(58px, 17vw, 72px);
+    white-space: normal;
+  }
+
+  .time-set-detail__description,
+  .track-trace-detail__description {
+    margin-top: 10px;
+  }
+
+  .time-set-detail__index,
+  .track-trace-detail__index,
+  .time-set-detail__record-center small {
+    font-size: 13px;
+  }
+
+  .time-set-detail__records {
+    min-height: 480px;
+    overflow: hidden;
+  }
+
+  .time-set-detail__main-record {
+    width: min(86vw, 360px);
+  }
+
+  .track-trace-detail__gallery {
+    min-height: 590px;
+    padding: 28px 0 40px var(--mobile-page-gutter);
+    overflow: hidden;
+  }
+
+  .track-trace-detail__gallery-heading {
+    padding-right: var(--mobile-page-gutter);
+    font-size: 13px;
+  }
+
+  .track-trace-detail__track {
+    width: calc(100% + var(--mobile-page-gutter));
+    padding: 22px 48px 28px 0;
+    gap: 14px;
+    scroll-snap-type: x mandatory;
+    touch-action: pan-x pan-y;
+  }
+
+  .track-trace-detail__card {
+    width: min(78vw, 306px);
+    scroll-snap-align: start;
+  }
+
+  :is(
+    .track-trace-detail__artwork-meta,
+    .track-trace-detail__artwork-meta button,
+    .track-trace-detail__artwork-meta button span,
+    .track-trace-detail__number,
+    .track-trace-detail__card-copy p,
+    .track-trace-detail__card-copy > span,
+    .track-trace-detail__hint
+  ) {
+    font-size: 13px;
+  }
+
+  .track-trace-detail__artwork-meta button {
+    min-height: 40px;
+  }
+
+  .track-trace-detail__card-copy h2 {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* Track comments and album detail: no fixed-height clipping. */
+  .track-comment-detail {
+    display: block;
+    padding-top: 72px;
+    overflow: visible;
+  }
+
+  .track-comment-detail__song {
+    min-height: 0;
+    padding: 28px var(--mobile-page-gutter) 44px;
+  }
+
+  .track-comment-detail__album {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .track-comment-detail__song-copy h1,
+  .track-comment-detail__song-copy p,
+  .track-comment-detail__song-copy > span,
+  .track-comment-detail__quote,
+  .track-comment-detail__cluster-time p,
+  .track-comment-detail__cluster-time h3,
+  .track-comment-detail__cluster-foot,
+  .track-detail-tabs__button,
+  .track-detail-tabs__metadata,
+  .track-detail-tabs__metric,
+  .track-detail-tabs__more {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  :is(
+    .track-comment-detail__song-copy p,
+    .track-comment-detail__song-copy > span,
+    .track-comment-detail__album > span,
+    .track-comment-detail__play span,
+    .track-comment-detail__header > p,
+    .track-comment-detail__header > span,
+    .track-comment-detail__filter,
+    .track-comment-detail__cluster-top,
+    .track-comment-detail__cluster-time p,
+    .track-comment-detail__quote,
+    .track-comment-detail__cluster-foot,
+    .track-detail-tabs__button,
+    .track-detail-tabs__metadata dt,
+    .track-detail-tabs__metadata dd,
+    .track-detail-tabs__metadata dt span,
+    .track-detail-tabs__metric,
+    .track-detail-tabs__metric span,
+    .track-detail-tabs__more,
+    .track-detail-lower__moment-card span,
+    .track-detail-lower__song-artwork > span,
+    .track-detail-lower__song-copy p,
+    .track-detail-lower__song-copy span,
+    .time-set-carousel__status,
+    .track-detail-modal__section-title > span,
+    .track-detail-modal__context-title span,
+    .track-detail-modal__feature-copy > p,
+    .track-detail-modal__footer > span,
+    .track-detail-modal__footer button
+  ) {
+    font-size: 13px;
+  }
+
+  .track-comment-detail__actions button,
+  .track-comment-detail__filter,
+  .track-detail-tabs__button,
+  .track-detail-tabs__more,
+  .track-detail-modal__footer button {
+    min-height: 44px;
+  }
+
+  .track-comment-detail__comments,
+  .track-detail-lower__moments,
+  .track-detail-lower__similar {
+    padding-right: var(--mobile-page-gutter);
+    padding-left: var(--mobile-page-gutter);
+  }
+
+  .track-detail-tabs__nav {
+    height: auto;
+    min-height: 64px;
+    padding: 0 var(--mobile-page-gutter);
+    gap: 22px;
+    overflow-x: auto;
+  }
+
+  .track-trace-album {
+    padding-top: 72px;
+    overflow: visible;
+  }
+
+  .track-trace-album__hero,
+  .track-trace-album__flow,
+  .track-trace-album__tracks,
+  .track-trace-album__timeline {
+    padding-right: var(--mobile-page-gutter);
+    padding-left: var(--mobile-page-gutter);
+  }
+
+  .track-trace-album__cover {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .track-trace-album__intro h1 {
+    font-size: clamp(56px, 16vw, 72px);
+    white-space: normal;
+  }
+
+  :is(
+    .track-trace-album__artist-link span:first-of-type,
+    .track-trace-album__artist-link span:last-child,
+    .track-trace-album__cover > span,
+    .track-trace-album__meta dt,
+    .track-trace-album__meta dd,
+    .track-trace-album__section-head > p,
+    .track-trace-album__flow-list article > span,
+    .track-trace-album__flow-list time,
+    .track-trace-album__flow-list p,
+    .track-trace-album__tracklist li > span,
+    .track-trace-album__tracklist time,
+    .track-trace-album__timeline-track small,
+    .track-trace-album__timeline-track p
+  ) {
+    font-size: 13px;
+  }
+
+  .track-trace-album__actions button,
+  .track-trace-album__tracklist li > button,
+  .track-trace-album-link {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .track-trace-album__timeline-track {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Curator landing: stable intro followed by a horizontal LP rail. */
+  .app .curator-page {
+    display: block;
+    min-height: 100svh;
+    padding-top: 72px;
+    overflow: visible;
+  }
+
+  .app .curator-page .curator-page__intro {
+    position: static;
+    padding: 40px var(--mobile-page-gutter) 0 !important;
+    pointer-events: auto;
+  }
+
+  .app .curator-page .curator-page__gallery {
+    position: static;
+    width: 100%;
+    padding: 44px 0 68px var(--mobile-page-gutter) !important;
+    overflow-x: auto;
+    overflow-y: visible;
+    touch-action: pan-x pan-y;
+  }
+
+  .curator-page__track {
+    gap: 18px;
+    padding-right: 48px;
+  }
+
+  .curator-page__item,
+  .curator-page__item:nth-child(1),
+  .curator-page__item:nth-child(2),
+  .curator-page__item:nth-child(3) {
+    width: min(78vw, 306px);
+    transform: none;
+    scroll-snap-align: start;
+  }
+
+  .curator-page__record {
+    width: 100%;
+  }
+
+  .curator-page__item-copy {
+    min-height: 128px;
+    padding: 18px 52px 0 0;
+  }
+
+  .curator-page__item-copy > span:first-child,
+  .curator-page__item-copy p,
+  .curator-page__record-label > span,
+  .curator-page__record-label small {
+    font-size: 13px;
+  }
+
+  .curator-page__item-copy h2 {
+    font-size: clamp(44px, 13vw, 54px);
+    white-space: normal;
+  }
+
+  .curator-page__item-arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Curator archives: stack intro and expose swipeable card rails. */
+  .lifestyle-curator,
+  .artist-curator,
+  .similar-curator {
+    display: block;
+    margin-top: 72px;
+    padding: 0 0 64px;
+    overflow: visible;
+    background: #f3f4f0;
+  }
+
+  .lifestyle-curator__intro,
+  .artist-curator__intro,
+  .similar-curator__intro {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 28px var(--mobile-page-gutter) 34px;
+    border-bottom: 1px solid rgba(7, 20, 43, 0.2);
+    transform: none;
+  }
+
+  .lifestyle-curator__back,
+  .artist-curator__back,
+  .similar-curator__back {
+    position: relative;
+    inset: auto;
+    margin: 20px var(--mobile-page-gutter) 0;
+  }
+
+  .lifestyle-curator__intro-copy {
+    margin-top: 38px;
+  }
+
+  .lifestyle-curator__back {
+    margin: 0;
+  }
+
+  .lifestyle-curator__intro h1,
+  .artist-curator__intro h1,
+  .similar-curator__intro h1 {
+    font-size: clamp(56px, 17vw, 70px);
+    line-height: 0.82;
+    white-space: normal;
+    overflow-wrap: normal;
+  }
+
+  .lifestyle-curator__intro h1 br,
+  .artist-curator__intro > p br {
+    display: none;
+  }
+
+  .lifestyle-curator__count {
+    margin-top: 32px;
+    font-size: 13px;
+  }
+
+  .artist-curator__wordmark,
+  .similar-curator__watermark {
+    display: none;
+  }
+
+  .lifestyle-curator__archive,
+  .artist-curator__archive,
+  .similar-curator__archive {
+    display: block;
+    width: 100%;
+  }
+
+  .lifestyle-curator__archive-inner,
+  .artist-curator__archive-inner,
+  .similar-curator__archive-inner {
+    width: 100%;
+  }
+
+  .lifestyle-curator__grid,
+  .artist-curator__viewport,
+  .similar-curator__viewport {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding: 36px 48px 20px var(--mobile-page-gutter);
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+
+  .lifestyle-curator__card,
+  .artist-curator__card,
+  .similar-curator__card {
+    width: min(82vw, 322px);
+    min-width: min(82vw, 322px);
+    flex: 0 0 min(82vw, 322px);
+    scroll-snap-align: start;
+  }
+
+  .lifestyle-curator__card {
+    min-height: 360px;
+  }
+
+  .artist-curator__track,
+  .similar-curator__track {
+    display: flex;
+    width: max-content;
+    height: auto;
+    padding: 0;
+    gap: 16px;
+  }
+
+  .artist-curator__card {
+    height: 470px;
+    min-height: 470px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 230px 240px;
+  }
+
+  .artist-curator__card-copy {
+    padding: 22px;
+  }
+
+  .artist-curator__image {
+    grid-row: 1;
+  }
+
+  .similar-curator__card {
+    height: 540px;
+    min-height: 540px;
+  }
+
+  :is(
+    .lifestyle-curator__card-copy > span,
+    .lifestyle-curator__host span,
+    .lifestyle-curator__host strong,
+    .lifestyle-curator__play-rail > span,
+    .lifestyle-curator__play-rail small,
+    .lifestyle-curator__ribbon,
+    .artist-curator__card-number,
+    .artist-curator__card-copy > p,
+    .artist-curator__card-meta,
+    .artist-curator__author strong,
+    .similar-curator__number,
+    .similar-curator__card-index,
+    .similar-curator__card-index > span:last-child,
+    .similar-curator__byline,
+    .similar-curator__meta,
+    .similar-curator__song span
+  ) {
+    font-size: 13px;
+  }
+
+  .lifestyle-curator__play-rail button,
+  .similar-curator__actions button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Both playlist detail variants share a vertical panel + horizontal track rail. */
+  .artist-playlist-detail,
+  .lifestyle-playlist-detail {
+    display: block;
+    margin-top: 72px;
+    padding: 70px var(--mobile-page-gutter) 56px;
+    overflow: visible;
+  }
+
+  .artist-playlist-detail__back,
+  .lifestyle-playlist-detail__back {
+    position: absolute;
+    top: 16px;
+    left: var(--mobile-page-gutter);
+  }
+
+  .artist-playlist-detail__panel,
+  .lifestyle-playlist-detail__panel {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+    min-height: 540px;
+    margin: 0 auto;
+  }
+
+  .artist-playlist-detail__panel-copy,
+  .lifestyle-playlist-detail__panel {
+    padding: 28px;
+  }
+
+  .artist-playlist-detail__panel-copy h1,
+  .lifestyle-playlist-detail__panel h1 {
+    max-width: 100%;
+    font-size: clamp(28px, 8vw, 36px);
+    line-height: 1.18;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .artist-playlist-detail__portrait {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .artist-playlist-detail__actions,
+  .lifestyle-playlist-detail__actions {
+    min-height: 64px;
+  }
+
+  .artist-playlist-detail__actions button,
+  .lifestyle-playlist-detail__actions button,
+  .lifestyle-playlist-detail__small-controls button {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .artist-playlist-detail__viewport,
+  .lifestyle-playlist-detail__viewport {
+    position: relative;
+    inset: auto;
+    width: calc(100% + var(--mobile-page-gutter));
+    height: auto;
+    margin-top: 48px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+
+  .artist-playlist-detail__track,
+  .lifestyle-playlist-detail__track {
+    display: flex;
+    width: max-content;
+    height: auto;
+    padding: 12px 48px 16px 0;
+    gap: 24px;
+  }
+
+  .artist-playlist-detail__item,
+  .lifestyle-playlist-detail__item {
+    width: min(68vw, 268px);
+    min-width: min(68vw, 268px);
+    flex: 0 0 min(68vw, 268px);
+    scroll-snap-align: start;
+  }
+
+  .artist-playlist-detail__lp,
+  .lifestyle-playlist-detail__lp {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  :is(
+    .artist-playlist-detail__panel-copy > p,
+    .artist-playlist-detail__meta,
+    .artist-playlist-detail__author strong,
+    .artist-playlist-detail__now-head,
+    .artist-playlist-detail__now > small,
+    .artist-playlist-detail__number,
+    .artist-playlist-detail__item p,
+    .artist-playlist-detail__note-head,
+    .artist-playlist-detail__note-head span:last-child,
+    .lifestyle-playlist-detail__eyebrow,
+    .lifestyle-playlist-detail__meta,
+    .lifestyle-playlist-detail__host strong,
+    .lifestyle-playlist-detail__now-playing span,
+    .lifestyle-playlist-detail__now-playing small,
+    .lifestyle-playlist-detail__number,
+    .lifestyle-playlist-detail__item p,
+    .lifestyle-playlist-detail__archive-meta p,
+    .lifestyle-playlist-detail__archive-meta div,
+    .lifestyle-playlist-detail__archive-copy > span,
+    .lifestyle-playlist-detail__stat small
+  ) {
+    font-size: 13px;
+  }
+
+  .artist-playlist-detail__note,
+  .lifestyle-playlist-detail__archive-meta {
+    position: static;
+    width: 100%;
+    margin-top: 42px;
+  }
+
+  /* Archive: stack hero/calendar and keep every archive rail independently swipeable. */
+  .app .archive-page {
+    padding-top: 72px !important;
+    overflow: visible;
+  }
+
+  .archive-page__hero {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app .archive-page .archive-page__intro {
+    min-height: 0;
+    padding: 40px var(--mobile-page-gutter) 44px !important;
+  }
+
+  .archive-page__year {
+    width: 100%;
+    min-height: 64px;
+    margin-top: 36px !important;
+    padding: 0 16px;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .archive-page__year span,
+  .archive-page__calendar-head p,
+  .archive-page__weekdays,
+  .archive-page__day {
+    font-size: 13px;
+  }
+
+  .archive-page__calendar {
+    width: 100%;
+    padding: 36px var(--mobile-page-gutter) 44px;
+  }
+
+  .archive-page__calendar-head {
+    min-height: 92px;
+  }
+
+  .archive-page__calendar-head strong {
+    font-size: 64px;
+  }
+
+  .archive-page__day {
+    min-height: 50px;
+  }
+
+  .archive-page__day--active::before {
+    width: 40px;
+    height: 40px;
+  }
+
+  .archive-page__section {
+    padding: 48px var(--mobile-page-gutter) 56px;
+  }
+
+  .archive-page__section-head {
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .archive-page__section-head > span,
+  .archive-page__section-head p {
+    font-size: 13px;
+  }
+
+  .archive-page__section-head h2 {
+    font-size: clamp(30px, 9vw, 38px);
+    overflow-wrap: break-word;
+  }
+
+  .archive-page__tags,
+  .archive-page__people--scroll,
+  .archive-page__people--liked,
+  .archive-page__artists,
+  .archive-page__created-grid {
+    padding-left: 0;
+  }
+
+  .archive-page__people--scroll,
+  .archive-page__artists {
+    width: calc(100% + var(--mobile-page-gutter));
+    padding-right: 48px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .archive-page__people--scroll .archive-page__person,
+  .archive-page__artist {
+    scroll-snap-align: start;
+  }
+
+  :is(
+    .archive-page__person div span,
+    .archive-page__person small,
+    .archive-page__artist div > span,
+    .archive-page__artist small,
+    .archive-page__created-cover,
+    .archive-page__created-meta,
+    .archive-page__created-body small,
+    .archive-page__created-tags span
+  ) {
+    font-size: 13px;
+  }
+
+  .archive-page__created-card {
+    width: 100%;
+  }
+
+  .archive-page__created-body {
+    min-height: 190px;
+  }
+
+  /* Archive-created detail/edit routes are stateful views under /archive. */
+  .archive-created-detail {
+    display: grid;
+    padding-top: 72px;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+  }
+
+  .archive-created-detail__side,
+  .archive-created-detail__main {
+    width: 100%;
+    padding: 36px var(--mobile-page-gutter) 48px;
+  }
+
+  .archive-created-detail__cover {
+    max-width: 360px;
+  }
+
+  .archive-created-detail__info h1,
+  .archive-created-detail__header h2 {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  :is(
+    .archive-created-detail__cover,
+    .archive-created-detail__info > span,
+    .archive-created-detail__header > span,
+    .archive-created-edit-label,
+    .archive-created-detail__info small,
+    .archive-created-detail__tags span,
+    .archive-created-detail__actions button,
+    .archive-created-track span,
+    .archive-created-track small,
+    .archive-created-moment-card small,
+    .archive-created-cover-picker > span,
+    .archive-created-edit-grid label,
+    .archive-created-edit-pills button,
+    .archive-created-edit-tracks button,
+    .archive-created-edit-add button
+  ) {
+    font-size: 13px;
+  }
+
+  .archive-created-detail__actions button,
+  .archive-created-cover-picker > span,
+  .archive-created-edit-pills button,
+  .archive-created-edit-tracks button,
+  .archive-created-edit-add button {
+    min-height: 44px;
+  }
+
+  .archive-created-tracks,
+  .archive-created-edit-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .archive-created-track {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 16px;
+    padding: 18px;
+  }
+
+  /* Artist profile and My/Profile: one-column sections with touch-safe actions. */
+  .artist-profile {
+    padding-top: 72px;
+    overflow: visible;
+  }
+
+  .artist-profile__top,
+  .artist-profile__content-section,
+  .artist-profile__release,
+  .artist-profile__most-left {
+    padding-right: var(--mobile-page-gutter);
+    padding-left: var(--mobile-page-gutter);
+  }
+
+  :is(
+    .artist-profile__label,
+    .artist-profile__popularity span,
+    .artist-profile__tags span,
+    .artist-profile__actions button,
+    .artist-profile__portrait-head > span,
+    .artist-profile__portrait-time > span,
+    .artist-profile__portrait-foot > span,
+    .artist-profile__portrait-moods span,
+    .artist-profile__portrait-moods strong,
+    .artist-profile__portrait-foot b,
+    .artist-profile__heading--row > span,
+    .artist-profile__summary-card-head span,
+    .artist-profile__summary-card-foot small,
+    .artist-profile__track-copy small,
+    .artist-profile__track-meta > span:first-child small,
+    .artist-profile__track-meta-bottom > span,
+    .artist-profile__track-meta-bottom button,
+    .artist-profile__track-meta-bottom button b,
+    .artist-profile__track-list button,
+    .artist-profile__report-card-head,
+    .artist-profile__report-card-core small,
+    .artist-profile__track-meta,
+    .artist-profile__report-card-head span:last-child,
+    .artist-profile__report-card-note > span,
+    .artist-profile__report-card-meta span,
+    .artist-profile__report-card-meta b,
+    .artist-profile__report-card-foot,
+    .artist-profile__report-card-foot small,
+    .artist-profile__ranking article strong small,
+    .artist-profile__ranking-kicker,
+    .artist-profile__ranking-stats small,
+    .artist-profile__ranking-info dt,
+    .artist-profile__ranking-info dd,
+    .artist-profile__ranking-tags span
+  ) {
+    font-size: 13px;
+  }
+
+  .artist-profile__actions button,
+  .artist-profile__track-meta-bottom button,
+  .artist-profile__ranking-toggle {
+    min-height: 44px;
+  }
+
+  .profile-page {
+    padding-top: 72px;
+    overflow: visible;
+  }
+
+  .profile-hero,
+  .profile-tags-section,
+  .profile-moment-section,
+  .profile-playlist-section {
+    padding-right: var(--mobile-page-gutter);
+    padding-left: var(--mobile-page-gutter);
+  }
+
+  .profile-hero {
+    min-height: 0;
+    padding-top: 44px;
+    padding-bottom: 48px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .profile-hero__identity {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .profile-hero__actions {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .profile-hero__actions button {
+    min-width: 0;
+    min-height: 44px;
+    flex: 1;
+    font-size: 13px;
+  }
+
+  .profile-tags-layout,
+  .profile-moment-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profile-tag-orbits {
+    min-height: 280px;
+  }
+
+  .profile-section-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profile-section-head a {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .profile-playlist-row {
+    width: calc(100% + var(--mobile-page-gutter));
+    padding-right: 48px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .profile-playlist-card {
+    width: min(82vw, 322px);
+    min-width: min(82vw, 322px);
+    padding: 20px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  :is(
+    .profile-year-select span,
+    .profile-sentence-card span,
+    .profile-moment-card__top span,
+    .profile-moment-card__track strong,
+    .profile-moment-card__track span,
+    .profile-moment-card__track small,
+    .profile-playlist-card__copy small,
+    .profile-playlist-card__copy p,
+    .profile-playlist-card__copy div span,
+    .profile-footer a
+  ) {
+    font-size: 13px;
+  }
+
+  .profile-moment-card__top button,
+  .profile-moment-card__play,
+  .profile-playlist-card__copy button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Blind Pick remains a viewport interaction, but fits 393px and supports tap. */
+  .archive-blind-page {
+    --blind-bar-size: 104px;
+    height: calc(100svh - 72px);
+    min-height: 560px;
+    margin-top: 72px;
+    overflow: hidden;
+  }
+
+  .archive-blind-page__back {
+    top: 16px;
+    left: var(--mobile-page-gutter);
+    z-index: 20;
+  }
+
+  .archive-blind-page__strip {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  :is(
+    .archive-blind-page__pick-meta,
+    .archive-blind-page__play,
+    .archive-blind-page__pick strong,
+    .archive-blind-page__pick small,
+    .archive-blind-page__cover-info span,
+    .archive-blind-page__cover-info strong,
+    .archive-blind-page__cover-info small,
+    .archive-blind-page__revealed-info span,
+    .archive-blind-page__revealed-info button,
+    .archive-blind-page__revealed-info strong,
+    .archive-blind-page__revealed-info small,
+    .archive-blind-page__hover-hint-line
+  ) {
+    font-size: 13px;
+  }
+
+  .archive-blind-page__eye,
+  .archive-blind-page__revealed-info button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Player and auth routes. */
+  .global-player__copy span,
+  .global-player__copy p,
+  .global-player__controls time,
+  .full-player__track-copy span,
+  .full-player__track-copy p,
+  .full-player__track-row small,
+  .full-player__track-row time,
+  .full-player__moment time,
+  .full-player__moment p {
+    font-size: 13px;
+  }
+
+  .full-player__control-group button,
+  .full-player__transport button,
+  .full-player__tabs button,
+  .full-player__moment-form button {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .login-page,
+  .login-success-page {
+    padding-right: var(--mobile-page-gutter);
+    padding-left: var(--mobile-page-gutter);
+  }
+
+  .login-page button,
+  .login-success-page button,
+  .login-page input {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  :is(
+    .login-brand p,
+    .login-success-card p,
+    .login-form label > span,
+    .login-password-field button,
+    .login-error,
+    .login-helper,
+    .login-success-card button
+  ) {
+    font-size: 13px;
+  }
+
+  /* Footer text is visible UI and follows the same 13px floor. */
+  .tempy-footer__copy p,
+  .tempy-footer__links,
+  .tempy-footer__links a,
+  .tempy-footer > small,
+  .archive-page__footer p,
+  .archive-page__footer div,
+  .archive-page__footer small,
+  .artist-profile__footer p,
+  .artist-profile__footer > div:nth-child(2),
+  .artist-profile__footer small {
+    font-size: 13px;
+  }
+}
+
 /* Shared back button: final override keeps every detail-page variant consistent. */
 @media (min-width: 901px) {
   .track-trace-detail__intro,
