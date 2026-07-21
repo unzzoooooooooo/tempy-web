@@ -5182,6 +5182,10 @@ body::-webkit-scrollbar:horizontal,
   margin-top: clamp(-126px, -6vw, -92px);
 }
 
+.discover-page__mobile-items {
+  display: none;
+}
+
 .discover-page__card {
   display: flex;
   min-height: clamp(370px, 21vw, 440px);
@@ -20633,6 +20637,147 @@ body::-webkit-scrollbar:horizontal,
 @media (min-width: 1101px) {
   .app .lifestyle-curator .lifestyle-curator__intro-copy {
     margin-left: max(0px, calc(5.2vw - var(--detail-back-inline)));
+  }
+}
+
+/* Discover Time: pair each LP with its mode card on phones only. */
+@media (max-width: 480px) {
+  .app .discover-page .discover-page__visual,
+  .app .discover-page .discover-page__cards {
+    display: none;
+  }
+
+  .app .discover-page .discover-page__mobile-items {
+    display: grid;
+    gap: 40px;
+  }
+
+  .app .discover-page .discover-page__mobile-item {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    overflow: visible;
+  }
+
+  .app .discover-page .discover-page__mobile-vinyl {
+    z-index: 1;
+    width: min(72vw, 260px);
+    margin-bottom: -65px;
+    flex: 0 0 auto;
+    align-self: center;
+  }
+
+  .app .discover-page .discover-page__mobile-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: 344px;
+  }
+
+  .app .discover-page .discover-page__mobile-card .discover-page__card-copy {
+    padding-top: 28px;
+    padding-bottom: 30px;
+  }
+
+  /* Discover routes share one phone-only intro typography system. */
+  .app :is(
+    .discover-page__eyebrow,
+    .time-set-detail__eyebrow,
+    .track-trace-detail__eyebrow
+  ) {
+    margin: 0 0 16px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: normal !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .app :is(
+    .discover-page__title,
+    .time-set-detail__title,
+    .track-trace-detail__title
+  ) {
+    max-width: 100% !important;
+    margin: 0 !important;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
+    font-size: clamp(58px, 16vw, 82px) !important;
+    font-weight: 400 !important;
+    line-height: 0.8 !important;
+    letter-spacing: var(--galgo-page-title-spacing) !important;
+    overflow-wrap: normal !important;
+    white-space: normal !important;
+  }
+
+  .app :is(
+    .discover-page__description,
+    .time-set-detail__description,
+    .track-trace-detail__description
+  ) {
+    max-width: 100% !important;
+    margin: 10px 0 0 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    letter-spacing: -0.035em !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .app :is(.time-set-detail__index, .track-trace-detail__index) {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+  }
+
+  /* Horizontal finger drag while preserving the page's vertical scroll. */
+  .app .time-set-detail .time-set-detail__records {
+    touch-action: pan-y;
+    overscroll-behavior-x: contain;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .app .time-set-detail .time-set-carousel__item {
+    translate: var(--time-set-drag-x, 0px) 0;
+    transition:
+      left 680ms cubic-bezier(0.22, 0.8, 0.24, 1),
+      top 680ms cubic-bezier(0.22, 0.8, 0.24, 1),
+      transform 680ms cubic-bezier(0.22, 0.8, 0.24, 1),
+      translate 180ms ease-out,
+      opacity 320ms ease;
+    -webkit-user-drag: none;
+  }
+
+  .app .time-set-detail .time-set-carousel.is-touch-dragging .time-set-carousel__item {
+    transition: none;
+  }
+
+  /* Keep every phone LP label inside its unchanged center circle. */
+  .app .time-set-detail :is(
+    .time-set-detail__record-center > span,
+    .time-set-detail__record-center > strong,
+    .time-set-carousel__side-center > span,
+    .time-set-carousel__side-center > strong
+  ) {
+    font-size: 22px;
+    line-height: 0.78;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  .app .time-set-detail .time-set-detail__record-center {
+    text-align: center;
+  }
+
+  .app .time-set-detail .time-set-detail__record-center > small {
+    bottom: 12%;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-align: center;
   }
 }
 

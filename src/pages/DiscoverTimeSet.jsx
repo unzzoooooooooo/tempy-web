@@ -69,6 +69,9 @@ function DiscoverTimeSet() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showAlbum, setShowAlbum] = useState(false);
   const lastWheelTime = useRef(0);
+  const recordsRef = useRef(null);
+  const dragState = useRef(null);
+  const suppressCenterClickUntil = useRef(0);
   const activeRecord = timeSetRecords[activeIndex];
 
   const moveCarousel = (direction) => {
@@ -90,6 +93,74 @@ function DiscoverTimeSet() {
 
     lastWheelTime.current = now;
     moveCarousel(movement > 0 ? 1 : -1);
+  };
+
+  const handlePointerDown = (event) => {
+    if (
+      event.pointerType === "mouse"
+      || !window.matchMedia("(max-width: 480px)").matches
+    ) return;
+
+    dragState.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      offsetX: 0,
+      axis: null,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event) => {
+    const drag = dragState.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const distanceX = event.clientX - drag.startX;
+    const distanceY = event.clientY - drag.startY;
+
+    if (!drag.axis && Math.max(Math.abs(distanceX), Math.abs(distanceY)) >= 6) {
+      drag.axis = Math.abs(distanceX) > Math.abs(distanceY) ? "x" : "y";
+      if (drag.axis === "x") {
+        event.currentTarget.classList.add("is-touch-dragging");
+      }
+    }
+
+    if (drag.axis !== "x") return;
+
+    event.preventDefault();
+    drag.offsetX = Math.max(-110, Math.min(110, distanceX));
+    event.currentTarget.style.setProperty(
+      "--time-set-drag-x",
+      `${drag.offsetX}px`,
+    );
+  };
+
+  const endPointerDrag = (event) => {
+    const drag = dragState.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const carousel = event.currentTarget;
+    dragState.current = null;
+    carousel.classList.remove("is-touch-dragging");
+    carousel.style.setProperty("--time-set-drag-x", "0px");
+
+    if (carousel.hasPointerCapture(event.pointerId)) {
+      carousel.releasePointerCapture(event.pointerId);
+    }
+
+    if (drag.axis === "x" && Math.abs(drag.offsetX) >= 44) {
+      suppressCenterClickUntil.current = Date.now() + 300;
+      moveCarousel(drag.offsetX < 0 ? 1 : -1);
+    }
+  };
+
+  const handleRecordCenterClick = (event) => {
+    if (Date.now() < suppressCenterClickUntil.current) {
+      event.preventDefault();
+      return;
+    }
+
+    setShowAlbum(true);
   };
 
   const getRecordPosition = (index) => {
@@ -131,9 +202,14 @@ function DiscoverTimeSet() {
       </section>
 
       <section
+        ref={recordsRef}
         className="time-set-detail__records time-set-carousel"
         aria-label="Time Set records"
         onWheel={handleWheel}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={endPointerDrag}
+        onPointerCancel={endPointerDrag}
       >
         {timeSetRecords.map((record, index) => {
           const position = getRecordPosition(index);
@@ -158,7 +234,7 @@ function DiscoverTimeSet() {
                     className={`time-set-detail__record-center time-set-interaction__trigger ${showAlbum ? "time-set-interaction__trigger--active" : ""}`}
                     type="button"
                     aria-label={showAlbum ? `${activeRecord.title} by ${activeRecord.artist}` : "Time Set 앨범 보기"}
-                    onClick={() => setShowAlbum(true)}
+                    onClick={handleRecordCenterClick}
                   >
                     {showAlbum ? (
                       <span className="time-set-interaction__cover">
