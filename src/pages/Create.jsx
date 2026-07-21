@@ -9,6 +9,12 @@ const trackItems = [
   { id: 3, title: "Confetti Dream", time: "3:12" },
   { id: 4, title: "Upside Mood", time: "2:48" },
 ];
+const trackCoverImages = {
+  1: "/images/album-01.png",
+  2: "/images/album-02.png",
+  3: "/images/album-03.png",
+  4: "/images/album-04.png",
+};
 
 const formatTime = (date = new Date()) => (
   date.toLocaleTimeString("ko-KR", {
@@ -1429,6 +1435,257 @@ function Create() {
             background: #10264a !important;
             color: #ffffff !important;
           }
+
+          /* Desktop Playlist result: mirror the established Moment result geometry. */
+          .create-detail-page--playlist-result .create-detail-workspace {
+            height: 100vh !important;
+            min-height: 100vh !important;
+            padding: 140px var(--split-panel-inline) 0 !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-content {
+            display: grid !important;
+            height: 100% !important;
+            min-height: 100% !important;
+            grid-template-rows: minmax(0, 1fr) auto !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-stage {
+            display: flex !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: 0 !important;
+            flex-direction: column !important;
+            justify-content: safe center !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-group {
+            display: flex !important;
+            min-width: 0 !important;
+            flex: 0 0 auto !important;
+            flex-direction: column !important;
+            transform: translateY(-28px) !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-header h2 {
+            font-size: clamp(86px, 5vw, 96px) !important;
+            line-height: 0.84 !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-header p {
+            margin-top: 10px !important;
+            font-size: 17px !important;
+            line-height: 1.6 !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-preview {
+            width: min(1020px, 100%) !important;
+            height: max-content !important;
+            margin-top: 30px !important;
+            grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr) !important;
+            align-items: start !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-cover {
+            width: 100% !important;
+            min-height: 0 !important;
+            aspect-ratio: 1 / 1 !important;
+            align-self: start !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-cover img {
+            width: 100% !important;
+            height: 100% !important;
+            aspect-ratio: 1 / 1 !important;
+            object-fit: cover !important;
+            object-position: center !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-body {
+            min-height: 0 !important;
+            padding: 44px !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-kicker {
+            font-size: 13px !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-body h3 {
+            margin-top: 20px !important;
+            font-size: clamp(48px, 3.5vw, 72px) !important;
+            word-break: keep-all !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-body p {
+            display: -webkit-box !important;
+            margin-top: 24px !important;
+            overflow: hidden !important;
+            font-size: 18px !important;
+            -webkit-box-orient: vertical !important;
+            -webkit-line-clamp: 3 !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-tags {
+            margin-top: 24px !important;
+            padding-top: 0 !important;
+            gap: 10px !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-pill {
+            min-height: 36px !important;
+            padding: 0 14px !important;
+            font-size: 13px !important;
+            cursor: default !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track-list {
+            max-height: 150px !important;
+            margin-top: 24px !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            gap: 0 !important;
+            border-top: 1px solid rgba(7, 20, 43, 0.1) !important;
+            border-bottom: 1px solid rgba(7, 20, 43, 0.1) !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track {
+            min-height: 64px !important;
+            padding: 10px 0 !important;
+            background: transparent !important;
+            border: 0 !important;
+            border-bottom: 1px solid rgba(7, 20, 43, 0.08) !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track:last-child {
+            border-bottom: 0 !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track-cover-image {
+            display: block !important;
+            width: 42px !important;
+            height: 42px !important;
+            object-fit: cover !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track .create-detail-track-cover {
+            display: none !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-actions {
+            min-height: 128px !important;
+            margin: 0 calc(var(--split-panel-inline) * -1) !important;
+            padding: 28px var(--split-panel-inline) !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 12px !important;
+            background: var(--tempy-blue) !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-actions button {
+            min-width: 136px !important;
+            min-height: 56px !important;
+            padding: 0 28px !important;
+            border-radius: 0 !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-secondary-action {
+            border-color: rgba(255, 255, 255, 0.72) !important;
+            background: transparent !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-action {
+            border-color: var(--tempy-navy) !important;
+            background: var(--tempy-navy) !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-secondary-action:hover {
+            border-color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+          }
+
+          .create-detail-page--playlist-result .create-detail-action:hover {
+            border-color: #10264a !important;
+            background: #10264a !important;
+            color: #ffffff !important;
+          }
+
+          /* One desktop intro coordinate system shared by all three Create screens. */
+          .create-start-page .create-side-intro,
+          .create-detail-page--moment .create-side-intro,
+          .create-detail-page--playlist .create-side-intro {
+            position: fixed !important;
+            top: calc(50% + 43px - 4vh) !important;
+            left: 5.2vw !important;
+            z-index: 1 !important;
+            width: 23.6vw !important;
+            height: calc(92px + clamp(57.6px, 6.72vw, 120px)) !important;
+            margin: 0 !important;
+            transform: translateY(-50%) !important;
+          }
+
+          .create-start-page .create-side-intro__eyebrow,
+          .create-detail-page--moment .create-side-intro__eyebrow,
+          .create-detail-page--playlist .create-side-intro__eyebrow {
+            position: relative !important;
+            z-index: 1 !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 0 var(--label-title-gap) !important;
+            color: var(--tempy-blue) !important;
+            font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+            font-size: 14px !important;
+            line-height: normal !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.12em !important;
+          }
+
+          .create-start-page .create-side-intro__title,
+          .create-detail-page--moment .create-side-intro__title,
+          .create-detail-page--playlist .create-side-intro__title {
+            position: relative !important;
+            z-index: 1 !important;
+            width: 100% !important;
+            height: clamp(57.6px, 6.72vw, 120px) !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            font-family: "GalgoVF", "Arial Narrow", sans-serif !important;
+            font-size: clamp(72px, 8.4vw, 150px) !important;
+            line-height: 0.8 !important;
+            font-weight: 400 !important;
+            letter-spacing: var(--galgo-page-title-spacing) !important;
+          }
+
+          .create-start-page .create-start-intro .create-side-intro .create-side-intro__description,
+          .create-detail-page.create-detail-page--moment .create-detail-side .create-side-intro .create-side-intro__description,
+          .create-detail-page.create-detail-page--playlist .create-detail-side .create-side-intro .create-side-intro__description {
+            position: relative !important;
+            z-index: 1 !important;
+            width: max-content !important;
+            max-width: calc(28.8vw + var(--split-panel-inline)) !important;
+            margin: 10px 0 18px !important;
+            padding: 0 !important;
+            color: var(--tempy-navy) !important;
+            font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+            font-size: 20px !important;
+            line-height: 1.6 !important;
+            font-weight: 400 !important;
+            letter-spacing: 0 !important;
+            word-break: keep-all !important;
+            white-space: normal !important;
+          }
+
+          .create-detail-page--moment .create-detail-description-break,
+          .create-detail-page--playlist .create-detail-description-break {
+            display: none !important;
+          }
         }
 
         .create-track-caption {
@@ -1529,6 +1786,10 @@ function Create() {
           align-items: center !important;
           background: #ffffff !important;
           border: 1px solid rgba(7, 20, 43, 0.1) !important;
+        }
+
+        .create-result-track-cover-image {
+          display: none !important;
         }
 
         .create-result-track strong {
@@ -1740,10 +2001,10 @@ function CreateChoice({ onSelect }) {
     <main className="create-start-page">
       <section className="create-start-shell">
         <aside className="create-start-intro">
-          <div className="create-start-intro-copy">
-            <p className="create-start-eyebrow discover-page__eyebrow">CREATE</p>
-            <h1>Create Moment</h1>
-            <p className="create-start-description">
+          <div className="create-start-intro-copy create-side-intro">
+            <p className="create-start-eyebrow discover-page__eyebrow create-side-intro__eyebrow">CREATE</p>
+            <h1 className="create-side-intro__title">Create Moment</h1>
+            <p className="create-start-description create-side-intro__description">
               지금 듣는 노래와 나의 순간을 나만의 방식으로 남겨 보세요.
             </p>
           </div>
@@ -1821,18 +2082,18 @@ function CreateDetail({
             <span aria-hidden="true">←</span>
             <span>BACK</span>
           </button>
-          <div className="create-detail-side-copy">
-            <p className={isMoment ? "discover-page__eyebrow" : "create-detail-eyebrow"}>CREATE STATION</p>
-            <h1>{isMoment ? "Moment Card" : "Playlist"}</h1>
-            <p className="create-detail-description">
+          <div className="create-detail-side-copy create-side-intro">
+            <p className={`${isMoment ? "discover-page__eyebrow" : "create-detail-eyebrow"} create-side-intro__eyebrow`}>CREATE STATION</p>
+            <h1 className="create-side-intro__title">{isMoment ? "Moment Card" : "Playlist"}</h1>
+            <p className="create-detail-description create-side-intro__description">
               {isMoment ? (
                 <>
-                  지금의 시간 · 날씨 · 위치를 담아<br />
+                  지금의 시간 · 날씨 · 위치를 담아{" "}<br className="create-detail-description-break" />
                   1곡짜리 순간 큐레이션을 남겨요
                 </>
               ) : (
                 <>
-                  여러 곡을 하나의 순간 맥락으로 묶어<br />
+                  여러 곡을 하나의 순간 맥락으로 묶어{" "}<br className="create-detail-description-break" />
                   공유해보세요
                 </>
               )}
@@ -2129,12 +2390,20 @@ function PlaylistForm({ data, onChange }) {
 
 function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate, onViewArchive }) {
   const isMoment = type === "moment";
-  const playlistTracks = playlistData.selectedTracks
-    .map((trackId) => trackItems.find((track) => track.id === trackId))
+  const playlistTitle = typeof playlistData.playlistTitle === "string" ? playlistData.playlistTitle.trim() : "";
+  const playlistDescription = typeof playlistData.playlistDescription === "string"
+    ? playlistData.playlistDescription.trim()
+    : "";
+  const playlistVisibility = typeof playlistData.visibility === "string" ? playlistData.visibility.trim() : "";
+  const playlistTags = Array.isArray(playlistData.selectedTags)
+    ? playlistData.selectedTags.filter((tag) => typeof tag === "string" && tag.trim())
+    : [];
+  const playlistTracks = (Array.isArray(playlistData.selectedTracks) ? playlistData.selectedTracks : [])
+    .map((track) => (typeof track === "object" ? track : trackItems.find((item) => item.id === track)))
     .filter(Boolean);
 
   return (
-    <main className={`create-detail-page${isMoment ? " create-detail-page--moment-result" : ""}`}>
+    <main className={`create-detail-page create-detail-page--${isMoment ? "moment" : "playlist"}-result`}>
       <section className="create-detail-shell">
         <aside className="create-detail-side">
           <button className="create-detail-back detail-back-link" type="button" onClick={onRetry} aria-label="작성 화면으로 돌아가기">
@@ -2161,60 +2430,70 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
         <section className="create-detail-workspace" aria-label={isMoment ? "Moment Card 결과" : "Playlist 결과"}>
           <div className="create-detail-content">
             <div className="create-result-stage">
-              <header className="create-detail-header">
-                <h2>{isMoment ? "Moment Created" : "Playlist Created"}</h2>
-                <p>{isMoment ? "지금의 순간이 카드로 저장되었어요." : "여러 곡이 하나의 순간으로 묶였어요."}</p>
-              </header>
+              <div className="create-result-group">
+                <header className="create-detail-header">
+                  <h2>{isMoment ? "Moment Created" : "Playlist Created"}</h2>
+                  <p>{isMoment ? "지금의 순간이 카드로 저장되었어요." : "여러 곡이 하나의 순간으로 묶였어요."}</p>
+                </header>
 
-              {isMoment ? (
-                <article className="create-result-preview create-result-preview--moment">
-                  <ResultCover image={momentData.coverImage} />
-                  <div className="create-result-body">
-                    <span className="create-result-kicker">
-                      {momentData.timeStamp.time} · {momentData.timeStamp.location}
-                    </span>
-                    <h3>{momentData.selectedTrack.title}</h3>
-                    <p>{momentData.momentText || "아직 한 줄 순간이 비어 있어요."}</p>
-                    <div className="create-result-meta">
-                      {[momentData.timeStamp.weather, momentData.timeStamp.temperature, momentData.visibility].map((item) => (
-                        <Pill key={item}>{item}</Pill>
-                      ))}
+                {isMoment ? (
+                  <article className="create-result-preview create-result-preview--moment">
+                    <ResultCover image={momentData.coverImage} />
+                    <div className="create-result-body">
+                      <span className="create-result-kicker">
+                        {momentData.timeStamp.time} · {momentData.timeStamp.location}
+                      </span>
+                      <h3>{momentData.selectedTrack.title}</h3>
+                      <p>{momentData.momentText || "아직 한 줄 순간이 비어 있어요."}</p>
+                      <div className="create-result-meta">
+                        {[momentData.timeStamp.weather, momentData.timeStamp.temperature, momentData.visibility].map((item) => (
+                          <Pill key={item}>{item}</Pill>
+                        ))}
+                      </div>
+                      <div className="create-result-tags">
+                        {momentData.selectedTags.map((tag) => (
+                          <Pill key={tag} active>{tag}</Pill>
+                        ))}
+                      </div>
                     </div>
-                    <div className="create-result-tags">
-                      {momentData.selectedTags.map((tag) => (
-                        <Pill key={tag} active>{tag}</Pill>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              ) : (
-                <article className="create-result-preview create-result-preview--playlist">
-                  <ResultCover image={playlistData.coverImage} />
-                  <div className="create-result-body">
-                    <span className="create-result-kicker">{playlistData.visibility}</span>
-                    <h3>{playlistData.playlistTitle || "Untitled Playlist"}</h3>
-                    <p>{playlistData.playlistDescription || "아직 플레이리스트 설명이 비어 있어요."}</p>
-                    <div className="create-result-tags">
-                      {playlistData.selectedTags.map((tag) => (
-                        <Pill key={tag} active>{tag}</Pill>
-                      ))}
-                    </div>
-                    <div className="create-result-track-list">
-                      {playlistTracks.length ? (
-                        playlistTracks.map((track) => (
-                          <div className="create-result-track" key={track.id}>
-                            <span className="create-detail-track-cover" aria-hidden="true" />
-                            <strong>{track.title}</strong>
-                            <span>{track.time}</span>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="create-result-empty">선택된 트랙이 없어요.</p>
+                  </article>
+                ) : (
+                  <article className="create-result-preview create-result-preview--playlist">
+                    <ResultCover image={playlistData.coverImage} />
+                    <div className="create-result-body">
+                      {playlistVisibility && <span className="create-result-kicker">{playlistVisibility}</span>}
+                      {playlistTitle && <h3>{playlistTitle}</h3>}
+                      {playlistDescription && <p>{playlistDescription}</p>}
+                      {playlistTags.length > 0 && (
+                        <div className="create-result-tags">
+                          {playlistTags.map((tag) => (
+                            <Pill key={tag} active>{tag}</Pill>
+                          ))}
+                        </div>
                       )}
+                      <div className="create-result-track-list">
+                        {playlistTracks.length ? (
+                          playlistTracks.map((track) => (
+                            <div className="create-result-track" key={track.id}>
+                              <span className="create-detail-track-cover" aria-hidden="true" />
+                              <img
+                                className="create-result-track-cover-image"
+                                src={trackCoverImages[track.id]}
+                                alt=""
+                                aria-hidden="true"
+                              />
+                              <strong>{track.title}</strong>
+                              <span>{track.time}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="create-result-empty">선택된 트랙이 없어요.</p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </article>
-              )}
+                  </article>
+                )}
+              </div>
             </div>
 
             <footer className="create-detail-actions">

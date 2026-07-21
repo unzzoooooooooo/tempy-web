@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import TempyFooter from "../components/TempyFooter";
 
 const momentCards = [
   {
@@ -191,18 +192,7 @@ function Profile() {
         </div>
       </section>
 
-      <footer className="profile-footer tempy-footer">
-        <div className="tempy-footer__copy">
-          <p>ONE ALBUM. A DAY OF MOMENTS</p>
-          <strong>Listen through time.</strong>
-        </div>
-        <nav className="tempy-footer__links" aria-label="Footer links">
-          <a href="#discover">DISCOVER</a>
-          <a href="#curator">CURATOR</a>
-          <a href="#archive">ARCHIVE</a>
-        </nav>
-        <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
-      </footer>
+      <TempyFooter className="profile-footer" />
     </main>
   );
 }

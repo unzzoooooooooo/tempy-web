@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import TempyFooter from "../components/TempyFooter";
 import { useContextRecommendations } from "../utils/context";
+import { calculatePointerRepel } from "../utils/pointerRepel";
 
 function Home() {
   const logoLetterRefs = useRef([]);
@@ -106,29 +108,26 @@ function Home() {
       if (!letter) return;
 
       const rect = letter.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dx = centerX - event.clientX;
-      const dy = centerY - event.clientY;
-      const distance = Math.hypot(dx, dy);
       const motion = getLogoMotion(index);
+      const repel = calculatePointerRepel({
+        rect,
+        pointerX: event.clientX,
+        pointerY: event.clientY,
+        influenceRadius,
+        maxX: maxMove,
+      });
 
-      if (distance >= influenceRadius) {
+      if (!repel.isActive) {
         motion.targetX = 0;
         motion.targetY = 0;
         motion.targetRotate = 0;
         return;
       }
 
-      const strength = (1 - distance / influenceRadius) ** 1.8;
-      const safeDistance = Math.max(distance, 1);
-      const move = maxMove * strength;
-      const x = (dx / safeDistance) * move;
-      const y = (dy / safeDistance) * move;
-      const rotate = Math.max(-3, Math.min(3, x * 0.16));
+      const rotate = Math.max(-3, Math.min(3, repel.x * 0.16));
 
-      motion.targetX = x;
-      motion.targetY = y;
+      motion.targetX = repel.x;
+      motion.targetY = repel.y;
       motion.targetRotate = rotate;
     });
   };
@@ -482,18 +481,7 @@ function Home() {
         </section>
       </main>
 
-      <footer className="footer tempy-footer">
-        <div className="tempy-footer__copy">
-          <p>ONE ALBUM. A DAY OF MOMENTS</p>
-          <strong>Listen through time.</strong>
-        </div>
-        <div className="footer-nav tempy-footer__links">
-          <a href="#discover">DISCOVER</a>
-          <a href="#curator">CURATOR</a>
-          <a href="#archive">ARCHIVE</a>
-        </div>
-        <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
-      </footer>
+      <TempyFooter className="footer" />
     </>
   );
 }

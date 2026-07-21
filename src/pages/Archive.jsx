@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import TempyFooter from "../components/TempyFooter";
 
 const CREATED_ITEMS_KEY = "tempyCreatedItems";
 const archiveDefaultTags = ["비", "버스", "성북구"];
@@ -9,6 +10,94 @@ const archiveTrackItems = [
   { id: 3, title: "Confetti Dream", time: "3:12" },
   { id: 4, title: "Upside Mood", time: "2:48" },
 ];
+
+const archiveDayRecords = {
+  3: {
+    date: "2026.05.03 SUN",
+    tags: ["늦은오후", "한강", "산책"],
+    summary: "바람이 느리게 불던 오후, 강변을 걸으며 오래 들은 곡들",
+    totalTracks: 18,
+    mood: "느긋함",
+    situation: "한강 산책",
+    tracks: [
+      { title: "Jane&the boys", artist: "The Volunteers", cover: "/images/album-01.png" },
+      { title: "Wave", artist: "wave to earth", cover: "/images/album-20.png" },
+    ],
+  },
+  8: {
+    date: "2026.05.08 FRI",
+    tags: ["퇴근길", "버스", "노을"],
+    summary: "노을이 길게 남은 퇴근길, 창밖을 보며 반복해 들은 음악",
+    totalTracks: 21,
+    mood: "차분함",
+    situation: "버스 창가",
+    tracks: [
+      { title: "Confetti Dream", artist: "Sunset Rollercoaster", cover: "/images/album-03.png" },
+      { title: "Warm on a Cold Night", artist: "HONNE", cover: "/images/album-21.png" },
+    ],
+  },
+  12: {
+    date: "2026.05.12 TUE",
+    tags: ["집중", "작업실", "반복재생"],
+    summary: "해야 할 일에 몰입하기 위해 리듬을 낮게 이어 붙인 오후",
+    totalTracks: 27,
+    mood: "몰입",
+    situation: "작업 시간",
+    tracks: [
+      { title: "Upside Mood", artist: "HYUKOH", cover: "/images/album-04.png" },
+      { title: "Square", artist: "Yerin Baek", cover: "/images/album-22.png" },
+    ],
+  },
+  16: {
+    date: "2026.05.16 SAT",
+    tags: ["퇴근길", "비오는저녁", "서울", "혼자걷기"],
+    summary: "비 오는 저녁, 혼자 걷는 순간에 가장 많이 들은 곡들",
+    totalTracks: 24,
+    mood: "고요함",
+    situation: "비 오는 산책",
+    tracks: [
+      { title: "BIRDS OF A FEATHER", artist: "Billie Eilish", cover: "/images/album-02.png" },
+      { title: "Love Lee", artist: "AKMU", cover: "/images/album-06.png" },
+      { title: "Let Me Go!", artist: "Hanroro", cover: "/images/album-17.png" },
+    ],
+  },
+  21: {
+    date: "2026.05.21 THU",
+    tags: ["새벽", "방안", "블루아워"],
+    summary: "잠들기 전 불을 낮추고 조용히 정리한 하루의 마지막 음악",
+    totalTracks: 16,
+    mood: "포근함",
+    situation: "늦은 밤",
+    tracks: [
+      { title: "Only", artist: "LeeHi", cover: "/images/album-11.png" },
+      { title: "From The Start", artist: "Laufey", cover: "/images/album-25.png" },
+    ],
+  },
+  24: {
+    date: "2026.05.24 SUN",
+    tags: ["카페", "오후", "친구"],
+    summary: "오래 머문 카페에서 대화 사이사이 함께 흘렀던 플레이리스트",
+    totalTracks: 19,
+    mood: "명랑함",
+    situation: "주말 카페",
+    tracks: [
+      { title: "Super Shy", artist: "NewJeans", cover: "/images/album-14.png" },
+      { title: "Plastic Love", artist: "Mariya Takeuchi", cover: "/images/album-23.png" },
+    ],
+  },
+  29: {
+    date: "2026.05.29 FRI",
+    tags: ["월말", "귀가", "서울"],
+    summary: "길었던 한 달을 마무리하며 천천히 집으로 돌아오던 밤의 기록",
+    totalTracks: 21,
+    mood: "후련함",
+    situation: "늦은 귀가",
+    tracks: [
+      { title: "HOMESICK", artist: "wave to earth", cover: "/images/album-24.png" },
+      { title: "Everything", artist: "The Black Skirts", cover: "/images/album-05.png" },
+    ],
+  },
+};
 
 const readCreatedItems = () => {
   try {
@@ -94,6 +183,7 @@ function Archive() {
   const [selectedCreatedId, setSelectedCreatedId] = useState(null);
   const [isEditingCreated, setIsEditingCreated] = useState(false);
   const [selectedYear, setSelectedYear] = useState("2026");
+  const [selectedArchiveDate, setSelectedArchiveDate] = useState(null);
   const curatorScrollerRef = useRef(null);
   const artistScrollerRef = useRef(null);
 
@@ -112,6 +202,23 @@ function Archive() {
       window.removeEventListener("focus", handleStorage);
     };
   }, []);
+
+  useEffect(() => {
+    if (!selectedArchiveDate) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setSelectedArchiveDate(null);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedArchiveDate]);
 
   const calendarDays = [
     "", "", "", "1", "2", "3", "4",
@@ -231,8 +338,7 @@ function Archive() {
           <p className="archive-page__eyebrow">MY MUSIC ARCHIVE</p>
           <h1 className="archive-page__title">Archive your time</h1>
           <p className="archive-page__description">
-            내가 어떤 시간에 어떤 음악을 들었는지<br />
-            나만의 시간 기록으로 돌아보세요.
+            내가 어떤 시간에 어떤 음악을 들었는지 나만의 시간 기록으로 돌아보세요.
           </p>
           <label className="archive-page__year" aria-label="Selected year">
             <span>YEAR</span>
@@ -259,9 +365,22 @@ function Archive() {
           </div>
           <div className="archive-page__days">
             {calendarDays.map((day, index) => (
-              <div className={day === "16" ? "archive-page__day archive-page__day--active" : "archive-page__day"} key={`${day}-${index}`}>
-                {day && <><span>{day}</span>{[3, 8, 12, 16, 21, 24, 29].includes(Number(day)) && <i />}</>}
-              </div>
+              archiveDayRecords[day] ? (
+                <button
+                  className={`archive-page__day archive-page__day--marked${day === "16" ? " archive-page__day--active" : ""}${selectedArchiveDate === day ? " archive-page__day--selected" : ""}`}
+                  type="button"
+                  key={`${day}-${index}`}
+                  aria-label={`2026년 5월 ${day}일 음악 기록 보기`}
+                  onClick={() => setSelectedArchiveDate(day)}
+                >
+                  <span>{day}</span>
+                  <i aria-hidden="true" />
+                </button>
+              ) : (
+                <div className="archive-page__day" key={`${day}-${index}`}>
+                  {day && <span>{day}</span>}
+                </div>
+              )
             ))}
           </div>
         </div>
@@ -379,15 +498,71 @@ function Archive() {
         )}
       </section>
 
-      <footer className="archive-page__footer tempy-footer">
-        <div className="tempy-footer__copy">
-          <p>ONE ALBUM. A DAY OF MOMENTS</p>
-          <strong>Listen through time.</strong>
-        </div>
-        <div className="tempy-footer__links"><span>DISCOVER</span><span>CURATOR</span><span>ARCHIVE</span></div>
-        <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
-      </footer>
+      <TempyFooter className="archive-page__footer" />
+
+      {selectedArchiveDate && (
+        <ArchiveDayModal
+          record={archiveDayRecords[selectedArchiveDate]}
+          onClose={() => setSelectedArchiveDate(null)}
+        />
+      )}
     </main>
+  );
+}
+
+function ArchiveDayModal({ record, onClose }) {
+  const closeButtonRef = useRef(null);
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+  }, []);
+
+  return (
+    <div
+      className="archive-day-modal"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <section className="archive-day-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="archive-day-modal-title">
+        <header className="archive-day-modal__header">
+          <div>
+            <span>DAILY LISTENING RECORD</span>
+            <h2 id="archive-day-modal-title">{record.date}</h2>
+          </div>
+          <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="날짜 기록 닫기">×</button>
+        </header>
+
+        <div className="archive-day-modal__content">
+          <aside className="archive-day-modal__summary">
+            <p>{record.summary}</p>
+            <div className="archive-day-modal__stats">
+              <span><small>TOTAL TRACKS</small><strong>{record.totalTracks}</strong></span>
+              <span><small>MOOD</small><strong>{record.mood}</strong></span>
+              <span><small>SCENE</small><strong>{record.situation}</strong></span>
+            </div>
+            <div className="archive-day-modal__tags">
+              {record.tags.map((tag) => <span key={tag}>#{tag}</span>)}
+            </div>
+          </aside>
+
+          <div className="archive-day-modal__tracks">
+            <div className="archive-day-modal__tracks-head">
+              <span>TRACK HIGHLIGHTS</span>
+              <small>{String(record.tracks.length).padStart(2, "0")} SELECTED</small>
+            </div>
+            {record.tracks.map((track, index) => (
+              <article className="archive-day-modal__track" key={`${record.date}-${track.title}`}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <img src={track.cover} alt="" />
+                <div><strong>{track.title}</strong><small>{track.artist}</small></div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 

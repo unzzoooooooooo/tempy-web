@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import TempyFooter from "../components/TempyFooter";
 
 const featuredTracks = [
   { cover: "/images/album-21.png", title: "The Fate of Ophelia", time: "23:10", likes: "12.8K" },
@@ -420,11 +421,7 @@ function ArtistProfile() {
         </div>
       </section>
 
-      <footer className="artist-profile__footer tempy-footer">
-        <div className="tempy-footer__copy"><p>ONE ALBUM. A DAY OF MOMENTS</p><strong>Listen through time.</strong></div>
-        <div className="tempy-footer__links"><span>DISCOVER</span><span>CURATOR</span><span>ARCHIVE</span></div>
-        <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
-      </footer>
+      <TempyFooter className="artist-profile__footer" />
     </main>
   );
 }

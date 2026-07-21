@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import TempyFooter from "../components/TempyFooter";
 
 const albumFlow = [
   { number: "01", label: "OPENING", title: "First Light", length: "00:00 — 11:42" },
@@ -189,18 +190,7 @@ function TrackTraceAlbum() {
         </div>
       </section>
 
-      <footer className="track-trace-album__footer tempy-footer">
-        <div className="tempy-footer__copy">
-          <p>ONE ALBUM. A DAY OF MOMENTS</p>
-          <strong>Listen through time.</strong>
-        </div>
-        <div className="track-trace-album__footer-links tempy-footer__links">
-          <span>DISCOVER</span>
-          <span>CURATOR</span>
-          <span>ARCHIVE</span>
-        </div>
-        <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
-      </footer>
+      <TempyFooter className="track-trace-album__footer" />
     </main>
   );
 }
