@@ -10,6 +10,12 @@ const archiveTrackItems = [
   { id: 3, title: "Confetti Dream", time: "3:12" },
   { id: 4, title: "Upside Mood", time: "2:48" },
 ];
+const archiveTrackVisuals = {
+  1: { artist: "The Volunteers", cover: "/images/album-01.png", moment: "RAINY EVENING" },
+  2: { artist: "Billie Eilish", cover: "/images/album-02.png", moment: "NIGHT WALK" },
+  3: { artist: "HONNE", cover: "/images/album-03.png", moment: "CITY WINDOW" },
+  4: { artist: "HYUKOH", cover: "/images/album-04.png", moment: "SLOW AFTERNOON" },
+};
 
 const archiveDayRecords = {
   3: {
@@ -150,6 +156,19 @@ const getCreatedTracks = (item) => {
       return archiveTrackItems.find((candidate) => candidate.id === track) || null;
     })
     .filter(Boolean);
+};
+
+const getTrackDurationSeconds = (time = "") => {
+  const [minutes, seconds] = String(time).split(":").map(Number);
+  if (!Number.isFinite(minutes) || !Number.isFinite(seconds)) return 0;
+  return (minutes * 60) + seconds;
+};
+
+const formatPlaylistDuration = (tracks) => {
+  const totalSeconds = tracks.reduce((total, track) => total + getTrackDurationSeconds(track.time), 0);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
 };
 
 const writeCreatedItems = (items) => {
@@ -568,6 +587,7 @@ function ArchiveDayModal({ record, onClose }) {
 
 function CreatedItemDetail({ item, isEditing, onBack, onEdit, onCancelEdit, onDelete, onSave }) {
   const isPlaylist = item.type === "playlist";
+  const playlistTracks = isPlaylist ? getCreatedTracks(item) : [];
 
   if (isEditing) {
     return (
@@ -587,23 +607,42 @@ function CreatedItemDetail({ item, isEditing, onBack, onEdit, onCancelEdit, onDe
           <span aria-hidden="true">←</span>
           <span>BACK TO ARCHIVE</span>
         </button>
-        <CreatedCover image={item.data?.coverImage} label={isPlaylist ? "PLAYLIST" : "MOMENT"} />
-        <div className="archive-created-detail__info">
-          <span>{isPlaylist ? "Created Playlist" : "Created Moment Card"}</span>
-          <h1>{getCreatedTitle(item)}</h1>
-          <p>{getCreatedDescription(item)}</p>
-          <small>{formatCreatedDate(item.createdAt)} · {item.data?.visibility || "전체 공개"}</small>
-          <CreatedTagList tags={getCreatedTags(item.data)} />
+        <div className="archive-created-detail__object">
+          <CreatedCover image={item.data?.coverImage} label={isPlaylist ? "PLAYLIST" : "MOMENT"} />
+          <div className="archive-created-detail__info">
+            <span>{isPlaylist ? "Created Playlist" : "Created Moment Card"}</span>
+            <h1>{getCreatedTitle(item)}</h1>
+            <p>{getCreatedDescription(item)}</p>
+            {isPlaylist ? (
+              <div className="archive-created-detail__side-meta">
+                <span><small>CREATED</small><strong>{formatCreatedDate(item.createdAt)}</strong></span>
+                <span><small>VISIBILITY</small><strong>{item.data?.visibility || "전체 공개"}</strong></span>
+                <span><small>TRACKS</small><strong>{String(playlistTracks.length).padStart(2, "0")}</strong></span>
+                <span><small>DURATION</small><strong>{formatPlaylistDuration(playlistTracks)}</strong></span>
+              </div>
+            ) : (
+              <small>{formatCreatedDate(item.createdAt)} · {item.data?.visibility || "전체 공개"}</small>
+            )}
+            <CreatedTagList tags={getCreatedTags(item.data)} />
+            {isPlaylist && (
+              <div className="archive-created-detail__actions">
+                <button type="button" onClick={onEdit}>수정하기</button>
+                <button type="button" onClick={onDelete}>삭제하기</button>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="archive-created-detail__actions">
-          <button type="button" onClick={onEdit}>수정하기</button>
-          <button type="button" onClick={onDelete}>삭제하기</button>
-        </div>
+        {!isPlaylist && (
+          <div className="archive-created-detail__actions">
+            <button type="button" onClick={onEdit}>수정하기</button>
+            <button type="button" onClick={onDelete}>삭제하기</button>
+          </div>
+        )}
       </aside>
 
       <section className="archive-created-detail__main">
         {isPlaylist ? (
-          <PlaylistDetailView item={item} />
+          <PlaylistDetailView item={item} tracks={playlistTracks} />
         ) : (
           <MomentDetailView item={item} />
         )}
@@ -612,8 +651,9 @@ function CreatedItemDetail({ item, isEditing, onBack, onEdit, onCancelEdit, onDe
   );
 }
 
-function PlaylistDetailView({ item }) {
-  const tracks = getCreatedTracks(item);
+function PlaylistDetailView({ item, tracks }) {
+  const tags = getCreatedTags(item.data);
+  const duration = formatPlaylistDuration(tracks);
 
   return (
     <>
@@ -621,18 +661,47 @@ function PlaylistDetailView({ item }) {
         <span>PLAYLIST DETAIL</span>
         <h2>{item.data?.playlistTitle || "Untitled Playlist"}</h2>
         <p>{item.data?.playlistDescription || "여러 곡이 하나의 순간으로 묶였어요."}</p>
+        <div className="archive-created-detail__overview">
+          <span><small>CREATED</small><strong>{formatCreatedDate(item.createdAt)}</strong></span>
+          <span><small>VISIBILITY</small><strong>{item.data?.visibility || "전체 공개"}</strong></span>
+          <span><small>TRACKS</small><strong>{String(tracks.length).padStart(2, "0")}</strong></span>
+          <span><small>TOTAL TIME</small><strong>{duration}</strong></span>
+        </div>
+        <CreatedTagList tags={tags} />
       </header>
       <div className="archive-created-tracks">
-        {(tracks.length ? tracks : [{ id: "empty", title: "선택된 트랙이 없어요", time: "--:--" }]).map((track, index) => (
-          <article className="archive-created-track" key={`${track.id}-${index}`}>
-            <div className="archive-created-track__disc" aria-hidden="true" />
-            <div>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{track.title}</strong>
-              <small>{track.time}</small>
-            </div>
-          </article>
-        ))}
+        <div className="archive-created-tracks__head">
+          <span>TRACK LIST</span>
+          <small>{String(tracks.length).padStart(2, "0")} TRACKS · {duration}</small>
+        </div>
+        {tracks.length ? tracks.map((track, index) => {
+          const visual = archiveTrackVisuals[track.id] || {};
+          return (
+            <article
+              className="archive-created-track"
+              data-tempy-playable
+              data-tempy-title={track.title}
+              data-tempy-artist={visual.artist || "Tempy Archive"}
+              data-tempy-cover={visual.cover || item.data?.coverImage || "/images/album-10.png"}
+              data-tempy-duration={track.time}
+              key={`${track.id}-${index}`}
+            >
+              <span className="archive-created-track__index">{String(index + 1).padStart(2, "0")}</span>
+              <div className="archive-created-track__visual">
+                {visual.cover ? <img src={visual.cover} alt="" /> : <div className="archive-created-track__disc" aria-hidden="true" />}
+              </div>
+              <div className="archive-created-track__copy">
+                <strong>{track.title}</strong>
+                <span>{visual.artist || "Tempy Archive"}</span>
+              </div>
+              <small>{visual.moment || "ARCHIVE MOMENT"}</small>
+              <time>{track.time || "--:--"}</time>
+              <button type="button" aria-label={`${track.title} 재생`}>▶</button>
+            </article>
+          );
+        }) : (
+          <p className="archive-created-tracks__empty">선택된 트랙이 없어요.</p>
+        )}
       </div>
     </>
   );
