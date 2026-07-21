@@ -20630,6 +20630,12 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+@media (min-width: 1101px) {
+  .app .lifestyle-curator .lifestyle-curator__intro-copy {
+    margin-left: max(0px, calc(5.2vw - var(--detail-back-inline)));
+  }
+}
+
 :is(
   .time-set-detail__back,
   .track-trace-detail__back,
