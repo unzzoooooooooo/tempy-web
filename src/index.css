@@ -20781,6 +20781,241 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+/* Discover detail phone content: keep the shared intro rhythm and contain swipe surfaces. */
+@media (max-width: 768px) {
+  .app .time-set-detail,
+  .app .track-trace-detail {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .app .time-set-detail {
+    min-height: calc(100vh - 72px);
+    min-height: calc(100svh - 72px);
+    min-height: calc(100dvh - 72px);
+  }
+
+  .app :is(.time-set-detail__intro, .track-trace-detail__intro) {
+    border-bottom: 0;
+  }
+
+  .app :is(.time-set-detail__index, .track-trace-detail__index) {
+    display: none;
+    height: 0;
+    margin: 0;
+  }
+
+  .app .time-set-detail .time-set-detail__records {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: clamp(260px, calc(100vh - 360px), 492px);
+    height: clamp(260px, calc(100svh - 360px), 492px);
+    height: clamp(260px, calc(100dvh - 360px), 492px);
+    min-height: clamp(260px, calc(100vh - 360px), 492px);
+    min-height: clamp(260px, calc(100svh - 360px), 492px);
+    min-height: clamp(260px, calc(100dvh - 360px), 492px);
+    max-height: 492px;
+    margin-top: -72px;
+    overflow: hidden;
+  }
+
+  .app .time-set-detail .time-set-carousel__item--active {
+    top: calc(50% + 24px);
+    top: calc(50% + clamp(0px, calc(50dvh - 384px), 24px));
+  }
+
+  .app .time-set-detail .time-set-detail__main-record {
+    width: min(
+      86vw,
+      max(220px, calc(100dvh - 440px - env(safe-area-inset-bottom, 0px)))
+    );
+  }
+
+  .app .time-set-detail .time-set-carousel__status {
+    bottom: max(22px, env(safe-area-inset-bottom, 0px));
+  }
+
+  .app .time-set-detail .time-set-detail__record-center > small {
+    display: none;
+    height: 0;
+    margin: 0;
+  }
+
+  .app .time-set-detail :is(
+    .time-set-detail__record-center > span,
+    .time-set-detail__record-center > strong
+  ) {
+    font-size: 36px;
+    line-height: 0.76;
+  }
+
+  .app .track-trace-detail__gallery {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: -72px;
+    overflow: hidden;
+  }
+
+  .app .track-trace-detail__track {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .track-trace-detail__hint {
+    display: none;
+    height: 0;
+    margin: 0;
+  }
+
+  .app .track-trace-detail__card-info {
+    min-height: 132px;
+    padding: 18px;
+  }
+
+  .app .track-trace-detail__card-copy p {
+    margin-bottom: 10px;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  .app .track-trace-detail__card-copy h2 {
+    display: -webkit-box;
+    margin-bottom: 5px;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* Phone-only detail refinements: fixed color panels and swipeable lower rails. */
+@media (max-width: 480px) {
+  .app .time-set-detail,
+  .app .track-trace-detail,
+  .app .track-comment-detail,
+  .app .track-detail-lower {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .app .time-set-detail .time-set-detail__records {
+    width: 100%;
+    max-width: 100%;
+    height: clamp(440px, calc(100dvh - 332px), 520px);
+    min-height: clamp(440px, calc(100dvh - 332px), 520px);
+    max-height: 520px;
+    overflow: hidden;
+    overscroll-behavior-x: none;
+    contain: paint;
+  }
+
+  .app .time-set-detail .time-set-detail__main-record {
+    width: min(88vw, 346px);
+  }
+
+  .app .time-set-detail .time-set-carousel__item--active {
+    top: calc(50% + 8px);
+  }
+
+  .app .track-trace-detail__gallery {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    overscroll-behavior-x: none;
+    contain: paint;
+  }
+
+  .app .track-trace-detail__track {
+    width: 100%;
+    max-width: 100%;
+    overscroll-behavior-x: contain;
+  }
+
+  .app .track-comment-detail {
+    --mobile-detail-section-title-size: clamp(60px, 17vw, 68px);
+  }
+
+  .app .track-comment-detail__song-copy h1 {
+    margin-bottom: 10px;
+    font-size: 30px;
+    line-height: 1.08;
+  }
+
+  .app .track-comment-detail__song-copy > span {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .app .track-detail-tabs__chart {
+    margin-top: 64px;
+  }
+
+  .app .track-detail-lower__heading h2 {
+    font-size: var(--mobile-detail-section-title-size);
+    line-height: 0.76;
+  }
+
+  .app :is(
+    .track-detail-lower__moments,
+    .track-detail-lower__similar
+  ) {
+    overflow-x: hidden;
+  }
+
+  .app :is(
+    .track-detail-lower__moment-grid,
+    .track-detail-lower__song-grid
+  ) {
+    display: flex;
+    width: calc(100% + var(--mobile-page-gutter));
+    max-width: none;
+    padding-right: var(--mobile-page-gutter);
+    align-items: stretch;
+    flex-direction: row;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app :is(
+    .track-detail-lower__moment-grid,
+    .track-detail-lower__song-grid
+  )::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .track-detail-lower__moment-grid {
+    border: 0;
+  }
+
+  .app .track-detail-lower__moment-card {
+    width: min(82vw, 322px);
+    flex: 0 0 min(82vw, 322px);
+    border: 1px solid #07142b;
+    scroll-snap-align: start;
+  }
+
+  .app .track-detail-lower__song-card {
+    width: min(78vw, 306px);
+    flex: 0 0 min(78vw, 306px);
+    scroll-snap-align: start;
+  }
+}
+
 :is(
   .time-set-detail__back,
   .track-trace-detail__back,
