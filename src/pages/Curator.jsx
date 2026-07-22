@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Curator() {
@@ -15,6 +15,12 @@ function Curator() {
   const wheelFrame = useRef(null);
   const pendingWheelDelta = useRef(0);
   const trackpadEndTimer = useRef(null);
+  const isPhone = window.matchMedia("(max-width: 480px)").matches;
+
+  useLayoutEffect(() => {
+    if (!window.matchMedia("(max-width: 480px)").matches) return;
+    window.scrollTo(0, 0);
+  }, []);
 
   const curatorTypes = [
     {
@@ -150,6 +156,7 @@ function Curator() {
   }, []);
 
   const handlePointerDown = (event) => {
+    if (isPhone) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     dragStartX.current = event.clientX;
     dragPointerId.current = event.pointerId;
@@ -157,6 +164,7 @@ function Curator() {
   };
 
   const handlePointerMove = (event) => {
+    if (isPhone) return;
     if (dragStartX.current === null || dragPointerId.current !== event.pointerId) return;
 
     if (!isDragging.current && Math.abs(event.clientX - dragStartX.current) >= 8) {
@@ -166,6 +174,7 @@ function Curator() {
   };
 
   const handlePointerUp = (event) => {
+    if (isPhone) return;
     if (dragStartX.current === null) return;
 
     const distance = event.clientX - dragStartX.current;
@@ -179,6 +188,7 @@ function Curator() {
   };
 
   const handlePointerCancel = () => {
+    if (isPhone) return;
     dragStartX.current = null;
     dragPointerId.current = null;
     isDragging.current = false;
@@ -211,7 +221,7 @@ function Curator() {
         <div
           className={`curator-page__track${isTrackpadActive ? " curator-page__track--trackpad" : ""}`}
           ref={trackRef}
-          style={{ transform: `translateX(${-translateX}px)` }}
+          style={{ transform: isPhone ? undefined : `translateX(${-translateX}px)` }}
         >
           {curatorTypes.map((curator) => (
             <article className="curator-page__item" key={curator.title}>
@@ -265,7 +275,8 @@ function Curator() {
                 <div className="curator-page__record-label">
                   <span>{curator.number}</span>
                   <strong>Tempy!</strong>
-                  <small>MOMENT CURATOR</small>
+                  <small className="curator-page__record-label-desktop">MOMENT CURATOR</small>
+                  <small className="curator-page__record-label-mobile">{curator.title}</small>
                 </div>
                 <span className="curator-page__record-hole" />
               </div>

@@ -87,12 +87,22 @@ const similarSongs = [
 
 function TrackTraceDetail() {
   const [activeTab, setActiveTab] = useState("popular");
+  const [isPhone, setIsPhone] = useState(() => window.matchMedia("(max-width: 480px)").matches);
   const [popularTimeRange] = useState(getCurrentFiveMinuteRange);
   const [playingBarIndex, setPlayingBarIndex] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDetailsClosing, setIsDetailsClosing] = useState(false);
   const modalCloseRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const phoneQuery = window.matchMedia("(max-width: 480px)");
+    const syncPhone = () => setIsPhone(phoneQuery.matches);
+
+    syncPhone();
+    phoneQuery.addEventListener("change", syncPhone);
+    return () => phoneQuery.removeEventListener("change", syncPhone);
+  }, []);
 
   const openDetails = () => {
     setIsDetailsClosing(false);
@@ -213,8 +223,8 @@ function TrackTraceDetail() {
               <div className="track-detail-tabs__popular-copy">
                 <p>Most Popular · Past 7 days</p>
                 <h2>{popularTimeRange}</h2>
-                <span>
-                  가장 많은 사람들이 다시 머문 구간입니다.<br />
+                <span className="mobile-section-description">
+                  가장 많은 사람들이 다시 머문 구간입니다.<br className="mobile-section-description__desktop-break" />{" "}
                   이 짧은 순간에 서로 다른 기억과 코멘트가 집중되었어요.
                 </span>
               </div>
@@ -305,8 +315,8 @@ function TrackTraceDetail() {
               <p>TRACK ARCHIVE</p>
               <h2>Moments left on this track</h2>
             </div>
-            <span>
-              같은 노래 위에 남겨진 서로 다른 시간과 장면을 만나보세요.<br />
+            <span className="mobile-section-description">
+              같은 노래 위에 남겨진 서로 다른 시간과 장면을 만나보세요.<br className="mobile-section-description__desktop-break" />{" "}
               사소했던 순간은 음악과 함께 오래 기억됩니다.
             </span>
           </div>
@@ -335,8 +345,8 @@ function TrackTraceDetail() {
               <p>KEEP EXPLORING</p>
               <h2>Similar Songs</h2>
             </div>
-            <span>
-              이 곡과 비슷한 온도와 리듬을 가진 노래들입니다.<br />
+            <span className="mobile-section-description">
+              이 곡과 비슷한 온도와 리듬을 가진 노래들입니다.<br />{" "}
               새로운 트랙에 남겨진 순간도 이어서 살펴보세요.
             </span>
           </div>
@@ -439,7 +449,7 @@ function TrackTraceDetail() {
             </div>
 
             <footer className="track-detail-modal__footer">
-              <span>MORE ABOUT THIS TRACK</span>
+              {!isPhone && <span>MORE ABOUT THIS TRACK</span>}
               <button type="button" onClick={closeDetails}>BACK TO DETAIL <span aria-hidden="true">→</span></button>
             </footer>
           </section>

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { lifestylePlaylists, lifestylePlaylistThemes } from "../data/lifestylePlaylists";
 
@@ -8,6 +8,11 @@ function LifestyleCurator() {
   const archiveRef = useRef(null);
   const dragState = useRef(null);
   const didDrag = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!window.matchMedia("(max-width: 480px)").matches) return;
+    window.scrollTo(0, 0);
+  }, []);
 
   const updateProgress = () => {
     const archive = archiveRef.current;

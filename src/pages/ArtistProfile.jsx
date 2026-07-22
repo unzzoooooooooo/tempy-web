@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
 
@@ -97,6 +97,35 @@ function ArtistProfile() {
   const navigate = useNavigate();
   const [expandedTrackIndex, setExpandedTrackIndex] = useState(null);
   const [activeTrackFilter, setActiveTrackFilter] = useState("ALL");
+  const [isPhone, setIsPhone] = useState(() => window.matchMedia("(max-width: 480px)").matches);
+
+  useEffect(() => {
+    const phoneQuery = window.matchMedia("(max-width: 480px)");
+    const syncPhone = () => setIsPhone(phoneQuery.matches);
+
+    syncPhone();
+    phoneQuery.addEventListener("change", syncPhone);
+    return () => phoneQuery.removeEventListener("change", syncPhone);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!window.matchMedia("(max-width: 480px)").matches) return;
+
+    const previousScrollRestoration = window.history.scrollRestoration;
+    let secondFrame = 0;
+    window.history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+    const firstFrame = window.requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      secondFrame = window.requestAnimationFrame(() => window.scrollTo(0, 0));
+    });
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, []);
 
   const toggleTrack = (index) => {
     setExpandedTrackIndex((currentIndex) => currentIndex === index ? null : index);
@@ -232,7 +261,7 @@ function ArtistProfile() {
             <h2>Featured Tracks in Moments</h2>
             <p className="artist-profile__section-description">리스너들의 순간 속에서 자주 재생된 Taylor Swift의 곡들을 모았습니다.</p>
           </div>
-          <span>DRAG TO EXPLORE →</span>
+          {!isPhone && <span>DRAG TO EXPLORE →</span>}
         </div>
         <div className="artist-profile__track-flow" aria-label="Featured tracks horizontal list">
           {featuredTracks.map((track, index) => (

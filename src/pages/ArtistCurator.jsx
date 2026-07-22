@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const artistPlaylists = [
@@ -101,6 +101,12 @@ function ArtistCurator() {
   const inputEndTimer = useRef(null);
   const dragState = useRef(null);
   const didDrag = useRef(false);
+  const isPhone = window.matchMedia("(max-width: 480px)").matches;
+
+  useLayoutEffect(() => {
+    if (!window.matchMedia("(max-width: 480px)").matches) return;
+    window.scrollTo(0, 0);
+  }, []);
 
   const moveTo = (nextTranslate) => {
     const clamped = Math.min(maxTranslateRef.current, Math.max(0, nextTranslate));
@@ -178,6 +184,7 @@ function ArtistCurator() {
   }, []);
 
   const handlePointerDown = (event) => {
+    if (isPhone) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     didDrag.current = false;
     dragState.current = {
@@ -188,6 +195,7 @@ function ArtistCurator() {
   };
 
   const handlePointerMove = (event) => {
+    if (isPhone) return;
     const drag = dragState.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
 
@@ -203,6 +211,7 @@ function ArtistCurator() {
   };
 
   const endDrag = (event) => {
+    if (isPhone) return;
     if (dragState.current?.pointerId !== event.pointerId) return;
     dragState.current = null;
     setIsDirectInput(false);
@@ -249,7 +258,7 @@ function ArtistCurator() {
             <div
               className={`artist-curator__track${isDirectInput ? " artist-curator__track--direct" : ""}`}
               ref={trackRef}
-              style={{ transform: `translateX(${-translateX}px)` }}
+              style={{ transform: isPhone ? undefined : `translateX(${-translateX}px)` }}
             >
               {artistPlaylists.map((playlist, index) => (
                 <article

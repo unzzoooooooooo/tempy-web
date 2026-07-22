@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const similarPlaylists = [
@@ -190,6 +190,12 @@ function SimilarCurator() {
   const wheelFrame = useRef(null);
   const inputEndTimer = useRef(null);
   const dragState = useRef(null);
+  const isPhone = window.matchMedia("(max-width: 480px)").matches;
+
+  useLayoutEffect(() => {
+    if (!window.matchMedia("(max-width: 480px)").matches) return;
+    window.scrollTo(0, 0);
+  }, []);
 
   const moveTo = (nextTranslate) => {
     const clamped = Math.min(maxTranslateRef.current, Math.max(0, nextTranslate));
@@ -275,6 +281,7 @@ function SimilarCurator() {
   }, []);
 
   const handlePointerDown = (event) => {
+    if (isPhone) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     if (event.target.closest(".similar-curator__tracks")) return;
     dragState.current = {
@@ -285,6 +292,7 @@ function SimilarCurator() {
   };
 
   const handlePointerMove = (event) => {
+    if (isPhone) return;
     const drag = dragState.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
 
@@ -299,6 +307,7 @@ function SimilarCurator() {
   };
 
   const endDrag = (event) => {
+    if (isPhone) return;
     if (dragState.current?.pointerId !== event.pointerId) return;
     dragState.current = null;
     setIsDirectInput(false);
@@ -345,7 +354,7 @@ function SimilarCurator() {
             <div
               className={`similar-curator__track${isDirectInput ? " similar-curator__track--direct" : ""}`}
               ref={trackRef}
-              style={{ transform: `translateX(${-translateX}px)` }}
+              style={{ transform: isPhone ? undefined : `translateX(${-translateX}px)` }}
             >
               {similarPlaylists.map((playlist, index) => (
                 <article

@@ -76,9 +76,15 @@ function DiscoverTimeSet() {
 
   const moveCarousel = (direction) => {
     setShowAlbum(false);
-    setActiveIndex((currentIndex) => (
-      currentIndex + direction + timeSetRecords.length
-    ) % timeSetRecords.length);
+    setActiveIndex((currentIndex) => {
+      const nextIndex = currentIndex + direction;
+
+      if (window.matchMedia("(max-width: 480px)").matches) {
+        return Math.max(0, Math.min(timeSetRecords.length - 1, nextIndex));
+      }
+
+      return (nextIndex + timeSetRecords.length) % timeSetRecords.length;
+    });
   };
 
   const handleWheel = (event) => {
@@ -105,7 +111,12 @@ function DiscoverTimeSet() {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
+      lastX: event.clientX,
+      lastTime: performance.now(),
+      velocityX: 0,
       offsetX: 0,
+      pendingOffsetX: 0,
+      frameId: 0,
       axis: null,
     };
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -128,11 +139,24 @@ function DiscoverTimeSet() {
     if (drag.axis !== "x") return;
 
     event.preventDefault();
-    drag.offsetX = Math.max(-110, Math.min(110, distanceX));
-    event.currentTarget.style.setProperty(
-      "--time-set-drag-x",
-      `${drag.offsetX}px`,
-    );
+    const minimumOffset = activeIndex === timeSetRecords.length - 1 ? 0 : -110;
+    const maximumOffset = activeIndex === 0 ? 0 : 110;
+    const now = performance.now();
+    const elapsed = Math.max(1, now - drag.lastTime);
+    const instantVelocity = (event.clientX - drag.lastX) / elapsed;
+    drag.velocityX = (drag.velocityX * 0.72) + (instantVelocity * 0.28);
+    drag.lastX = event.clientX;
+    drag.lastTime = now;
+    drag.pendingOffsetX = Math.max(minimumOffset, Math.min(maximumOffset, distanceX));
+
+    if (!drag.frameId) {
+      const carousel = event.currentTarget;
+      drag.frameId = window.requestAnimationFrame(() => {
+        drag.frameId = 0;
+        drag.offsetX = drag.pendingOffsetX;
+        carousel.style.setProperty("--time-set-drag-x", `${drag.offsetX}px`);
+      });
+    }
   };
 
   const endPointerDrag = (event) => {
@@ -141,6 +165,12 @@ function DiscoverTimeSet() {
 
     const carousel = event.currentTarget;
     dragState.current = null;
+
+    if (drag.frameId) {
+      window.cancelAnimationFrame(drag.frameId);
+      drag.offsetX = drag.pendingOffsetX;
+    }
+
     carousel.classList.remove("is-touch-dragging");
     carousel.style.setProperty("--time-set-drag-x", "0px");
 
@@ -148,9 +178,18 @@ function DiscoverTimeSet() {
       carousel.releasePointerCapture(event.pointerId);
     }
 
-    if (drag.axis === "x" && Math.abs(drag.offsetX) >= 44) {
+    const projectedOffset = drag.offsetX + (drag.velocityX * 120);
+    const direction = projectedOffset < 0 ? 1 : -1;
+    const canMove = activeIndex + direction >= 0
+      && activeIndex + direction < timeSetRecords.length;
+    const shouldMove = event.type !== "pointercancel"
+      && drag.axis === "x"
+      && canMove
+      && Math.abs(projectedOffset) >= 44;
+
+    if (shouldMove) {
       suppressCenterClickUntil.current = Date.now() + 300;
-      moveCarousel(drag.offsetX < 0 ? 1 : -1);
+      moveCarousel(direction);
     }
   };
 
@@ -201,67 +240,68 @@ function DiscoverTimeSet() {
         <p className="time-set-detail__index">01 / 02</p>
       </section>
 
-      <section
-        ref={recordsRef}
-        className="time-set-detail__records time-set-carousel"
-        aria-label="Time Set records"
-        onWheel={handleWheel}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={endPointerDrag}
-        onPointerCancel={endPointerDrag}
-      >
-        {timeSetRecords.map((record, index) => {
-          const position = getRecordPosition(index);
-          const isActive = position === "active";
+      <section className="time-set-detail__records time-set-mobile-viewport" aria-label="Time Set records">
+        <div
+          ref={recordsRef}
+          className="time-set-carousel time-set-mobile-track"
+          onWheel={handleWheel}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endPointerDrag}
+          onPointerCancel={endPointerDrag}
+        >
+          {timeSetRecords.map((record, index) => {
+            const position = getRecordPosition(index);
+            const isActive = position === "active";
 
-          return (
-            <div
-              className={`time-set-detail__main-record time-set-carousel__item time-set-carousel__item--${position}`}
-              style={{
-                "--time-set-lp-color": record.color,
-                "--time-set-offset": getRecordOffset(index),
-              }}
-              aria-hidden={!isActive}
-              key={record.title}
-            >
-              <div className="time-set-detail__vinyl time-set-carousel__vinyl">
-                <span className="time-set-detail__groove time-set-detail__groove--outer" />
-                <span className="time-set-detail__groove time-set-detail__groove--inner" />
+            return (
+              <div
+                className={`time-set-detail__main-record time-set-carousel__item time-set-carousel__item--${position}`}
+                style={{
+                  "--time-set-lp-color": record.color,
+                  "--time-set-offset": getRecordOffset(index),
+                }}
+                aria-hidden={!isActive}
+                key={record.title}
+              >
+                <div className="time-set-detail__vinyl time-set-carousel__vinyl">
+                  <span className="time-set-detail__groove time-set-detail__groove--outer" />
+                  <span className="time-set-detail__groove time-set-detail__groove--inner" />
 
-                {isActive ? (
-                  <button
-                    className={`time-set-detail__record-center time-set-interaction__trigger ${showAlbum ? "time-set-interaction__trigger--active" : ""}`}
-                    type="button"
-                    aria-label={showAlbum ? `${activeRecord.title} by ${activeRecord.artist}` : "Time Set 앨범 보기"}
-                    onClick={handleRecordCenterClick}
-                  >
-                    {showAlbum ? (
-                      <span className="time-set-interaction__cover">
-                        <img src={activeRecord.cover} alt={`${activeRecord.title} album cover`} />
-                        <span className="time-set-interaction__overlay">
-                          <strong>{activeRecord.title}</strong>
-                          <small>{activeRecord.artist}</small>
+                  {isActive ? (
+                    <button
+                      className={`time-set-detail__record-center time-set-interaction__trigger ${showAlbum ? "time-set-interaction__trigger--active" : ""}`}
+                      type="button"
+                      aria-label={showAlbum ? `${activeRecord.title} by ${activeRecord.artist}` : "Time Set 앨범 보기"}
+                      onClick={handleRecordCenterClick}
+                    >
+                      {showAlbum ? (
+                        <span className="time-set-interaction__cover">
+                          <img src={activeRecord.cover} alt={`${activeRecord.title} album cover`} />
+                          <span className="time-set-interaction__overlay">
+                            <strong>{activeRecord.title}</strong>
+                            <small>{activeRecord.artist}</small>
+                          </span>
                         </span>
-                      </span>
-                    ) : (
-                      <>
-                        <span>TIME</span>
-                        <strong>SET</strong>
-                        <small>ENTER ↗</small>
-                      </>
-                    )}
-                  </button>
-                ) : (
-                  <div className="time-set-carousel__side-center" aria-hidden="true">
-                    <span>TIME</span>
-                    <strong>SET</strong>
-                  </div>
-                )}
+                      ) : (
+                        <>
+                          <span>TIME</span>
+                          <strong>SET</strong>
+                          <small>ENTER ↗</small>
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <div className="time-set-carousel__side-center" aria-hidden="true">
+                      <span>TIME</span>
+                      <strong>SET</strong>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         <div className="time-set-carousel__status" aria-live="polite">
           <span>{String(activeIndex + 1).padStart(2, "0")}</span>

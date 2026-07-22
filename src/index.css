@@ -3514,6 +3514,804 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+/* The category-specific LP copy only replaces the desktop label on phones. */
+.curator-page__record-label-mobile {
+  display: none;
+}
+
+/* Phone-only Curator system and focused hero/profile refinements. */
+@media (max-width: 480px) {
+  .app :is(
+    .curator-page,
+    .lifestyle-curator,
+    .artist-curator,
+    .similar-curator
+  ) {
+    --curator-mobile-gutter: 24px;
+    --curator-mobile-eyebrow-size: 14px;
+    --curator-mobile-title-size: clamp(58px, 16vw, 82px);
+    --curator-mobile-description-size: 18px;
+    --curator-mobile-card-width: min(82vw, 322px);
+    --curator-mobile-card-gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  /* The main artist cover follows the content column center, not the viewport edge. */
+  .app .artist-profile .artist-profile__image-frame {
+    width: min(82vw, 340px);
+    max-width: 100%;
+    margin-inline: auto;
+    aspect-ratio: 1 / 1;
+    justify-self: center;
+    border-radius: 50%;
+  }
+
+  .app .artist-profile .artist-profile__image {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  /* Featured time is the primary datum while all three metadata cells stay centered. */
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta {
+    min-height: 82px;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta > span:first-child {
+    font-size: 48px;
+    line-height: 0.9;
+    transform: translateY(3px);
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta > span:first-child small {
+    margin-top: 5px;
+  }
+
+  /* Raise the complete LP without changing its size or the red-bar crop. */
+  .app .home-page .lp-large {
+    bottom: -148px;
+  }
+
+  /* Curator landing intro shares the established phone title rhythm. */
+  .app .curator-page .curator-page__intro {
+    padding: 36px var(--curator-mobile-gutter) 0 !important;
+  }
+
+  .app .curator-page .curator-page__eyebrow,
+  .app :is(
+    .lifestyle-curator__eyebrow,
+    .artist-curator__eyebrow,
+    .similar-curator__eyebrow
+  ) {
+    margin: 0 0 14px;
+    color: #2759ed;
+    font-size: var(--curator-mobile-eyebrow-size);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+  }
+
+  .app .curator-page .curator-page__title,
+  .app :is(
+    .lifestyle-curator__intro h1,
+    .artist-curator__intro h1,
+    .similar-curator__intro h1
+  ) {
+    max-width: 100%;
+    margin: 0;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: var(--curator-mobile-title-size);
+    font-weight: 400;
+    line-height: 0.78;
+    letter-spacing: var(--galgo-page-title-spacing);
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
+  .app .curator-page .curator-page__description,
+  .app .lifestyle-curator .lifestyle-curator__intro-copy > p:last-child,
+  .app .artist-curator .artist-curator__intro > p:not(.artist-curator__eyebrow),
+  .app .similar-curator .similar-curator__intro > p:not(.similar-curator__eyebrow) {
+    width: 100%;
+    max-width: 100%;
+    margin: 14px 0 0;
+    color: #555e6e;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: var(--curator-mobile-description-size);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.025em;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  /* Native scrolling is the only phone carousel movement. */
+  .app .curator-page .curator-page__gallery {
+    width: 100%;
+    padding: 34px 0 64px var(--curator-mobile-gutter) !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline-start: var(--curator-mobile-gutter);
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+
+  .app .curator-page .curator-page__track {
+    gap: 28px;
+  }
+
+  /* Lifestyle cards reproduce the desktop split-card language at phone scale. */
+  .app .lifestyle-curator .lifestyle-curator__card {
+    height: 390px;
+    min-height: 390px;
+    grid-template-columns: minmax(0, 1fr) 64px;
+    overflow: visible;
+    border: 1px solid #07142b;
+    border-radius: 0;
+    color: var(--archive-ink);
+    background: var(--archive-bg);
+    box-shadow: none;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-main {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy {
+    height: 100%;
+    padding: 24px 20px 26px;
+    color: var(--archive-ink);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy > span {
+    display: block;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--archive-line);
+    color: var(--archive-muted);
+    line-height: 1;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy .lifestyle-curator__card-title {
+    display: -webkit-box;
+    max-width: 210px;
+    max-height: 2.7em;
+    margin: 17px 0 12px;
+    overflow: hidden;
+    color: var(--archive-ink);
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.35;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__host span {
+    border-color: var(--archive-muted);
+    color: var(--archive-ink);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__host strong {
+    color: var(--archive-muted);
+    font-size: 13px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__lp {
+    top: 70%;
+    bottom: auto;
+    left: 50%;
+    width: min(84%, 220px);
+    background: #fff1cf;
+    box-shadow: none;
+    transform: translate(-50%, -50%);
+    animation: none;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__lp img {
+    width: 42%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-width: 4px;
+    border-color: #fff1cf;
+    object-fit: cover;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail {
+    position: relative;
+    display: block;
+    padding: 22px 0 18px;
+    color: #fff1cf;
+    border-left: 1px solid rgba(255, 241, 207, 0.16);
+    background: #07142b;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail > span {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    width: 100%;
+    color: rgba(255, 241, 207, 0.88);
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+    margin: 0;
+    border-color: currentColor;
+    color: #fff1cf;
+    transform: translate(-50%, -50%);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail small {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    color: rgba(255, 241, 207, 0.82);
+    writing-mode: vertical-rl;
+    transform: translateX(-50%);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip {
+    top: -7px;
+    height: 11px;
+    background: #07142b;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip--left {
+    left: 20px;
+    width: 30px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip--right {
+    left: 60px;
+    width: 17px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__ribbon {
+    top: 36px;
+    right: 30px;
+    width: 112px;
+    padding: 6px 0;
+    font-size: 10px;
+  }
+
+  /* Artist cards carry the desktop four-tone system and split information/image layout. */
+  .app .artist-curator .artist-curator__card {
+    --artist-card-bg: #07142b;
+    --artist-card-ink: #fff1cf;
+    --artist-card-muted: rgba(255, 241, 207, 0.78);
+    --artist-card-line: rgba(255, 241, 207, 0.32);
+    height: auto;
+    min-height: 0;
+    grid-template-rows: 252px auto;
+    overflow: hidden;
+    border: 1px solid var(--artist-card-line);
+    border-radius: 0;
+    color: var(--artist-card-ink);
+    background: var(--artist-card-bg);
+    box-shadow: 0 10px 24px rgba(7, 20, 43, 0.12);
+  }
+
+  .app .artist-curator .artist-curator__card:nth-child(4n + 2) {
+    --artist-card-bg: #eee5d3;
+    --artist-card-ink: #07142b;
+    --artist-card-muted: rgba(7, 20, 43, 0.7);
+    --artist-card-line: rgba(7, 20, 43, 0.25);
+  }
+
+  .app .artist-curator .artist-curator__card:nth-child(4n + 3) {
+    --artist-card-bg: #a72e36;
+    --artist-card-ink: #fff1cf;
+    --artist-card-muted: rgba(255, 241, 207, 0.8);
+    --artist-card-line: rgba(255, 241, 207, 0.34);
+  }
+
+  .app .artist-curator .artist-curator__card:nth-child(4n) {
+    --artist-card-bg: #858a9c;
+    --artist-card-ink: #07142b;
+    --artist-card-muted: rgba(7, 20, 43, 0.72);
+    --artist-card-line: rgba(7, 20, 43, 0.26);
+  }
+
+  .app .artist-curator .artist-curator__card-copy {
+    height: auto;
+    min-height: 0;
+    padding: 24px;
+    color: var(--artist-card-ink);
+  }
+
+  .app .artist-curator .artist-curator__card-number,
+  .app .artist-curator .artist-curator__card-copy > p {
+    color: var(--artist-card-muted);
+    opacity: 1;
+  }
+
+  .app .artist-curator .artist-curator__card h2 {
+    display: -webkit-box;
+    max-width: 100%;
+    max-height: 1.8em;
+    margin: auto 0 8px;
+    overflow: hidden;
+    color: var(--artist-card-ink);
+    font-size: 38px;
+    line-height: 0.9;
+    text-wrap: balance;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .artist-curator .artist-curator__card-copy > p {
+    margin-bottom: 14px;
+    font-size: 13px;
+  }
+
+  .app .artist-curator .artist-curator__card-meta {
+    padding-top: 12px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    border-top: 1px solid var(--artist-card-line);
+    color: var(--artist-card-ink);
+  }
+
+  .app .artist-curator .artist-curator__author {
+    margin-top: 12px;
+    gap: 9px;
+  }
+
+  .app .artist-curator .artist-curator__author > span {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border-color: var(--artist-card-line);
+    color: var(--artist-card-ink);
+  }
+
+  .app .artist-curator .artist-curator__author strong {
+    color: var(--artist-card-ink);
+    font-size: 12px;
+  }
+
+  .app .artist-curator .artist-curator__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: var(--artist-card-bg);
+  }
+
+  .app .curator-page .curator-page__gallery::-webkit-scrollbar,
+  .app :is(
+    .lifestyle-curator__grid,
+    .artist-curator__viewport,
+    .similar-curator__viewport
+  )::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .curator-page .curator-page__track {
+    gap: var(--curator-mobile-card-gap);
+    padding-right: 48px;
+    transition: none;
+  }
+
+  .app .curator-page :is(
+    .curator-page__item,
+    .curator-page__item:nth-child(1),
+    .curator-page__item:nth-child(2),
+    .curator-page__item:nth-child(3)
+  ) {
+    width: min(80vw, 314px);
+    flex: 0 0 min(80vw, 314px);
+    transform: none;
+    scroll-snap-align: start;
+  }
+
+  .app .curator-page .curator-page__item-copy {
+    min-height: 142px;
+    padding: 0 52px 18px 2px;
+  }
+
+  .app .curator-page .curator-page__item-copy > span:first-child {
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .app .curator-page .curator-page__item-copy h2 {
+    margin-bottom: 8px;
+    font-size: clamp(44px, 12.5vw, 50px);
+    line-height: 0.82;
+  }
+
+  .app .curator-page .curator-page__item-copy p {
+    max-width: 238px;
+    font-size: 13px;
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+
+  .app .curator-page .curator-page__item-arrow {
+    top: 0;
+    right: 2px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .app .curator-page .curator-page__record {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+
+  .app .curator-page .curator-page__record-label {
+    width: 35%;
+    padding: 12px 8px;
+    box-sizing: border-box;
+    justify-content: center;
+    gap: 18px;
+    text-align: center;
+  }
+
+  .app .curator-page .curator-page__record-label > span {
+    top: 10%;
+    font-size: 10px;
+  }
+
+  .app .curator-page .curator-page__record-label strong {
+    font-size: 28px;
+    line-height: 0.78;
+  }
+
+  .app .curator-page .curator-page__record-label-desktop {
+    display: none;
+  }
+
+  .app .curator-page .curator-page__record-label-mobile {
+    display: block;
+    width: 92%;
+    margin: 0;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: 0.055em;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: normal;
+  }
+
+  .app .curator-page .curator-page__record-hole {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* All three detail pages use one phone intro geometry. */
+  .app :is(.lifestyle-curator, .artist-curator, .similar-curator) {
+    display: block;
+    min-height: calc(100svh - 72px);
+    height: auto;
+    margin-top: 72px;
+    padding: 0 0 64px;
+    overflow: visible;
+    background: #f3f4f0;
+  }
+
+  .app :is(
+    .lifestyle-curator__intro,
+    .artist-curator__intro,
+    .similar-curator__intro
+  ) {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 32px var(--curator-mobile-gutter) 32px;
+    border-bottom: 1px solid rgba(7, 20, 43, 0.2);
+    transform: none;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__intro {
+    padding-top: 24px;
+  }
+
+  .app :is(
+    .lifestyle-curator__back,
+    .artist-curator__back,
+    .similar-curator__back
+  ) {
+    position: relative;
+    inset: auto;
+    display: inline-flex;
+    width: fit-content;
+    min-height: 36px;
+    padding: 0;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  .app :is(.artist-curator__back, .similar-curator__back) {
+    margin: 24px var(--curator-mobile-gutter) 0;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__back {
+    margin: 0;
+  }
+
+  .app :is(
+    .lifestyle-curator__back,
+    .artist-curator__back,
+    .similar-curator__back
+  ) > span:first-child {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__intro-copy {
+    margin-top: 32px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__count {
+    margin-top: 24px;
+    padding-top: 14px;
+    font-size: 13px;
+  }
+
+  .app :is(
+    .artist-curator__wordmark,
+    .similar-curator__watermark,
+    .lifestyle-curator__archive-head,
+    .artist-curator__archive-head,
+    .similar-curator__archive-head,
+    .lifestyle-curator__explore,
+    .artist-curator__explore,
+    .similar-curator__explore
+  ) {
+    display: none;
+  }
+
+  .app :is(
+    .lifestyle-curator__archive,
+    .artist-curator__archive,
+    .similar-curator__archive,
+    .lifestyle-curator__archive-inner,
+    .artist-curator__archive-inner,
+    .similar-curator__archive-inner
+  ) {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+
+  .app :is(
+    .lifestyle-curator__grid,
+    .artist-curator__viewport,
+    .similar-curator__viewport
+  ) {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 28px 48px 24px var(--curator-mobile-gutter);
+    gap: var(--curator-mobile-card-gap);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline-start: var(--curator-mobile-gutter);
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+
+  .app :is(.artist-curator__track, .similar-curator__track) {
+    display: flex;
+    width: max-content;
+    height: auto;
+    padding: 0;
+    align-items: stretch;
+    gap: var(--curator-mobile-card-gap);
+    transition: none;
+  }
+
+  .app :is(
+    .lifestyle-curator__card,
+    .artist-curator__card,
+    .similar-curator__card
+  ) {
+    width: var(--curator-mobile-card-width);
+    min-width: var(--curator-mobile-card-width);
+    flex: 0 0 var(--curator-mobile-card-width);
+    scroll-snap-align: start;
+  }
+
+  /* Lifestyle cards keep the desktop cassette/LP language at phone density. */
+  .app .lifestyle-curator .lifestyle-curator__card {
+    height: 352px;
+    min-height: 352px;
+    grid-template-columns: minmax(0, 1fr) 58px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy {
+    padding: 22px 18px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy h2 {
+    max-width: 210px;
+    margin: 12px 0 12px;
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__lp {
+    bottom: -7%;
+    width: 62%;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail {
+    padding: 16px 0 13px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail button {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip {
+    top: -7px;
+    width: 28px;
+    height: 11px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip--left {
+    left: 20px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip--right {
+    left: 58px;
+    width: 16px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__ribbon {
+    top: 34px;
+    right: 26px;
+    width: 112px;
+    padding: 6px 0;
+    font-size: 10px;
+  }
+
+  /* Artist cards place a compact information panel above a fixed-ratio image. */
+  .app .artist-curator .artist-curator__card {
+    display: grid;
+    height: auto;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 236px auto;
+  }
+
+  .app .artist-curator .artist-curator__card-copy {
+    height: auto;
+    min-height: 0;
+    padding: 20px;
+    grid-row: 1;
+  }
+
+  .app .artist-curator .artist-curator__card h2 {
+    max-width: 100%;
+    margin: auto 0 7px;
+    font-size: 34px;
+    line-height: 0.86;
+  }
+
+  .app .artist-curator .artist-curator__card-copy > p {
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+
+  .app .artist-curator .artist-curator__card-meta {
+    display: grid;
+    padding-top: 10px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .app .artist-curator .artist-curator__author {
+    margin-top: 10px;
+  }
+
+  .app .artist-curator .artist-curator__author strong {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .artist-curator .artist-curator__image {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+    grid-row: 2;
+  }
+
+  .app .artist-curator .artist-curator__image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Similar cards keep their track list but remove the former oversized height. */
+  .app .similar-curator .similar-curator__card {
+    --similar-card-inset: 20px;
+    height: 500px;
+    min-height: 500px;
+    grid-template-rows: 204px minmax(0, 1fr);
+  }
+
+  .app .similar-curator .similar-curator__card-top h2 {
+    margin: 15px 0;
+    font-size: 23px;
+    line-height: 1.2;
+  }
+
+  .app .similar-curator .similar-curator__byline {
+    margin-bottom: 12px;
+  }
+
+  .app .similar-curator .similar-curator__card-bottom {
+    padding: 20px var(--similar-card-inset) 22px;
+    gap: 16px;
+  }
+
+  .app .similar-curator .similar-curator__tracks {
+    gap: 11px;
+    overscroll-behavior: contain;
+  }
+
+  .app .similar-curator .similar-curator__song {
+    grid-template-columns: 50px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .app .similar-curator .similar-curator__actions {
+    grid-template-columns: minmax(0, 1fr) 44px 44px;
+    gap: 8px;
+  }
+
+  .app .similar-curator .similar-curator__actions button {
+    width: auto;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+}
+
 /* Archive desktop refinement: calendar rhythm, shared section type, and day record modal. */
 @media (min-width: 1181px) {
   .app .archive-page .archive-page__description {
@@ -8993,6 +9791,11 @@ body::-webkit-scrollbar:horizontal,
 .time-set-carousel {
   isolation: isolate;
   overscroll-behavior: contain;
+}
+
+.time-set-mobile-track {
+  position: absolute;
+  inset: 0;
 }
 
 .time-set-carousel__item {
@@ -20741,12 +21544,10 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .time-set-detail .time-set-carousel__item {
-    translate: var(--time-set-drag-x, 0px) 0;
     transition:
       left 680ms cubic-bezier(0.22, 0.8, 0.24, 1),
       top 680ms cubic-bezier(0.22, 0.8, 0.24, 1),
       transform 680ms cubic-bezier(0.22, 0.8, 0.24, 1),
-      translate 180ms ease-out,
       opacity 320ms ease;
     -webkit-user-drag: none;
   }
@@ -20897,6 +21698,46 @@ body::-webkit-scrollbar:horizontal,
 
 /* Phone-only detail refinements: fixed color panels and swipeable lower rails. */
 @media (max-width: 480px) {
+  :root {
+    --mobile-section-description-weight: 500;
+    --mobile-title-description-gap: 10px;
+  }
+
+  /* Phone-only Korean section introductions share one readable text role. */
+  .app :is(
+    .mobile-section-description,
+    .now-page__description,
+    .discover-page__description,
+    .curator-page__description,
+    .archive-page__description,
+    .time-set-detail__description,
+    .track-trace-detail__description,
+    .track-trace-album__description,
+    .track-trace-album__timeline-description,
+    .artist-profile__description,
+    .artist-profile__section-description,
+    .lifestyle-curator__intro-copy > p:last-child,
+    .artist-curator__intro > p:not(.artist-curator__eyebrow),
+    .similar-curator__intro > p:not(.similar-curator__eyebrow),
+    .create-start-description,
+    .create-detail-description,
+    .archive-blind-page__description
+  ) {
+    font-family: "Pretendard", sans-serif;
+    font-weight: var(--mobile-section-description-weight) !important;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .app .mobile-section-description {
+    margin-top: var(--mobile-title-description-gap);
+  }
+
+  .app .mobile-section-description__desktop-break {
+    display: none;
+  }
+
   .app .time-set-detail,
   .app .track-trace-detail,
   .app .track-comment-detail,
@@ -20907,6 +21748,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .time-set-detail .time-set-detail__records {
+    position: relative;
     width: 100%;
     max-width: 100%;
     height: clamp(440px, calc(100dvh - 332px), 520px);
@@ -20917,12 +21759,38 @@ body::-webkit-scrollbar:horizontal,
     contain: paint;
   }
 
+  .app .time-set-detail .time-set-mobile-track {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    touch-action: pan-y;
+    transform: translate3d(var(--time-set-drag-x, 0px), 0, 0);
+    transition: transform 320ms cubic-bezier(0.22, 0.8, 0.24, 1);
+    will-change: transform;
+    backface-visibility: hidden;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .app .time-set-detail .time-set-mobile-track.is-touch-dragging {
+    transition: none;
+  }
+
   .app .time-set-detail .time-set-detail__main-record {
-    width: min(88vw, 346px);
+    width: min(79vw, 312px);
   }
 
   .app .time-set-detail .time-set-carousel__item--active {
     top: calc(50% + 8px);
+  }
+
+  .app .time-set-detail .time-set-carousel__item {
+    transition:
+      left 320ms cubic-bezier(0.22, 0.8, 0.24, 1),
+      top 320ms cubic-bezier(0.22, 0.8, 0.24, 1),
+      transform 320ms cubic-bezier(0.22, 0.8, 0.24, 1),
+      opacity 220ms ease-out;
+    backface-visibility: hidden;
   }
 
   .app .track-trace-detail__gallery {
@@ -20955,8 +21823,423 @@ body::-webkit-scrollbar:horizontal,
     line-height: 1.35;
   }
 
+  /* Compact phone Audio Features cells without changing the 2 × 3 structure. */
+  .app .track-comment-detail .track-detail-tabs__metric {
+    height: 142px;
+    min-height: 142px;
+    padding: 14px 12px 12px;
+  }
+
+  .app .track-comment-detail .track-detail-tabs__metric-head {
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .app .track-comment-detail .track-detail-tabs__metric-head > span {
+    min-width: 0;
+    flex: 1 1 auto;
+    white-space: nowrap;
+  }
+
+  .app .track-comment-detail .track-detail-tabs__metric-head > strong {
+    margin-right: 2px;
+    flex: 0 0 auto;
+    font-size: 38px;
+    line-height: 0.9;
+  }
+
+  .app .track-comment-detail .track-detail-tabs__metric > p {
+    margin: 12px 0 auto;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .app .track-comment-detail .track-detail-tabs__metric-rail {
+    height: 4px;
+    margin-top: 10px;
+  }
+
+  .app .track-comment-detail .track-detail-tabs__more {
+    margin-top: 14px;
+  }
+
+  /* The phone modal remains complete, but scrolls inside a smaller dialog. */
+  .app .track-comment-detail .track-detail-modal {
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .app .track-comment-detail .track-detail-modal__dialog {
+    width: 88vw;
+    max-height: 88dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .app .track-comment-detail .track-detail-modal__header {
+    min-height: 118px;
+    padding: 20px 48px 20px 28px;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__header > img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__header p {
+    font-size: 10px;
+    letter-spacing: 0.09em;
+  }
+
+  .app .track-comment-detail .track-detail-modal__header h2 {
+    margin: 5px 0 3px;
+    font-size: 18px;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  .app .track-comment-detail .track-detail-modal__header div > span {
+    font-size: 13px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__header > button {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__body > section {
+    padding: 28px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__section-title {
+    padding-bottom: 18px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__summary {
+    margin-top: 22px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .app .track-comment-detail .track-detail-modal__context {
+    margin-top: 34px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__context-title {
+    display: grid;
+    padding: 0 2px 16px;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    align-items: center;
+    gap: 10px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__context-title span {
+    font-size: 10px;
+    justify-self: start;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .app .track-comment-detail .track-detail-modal__context dl > div {
+    min-height: 50px;
+    padding: 12px 2px;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    align-items: start;
+    gap: 10px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__context dt {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .app .track-comment-detail .track-detail-modal__context dd {
+    min-width: 0;
+    font-size: 13px;
+    line-height: 1.35;
+    overflow-wrap: break-word;
+  }
+
+  .app .track-comment-detail .track-detail-modal__feature {
+    min-height: 72px;
+    padding: 16px 2px;
+    gap: 8px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__feature-copy > p {
+    margin-top: 4px;
+    font-size: 10px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__feature strong {
+    font-size: 28px;
+    line-height: 0.85;
+  }
+
+  .app .track-comment-detail .track-detail-modal__feature-rail {
+    height: 4px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__footer {
+    min-height: 58px;
+    padding: 18px 28px;
+    align-items: center;
+    flex-direction: row;
+    justify-content: stretch;
+    gap: 10px;
+  }
+
+  .app .track-comment-detail .track-detail-modal__footer button {
+    width: 100%;
+    min-height: 38px;
+    padding: 0 12px;
+    justify-content: space-between;
+    gap: 12px;
+    white-space: nowrap;
+  }
+
+  /* Artist detail phone typography and stable route entry. */
+  .app .artist-profile {
+    --artist-mobile-title-size: clamp(60px, 17vw, 68px);
+  }
+
+  .app .artist-profile .artist-profile__top {
+    padding-top: 32px;
+  }
+
+  .app .artist-profile :is(
+    .artist-profile__intro h1,
+    .artist-profile__heading h2,
+    .artist-profile__release h2,
+    .artist-profile__most-left h2,
+    .artist-profile__ranking h3
+  ) {
+    max-width: 100%;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: var(--artist-mobile-title-size);
+    font-weight: 400;
+    line-height: 0.76;
+    letter-spacing: var(--galgo-display-spacing);
+    overflow-wrap: normal;
+    white-space: normal;
+  }
+
+  .app .artist-profile .artist-profile__label {
+    margin-bottom: 14px;
+  }
+
+  .app .artist-profile .artist-profile__section-description {
+    margin-top: 12px;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-flow {
+    margin-top: 24px;
+  }
+
+  /* Featured cards share one phone-only metadata row. */
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta {
+    display: grid;
+    min-height: 72px;
+    padding: 14px 0 0;
+    grid-template-columns: minmax(0, 1fr) auto 90px;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid rgba(7, 20, 43, 0.16);
+    border-left: 0;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta > span:first-child {
+    align-self: center;
+    font-size: 32px;
+    line-height: 0.72;
+    letter-spacing: 0.035em;
+    text-align: left;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta > span:first-child small {
+    margin-top: 12px;
+    letter-spacing: 0.1em;
+    text-align: left;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta-bottom {
+    display: contents;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta-bottom > span {
+    align-self: center;
+    white-space: nowrap;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta-bottom button {
+    width: 90px;
+    min-height: 40px;
+    align-self: center;
+  }
+
+  /* The route's line spans all seven scrollable album centers. */
+  .app .artist-profile .artist-profile__timeline {
+    --artist-route-item-width: 130px;
+    --artist-route-line-width: 780px;
+    grid-template-columns: repeat(7, var(--artist-route-item-width));
+  }
+
+  .app .artist-profile .artist-profile__timeline::before {
+    left: calc(var(--artist-route-item-width) / 2);
+    right: auto;
+    width: var(--artist-route-line-width);
+  }
+
+  .app .artist-profile .artist-profile__timeline small {
+    margin-bottom: 14px;
+  }
+
+  .app .artist-profile .artist-profile__timeline strong,
+  .app .track-trace-album .track-trace-album__timeline-track h3 {
+    letter-spacing: 0.035em;
+  }
+
+  .app .track-trace-album .track-trace-album__timeline-track h3 {
+    margin-top: 22px;
+  }
+
+  .app .artist-profile .artist-profile__release-card {
+    margin-top: 28px;
+  }
+
+  /* Five-column ranking rows: rank, square cover, title, likes, round toggle. */
+  .app .artist-profile .artist-profile__ranking-accordion .artist-profile__ranking-row {
+    min-height: 82px;
+    padding: 10px 8px;
+    grid-template-columns: 24px 56px minmax(0, 1fr) auto 40px;
+    gap: 10px;
+  }
+
+  .app .artist-profile .artist-profile__ranking-row > img {
+    display: block;
+    width: 56px;
+    min-width: 56px;
+    height: 56px;
+    aspect-ratio: 1 / 1;
+    align-self: center;
+    object-fit: cover;
+  }
+
+  .app .artist-profile .artist-profile__ranking-row > span:nth-of-type(2) {
+    white-space: nowrap;
+  }
+
+  .app .artist-profile .artist-profile__ranking-toggle {
+    display: grid;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    flex: 0 0 40px;
+    aspect-ratio: 1 / 1;
+    place-items: center;
+    justify-self: end;
+    border-radius: 50%;
+  }
+
+  .app .track-trace-album {
+    --track-album-mobile-title-size: clamp(60px, 17vw, 68px);
+  }
+
+  .app .track-trace-album .track-trace-album__intro h1,
+  .app .track-trace-album .track-trace-album__section-head h2 {
+    font-size: var(--track-album-mobile-title-size);
+  }
+
+  .app .track-trace-album .track-trace-album__eyebrow,
+  .app .track-trace-album .track-trace-album__section-head > p {
+    margin-bottom: 14px;
+  }
+
+  .app .track-trace-album .track-trace-album__meta {
+    margin-top: 24px;
+  }
+
+  .app .track-trace-album .track-trace-album__description {
+    margin-top: 32px;
+  }
+
+  .app .track-trace-album .track-trace-album__section-head h2 {
+    line-height: 0.72;
+  }
+
+  .app .track-trace-album :is(
+    .track-trace-album__flow-list,
+    .track-trace-album__tracklist
+  ) {
+    margin-top: 30px;
+  }
+
+  .app .track-trace-album .track-trace-album__timeline-description {
+    margin: 12px 0 44px;
+  }
+
+  .app .track-trace-album .track-trace-album__tracklist li {
+    grid-template-columns: 34px minmax(0, 1fr) auto 36px;
+  }
+
+  .app .track-trace-album .track-trace-album__tracklist li > button {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    flex: 0 0 36px;
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    place-items: center;
+    border-radius: 50%;
+  }
+
+  .app .track-trace-album .track-trace-album__timeline-track::before {
+    left: 16px;
+  }
+
+  .app .track-trace-album .track-trace-album__timeline-dot {
+    left: 10px;
+  }
+
+  .app .track-trace-album .track-trace-album__timeline-track {
+    overflow: visible;
+  }
+
+  .app .track-trace-album .track-trace-album__timeline-track article {
+    padding-left: 46px;
+  }
+
+  .app .track-detail-tabs__popular {
+    min-height: 0;
+  }
+
   .app .track-detail-tabs__chart {
-    margin-top: 64px;
+    min-height: 0;
+    margin-top: 20px;
+    padding-top: 12px;
+  }
+
+  .app .track-detail-tabs__bars {
+    height: 168px;
+    padding-top: 14px;
+  }
+
+  .app .track-detail-tabs__progress {
+    height: 20px;
+  }
+
+  .app .track-detail-tabs__timeline {
+    padding-top: 10px;
   }
 
   .app .track-detail-lower__heading h2 {
@@ -21013,6 +22296,287 @@ body::-webkit-scrollbar:horizontal,
     width: min(78vw, 306px);
     flex: 0 0 min(78vw, 306px);
     scroll-snap-align: start;
+  }
+}
+
+/* Final phone cascade: keep these refinements after the legacy mobile system. */
+@media (max-width: 480px) {
+  .app .artist-profile .artist-profile__image-frame {
+    width: min(82vw, 340px);
+    max-width: 100%;
+    margin-inline: auto;
+    aspect-ratio: 1 / 1;
+    justify-self: center;
+    border-radius: 50%;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta {
+    min-height: 90px;
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta > span:first-child {
+    font-size: 48px;
+    line-height: 0.9;
+    transform: translateY(2px);
+  }
+
+  .app .artist-profile .artist-profile__featured .artist-profile__track-meta > span:first-child small {
+    margin-top: 4px;
+  }
+
+  .app .curator-page .curator-page__intro {
+    padding: 36px var(--curator-mobile-gutter) 0 !important;
+  }
+
+  .app .curator-page .curator-page__title {
+    font-size: var(--curator-mobile-title-size);
+    line-height: 0.78;
+  }
+
+  .app .curator-page .curator-page__description {
+    margin-top: 14px;
+    font-size: var(--curator-mobile-description-size);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .app .curator-page .curator-page__gallery {
+    padding: 34px 0 64px var(--curator-mobile-gutter) !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+
+  .app .curator-page .curator-page__track {
+    gap: 28px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card {
+    height: 390px;
+    min-height: 390px;
+    grid-template-columns: minmax(0, 1fr) 64px;
+    overflow: visible;
+    border: 1px solid #07142b;
+    border-radius: 0;
+    color: var(--archive-ink);
+    background: var(--archive-bg);
+    box-shadow: none;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-main {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy {
+    height: 100%;
+    padding: 24px 20px 26px;
+    color: var(--archive-ink);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy > span {
+    display: block;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--archive-line);
+    color: var(--archive-muted);
+    line-height: 1;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy .lifestyle-curator__card-title {
+    display: -webkit-box;
+    max-width: 210px;
+    max-height: 2.7em;
+    margin: 17px 0 12px;
+    overflow: hidden;
+    color: var(--archive-ink);
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.35;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__host span {
+    border-color: var(--archive-muted);
+    color: var(--archive-ink);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__host strong {
+    color: var(--archive-muted);
+    font-size: 13px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__lp {
+    top: 70%;
+    bottom: auto;
+    left: 50%;
+    width: min(84%, 220px);
+    background: #fff1cf;
+    box-shadow: none;
+    transform: translate(-50%, -50%);
+    animation: none;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__lp img {
+    width: 42%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-width: 4px;
+    border-color: #fff1cf;
+    object-fit: cover;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail {
+    position: relative;
+    display: block;
+    padding: 22px 0 18px;
+    color: #fff1cf;
+    border-left: 1px solid rgba(255, 241, 207, 0.16);
+    background: #07142b;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail > span {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    width: 100%;
+    color: rgba(255, 241, 207, 0.88);
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+    margin: 0;
+    border-color: currentColor;
+    color: #fff1cf;
+    transform: translate(-50%, -50%);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail small {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    color: rgba(255, 241, 207, 0.82);
+    writing-mode: vertical-rl;
+    transform: translateX(-50%);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip {
+    top: -7px;
+    height: 11px;
+    background: #07142b;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip--left {
+    left: 20px;
+    width: 30px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip--right {
+    left: 60px;
+    width: 17px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__ribbon {
+    top: 42px;
+    right: -8px;
+    width: 92px;
+    padding: 6px 0;
+    font-size: 9px;
+  }
+
+  .app .artist-curator .artist-curator__card {
+    height: auto;
+    min-height: 0;
+    grid-template-rows: 252px auto;
+    overflow: hidden;
+    border: 1px solid var(--artist-card-line);
+    border-radius: 0;
+    color: var(--artist-card-ink);
+    background: var(--artist-card-bg);
+    box-shadow: 0 10px 24px rgba(7, 20, 43, 0.12);
+  }
+
+  .app .artist-curator .artist-curator__card-copy {
+    height: auto;
+    min-height: 0;
+    padding: 24px;
+    color: var(--artist-card-ink);
+  }
+
+  .app .artist-curator .artist-curator__card h2 {
+    display: -webkit-box;
+    max-width: 100%;
+    max-height: 1.8em;
+    margin: auto 0 8px;
+    overflow: hidden;
+    color: var(--artist-card-ink);
+    font-size: 38px;
+    line-height: 0.9;
+    text-wrap: balance;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .artist-curator .artist-curator__card-copy > p {
+    margin-bottom: 14px;
+    color: var(--artist-card-muted);
+    font-size: 13px;
+    opacity: 1;
+  }
+
+  .app .artist-curator .artist-curator__card-number {
+    color: var(--artist-card-muted);
+    opacity: 1;
+  }
+
+  .app .artist-curator .artist-curator__card-meta {
+    padding-top: 12px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    border-top: 1px solid var(--artist-card-line);
+    color: var(--artist-card-ink);
+  }
+
+  .app .artist-curator .artist-curator__author {
+    margin-top: 12px;
+    gap: 9px;
+  }
+
+  .app .artist-curator .artist-curator__author > span {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border-color: var(--artist-card-line);
+    color: var(--artist-card-ink);
+  }
+
+  .app .artist-curator .artist-curator__author strong {
+    color: var(--artist-card-ink);
+    font-size: 12px;
+  }
+
+  .app .artist-curator .artist-curator__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: var(--artist-card-bg);
   }
 }
 
