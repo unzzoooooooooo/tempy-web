@@ -2048,6 +2048,23 @@ button {
   overflow: hidden;
 }
 
+.home-desktop-copy {
+  display: none !important;
+}
+
+.home-desktop-avatar {
+  display: none !important;
+}
+
+.playlist-cover-frame {
+  display: contents;
+}
+
+.playlist-author i,
+.leftnow-author i {
+  font-style: normal;
+}
+
 section {
   scroll-margin-top: 92px;
 }
@@ -3511,6 +3528,601 @@ body::-webkit-scrollbar:horizontal,
   .hero-wordmark__letter {
     transition: none;
     transform: none;
+  }
+}
+
+/* Home desktop-only refinement. Tablet and mobile layouts remain unchanged. */
+@media (min-width: 1181px) {
+  .app .home-page .discover-copy {
+    max-width: none;
+    overflow: visible;
+  }
+
+  .app .home-page .discover-card h3 {
+    margin-bottom: 10px;
+    font-size: clamp(58px, 4vw, 68px);
+    line-height: 0.9;
+    letter-spacing: -0.004em;
+  }
+
+  .app .home-page .discover-card .discover-copy > span {
+    position: relative;
+    z-index: 2;
+    width: max-content;
+    max-width: none;
+    margin-bottom: 20px;
+    font-size: clamp(17px, 1.15vw, 20px);
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.035em;
+    white-space: nowrap;
+  }
+
+  .app .home-page .discover-card .discover-copy > span br {
+    display: none;
+  }
+
+  .app .home-page .discover-card .small-button {
+    height: 42px;
+    min-width: 172px;
+    padding: 0 28px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  }
+
+  .app .home-page .discover-card .small-button:hover,
+  .app .home-page .discover-card .small-button:focus-visible {
+    border-color: rgba(7, 20, 43, 0.18);
+    background: #fff6df;
+    outline: 0;
+    transform: translateY(-2px);
+  }
+
+  .app .home-page .discover-card {
+    cursor: pointer;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+
+  .app .home-page .discover-card:hover {
+    box-shadow: 0 18px 34px rgba(7, 20, 43, 0.14);
+    transform: translateY(-4px);
+  }
+
+  .app .home-page .home-mobile-copy {
+    display: none !important;
+  }
+
+  .app .home-page .home-desktop-copy {
+    display: block !important;
+  }
+
+  .app .home-page .artist-copy {
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    flex-direction: column;
+  }
+
+  .app .home-page .artist-card {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .app .home-page .artist-art {
+    min-height: 0;
+  }
+
+  .app .home-page .artist-copy strong {
+    margin-bottom: 0;
+  }
+
+  .app .home-page .artist-copy > .artist-meta-primary {
+    margin-top: 16px;
+    margin-bottom: 5px;
+  }
+
+  .app .home-page .artist-copy > .artist-meta-likes {
+    margin-bottom: 0;
+  }
+
+  .app .home-page .artist-copy > .artist-name {
+    position: static;
+    margin-top: auto;
+    justify-content: flex-start;
+  }
+
+  .app .home-page .artist-name::before {
+    background-position: center;
+    background-size: cover;
+  }
+
+  .app .home-page .artist-card:nth-child(1) .artist-name::before {
+    background-image: url("/images/profile-03.png");
+  }
+
+  .app .home-page .artist-card:nth-child(2) .artist-name::before {
+    background-image: url("/images/profile-07.png");
+  }
+
+  .app .home-page .artist-card:nth-child(3) .artist-name::before {
+    background-image: url("/images/profile-01.png");
+  }
+
+  .app .home-page .artist-card:nth-child(4) .artist-name::before {
+    background-image: url("/images/profile-06.png");
+  }
+
+  .app .home-page .artist-card:nth-child(5) .artist-name::before {
+    background-image: url("/images/profile-04.png");
+  }
+
+  .app .home-page .artist-card:nth-child(6) .artist-name::before {
+    background-image: url("/images/profile-08.png");
+  }
+
+  .app .home-page .home-desktop-avatar {
+    display: block !important;
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    border: 1px solid rgba(7, 20, 43, 0.18);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .app .home-page :is(.playlist-author, .leftnow-author) {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .app .home-page :is(.playlist-author, .leftnow-author) i {
+    display: none;
+  }
+
+  .app .home-page .playlist-grid {
+    row-gap: 16px;
+  }
+
+  .app .home-page .playlist-row {
+    min-height: 120px;
+    padding: 10px 0 14px;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .app .home-page .playlist-cover-frame {
+    display: block;
+    width: 96px;
+    height: 96px;
+    overflow: hidden;
+  }
+
+  .app .home-page :is(.playlist-cover-frame > img, .playlist-cover-frame > .playlist-thumb) {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  .app .home-page .playlist-row > div:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .app .home-page .playlist-row strong {
+    display: -webkit-box;
+    min-height: 0;
+    margin-bottom: 3px;
+    overflow: hidden;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.22;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .home-page .playlist-row strong.home-desktop-copy {
+    display: -webkit-box !important;
+  }
+
+  .app .home-page .playlist-row span {
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .app .home-page .playlist-row span + span {
+    margin-top: 5px;
+  }
+
+  .app .home-page .playlist-stats {
+    display: none;
+  }
+
+  .app .home-page .leftnow-card {
+    height: calc(clamp(350px, 22.4vw, 430px) + 40px);
+  }
+
+  .app .home-page .leftnow-text {
+    display: flex;
+    height: 122px;
+    margin-bottom: 4px;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .app .home-page .leftnow-text strong.home-desktop-copy {
+    display: -webkit-box !important;
+    margin-bottom: 8px;
+    overflow: hidden;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .home-page .leftnow-text span:not(:last-child) {
+    font-size: 14.5px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .app .home-page .leftnow-text span:last-child {
+    margin-top: auto;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .app .home-page .leftnow-author {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  .app .home-page .curator-item {
+    text-align: center;
+  }
+
+  .app .home-page .curator-circle {
+    margin-bottom: 20px;
+  }
+
+  .app .home-page .curator-item span {
+    display: block;
+    width: max-content;
+    max-width: none;
+    margin-inline: auto;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .app .home-page .archive-card .archive-text p {
+    font-size: clamp(17px, 1.15vw, 20px);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .app .home-page .archive-card :is(.archive-text button, .archive-blind-pick__button) {
+    height: 42px;
+    padding: 0 28px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .app .home-page .archive-blind-pick__text p {
+    position: relative;
+    z-index: 2;
+    width: max-content;
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  .app .home-page .archive-blind-pick__text p br {
+    display: none;
+  }
+
+  .app .home-page .archive-identity-card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    cursor: pointer;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+
+  .app .home-page .archive-identity-card .archive-mosaic {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+    transform: translateX(24px) rotate(-11deg) scale(1.08);
+  }
+
+  .app .home-page .artist-info {
+    bottom: 24px;
+    gap: 9px;
+  }
+
+  .app .home-page .artist-info button {
+    height: 36px;
+    box-sizing: border-box;
+  }
+
+  .app .home-page .artist-info button:first-child {
+    min-width: 86px;
+    height: 36px;
+    padding: 0 20px;
+  }
+
+  .app .home-page .artist-info button:not(:first-child) {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+  }
+
+  .app .home-page .archive-identity-card:hover {
+    box-shadow: 0 18px 34px rgba(7, 20, 43, 0.14);
+    transform: translateY(-4px);
+  }
+
+  .app .home-page .archive-identity-card .archive-text button {
+    cursor: pointer;
+    transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+  }
+
+  .app .home-page .archive-identity-card:hover .archive-text button {
+    color: #fff1cf;
+    background: #07142b;
+    transform: translateY(-1px);
+  }
+}
+
+@media (min-width: 1181px) and (max-width: 1600px) {
+  .app .home-page .discover-card .discover-copy > span {
+    letter-spacing: -0.04em;
+  }
+
+  .app .home-page .discover-card .discover-art {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+}
+
+@media (min-width: 1181px) and (max-width: 1500px) {
+  .app .home-page .discover-card .discover-art {
+    width: 120px;
+    height: 120px;
+  }
+
+  .app .home-page .discover-card .discover-copy > span {
+    font-size: 17px;
+    letter-spacing: -0.055em;
+  }
+
+  .app .home-page .archive-card .archive-text p {
+    font-size: 17px;
+    letter-spacing: -0.025em;
+  }
+}
+
+@media (min-width: 1181px) and (hover: hover) and (pointer: fine) {
+  .app .home-page .discover-card,
+  .app .home-page .artist-card,
+  .app .home-page .playlist-row,
+  .app .home-page .leftnow-card,
+  .app .home-page .archive-card {
+    transition:
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 240ms ease,
+      border-color 240ms ease;
+  }
+
+  .app .home-page .discover-art {
+    transition: scale 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page .discover-card:is(:hover, :focus-within) .discover-art {
+    scale: 1.03;
+  }
+
+  .app .home-page .discover-card .small-button:hover,
+  .app .home-page .discover-card .small-button:focus-visible {
+    border-color: rgba(255, 255, 255, 0.72);
+    color: #2759ed;
+    background: #ffffff;
+  }
+
+  .app .home-page .artist-card:is(:hover, :focus-visible) {
+    outline: 0;
+    transform: translateY(-4px);
+  }
+
+  .app .home-page .artist-art {
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page .artist-card:is(:hover, :focus-visible) .artist-art {
+    transform: scale(1.02);
+  }
+
+  .app .home-page .artist-copy::after {
+    transition: opacity 280ms ease;
+  }
+
+  .app .home-page .artist-card:is(:hover, :focus-visible) .artist-copy::after {
+    opacity: 0.84;
+  }
+
+  .app .home-page :is(.artist-info, .leftnow-bottom) button {
+    cursor: pointer;
+    transition:
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 180ms ease,
+      background-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .app .home-page :is(.artist-info, .leftnow-bottom) button:hover,
+  .app .home-page :is(.artist-info, .leftnow-bottom) button:focus-visible {
+    color: #2759ed;
+    background: #ffffff;
+    box-shadow: 0 5px 12px rgba(7, 20, 43, 0.12);
+    outline: 0;
+    transform: translateY(-1px) scale(1.035);
+  }
+
+  .app .home-page .artist-info button:nth-child(3):hover,
+  .app .home-page .artist-info button:nth-child(3):focus-visible {
+    transform: translateY(-1px) scale(1.06);
+  }
+
+  .app .home-page .playlist-row {
+    cursor: pointer;
+  }
+
+  .app .home-page .playlist-row:is(:hover, :focus-visible) {
+    background: rgba(216, 231, 255, 0.34);
+    outline: 0;
+  }
+
+  .app .home-page .playlist-cover-frame > :is(img, .playlist-thumb) {
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page .playlist-row:is(:hover, :focus-visible) .playlist-cover-frame > :is(img, .playlist-thumb) {
+    transform: scale(1.03);
+  }
+
+  .app .home-page .playlist-row strong {
+    transition: color 200ms ease, font-weight 200ms ease;
+  }
+
+  .app .home-page .playlist-row:is(:hover, :focus-visible) strong {
+    color: #2759ed;
+    font-weight: 700;
+  }
+
+  .app .home-page .leftnow-card {
+    cursor: pointer;
+  }
+
+  .app .home-page .leftnow-card:is(:hover, :focus-visible) {
+    outline: 0;
+    transform: translateY(-4px);
+  }
+
+  .app .home-page .leftnow-image {
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page .leftnow-card:is(:hover, :focus-visible) .leftnow-image {
+    transform: scale(1.02);
+  }
+
+  .app .home-page .curator-circle,
+  .app .home-page .curator-item span {
+    transition:
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 200ms ease,
+      font-weight 200ms ease;
+  }
+
+  .app .home-page .curator-item {
+    cursor: pointer;
+  }
+
+  .app .home-page .curator-item:focus-visible {
+    outline: 0;
+  }
+
+  .app .home-page .curator-item:is(:hover, :focus-visible) .curator-circle {
+    transform: scale(1.04);
+  }
+
+  .app .home-page .curator-item:is(:hover, :focus-visible) span {
+    color: #2759ed;
+    font-weight: 800;
+  }
+
+  .app .home-page :is(.archive-mosaic, .archive-blind-pick__visual) {
+    transition: scale 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page :is(.archive-identity-card, .archive-blind-pick-card):is(:hover, :focus-visible, :focus-within) {
+    border-color: rgba(39, 89, 237, 0.24);
+    background: #dceaff;
+    outline: 0;
+    transform: translateY(-3px);
+  }
+
+  .app .home-page :is(.archive-identity-card, .archive-blind-pick-card):is(:hover, :focus-visible, :focus-within)
+    :is(.archive-mosaic, .archive-blind-pick__visual) {
+    scale: 1.015;
+  }
+
+  .app .home-page .archive-card :is(.archive-text button, .archive-blind-pick__button):hover,
+  .app .home-page .archive-card :is(.archive-text button, .archive-blind-pick__button):focus-visible {
+    color: #fff1cf;
+    background: #07142b;
+    outline: 0;
+    transform: translateY(-1px);
+  }
+}
+
+@media (min-width: 1181px) and (prefers-reduced-motion: reduce) {
+  .app .home-page .discover-card .small-button,
+  .app .home-page .discover-card,
+  .app .home-page .discover-art,
+  .app .home-page .artist-card,
+  .app .home-page .artist-art,
+  .app .home-page .artist-copy::after,
+  .app .home-page .artist-info button,
+  .app .home-page .playlist-row,
+  .app .home-page .playlist-row strong,
+  .app .home-page .playlist-cover-frame > :is(img, .playlist-thumb),
+  .app .home-page .leftnow-card,
+  .app .home-page .leftnow-image,
+  .app .home-page .leftnow-bottom button,
+  .app .home-page .curator-circle,
+  .app .home-page .curator-item span,
+  .app .home-page .archive-identity-card,
+  .app .home-page .archive-blind-pick-card,
+  .app .home-page :is(.archive-mosaic, .archive-blind-pick__visual),
+  .app .home-page .archive-identity-card .archive-text button {
+    transition-duration: 1ms !important;
+  }
+
+  .app .home-page .discover-card .small-button:hover,
+  .app .home-page .discover-card .small-button:focus-visible,
+  .app .home-page .discover-card:hover,
+  .app .home-page .artist-card:is(:hover, :focus-visible),
+  .app .home-page .artist-card:is(:hover, :focus-visible) .artist-art,
+  .app .home-page .artist-info button:is(:hover, :focus-visible),
+  .app .home-page .playlist-row:is(:hover, :focus-visible) .playlist-cover-frame > :is(img, .playlist-thumb),
+  .app .home-page .leftnow-card:is(:hover, :focus-visible),
+  .app .home-page .leftnow-card:is(:hover, :focus-visible) .leftnow-image,
+  .app .home-page .leftnow-bottom button:is(:hover, :focus-visible),
+  .app .home-page .curator-item:is(:hover, :focus-visible) .curator-circle,
+  .app .home-page .archive-identity-card:hover,
+  .app .home-page .archive-blind-pick-card:hover,
+  .app .home-page .archive-identity-card:hover .archive-text button {
+    transform: none !important;
+  }
+
+  .app .home-page .discover-card:is(:hover, :focus-within) .discover-art,
+  .app .home-page :is(.archive-identity-card, .archive-blind-pick-card):is(:hover, :focus-visible, :focus-within)
+    :is(.archive-mosaic, .archive-blind-pick__visual) {
+    scale: 1 !important;
   }
 }
 

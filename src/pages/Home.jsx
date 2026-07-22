@@ -1,16 +1,23 @@
 import { useCallback, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
 
 function Home() {
+  const navigate = useNavigate();
   const logoLetterRefs = useRef([]);
   const logoMotionRefs = useRef([]);
   const logoAnimationRef = useRef(null);
   const prefersReducedMotionRef = useRef(false);
   const { context, tracks: tempoTracks } = useContextRecommendations(10);
   const tempoAlbums = tempoTracks.slice(0, 10);
+
+  const navigateOnDesktop = (path) => {
+    if (window.matchMedia("(min-width: 1181px)").matches) {
+      navigate(path);
+    }
+  };
 
   const getLogoMotion = useCallback((index) => {
     if (!logoMotionRefs.current[index]) {
@@ -172,32 +179,32 @@ function Home() {
   ];
 
   const playlistItems = [
-    { image: null, title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-19.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-20.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-21.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-22.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-23.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/moment-04.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/moment-02.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-24.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-25.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-26.png", title: "유독 여유가 심한 날", artist: "hostless" },
-    { image: "/images/album-27.png", title: "유독 여유가 심한 날", artist: "hostless" },
+    { image: null, title: "유독 여유가 필요한 날", artist: "hostless" },
+    { image: "/images/album-19.png", title: "비가 그친 뒤 걷는 밤", artist: "hostless" },
+    { image: "/images/album-20.png", title: "창가에 기대 듣는 노래", artist: "hostless" },
+    { image: "/images/album-21.png", title: "아무 말 없이 머물고 싶은 오후", artist: "hostless" },
+    { image: "/images/album-22.png", title: "새벽을 천천히 넘기는 음악", artist: "hostless" },
+    { image: "/images/album-23.png", title: "집으로 돌아가는 길의 온도", artist: "hostless" },
+    { image: "/images/moment-04.png", title: "햇살이 길게 남은 방", artist: "hostless" },
+    { image: "/images/moment-02.png", title: "도시의 불빛이 켜질 무렵", artist: "hostless" },
+    { image: "/images/album-24.png", title: "혼자 걷기 좋은 저녁", artist: "hostless" },
+    { image: "/images/album-25.png", title: "생각이 많아지는 늦은 밤", artist: "hostless" },
+    { image: "/images/album-26.png", title: "작은 용기가 필요한 순간", artist: "hostless" },
+    { image: "/images/album-27.png", title: "주말 아침을 여는 플레이리스트", artist: "hostless" },
   ];
 
   const moments = [
-    "/images/moment-01.png",
-    "/images/moment-02.png",
-    "/images/moment-03.png",
-    "/images/moment-04.png",
-    "/images/moment-05.png",
-    "/images/moment-06.png",
-    "/images/album-28.png",
-    "/images/album-29.png",
-    "/images/album-30.png",
-    "/images/album-31.png",
-    "/images/album-19.png",
+    { image: "/images/moment-01.png", title: "비 오는 날 퇴근길에 한 곡", meta: "흐림 · 18°C · 20:59" },
+    { image: "/images/moment-02.png", title: "창밖이 흐린 오후의 노래", meta: "비 · 16°C · 19:42" },
+    { image: "/images/moment-03.png", title: "바다를 바라보며 남긴 순간", meta: "맑음 · 23°C · 14:18" },
+    { image: "/images/moment-04.png", title: "혼자 걷는 저녁의 플레이리스트", meta: "구름 조금 · 20°C · 21:07" },
+    { image: "/images/moment-05.png", title: "잠들기 전 다시 찾은 음악", meta: "바람 · 17°C · 23:16" },
+    { image: "/images/moment-06.png", title: "햇살 좋은 주말의 한 곡", meta: "맑음 · 24°C · 11:28" },
+    { image: "/images/album-28.png", title: "오랜만에 떠오른 장면", meta: "흐림 · 19°C · 18:35" },
+    { image: "/images/album-29.png", title: "도시의 밤과 함께 듣는 노래", meta: "맑음 · 21°C · 22:14" },
+    { image: "/images/album-30.png", title: "천천히 시작하는 아침의 음악", meta: "구름 조금 · 15°C · 08:12" },
+    { image: "/images/album-31.png", title: "노을이 번지는 창가의 순간", meta: "맑음 · 22°C · 17:48" },
+    { image: "/images/album-19.png", title: "비가 멈춘 골목에서 듣는 곡", meta: "비 갬 · 18°C · 20:21" },
   ];
 
   const curators = [
@@ -216,6 +223,17 @@ function Home() {
     { image: "/images/profile-08.png", name: "hostless" },
     { image: "/images/profile-03.png", name: "hostless" },
     { image: "/images/profile-05.png", name: "hostless" },
+  ];
+
+  const curatorProfileImages = [
+    "/images/profile-03.png",
+    "/images/profile-07.png",
+    "/images/profile-01.png",
+    "/images/profile-06.png",
+    "/images/profile-04.png",
+    "/images/profile-08.png",
+    "/images/profile-02.png",
+    "/images/profile-05.png",
   ];
 
   return (
@@ -310,7 +328,7 @@ function Home() {
               <div className="discover-copy">
                 <h3>Time Set</h3>
                 <span>같은 순간 · 날씨 · 위치 안에서 다른 사람들이 선택한 음악을<br />감상해보세요</span>
-                <button className="small-button">같은 순간의 노래 듣기</button>
+                <button className="small-button" onClick={() => navigateOnDesktop("/discover/time-set")}>같은 순간의 노래 듣기</button>
               </div>
               <div className="discover-art blue"><span></span></div>
             </article>
@@ -318,7 +336,7 @@ function Home() {
               <div className="discover-copy">
                 <h3>Track Trace</h3>
                 <span>하나의 노래가 다른 사람에게 어떤 시간과 장면으로 남았는지<br />따라가보세요</span>
-                <button className="small-button">같은 노래의 순간 보기</button>
+                <button className="small-button" onClick={() => navigateOnDesktop("/discover/track-trace")}>같은 노래의 순간 보기</button>
               </div>
               <div className="discover-art red"><span></span></div>
             </article>
@@ -334,6 +352,7 @@ function Home() {
             {artistCards.map((artist, index) => (
               <article
                 className="artist-card artist-wide-card"
+                tabIndex={0}
                 data-tempy-playable
                 data-tempy-title={artist.title}
                 data-tempy-artist={artist.name}
@@ -344,8 +363,8 @@ function Home() {
                 <img className="artist-art" src={artist.image} alt={`${artist.name} artist moment`} />
                 <div className="artist-copy" style={{ backgroundImage: `url(${artist.image})` }}>
                   <strong>{artist.title}</strong>
-                  <span>{artist.meta}</span>
-                  <span>♡ 1.5k</span>
+                  <span className="artist-meta-primary">{artist.meta}</span>
+                  <span className="artist-meta-likes">♡ 1.5k</span>
                   <span className="artist-name">{artist.name}</span>
                 </div>
                 <div className="artist-info">
@@ -367,21 +386,34 @@ function Home() {
             {playlistItems.map((item, index) => (
               <article
                 className="playlist-row"
+                tabIndex={0}
                 data-tempy-playable
                 data-tempy-title={item.title}
                 data-tempy-artist={item.artist}
                 data-tempy-cover={item.image || "/images/album-10.png"}
                 key={`${item.title}-${index}`}
               >
-                {item.image ? (
-                  <img src={item.image} alt="playlist cover" />
-                ) : (
-                  <div className="playlist-thumb playlist-green">brat</div>
-                )}
+                <div className="playlist-cover-frame">
+                  {item.image ? (
+                    <img src={item.image} alt="playlist cover" />
+                  ) : (
+                    <div className="playlist-thumb playlist-green">brat</div>
+                  )}
+                </div>
                 <div>
-                  <strong>{item.title}</strong>
-                  <span>○ {item.artist}</span>
-                  <span>♡ 1.5k  ⟲ 3891</span>
+                  <strong className="home-mobile-copy">유독 여유가 심한 날</strong>
+                  <strong className="home-desktop-copy">{item.title}</strong>
+                  <span className="playlist-author">
+                    <img
+                      className="home-desktop-avatar"
+                      src={curatorProfileImages[index % curatorProfileImages.length]}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                    <i aria-hidden="true">○</i>
+                    {item.artist}
+                  </span>
+                  <span className="playlist-stats">♡ 1.5k  ⟲ 3891</span>
                 </div>
               </article>
             ))}
@@ -394,21 +426,33 @@ function Home() {
             <p>같은 시간과 날씨에 사람들이 선택한 노래를 감상해보세요.</p>
           </div>
           <div className="leftnow-row">
-            {moments.map((image, index) => (
+            {moments.map((moment, index) => (
               <article
                 className="leftnow-card"
+                tabIndex={0}
                 data-tempy-playable
-                data-tempy-title="비 오는 날 퇴근길에 한 곡"
+                data-tempy-title={moment.title}
                 data-tempy-artist="hostless"
-                data-tempy-cover={image}
-                key={`${image}-${index}`}
+                data-tempy-cover={moment.image}
+                key={`${moment.image}-${index}`}
               >
                 <div className="leftnow-text">
-                  <strong>비 오는 날 퇴근길에 한 곡</strong>
-                  <span>{context.weatherLabel} · {context.temperature} · {context.currentTime}</span>
-                  <span>● hostless</span>
+                  <strong className="home-mobile-copy">비 오는 날 퇴근길에 한 곡</strong>
+                  <strong className="home-desktop-copy">{moment.title}</strong>
+                  <span className="home-mobile-copy">{context.weatherLabel} · {context.temperature} · {context.currentTime}</span>
+                  <span className="home-desktop-copy">{moment.meta}</span>
+                  <span className="leftnow-author">
+                    <img
+                      className="home-desktop-avatar"
+                      src={curatorProfileImages[(index + 3) % curatorProfileImages.length]}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                    <i aria-hidden="true">●</i>
+                    hostless
+                  </span>
                 </div>
-                <img className="leftnow-image" src={image} alt={`Moment card ${index + 1}`} />
+                <img className="leftnow-image" src={moment.image} alt={`Moment card ${index + 1}`} />
                 <div className="leftnow-bottom">
                   <button>▶ Play</button>
                   <button>♡</button>
@@ -425,7 +469,7 @@ function Home() {
           </div>
           <div className="curator-row">
             {curators.map((curator, index) => (
-              <div className="curator-item" key={`${curator.image}-${index}`}>
+              <div className="curator-item" tabIndex={0} key={`${curator.image}-${index}`}>
                 <img className="curator-circle" src={curator.image} alt={`${curator.name} profile`} />
                 <span>{curator.name}</span>
               </div>
@@ -439,7 +483,7 @@ function Home() {
             <p>내가 어떤 시간에 무슨 음악을 들었는지 나만의 시간 기록으로 돌아보세요.</p>
           </div>
           <div className="archive-grid">
-            <article className="archive-card archive-identity-card">
+            <article className="archive-card archive-identity-card" onClick={() => navigateOnDesktop("/archive")}>
               <div className="archive-text">
                 <h3>Your Music Identity</h3>
                 <p>아카이브와 함께 10월의 당신을 돌아보세요.</p>
