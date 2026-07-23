@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
+import { getTrackById, getTracksByIds } from "../data/musicCatalog";
 
 function Home() {
   const navigate = useNavigate();
@@ -141,57 +142,77 @@ function Home() {
 
   const artistCards = [
     {
-      image: "/images/artist-04.png",
+      image: "/images/artist-01.png",
       title: "제니의 무대 전 워밍업 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "Jennie",
+      track: getTrackById("like-jennie"),
     },
     {
-      image: "/images/artist-05.png",
+      image: "/images/artist-02.png",
       title: "악뮤의 작업할 때 영감을 많이 받았던 곡",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "AKMU",
+      track: getTrackById("love-lee"),
     },
     {
-      image: "/images/artist-06.png",
+      image: "/images/artist-03.png",
       title: "한로로의 카페에서 듣는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "Hanroro",
+      track: getTrackById("let-me-love-my-youth"),
     },
     {
       image: "/images/artist-01.png",
       title: "공연 전 템포를 맞추는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "Jennie",
+      track: getTrackById("mantra"),
     },
     {
       image: "/images/artist-02.png",
       title: "악뮤의 저녁 작업을 위한 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "AKMU",
+      track: getTrackById("love-lee"),
     },
     {
       image: "/images/artist-03.png",
       title: "한로로의 새벽에 남겨둔 순간의 음악",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "Hanroro",
+      track: getTrackById("let-me-love-my-youth"),
     },
   ];
 
   const playlistItems = [
-    { image: null, title: "유독 여유가 필요한 날", artist: "hostless" },
-    { image: "/images/album-19.png", title: "비가 그친 뒤 걷는 밤", artist: "hostless" },
-    { image: "/images/album-20.png", title: "창가에 기대 듣는 노래", artist: "hostless" },
-    { image: "/images/album-21.png", title: "아무 말 없이 머물고 싶은 오후", artist: "hostless" },
-    { image: "/images/album-22.png", title: "새벽을 천천히 넘기는 음악", artist: "hostless" },
-    { image: "/images/album-23.png", title: "집으로 돌아가는 길의 온도", artist: "hostless" },
-    { image: "/images/moment-04.png", title: "햇살이 길게 남은 방", artist: "hostless" },
-    { image: "/images/moment-02.png", title: "도시의 불빛이 켜질 무렵", artist: "hostless" },
-    { image: "/images/album-24.png", title: "혼자 걷기 좋은 저녁", artist: "hostless" },
-    { image: "/images/album-25.png", title: "생각이 많아지는 늦은 밤", artist: "hostless" },
-    { image: "/images/album-26.png", title: "작은 용기가 필요한 순간", artist: "hostless" },
-    { image: "/images/album-27.png", title: "주말 아침을 여는 플레이리스트", artist: "hostless" },
+    { image: null, title: "유독 여유가 필요한 날", artist: "hostless", context: "10 tracks · slow afternoon" },
+    { image: "/images/album-19.png", title: "비가 그친 뒤 걷는 밤", artist: "hostless", context: "비 온 뒤의 잔잔한 흐름" },
+    { image: "/images/album-20.png", title: "창가에 기대 듣는 노래", artist: "hostless", context: "soft mood · 32 min" },
+    { image: "/images/album-21.png", title: "아무 말 없이 머물고 싶은 오후", artist: "hostless", context: "말보다 조용한 9곡" },
+    { image: "/images/album-22.png", title: "새벽을 천천히 넘기는 음악", artist: "hostless", context: "late night · low tempo" },
+    { image: "/images/album-23.png", title: "집으로 돌아가는 길의 온도", artist: "hostless", context: "퇴근길을 위한 28 min" },
+    { image: "/images/moment-04.png", title: "햇살이 길게 남은 방", artist: "hostless", context: "warm light · 11 tracks" },
+    { image: "/images/moment-02.png", title: "도시의 불빛이 켜질 무렵", artist: "hostless", context: "blue hour city mood" },
+    { image: "/images/album-24.png", title: "혼자 걷기 좋은 저녁", artist: "hostless", context: "가벼운 걸음의 리듬" },
+    { image: "/images/album-25.png", title: "생각이 많아지는 늦은 밤", artist: "hostless", context: "deep focus · 36 min" },
+    { image: "/images/album-26.png", title: "작은 용기가 필요한 순간", artist: "hostless", context: "조금씩 선명해지는 8곡" },
+    { image: "/images/album-27.png", title: "주말 아침을 여는 플레이리스트", artist: "hostless", context: "weekend morning · bright" },
   ];
+  const playlistTracks = getTracksByIds([
+    "360",
+    "style",
+    "mood",
+    "disco-room",
+    "mamas-boy",
+    "soft-static",
+    "sweetener",
+    "blinding-lights",
+    "rich-man",
+    "citrus-glow",
+    "you-and-me",
+    "toxic-till-the-end",
+  ]);
 
   const moments = [
     { image: "/images/moment-01.png", title: "비 오는 날 퇴근길에 한 곡", meta: "흐림 · 18°C · 20:59" },
@@ -206,6 +227,19 @@ function Home() {
     { image: "/images/album-31.png", title: "노을이 번지는 창가의 순간", meta: "맑음 · 22°C · 17:48" },
     { image: "/images/album-19.png", title: "비가 멈춘 골목에서 듣는 곡", meta: "비 갬 · 18°C · 20:21" },
   ];
+  const momentTracks = getTracksByIds([
+    "birds-of-a-feather",
+    "gone-are-the-days",
+    "traveler",
+    "watermelon-sugar",
+    "delicate",
+    "cruel-summer",
+    "wait",
+    "whiplash",
+    "armageddon",
+    "like-jennie",
+    "style",
+  ]);
 
   const curators = [
     { image: "/images/profile-01.png", name: "만두두왕" },
@@ -223,6 +257,24 @@ function Home() {
     { image: "/images/profile-08.png", name: "hostless" },
     { image: "/images/profile-03.png", name: "hostless" },
     { image: "/images/profile-05.png", name: "hostless" },
+  ];
+
+  const desktopCuratorNames = [
+    "만두두왕",
+    "오늘은까눌레",
+    "hostless",
+    "새벽버스",
+    "느린파도",
+    "종이비행기",
+    "모과차",
+    "귤껍질수집가",
+    "비누향",
+    "moonletter",
+    "작은소음",
+    "bluehour",
+    "오래된헤드폰",
+    "여름끝",
+    "midnightnote",
   ];
 
   const curatorProfileImages = [
@@ -295,6 +347,7 @@ function Home() {
             {tempoAlbums.map((album, index) => (
               <article
                 className="album-card"
+                tabIndex={0}
                 data-tempy-playable
                 data-tempy-id={album.id}
                 data-tempy-title={album.title}
@@ -354,10 +407,11 @@ function Home() {
                 className="artist-card artist-wide-card"
                 tabIndex={0}
                 data-tempy-playable
-                data-tempy-title={artist.title}
-                data-tempy-artist={artist.name}
-                data-tempy-cover={artist.image}
-                data-tempy-duration="21:03"
+                data-tempy-id={artist.track.id}
+                data-tempy-title={artist.track.title}
+                data-tempy-artist={artist.track.artist}
+                data-tempy-cover={artist.track.cover}
+                data-tempy-duration={artist.track.duration}
                 key={`${artist.name}-${index}`}
               >
                 <img className="artist-art" src={artist.image} alt={`${artist.name} artist moment`} />
@@ -388,9 +442,11 @@ function Home() {
                 className="playlist-row"
                 tabIndex={0}
                 data-tempy-playable
-                data-tempy-title={item.title}
-                data-tempy-artist={item.artist}
-                data-tempy-cover={item.image || "/images/album-10.png"}
+                data-tempy-id={playlistTracks[index].id}
+                data-tempy-title={playlistTracks[index].title}
+                data-tempy-artist={playlistTracks[index].artist}
+                data-tempy-cover={playlistTracks[index].cover}
+                data-tempy-duration={playlistTracks[index].duration}
                 key={`${item.title}-${index}`}
               >
                 <div className="playlist-cover-frame">
@@ -403,6 +459,7 @@ function Home() {
                 <div>
                   <strong className="home-mobile-copy">유독 여유가 심한 날</strong>
                   <strong className="home-desktop-copy">{item.title}</strong>
+                  <span className="playlist-context home-desktop-copy">{item.context}</span>
                   <span className="playlist-author">
                     <img
                       className="home-desktop-avatar"
@@ -431,9 +488,11 @@ function Home() {
                 className="leftnow-card"
                 tabIndex={0}
                 data-tempy-playable
-                data-tempy-title={moment.title}
-                data-tempy-artist="hostless"
-                data-tempy-cover={moment.image}
+                data-tempy-id={momentTracks[index].id}
+                data-tempy-title={momentTracks[index].title}
+                data-tempy-artist={momentTracks[index].artist}
+                data-tempy-cover={momentTracks[index].cover}
+                data-tempy-duration={momentTracks[index].duration}
                 key={`${moment.image}-${index}`}
               >
                 <div className="leftnow-text">
@@ -471,7 +530,8 @@ function Home() {
             {curators.map((curator, index) => (
               <div className="curator-item" tabIndex={0} key={`${curator.image}-${index}`}>
                 <img className="curator-circle" src={curator.image} alt={`${curator.name} profile`} />
-                <span>{curator.name}</span>
+                <span className="home-mobile-copy">{curator.name}</span>
+                <span className="home-desktop-copy">{desktopCuratorNames[index]}</span>
               </div>
             ))}
           </div>

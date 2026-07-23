@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
+import {
+  getAlbumById,
+  getArtistById,
+  getTrackById,
+  getTracksByIds,
+} from "../data/musicCatalog";
 
 const segmentBars = [
   18, 22, 20, 28, 35, 31, 42, 50, 45, 58, 52, 36, 29,
@@ -13,12 +19,9 @@ const TRACK_DURATION_SECONDS = 210;
 const POPULAR_SEGMENT_START_SECONDS = 90;
 const POPULAR_SEGMENT_START_INDEX = 21;
 const POPULAR_SEGMENT_END_INDEX = 25;
-const TRACK_DETAIL = {
-  id: "track-03",
-  title: "BIRDS OF A FEATHER",
-  artist: "Billie Eilish",
-  cover: "/images/album-19.png",
-  duration: "03:30",
+const DEFAULT_TRACK_DETAIL = {
+  ...getTrackById("birds-of-a-feather"),
+  number: "01",
 };
 
 const formatTime = (date) =>
@@ -40,13 +43,6 @@ const songMetrics = [
   { label: "Danceability", value: "68%", progress: 68, note: "Steady, fluid movement" },
   { label: "Energy", value: "79%", progress: 79, note: "Bright dynamic range" },
   { label: "BPM", value: "120", progress: 72, note: "Moderate upbeat tempo" },
-];
-
-const songInformation = [
-  { label: "Album", value: "The Life of a Showgirl" },
-  { label: "Release Date", value: "October 3, 2025" },
-  { label: "Label", value: "Taylor Swift" },
-  { label: "Language", value: "English" },
 ];
 
 const trackMoments = [
@@ -76,14 +72,14 @@ const trackMoments = [
   },
 ];
 
-const similarSongs = [
-  { image: "/images/album-26.png", title: "The Fate of Ophelia", artist: "Taylor Swift" },
-  { image: "/images/album-27.png", title: "Drop dead", artist: "Only Astrologic" },
-  { image: "/images/album-28.png", title: "Blue Hour", artist: "Tomorrow X Together" },
-  { image: "/images/album-29.png", title: "Slow Motion", artist: "Matt Champion" },
-  { image: "/images/album-30.png", title: "Afterglow", artist: "The Marías" },
-  { image: "/images/album-31.png", title: "City Lights", artist: "Wave to Earth" },
-];
+const similarSongs = getTracksByIds([
+  "fate-of-ophelia",
+  "toxic-till-the-end",
+  "wait",
+  "whiplash",
+  "armageddon",
+  "like-jennie",
+]);
 
 function TrackTraceDetail() {
   const [activeTab, setActiveTab] = useState("popular");
@@ -93,7 +89,22 @@ function TrackTraceDetail() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDetailsClosing, setIsDetailsClosing] = useState(false);
   const modalCloseRef = useRef(null);
+  const location = useLocation();
   const navigate = useNavigate();
+  const { trackId } = useParams();
+  const trackDetail = {
+    ...DEFAULT_TRACK_DETAIL,
+    ...(location.state?.track ?? {}),
+    ...(getTrackById(trackId) ?? {}),
+  };
+  const trackAlbum = getAlbumById(trackDetail.albumId) || getAlbumById(DEFAULT_TRACK_DETAIL.albumId);
+  const trackArtist = getArtistById(trackDetail.artistId) || getArtistById(trackAlbum.artistId);
+  const songInformation = [
+    { label: "Album", value: trackAlbum.title },
+    { label: "Release Date", value: trackAlbum.releaseDate },
+    { label: "Artist", value: trackArtist.name },
+    { label: "Language", value: trackAlbum.language },
+  ];
 
   useEffect(() => {
     const phoneQuery = window.matchMedia("(max-width: 480px)");
@@ -113,7 +124,7 @@ function TrackTraceDetail() {
 
   useEffect(() => {
     const handlePlayerProgress = (event) => {
-      if (event.detail?.trackId !== TRACK_DETAIL.id) return;
+      if (event.detail?.trackId !== trackDetail.id) return;
       if (!Number.isFinite(event.detail.currentTime)) return;
       const nextIndex = Math.min(
         segmentBars.length - 1,
@@ -124,7 +135,7 @@ function TrackTraceDetail() {
 
     window.addEventListener("tempy-player-progress", handlePlayerProgress);
     return () => window.removeEventListener("tempy-player-progress", handlePlayerProgress);
-  }, []);
+  }, [trackDetail.id]);
 
   useEffect(() => {
     if (!isDetailsOpen) return undefined;
@@ -148,7 +159,7 @@ function TrackTraceDetail() {
     setPlayingBarIndex(Math.floor((POPULAR_SEGMENT_START_SECONDS / TRACK_DURATION_SECONDS) * segmentBars.length));
     window.dispatchEvent(new CustomEvent("tempy-seek-track", {
       detail: {
-        track: TRACK_DETAIL,
+        track: trackDetail,
         startTime: POPULAR_SEGMENT_START_SECONDS,
       },
     }));
@@ -159,11 +170,11 @@ function TrackTraceDetail() {
       <aside
         className="track-comment-detail__song"
         data-tempy-playable
-        data-tempy-title="BIRDS OF A FEATHER"
-        data-tempy-artist="Billie Eilish"
-        data-tempy-cover="/images/album-19.png"
-        data-tempy-id="track-03"
-        data-tempy-duration="03:30"
+        data-tempy-title={trackDetail.title}
+        data-tempy-artist={trackDetail.artist}
+        data-tempy-cover={trackDetail.cover}
+        data-tempy-id={trackDetail.id}
+        data-tempy-duration={trackDetail.duration}
       >
         <button className="track-comment-detail__back detail-back-link" type="button" aria-label="Track Trace로 돌아가기" onClick={() => navigate(-1)}>
           <span aria-hidden="true">←</span>
@@ -171,14 +182,14 @@ function TrackTraceDetail() {
         </button>
 
         <div className="track-comment-detail__album">
-          <img src="/images/album-19.png" alt="BIRDS OF A FEATHER album cover" />
-          <span>01</span>
+          <img src={trackDetail.cover} alt={`${trackDetail.title} album cover`} />
+          <span>{trackDetail.number}</span>
         </div>
 
         <div className="track-comment-detail__song-copy">
           <p>TRACK TRACE</p>
-          <h1>BIRDS OF A FEATHER</h1>
-          <span>Billie Eilish</span>
+          <h1>{trackDetail.title}</h1>
+          <span>{trackDetail.artist}</span>
         </div>
 
         <div className="track-comment-detail__actions">
@@ -188,7 +199,9 @@ function TrackTraceDetail() {
           <button
             className="track-comment-detail__keep"
             type="button"
-            onClick={() => navigate("/discover/track-trace/album")}
+            onClick={() => navigate(`/discover/track-trace/album/${trackAlbum.id}`, {
+              state: { albumId: trackAlbum.id },
+            })}
           >
             앨범 소개 보러가기 <span aria-hidden="true">→</span>
           </button>
@@ -356,13 +369,15 @@ function TrackTraceDetail() {
               <article
                 className="track-detail-lower__song-card"
                 data-tempy-playable
+                data-tempy-id={song.id}
                 data-tempy-title={song.title}
                 data-tempy-artist={song.artist}
-                data-tempy-cover={song.image}
-                key={song.title}
+                data-tempy-cover={song.cover}
+                data-tempy-duration={song.duration}
+                key={song.id}
               >
                 <div className="track-detail-lower__song-artwork">
-                  <img src={song.image} alt={`${song.title} album cover`} />
+                  <img src={song.cover} alt={`${song.title} album cover`} />
                   <span>0{index + 1}</span>
                 </div>
                 <div className="track-detail-lower__song-copy">
@@ -396,11 +411,11 @@ function TrackTraceDetail() {
         >
           <section className="track-detail-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="track-detail-modal-title">
             <header className="track-detail-modal__header">
-              <img src="/images/album-19.png" alt="BIRDS OF A FEATHER album cover" />
+              <img src={trackDetail.cover} alt={`${trackDetail.title} album cover`} />
               <div>
                 <p>TRACK INFORMATION</p>
-                <h2 id="track-detail-modal-title">BIRDS OF A FEATHER</h2>
-                <span>Billie Eilish</span>
+                <h2 id="track-detail-modal-title">{trackDetail.title}</h2>
+                <span>{trackDetail.artist}</span>
               </div>
               <button ref={modalCloseRef} type="button" onClick={closeDetails} aria-label="상세 정보 닫기">×</button>
             </header>

@@ -1,21 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import TempyFooter from "../components/TempyFooter";
+import { getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
 
 const CREATED_ITEMS_KEY = "tempyCreatedItems";
 const archiveDefaultTags = ["비", "버스", "성북구"];
 const archiveVisibilityOptions = ["전체 공개", "팔로워만", "비공개"];
-const archiveTrackItems = [
-  { id: 1, title: "Jane&the boys", time: "2:31" },
-  { id: 2, title: "BIRDS OF A FEATHER", time: "3:30" },
-  { id: 3, title: "Confetti Dream", time: "3:12" },
-  { id: 4, title: "Upside Mood", time: "2:48" },
-];
-const archiveTrackVisuals = {
-  1: { artist: "The Volunteers", cover: "/images/album-01.png", moment: "RAINY EVENING" },
-  2: { artist: "Billie Eilish", cover: "/images/album-02.png", moment: "NIGHT WALK" },
-  3: { artist: "HONNE", cover: "/images/album-03.png", moment: "CITY WINDOW" },
-  4: { artist: "HYUKOH", cover: "/images/album-04.png", moment: "SLOW AFTERNOON" },
-};
+const archiveTrackItems = getTracksByIds([
+  "fate-of-ophelia",
+  "birds-of-a-feather",
+  "gone-are-the-days",
+  "super-shy",
+]).map((track, index) => ({
+  ...track,
+  id: index + 1,
+  trackId: track.id,
+  time: track.duration.replace(/^0/, ""),
+}));
+const archiveTrackVisuals = Object.fromEntries(archiveTrackItems.map((track, index) => [
+  track.id,
+  {
+    artist: track.artist,
+    cover: track.cover,
+    moment: ["RAINY EVENING", "NIGHT WALK", "CITY WINDOW", "SLOW AFTERNOON"][index],
+  },
+]));
 
 const archiveDayRecords = {
   3: {
@@ -104,6 +112,13 @@ const archiveDayRecords = {
     ],
   },
 };
+
+const normalizedArchiveDayRecords = Object.fromEntries(
+  Object.entries(archiveDayRecords).map(([day, record]) => [
+    day,
+    { ...record, tracks: record.tracks.map(normalizeMusicItem) },
+  ]),
+);
 
 const readCreatedItems = () => {
   try {
@@ -384,7 +399,7 @@ function Archive() {
           </div>
           <div className="archive-page__days">
             {calendarDays.map((day, index) => (
-              archiveDayRecords[day] ? (
+              normalizedArchiveDayRecords[day] ? (
                 <button
                   className={`archive-page__day archive-page__day--marked${day === "16" ? " archive-page__day--active" : ""}${selectedArchiveDate === day ? " archive-page__day--selected" : ""}`}
                   type="button"
@@ -521,7 +536,7 @@ function Archive() {
 
       {selectedArchiveDate && (
         <ArchiveDayModal
-          record={archiveDayRecords[selectedArchiveDate]}
+          record={normalizedArchiveDayRecords[selectedArchiveDate]}
           onClose={() => setSelectedArchiveDate(null)}
         />
       )}

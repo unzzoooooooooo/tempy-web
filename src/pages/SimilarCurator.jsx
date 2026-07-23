@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { normalizeMusicItem } from "../data/musicCatalog";
 
 const similarPlaylists = [
   {
@@ -380,7 +381,7 @@ function SimilarCurator() {
 
                   <div className="similar-curator__card-bottom">
                     <div className="similar-curator__tracks" data-similar-track-scroll>
-                      {[...playlist.tracks, ...(similarTrackAdditions[index] || [])].map((track) => (
+                      {[...playlist.tracks, ...(similarTrackAdditions[index] || [])].map(normalizeMusicItem).map((track) => (
                         <div className="similar-curator__song" key={`${playlist.title}-${track.title}`}>
                           <img src={track.cover} alt="" draggable="false" />
                           <div>

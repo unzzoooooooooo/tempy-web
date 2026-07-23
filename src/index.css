@@ -2855,15 +2855,15 @@ header.header {
 }
 
 .artist-card:nth-child(1) .artist-name::before {
-  background-image: url("./assets/jennie.jpg");
+  background-image: url("/images/artist-01.png");
 }
 
 .artist-card:nth-child(2) .artist-name::before {
-  background-image: url("./assets/akmu.jpg");
+  background-image: url("/images/artist-02.png");
 }
 
 .artist-card:nth-child(3) .artist-name::before {
-  background-image: url("./assets/hanroro.jpg");
+  background-image: url("/images/artist-03.png");
 }
 
 .artist-info {
@@ -3686,21 +3686,35 @@ body::-webkit-scrollbar:horizontal,
     display: none;
   }
 
+  .app .home-page .tag {
+    height: 44px;
+    padding-inline: 26px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
   .app .home-page .playlist-grid {
-    row-gap: 16px;
+    row-gap: 18px;
   }
 
   .app .home-page .playlist-row {
-    min-height: 120px;
-    padding: 10px 0 14px;
-    grid-template-columns: 96px minmax(0, 1fr);
-    gap: 24px;
+    min-height: 150px;
+    box-sizing: border-box;
+    padding: 12px 10px 14px;
+    grid-template-columns: 106px minmax(0, 1fr);
+    gap: 18px;
+    border-top: 1px solid transparent;
+    border-bottom-color: rgba(7, 20, 43, 0.18);
+    border-radius: 2px;
   }
 
   .app .home-page .playlist-cover-frame {
     display: block;
-    width: 96px;
-    height: 96px;
+    width: 106px;
+    height: 106px;
+    background: #d8e7ff;
+    box-shadow: 0 0 0 1px rgba(7, 20, 43, 0.08);
     overflow: hidden;
   }
 
@@ -3721,7 +3735,7 @@ body::-webkit-scrollbar:horizontal,
   .app .home-page .playlist-row strong {
     display: -webkit-box;
     min-height: 0;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     overflow: hidden;
     font-size: 20px;
     font-weight: 600;
@@ -3735,13 +3749,29 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page .playlist-row span {
-    font-size: 15.5px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 500;
     line-height: 1.4;
   }
 
   .app .home-page .playlist-row span + span {
-    margin-top: 5px;
+    margin-top: 4px;
+  }
+
+  .app .home-page .playlist-row .playlist-context {
+    display: block !important;
+    overflow: hidden;
+    color: rgba(7, 20, 43, 0.76);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .home-page .playlist-row .playlist-context + .playlist-author {
+    margin-top: 10px;
   }
 
   .app .home-page .playlist-stats {
@@ -3749,13 +3779,14 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page .leftnow-card {
-    height: calc(clamp(350px, 22.4vw, 430px) + 40px);
+    height: calc(154px + clamp(240px, 15vw, 288px));
   }
 
   .app .home-page .leftnow-text {
     display: flex;
-    height: 122px;
-    margin-bottom: 4px;
+    height: 130px;
+    flex: 0 0 130px;
+    margin-bottom: 0;
     flex-direction: column;
     gap: 0;
   }
@@ -3786,15 +3817,37 @@ body::-webkit-scrollbar:horizontal,
 
   .app .home-page .leftnow-author {
     margin-top: auto;
+    margin-bottom: 12px;
     align-self: flex-start;
   }
 
+  .app .home-page .leftnow-image {
+    margin-top: 0;
+  }
+
+  .app .home-page .leftnow-bottom {
+    display: none;
+  }
+
+  .app .home-page .curator-row {
+    margin-top: 32px;
+    padding-top: 8px;
+  }
+
   .app .home-page .curator-item {
+    position: relative;
     text-align: center;
+  }
+
+  .app .home-page .curator-item:first-child .curator-circle {
+    transform-origin: left center;
   }
 
   .app .home-page .curator-circle {
     margin-bottom: 20px;
+    box-sizing: border-box;
+    outline: 1px solid transparent;
+    outline-offset: 3px;
   }
 
   .app .home-page .curator-item span {
@@ -3836,7 +3889,9 @@ body::-webkit-scrollbar:horizontal,
   .app .home-page .archive-identity-card {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     cursor: pointer;
-    transition: transform 220ms ease, box-shadow 220ms ease;
+    transition:
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .archive-identity-card .archive-mosaic {
@@ -3874,7 +3929,10 @@ body::-webkit-scrollbar:horizontal,
 
   .app .home-page .archive-identity-card .archive-text button {
     cursor: pointer;
-    transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+    transition:
+      background-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .archive-identity-card:hover .archive-text button {
@@ -3915,20 +3973,78 @@ body::-webkit-scrollbar:horizontal,
 }
 
 @media (min-width: 1181px) and (hover: hover) and (pointer: fine) {
+  .app .home-page .album-card {
+    cursor: pointer;
+    transition:
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page .album-image-wrap {
+    transition:
+      box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page .album-image {
+    transition:
+      scale 390ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page .album-play,
+  .app .home-page .album-meta :is(strong, span) {
+    transition:
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page .album-card:is(:hover, :focus-visible) {
+    outline: 0;
+    transform: translateY(-3px);
+  }
+
+  .app .home-page .album-card:is(:hover, :focus-visible) .album-image-wrap {
+    box-shadow: 0 10px 22px rgba(7, 20, 43, 0.12);
+  }
+
+  .app .home-page .album-card:is(:hover, :focus-visible) .album-image {
+    scale: 1.025;
+    opacity: 0.98;
+  }
+
+  .app .home-page .album-card:is(:hover, :focus-visible) .album-play {
+    color: #2759ed;
+    background: #9dbaf0;
+    box-shadow: 0 4px 10px rgba(7, 20, 43, 0.1);
+    transform: scale(1.035);
+  }
+
+  .app .home-page .album-card:is(:hover, :focus-visible) .album-meta strong {
+    color: #2759ed;
+  }
+
+  .app .home-page .album-card:is(:hover, :focus-visible) .album-meta span {
+    opacity: 0.76;
+  }
+
   .app .home-page .discover-card,
   .app .home-page .artist-card,
   .app .home-page .playlist-row,
   .app .home-page .leftnow-card,
   .app .home-page .archive-card {
     transition:
-      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 240ms ease,
-      border-color 240ms ease;
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 340ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .discover-art {
-    transition: scale 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: scale 390ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .discover-card:is(:hover, :focus-within) .discover-art {
@@ -3948,7 +4064,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page .artist-art {
-    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 390ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .artist-card:is(:hover, :focus-visible) .artist-art {
@@ -3956,7 +4072,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page .artist-copy::after {
-    transition: opacity 280ms ease;
+    transition: opacity 350ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .artist-card:is(:hover, :focus-visible) .artist-copy::after {
@@ -3966,10 +4082,10 @@ body::-webkit-scrollbar:horizontal,
   .app .home-page :is(.artist-info, .leftnow-bottom) button {
     cursor: pointer;
     transition:
-      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 180ms ease,
-      background-color 180ms ease,
-      box-shadow 180ms ease;
+      transform 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 340ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page :is(.artist-info, .leftnow-bottom) button:hover,
@@ -3991,12 +4107,16 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page .playlist-row:is(:hover, :focus-visible) {
-    background: rgba(216, 231, 255, 0.34);
+    border-top-color: rgba(39, 89, 237, 0.1);
+    border-bottom-color: rgba(39, 89, 237, 0.42);
+    background: rgba(216, 231, 255, 0.3);
+    box-shadow: 0 5px 14px rgba(7, 20, 43, 0.045);
     outline: 0;
+    transform: translateY(-2px);
   }
 
   .app .home-page .playlist-cover-frame > :is(img, .playlist-thumb) {
-    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 390ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .playlist-row:is(:hover, :focus-visible) .playlist-cover-frame > :is(img, .playlist-thumb) {
@@ -4004,7 +4124,9 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page .playlist-row strong {
-    transition: color 200ms ease, font-weight 200ms ease;
+    transition:
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      font-weight 340ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .playlist-row:is(:hover, :focus-visible) strong {
@@ -4022,7 +4144,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page .leftnow-image {
-    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 390ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .leftnow-card:is(:hover, :focus-visible) .leftnow-image {
@@ -4032,9 +4154,11 @@ body::-webkit-scrollbar:horizontal,
   .app .home-page .curator-circle,
   .app .home-page .curator-item span {
     transition:
-      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 200ms ease,
-      font-weight 200ms ease;
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      font-weight 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      outline-color 340ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page .curator-item {
@@ -4046,7 +4170,9 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page .curator-item:is(:hover, :focus-visible) .curator-circle {
-    transform: scale(1.04);
+    outline-color: rgba(39, 89, 237, 0.2);
+    box-shadow: 0 8px 18px rgba(7, 20, 43, 0.11);
+    transform: scale(1.025);
   }
 
   .app .home-page .curator-item:is(:hover, :focus-visible) span {
@@ -4055,7 +4181,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .home-page :is(.archive-mosaic, .archive-blind-pick__visual) {
-    transition: scale 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: scale 390ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .app .home-page :is(.archive-identity-card, .archive-blind-pick-card):is(:hover, :focus-visible, :focus-within) {
@@ -4080,6 +4206,11 @@ body::-webkit-scrollbar:horizontal,
 }
 
 @media (min-width: 1181px) and (prefers-reduced-motion: reduce) {
+  .app .home-page .album-card,
+  .app .home-page .album-image-wrap,
+  .app .home-page .album-image,
+  .app .home-page .album-play,
+  .app .home-page .album-meta :is(strong, span),
   .app .home-page .discover-card .small-button,
   .app .home-page .discover-card,
   .app .home-page .discover-art,
@@ -4105,6 +4236,8 @@ body::-webkit-scrollbar:horizontal,
   .app .home-page .discover-card .small-button:hover,
   .app .home-page .discover-card .small-button:focus-visible,
   .app .home-page .discover-card:hover,
+  .app .home-page .album-card:is(:hover, :focus-visible),
+  .app .home-page .album-card:is(:hover, :focus-visible) .album-play,
   .app .home-page .artist-card:is(:hover, :focus-visible),
   .app .home-page .artist-card:is(:hover, :focus-visible) .artist-art,
   .app .home-page .artist-info button:is(:hover, :focus-visible),
@@ -4123,6 +4256,161 @@ body::-webkit-scrollbar:horizontal,
   .app .home-page :is(.archive-identity-card, .archive-blind-pick-card):is(:hover, :focus-visible, :focus-within)
     :is(.archive-mosaic, .archive-blind-pick__visual) {
     scale: 1 !important;
+  }
+}
+
+/* Desktop-only interaction refinements for Now Queue and Track Trace. */
+@media (min-width: 1181px) and (hover: hover) and (pointer: fine) {
+  .app .now-page .now-page__queue-item {
+    transition:
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .now-page .now-page__queue-item > img {
+    transition:
+      transform 390ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .now-page .now-page__queue-copy strong {
+    transition:
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      font-weight 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .now-page .now-page__queue-item > button {
+    font-size: 0;
+    transition:
+      transform 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .now-page .now-page__queue-item > button::before {
+    content: "▶";
+    font-size: 18px;
+    line-height: 1;
+    transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within) {
+    border-bottom-color: rgba(39, 89, 237, 0.32);
+    background: rgba(255, 241, 207, 0.42);
+    transform: translateX(5px);
+  }
+
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within) > img {
+    filter: saturate(1.04) brightness(1.015);
+    transform: scale(1.035);
+  }
+
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within) .now-page__queue-copy strong {
+    color: #2759ed;
+    font-weight: 700;
+  }
+
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within) > button {
+    border-color: #2759ed;
+    color: #2759ed;
+    background: rgba(255, 255, 255, 0.68);
+    outline: 0;
+    transform: scale(1.045);
+  }
+
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within) > button::before {
+    transform: translateX(2px);
+  }
+
+  .app .track-trace-detail .track-trace-detail__card {
+    transition:
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .track-trace-detail .track-trace-detail__artwork > img {
+    transition:
+      transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .track-trace-detail .track-trace-detail__artwork::after,
+  .app .track-trace-detail .track-trace-detail__card-info::after {
+    transition: background 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .track-trace-detail .track-trace-detail__arrow {
+    transition:
+      transform 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .track-trace-detail .track-trace-detail__arrow > span {
+    display: block;
+    transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .track-trace-detail .track-trace-detail__card:hover {
+    border-color: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 10px 22px rgba(7, 20, 43, 0.16);
+    transform: translateY(-6px);
+  }
+
+  .app .track-trace-detail .track-trace-detail__card:hover .track-trace-detail__artwork > img {
+    filter: saturate(1.04);
+    transform: scale(1.028);
+  }
+
+  .app .track-trace-detail .track-trace-detail__card:hover .track-trace-detail__artwork::after {
+    background: linear-gradient(180deg, transparent 52%, rgba(7, 20, 43, 0.82) 100%);
+  }
+
+  .app .track-trace-detail .track-trace-detail__card:hover .track-trace-detail__card-info::after {
+    background: rgba(7, 20, 43, 0.18);
+  }
+
+  .app .track-trace-detail .track-trace-detail__arrow:is(:hover, :focus-visible) {
+    border-color: #fff1cf;
+    color: #07142b;
+    background: #fff1cf;
+    outline: 0;
+    transform: scale(1.05);
+  }
+
+  .app .track-trace-detail .track-trace-detail__arrow:is(:hover, :focus-visible) > span {
+    transform: translateX(2.5px);
+  }
+}
+
+@media (min-width: 1181px) and (prefers-reduced-motion: reduce) {
+  .app .now-page .now-page__queue-item,
+  .app .now-page .now-page__queue-item > img,
+  .app .now-page .now-page__queue-copy strong,
+  .app .now-page .now-page__queue-item > button,
+  .app .now-page .now-page__queue-item > button::before,
+  .app .track-trace-detail .track-trace-detail__card,
+  .app .track-trace-detail .track-trace-detail__artwork > img,
+  .app .track-trace-detail .track-trace-detail__artwork::after,
+  .app .track-trace-detail .track-trace-detail__card-info::after,
+  .app .track-trace-detail .track-trace-detail__arrow,
+  .app .track-trace-detail .track-trace-detail__arrow > span {
+    transition-duration: 1ms !important;
+  }
+
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within),
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within) > img,
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within) > button,
+  .app .now-page .now-page__queue-item:is(:hover, :focus-within) > button::before,
+  .app .track-trace-detail .track-trace-detail__card:hover,
+  .app .track-trace-detail .track-trace-detail__card:hover .track-trace-detail__artwork > img,
+  .app .track-trace-detail .track-trace-detail__arrow:is(:hover, :focus-visible),
+  .app .track-trace-detail .track-trace-detail__arrow:is(:hover, :focus-visible) > span {
+    transform: none !important;
   }
 }
 

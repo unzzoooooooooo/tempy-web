@@ -1,20 +1,16 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
+import {
+  getAlbumById,
+  getArtistById,
+  getTracksByAlbum,
+} from "../data/musicCatalog";
 
 const albumFlow = [
   { number: "01", label: "OPENING", title: "First Light", length: "00:00 — 11:42" },
   { number: "02", label: "SPOTLIGHT", title: "Main Stage", length: "11:43 — 27:18" },
   { number: "03", label: "AFTERGLOW", title: "Final Scene", length: "27:19 — 41:06" },
-];
-
-const tracklist = [
-  { number: "01", title: "The Fate of Ophelia", duration: "03:24" },
-  { number: "02", title: "Showgirl", duration: "03:18" },
-  { number: "03", title: "Under the Spotlight", duration: "03:42" },
-  { number: "04", title: "Velvet Curtain", duration: "03:06" },
-  { number: "05", title: "Backstage Heart", duration: "03:31" },
-  { number: "06", title: "Encore", duration: "03:27" },
 ];
 
 const listeningOrder = [
@@ -29,18 +25,28 @@ const listeningOrder = [
 function TrackTraceAlbum() {
   const [activeTrackId, setActiveTrackId] = useState(null);
   const [isTrackPlaying, setIsTrackPlaying] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
+  const { albumId } = useParams();
+  const album = getAlbumById(albumId || location.state?.albumId) || getAlbumById("life-of-a-showgirl");
+  const artist = getArtistById(album.artistId);
+  const albumTracks = useMemo(() => getTracksByAlbum(album.id), [album.id]);
+  const totalDuration = albumTracks.reduce((total, track) => {
+    const [minutes, seconds] = track.duration.split(":").map(Number);
+    return total + (minutes * 60) + seconds;
+  }, 0);
+  const runtime = `${Math.floor(totalDuration / 60)} min ${String(totalDuration % 60).padStart(2, "0")} sec`;
 
   useEffect(() => {
     const handlePlayerProgress = (event) => {
       const trackId = event.detail?.trackId;
-      setActiveTrackId(typeof trackId === "string" && trackId.startsWith("showgirl-track-") ? trackId : null);
+      setActiveTrackId(albumTracks.some((track) => track.id === trackId) ? trackId : null);
       setIsTrackPlaying(Boolean(event.detail?.isPlaying));
     };
 
     window.addEventListener("tempy-player-progress", handlePlayerProgress);
     return () => window.removeEventListener("tempy-player-progress", handlePlayerProgress);
-  }, []);
+  }, [albumTracks]);
 
   return (
     <main className="track-trace-album">
@@ -52,24 +58,24 @@ function TrackTraceAlbum() {
 
         <div className="track-trace-album__hero-grid">
           <div className="track-trace-album__cover">
-            <img src="/images/album-26.png" alt="The Life of A Showgirl album cover" />
-            <span>ALBUM · 2025</span>
+            <img src={album.cover} alt={`${album.title} album cover`} />
+            <span>ALBUM · {album.releaseDate}</span>
           </div>
 
           <div className="track-trace-album__intro">
-            <Link className="track-trace-album__artist-link" to="/artist/taylor-swift">
-              <img src="/images/artist-07.png" alt="Taylor Swift" />
-              <span>Taylor Swift</span>
+            <Link className="track-trace-album__artist-link" to={`/artist/${artist.id}`}>
+              <img src={artist.profile} alt={artist.name} />
+              <span>{artist.name}</span>
               <span aria-hidden="true">›</span>
             </Link>
-            <p className="track-trace-album__eyebrow">Taylor Swift · Studio Album</p>
-            <h1>The Life of A Showgirl</h1>
+            <p className="track-trace-album__eyebrow">{artist.name} · Studio Album</p>
+            <h1>{album.title}</h1>
 
             <dl className="track-trace-album__meta">
-              <div><dt>RELEASE</dt><dd>October 3, 2025</dd></div>
-              <div><dt>TRACKS</dt><dd>12 Songs</dd></div>
-              <div><dt>RUN TIME</dt><dd>41 min 06 sec</dd></div>
-              <div><dt>LANGUAGE</dt><dd>English</dd></div>
+              <div><dt>RELEASE</dt><dd>{album.releaseDate}</dd></div>
+              <div><dt>TRACKS</dt><dd>{albumTracks.length} Songs</dd></div>
+              <div><dt>RUN TIME</dt><dd>{runtime}</dd></div>
+              <div><dt>LANGUAGE</dt><dd>{album.language}</dd></div>
             </dl>
 
             <p className="track-trace-album__description">
@@ -81,11 +87,11 @@ function TrackTraceAlbum() {
               <button
                 type="button"
                 data-tempy-playable
-                data-tempy-id="showgirl-track-01"
-                data-tempy-title={tracklist[0].title}
-                data-tempy-artist="Taylor Swift"
-                data-tempy-cover="/images/album-26.png"
-                data-tempy-duration={tracklist[0].duration}
+                data-tempy-id={albumTracks[0].id}
+                data-tempy-title={albumTracks[0].title}
+                data-tempy-artist={albumTracks[0].artist}
+                data-tempy-cover={albumTracks[0].cover}
+                data-tempy-duration={albumTracks[0].duration}
               >
                 <span aria-hidden="true">▶</span> PLAY ALBUM
               </button>
@@ -115,27 +121,27 @@ function TrackTraceAlbum() {
 
         <div className="track-trace-album__tracks">
           <div className="track-trace-album__section-head">
-            <p>12 SONGS · 41:06</p>
+            <p>{albumTracks.length} SONGS · {runtime.toUpperCase()}</p>
             <h2>Tracklist</h2>
           </div>
 
           <ol className="track-trace-album__tracklist">
-            {tracklist.map((track) => {
-              const trackId = `showgirl-track-${track.number}`;
-              const isActive = activeTrackId === trackId;
+            {albumTracks.map((track, index) => {
+              const number = String(index + 1).padStart(2, "0");
+              const isActive = activeTrackId === track.id;
 
               return (
               <li
                 className={isActive ? "track-trace-album__track--active" : ""}
                 data-tempy-playable
-                data-tempy-id={trackId}
+                data-tempy-id={track.id}
                 data-tempy-title={track.title}
-                data-tempy-artist="Taylor Swift"
-                data-tempy-cover="/images/album-26.png"
+                data-tempy-artist={track.artist}
+                data-tempy-cover={track.cover}
                 data-tempy-duration={track.duration}
-                key={track.number}
+                key={track.id}
               >
-                <span>{track.number}</span>
+                <span>{number}</span>
                 <strong>{track.title}</strong>
                 <time>{track.duration}</time>
                 <button
@@ -151,10 +157,12 @@ function TrackTraceAlbum() {
 
                     window.dispatchEvent(new CustomEvent("tempy-play-track", {
                       detail: {
-                        id: trackId,
+                        id: track.id,
                         title: track.title,
-                        artist: "Taylor Swift",
-                        cover: "/images/album-26.png",
+                        artist: track.artist,
+                        cover: track.cover,
+                        albumId: track.albumId,
+                        artistId: track.artistId,
                         duration: track.duration,
                       },
                     }));

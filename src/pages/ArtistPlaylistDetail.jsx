@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getTracksByIds } from "../data/musicCatalog";
 
-const playlistTracks = [
-  { title: "like JENNIE", artist: "JENNIE", cover: "/images/album-11.png" },
-  { title: "Mantra", artist: "JENNIE", cover: "/images/album-12.png" },
-  { title: "ExtraL", artist: "JENNIE · Doechii", cover: "/images/album-13.png" },
-  { title: "Handlebars", artist: "JENNIE · Dua Lipa", cover: "/images/album-14.png" },
-  { title: "ZEN", artist: "JENNIE", cover: "/images/album-15.png" },
-  { title: "Love Hangover", artist: "JENNIE · Dominic Fike", cover: "/images/album-16.png" },
-  { title: "Starlight", artist: "The Supermen Lovers", cover: "/images/album-17.png" },
-  { title: "Sports car", artist: "Tate McRae", cover: "/images/album-18.png" },
-  { title: "360", artist: "Charli xcx", cover: "/images/album-19.png" },
-  { title: "Von dutch", artist: "Charli xcx", cover: "/images/album-20.png" },
-];
+const playlistTracks = getTracksByIds([
+  "like-jennie",
+  "mantra",
+  "you-and-me",
+  "toxic-till-the-end",
+  "360",
+  "whiplash",
+  "armageddon",
+  "rich-man",
+  "puppet-show",
+  "blinding-lights",
+]);
 
 const fallbackPlaylist = {
   title: "JENNIE'S RUBY MOMENTS",

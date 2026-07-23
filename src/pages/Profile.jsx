@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
+import { getTrackById } from "../data/musicCatalog";
 
 const momentCards = [
   {
@@ -10,33 +11,37 @@ const momentCards = [
     location: "서울 성북구",
     tags: ["비", "버스"],
     image: "/images/moment-01.png",
+    music: getTrackById("birds-of-a-feather"),
   },
   {
     title: "Late Blue",
-    track: "Night Walk",
-    artist: "HYUKOH",
+    track: "Gone Are the Days",
+    artist: "HONNE",
     time: "23:10 · Seoul",
     location: "한강 산책",
     tags: ["저녁", "혼자"],
     image: "/images/moment-02.png",
+    music: getTrackById("gone-are-the-days"),
   },
   {
     title: "Window Seat",
-    track: "Coffee at Dawn",
-    artist: "beabadoobee",
+    track: "sweetener",
+    artist: "Ariana Grande",
     time: "07:42 · Cloud",
     location: "창가 자리",
     tags: ["아침", "흐림"],
     image: "/images/moment-03.png",
+    music: getTrackById("sweetener"),
   },
   {
     title: "After Office",
-    track: "City Light",
-    artist: "ADOY",
+    track: "Blinding Lights",
+    artist: "The Weeknd",
     time: "18:25 · Walk",
     location: "퇴근길",
     tags: ["도시", "산책"],
     image: "/images/moment-04.png",
+    music: getTrackById("blinding-lights"),
   },
 ];
 
@@ -183,9 +188,11 @@ function Profile() {
             <article
               className="profile-moment-card"
               data-tempy-playable
-              data-tempy-title={card.track}
-              data-tempy-artist={card.artist}
-              data-tempy-cover={card.image}
+              data-tempy-id={card.music.id}
+              data-tempy-title={card.music.title}
+              data-tempy-artist={card.music.artist}
+              data-tempy-cover={card.music.cover}
+              data-tempy-duration={card.music.duration}
               key={card.title}
             >
               <div className="profile-moment-card__top">

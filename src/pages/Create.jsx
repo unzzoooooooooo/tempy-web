@@ -1,20 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getTracksByIds } from "../data/musicCatalog";
 
 const visibilityOptions = ["전체 공개", "팔로워만", "비공개"];
 const defaultTags = ["비", "버스", "성북구"];
-const trackItems = [
-  { id: 1, title: "Jane&the boys", time: "2:31" },
-  { id: 2, title: "BIRDS OF A FEATHER", time: "3:30" },
-  { id: 3, title: "Confetti Dream", time: "3:12" },
-  { id: 4, title: "Upside Mood", time: "2:48" },
-];
-const trackCoverImages = {
-  1: "/images/album-01.png",
-  2: "/images/album-02.png",
-  3: "/images/album-03.png",
-  4: "/images/album-04.png",
-};
+const trackItems = getTracksByIds([
+  "fate-of-ophelia",
+  "birds-of-a-feather",
+  "gone-are-the-days",
+  "super-shy",
+]).map((track, index) => ({
+  ...track,
+  id: index + 1,
+  trackId: track.id,
+  time: track.duration.replace(/^0/, ""),
+}));
+const trackCoverImages = Object.fromEntries(trackItems.map((track) => [track.id, track.cover]));
 
 const formatTime = (date = new Date()) => (
   date.toLocaleTimeString("ko-KR", {

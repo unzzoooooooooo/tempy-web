@@ -1,6 +1,7 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { useNavigate } from "react-router-dom";
+import { normalizeMusicItem } from "../data/musicCatalog";
 
 const LOOP_COUNT = 5;
 const MIDDLE_LOOP_INDEX = Math.floor(LOOP_COUNT / 2);
@@ -21,7 +22,7 @@ const baseBlindPickItems = [
   { id: 8, color: "navy", cover: "/images/album-27.png", title: "Upside Mood", artist: "Ariana Grande", meta: "11:17 · Cloud", hintMeta: "Late Morning · Soft", hintText: "흐린 마음을 가볍게 뒤집어 작은 농담처럼 띄우는 사운드" },
   { id: 9, color: "red", cover: "/images/album-28.png", title: "Tattoo City", artist: "Night Loop", meta: "02:32 · Rain", hintMeta: "02:32 · Rain", hintText: "잠들지 않는 거리에서 감정을 더 진하게 새기는 비트" },
   { id: 10, color: "sky", cover: "/images/moment-06.png", title: "Night Walk", artist: "HYUKOH", meta: "22:10 · Rain", hintMeta: "Late Night · Soft", hintText: "혼자 걷는 길에 속도를 조금 늦춰주는 리듬" },
-];
+].map(normalizeMusicItem);
 
 function ArchiveBlindPick() {
   const navigate = useNavigate();

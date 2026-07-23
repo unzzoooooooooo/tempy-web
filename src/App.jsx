@@ -22,6 +22,7 @@ import ArchiveBlindPick from "./pages/ArchiveBlindPick";
 import Profile from "./pages/Profile";
 import Login, { LoginSuccess } from "./pages/Login";
 import { localTracks } from "./data/tracks";
+import { getTrackByCover, getTrackById, getTracksByIds } from "./data/musicCatalog";
 
 const AUTH_STORAGE_KEY = "isLoggedIn";
 
@@ -285,12 +286,15 @@ const normalizeTrackFromElement = (element) => {
     || getText(element, ["time", ".duration"])
     || "00:15";
 
+  const canonicalTrack = getTrackById(element.dataset.tempyId) || getTrackByCover(cover);
+
   return {
-    id: element.dataset.tempyId || `${title}-${artist}`.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-"),
-    title,
-    artist,
-    cover,
-    duration,
+    ...(canonicalTrack || {}),
+    id: canonicalTrack?.id || element.dataset.tempyId || `${title}-${artist}`.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-"),
+    title: canonicalTrack?.title || title,
+    artist: canonicalTrack?.artist || artist,
+    cover: canonicalTrack?.cover || cover,
+    duration: canonicalTrack?.duration || duration,
   };
 };
 
@@ -333,28 +337,28 @@ const getCircularProgressFromPointer = (event, element) => {
   return ((angle + 90 + 360) % 360) / 360;
 };
 
-const fullPlayerExtraTracks = [
-  { id: "track-11", image: "/images/album-19.png", cover: "/images/album-19.png", title: "Soft Static", artist: "Yerin Baek", duration: "03:37" },
-  { id: "track-12", image: "/images/album-20.png", cover: "/images/album-20.png", title: "Glass Hour", artist: "wave to earth", duration: "03:11" },
-  { id: "track-13", image: "/images/album-21.png", cover: "/images/album-21.png", title: "After Curtain", artist: "Silica Gel", duration: "04:02" },
-  { id: "track-14", image: "/images/album-22.png", cover: "/images/album-22.png", title: "Blue Signal", artist: "NewJeans", duration: "02:55" },
-  { id: "track-15", image: "/images/album-23.png", cover: "/images/album-23.png", title: "Room Tone", artist: "O3ohn", duration: "03:28" },
-  { id: "track-16", image: "/images/album-24.png", cover: "/images/album-24.png", title: "First Light", artist: "Crush", duration: "03:19" },
-  { id: "track-17", image: "/images/album-25.png", cover: "/images/album-25.png", title: "Lazy Orbit", artist: "AKMU", duration: "03:33" },
-  { id: "track-18", image: "/images/album-26.png", cover: "/images/album-26.png", title: "Late Checkout", artist: "JANNABI", duration: "04:10" },
-  { id: "track-19", image: "/images/album-27.png", cover: "/images/album-27.png", title: "City Bloom", artist: "LE SSERAFIM", duration: "02:47" },
-  { id: "track-20", image: "/images/album-28.png", cover: "/images/album-28.png", title: "Warm Noise", artist: "Daniel Caesar", duration: "03:44" },
-  { id: "track-21", image: "/images/album-29.png", cover: "/images/album-29.png", title: "Moon Receipt", artist: "SZA", duration: "03:26" },
-  { id: "track-22", image: "/images/album-30.png", cover: "/images/album-30.png", title: "Amber Drive", artist: "DPR IAN", duration: "03:52" },
-  { id: "track-23", image: "/images/album-31.png", cover: "/images/album-31.png", title: "Rain Check", artist: "Keshi", duration: "02:59" },
-  { id: "track-24", image: "/images/album-32.jpg", cover: "/images/album-32.jpg", title: "Quiet Frame", artist: "Laufey", duration: "03:35" },
-  { id: "track-25", image: "/images/moment-01.png", cover: "/images/moment-01.png", title: "Sunday Echo", artist: "Frank Ocean", duration: "03:21" },
-  { id: "track-26", image: "/images/moment-02.png", cover: "/images/moment-02.png", title: "Neon Table", artist: "The 1975", duration: "03:48" },
-  { id: "track-27", image: "/images/moment-03.png", cover: "/images/moment-03.png", title: "Small Weather", artist: "beabadoobee", duration: "02:52" },
-  { id: "track-28", image: "/images/moment-04.png", cover: "/images/moment-04.png", title: "Window Seat", artist: "Raveena", duration: "03:39" },
-  { id: "track-29", image: "/images/moment-06.png", cover: "/images/moment-06.png", title: "Night Soda", artist: "Mitski", duration: "02:46" },
-  { id: "track-30", image: "/images/album-10.png", cover: "/images/album-10.png", title: "Slow Return", artist: "Japanese Breakfast", duration: "03:57" },
-];
+const fullPlayerExtraTracks = getTracksByIds([
+  "anti-hero",
+  "willow",
+  "cruel-summer",
+  "delicate",
+  "360",
+  "watermelon-sugar",
+  "style",
+  "mood",
+  "disco-room",
+  "mamas-boy",
+  "soft-static",
+  "citrus-glow",
+  "you-and-me",
+  "toxic-till-the-end",
+  "wait",
+  "whiplash",
+  "armageddon",
+  "like-jennie",
+  "mantra",
+  "love-lee",
+]);
 
 function GlobalPlayer() {
   const location = useLocation();
@@ -476,6 +480,7 @@ function GlobalPlayer() {
       const target = event.target;
       if (!(target instanceof Element)) return;
       if (target.closest("[data-now-player-control]")) return;
+      if (target.closest("[data-tempy-navigation-control]")) return;
 
       const action = target.closest("button, [role='button']");
       const actionText = action?.textContent?.trim().toLowerCase() || "";
@@ -1018,8 +1023,10 @@ function App() {
         <Route path="/discover/time-set" element={<DiscoverTimeSet />} />
         <Route path="/discover/track-trace" element={<DiscoverTrackTrace />} />
         <Route path="/discover/track-trace/detail" element={<TrackTraceDetail />} />
+        <Route path="/discover/track-trace/detail/:trackId" element={<TrackTraceDetail />} />
         <Route path="/discover/track-trace/album" element={<TrackTraceAlbum />} />
-        <Route path="/artist/taylor-swift" element={<ArtistProfile />} />
+        <Route path="/discover/track-trace/album/:albumId" element={<TrackTraceAlbum />} />
+        <Route path="/artist/:artistId" element={<ArtistProfile />} />
         <Route path="/curator" element={<Curator />} />
         <Route path="/curator/lifestyle" element={<LifestyleCurator />} />
         <Route path="/curator/lifestyle/playlist" element={<LifestylePlaylistDetail />} />

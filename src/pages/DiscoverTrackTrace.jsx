@@ -1,93 +1,34 @@
 import { Link, useNavigate } from "react-router-dom";
+import { trackTraceTracks } from "../data/musicCatalog";
 
 function DiscoverTrackTrace() {
   const navigate = useNavigate();
-  const tracks = [
-    {
-      image: "/images/album-19.png",
-      title: "BIRDS OF A FEATHER",
-      artist: "Billie Eilish",
-      comments: 128,
+  const commentCounts = [128, 84, 56, 72, 91, 64, 77, 118, 69, 83, 95, 61, 74, 102];
+  const tracks = trackTraceTracks.map((track, index) => ({
+    ...track,
+    comments: commentCounts[index],
+  }));
+
+  const getTrackRouteState = (track, index) => ({
+    track: {
+      id: track.id,
+      trackId: track.id,
+      albumId: track.albumId,
+      artistId: track.artistId,
+      title: track.title,
+      artist: track.artist,
+      cover: track.cover,
+      duration: track.duration,
+      number: String(index + 1).padStart(2, "0"),
     },
-    {
-      image: "/images/album-20.png",
-      title: "Confetti Dream",
-      artist: "HONNE",
-      comments: 84,
-    },
-    {
-      image: "/images/album-21.png",
-      title: "Upside Mood",
-      artist: "Ariana Grande",
-      comments: 56,
-    },
-    {
-      image: "/images/album-22.png",
-      title: "Night Walk",
-      artist: "HYUKOH",
-      comments: 72,
-    },
-    {
-      image: "/images/album-23.png",
-      title: "Soft Static",
-      artist: "Yerin Baek",
-      comments: 91,
-    },
-    {
-      image: "/images/album-24.png",
-      title: "First Light",
-      artist: "Crush",
-      comments: 64,
-    },
-    {
-      image: "/images/album-25.png",
-      title: "Lazy Orbit",
-      artist: "AKMU",
-      comments: 77,
-    },
-    {
-      image: "/images/album-26.png",
-      title: "Late Checkout",
-      artist: "JANNABI",
-      comments: 118,
-    },
-    {
-      image: "/images/album-27.png",
-      title: "City Bloom",
-      artist: "LE SSERAFIM",
-      comments: 69,
-    },
-    {
-      image: "/images/album-28.png",
-      title: "Warm Noise",
-      artist: "Daniel Caesar",
-      comments: 83,
-    },
-    {
-      image: "/images/album-29.png",
-      title: "Moon Receipt",
-      artist: "SZA",
-      comments: 95,
-    },
-    {
-      image: "/images/album-30.png",
-      title: "Amber Drive",
-      artist: "DPR IAN",
-      comments: 61,
-    },
-    {
-      image: "/images/album-31.png",
-      title: "Rain Check",
-      artist: "Keshi",
-      comments: 74,
-    },
-    {
-      image: "/images/album-32.jpg",
-      title: "Quiet Frame",
-      artist: "Laufey",
-      comments: 102,
-    },
-  ];
+  });
+
+  const openTrackDetailOnDesktop = (track, index) => {
+    if (!window.matchMedia("(min-width: 1181px)").matches) return;
+    navigate(`/discover/track-trace/detail/${track.id}`, {
+      state: getTrackRouteState(track, index),
+    });
+  };
 
   return (
     <main className="track-trace-detail">
@@ -123,41 +64,50 @@ function DiscoverTrackTrace() {
                 data-tempy-playable
                 data-tempy-title={track.title}
                 data-tempy-artist={track.artist}
-                data-tempy-cover={track.image}
-                key={track.title}
+                data-tempy-cover={track.cover}
+                data-tempy-id={track.id}
+                key={track.id}
               >
-              <div className="track-trace-detail__artwork">
-                <img src={track.image} alt={`${track.title} album cover`} />
-                <div className="track-trace-detail__artwork-meta">
-                  <button type="button" aria-label={`${track.title} 재생`}>
-                    <span aria-hidden="true">▶</span> PLAY
-                  </button>
-                  <span>COMMENTS {track.comments}</span>
+                <div className="track-trace-detail__artwork">
+                  <img src={track.cover} alt={`${track.title} album cover`} />
+                  <div className="track-trace-detail__artwork-meta">
+                    <button type="button" aria-label={`${track.title} 재생`}>
+                      <span aria-hidden="true">▶</span> PLAY
+                    </button>
+                    <span>COMMENTS {track.comments}</span>
+                  </div>
+                  <span className="track-trace-detail__number">0{index + 1}</span>
                 </div>
-                <span className="track-trace-detail__number">0{index + 1}</span>
-              </div>
 
-              <div className="track-trace-detail__card-info">
-                <img src={track.image} alt="" aria-hidden="true" />
-                <div className="track-trace-detail__card-copy">
-                  <p>TRACK TRACE</p>
-                  <h2>{track.title}</h2>
-                  <span>{track.artist}</span>
+                <div className="track-trace-detail__card-info">
+                  <img src={track.cover} alt="" aria-hidden="true" />
+                  <div className="track-trace-detail__card-copy">
+                    <p>TRACK TRACE</p>
+                    <h2>{track.title}</h2>
+                    <span>{track.artist}</span>
+                  </div>
+                  {index === 0 ? (
+                    <Link
+                      className="track-trace-detail__arrow"
+                      to={`/discover/track-trace/detail/${track.id}`}
+                      state={getTrackRouteState(track, index)}
+                      data-tempy-navigation-control
+                      aria-label={`${track.title} 코멘트 보기`}
+                    >
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  ) : (
+                    <button
+                      className="track-trace-detail__arrow"
+                      type="button"
+                      data-tempy-navigation-control
+                      aria-label={`${track.title} 코멘트 보기`}
+                      onClick={() => openTrackDetailOnDesktop(track, index)}
+                    >
+                      <span aria-hidden="true">→</span>
+                    </button>
+                  )}
                 </div>
-                {index === 0 ? (
-                  <Link
-                    className="track-trace-detail__arrow"
-                    to="/discover/track-trace/detail"
-                    aria-label={`${track.title} 코멘트 보기`}
-                  >
-                    →
-                  </Link>
-                ) : (
-                  <button className="track-trace-detail__arrow" type="button" aria-label={`${track.title} 보기`}>
-                    →
-                  </button>
-                )}
-              </div>
               </article>
             ))}
           </div>

@@ -1,68 +1,12 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { timeSetTracks } from "../data/musicCatalog";
 
-const timeSetRecords = [
-  {
-    cover: "/images/album-22.png",
-    title: "The Fate of Ophelia",
-    artist: "Taylor Swift",
-    color: "#2759ed",
-  },
-  {
-    cover: "/images/album-23.png",
-    title: "BIRDS OF A FEATHER",
-    artist: "Billie Eilish",
-    color: "#1f9c75",
-  },
-  {
-    cover: "/images/album-24.png",
-    title: "Confetti Dream",
-    artist: "HONNE",
-    color: "#ff343c",
-  },
-  {
-    cover: "/images/album-25.png",
-    title: "Upside Mood",
-    artist: "Ariana Grande",
-    color: "#f2cb28",
-  },
-  {
-    cover: "/images/album-26.png",
-    title: "Night Walk",
-    artist: "HYUKOH",
-    color: "#07142b",
-  },
-  {
-    cover: "/images/album-27.png",
-    title: "Soft Static",
-    artist: "Yerin Baek",
-    color: "#2759ed",
-  },
-  {
-    cover: "/images/album-28.png",
-    title: "Glass Hour",
-    artist: "wave to earth",
-    color: "#1f9c75",
-  },
-  {
-    cover: "/images/album-29.png",
-    title: "After Curtain",
-    artist: "Silica Gel",
-    color: "#ff343c",
-  },
-  {
-    cover: "/images/album-30.png",
-    title: "Blue Signal",
-    artist: "NewJeans",
-    color: "#f2cb28",
-  },
-  {
-    cover: "/images/album-31.png",
-    title: "Room Tone",
-    artist: "O3ohn",
-    color: "#ff343c",
-  },
-];
+const timeSetColors = ["#2759ed", "#1f9c75", "#ff343c", "#f2cb28", "#07142b"];
+const timeSetRecords = timeSetTracks.map((track, index) => ({
+  ...track,
+  color: timeSetColors[index % timeSetColors.length],
+}));
 
 function DiscoverTimeSet() {
   const navigate = useNavigate();
