@@ -6,6 +6,10 @@
   font-display: swap;
 }
 
+:root {
+  --similar-curator-yellow: #f5ca3c;
+}
+
 /* Desktop service-layout pass: created Playlist detail and My music archive. */
 @media (min-width: 1181px) {
   .app .archive-created-detail.archive-created-detail--playlist {
@@ -7139,7 +7143,7 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .curator-page__record--yellow::before {
-  background: #f5ca3c;
+  background: var(--similar-curator-yellow);
 }
 
 .curator-page__groove {
@@ -16839,6 +16843,10 @@ body::-webkit-scrollbar:horizontal,
   letter-spacing: 0.015em;
 }
 
+.artist-playlist-detail__details {
+  display: contents;
+}
+
 .artist-playlist-detail__author {
   display: flex;
   margin-top: 13px;
@@ -17777,7 +17785,7 @@ body::-webkit-scrollbar:horizontal,
   width: 48px;
   height: 5px;
   border-radius: 0;
-  background: #e7c54f;
+  background: var(--similar-curator-yellow);
   box-shadow: none;
 }
 
@@ -18120,7 +18128,7 @@ body::-webkit-scrollbar:horizontal,
     grid-column: 2;
     overflow: hidden;
     color: #07142b;
-    background: #e7c54f;
+    background: var(--similar-curator-yellow);
   }
 
   .similar-curator__archive-inner {
@@ -18199,7 +18207,7 @@ body::-webkit-scrollbar:horizontal,
     width: 54px;
     height: 5px;
     border-radius: 0;
-    background: #e7c54f;
+    background: var(--similar-curator-yellow);
     box-shadow: none;
   }
 
@@ -19562,7 +19570,12 @@ body::-webkit-scrollbar:horizontal,
   background: #07142b;
 }
 
-.tempy-footer > .tempy-footer__copy {
+.tempy-footer__inner {
+  display: contents;
+}
+
+.tempy-footer > .tempy-footer__copy,
+.tempy-footer__inner > .tempy-footer__copy {
   display: block;
   min-width: 0;
   grid-column: 1;
@@ -19641,7 +19654,8 @@ body::-webkit-scrollbar:horizontal,
   letter-spacing: 0.08em;
 }
 
-.tempy-footer > .tempy-footer__links {
+.tempy-footer > .tempy-footer__links,
+.tempy-footer__inner > .tempy-footer__links {
   grid-column: 2;
   grid-row: 1;
 }
@@ -19654,6 +19668,7 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .tempy-footer > small,
+.tempy-footer__inner > small,
 .archive-page__footer.tempy-footer small,
 .track-detail-lower__footer.tempy-footer small,
 .track-trace-album__footer.tempy-footer small,
@@ -19691,6 +19706,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .tempy-footer > small,
+  .tempy-footer__inner > small,
   .archive-page__footer.tempy-footer small,
   .track-detail-lower__footer.tempy-footer small,
   .track-trace-album__footer.tempy-footer small,
@@ -20914,7 +20930,8 @@ body::-webkit-scrollbar:horizontal,
   .global-player__controls time,
   .tempy-footer__copy p,
   .tempy-footer__links,
-  .tempy-footer > small {
+  .tempy-footer > small,
+  .tempy-footer__inner > small {
     font-size: 13px;
   }
 }
@@ -22341,6 +22358,7 @@ body::-webkit-scrollbar:horizontal,
   .tempy-footer__links,
   .tempy-footer__links a,
   .tempy-footer > small,
+  .tempy-footer__inner > small,
   .archive-page__footer p,
   .archive-page__footer div,
   .archive-page__footer small,
@@ -23710,6 +23728,2228 @@ body::-webkit-scrollbar:horizontal,
     .similar-curator__back,
     .archive-blind-page__back
   ):hover > span:first-child {
+    transform: none;
+  }
+}
+
+/* Lifestyle Curator: final phone-only Playlist Archive composition. */
+@media (max-width: 760px) {
+  .app .lifestyle-curator {
+    padding-bottom: 0;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__archive {
+    display: block;
+    width: 100%;
+    padding: 52px 0 68px;
+    overflow: hidden;
+    color: #fff1cf;
+    background: #f23843;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__archive-inner {
+    display: block;
+    width: 100%;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__archive-head {
+    display: flex;
+    padding: 0 24px;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff1cf;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.11em;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__archive-head span:last-child {
+    color: rgba(255, 241, 207, 0.72);
+    font-size: 11px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__grid {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin-top: 42px;
+    padding: 9px 24px 0;
+    align-items: stretch;
+    gap: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card {
+    --archive-card-padding-inline: 20px;
+    --archive-card-padding-top: 22px;
+    --archive-card-padding-bottom: 24px;
+    width: calc(100vw - 72px);
+    min-width: calc(100vw - 72px);
+    height: 440px;
+    min-height: 440px;
+    flex: 0 0 calc(100vw - 72px);
+    grid-template-columns: minmax(0, 1fr) 62px;
+    overflow: visible;
+    border: 1px solid #07142b;
+    border-radius: 0;
+    color: var(--archive-ink);
+    background: var(--archive-bg);
+    box-shadow: none;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card:hover {
+    z-index: auto;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-main {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy {
+    height: 100%;
+    padding:
+      var(--archive-card-padding-top)
+      var(--archive-card-padding-inline)
+      var(--archive-card-padding-bottom);
+    color: var(--archive-ink);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy > span {
+    display: block;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--archive-line);
+    color: var(--archive-muted);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.11em;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__card-copy .lifestyle-curator__card-title {
+    display: -webkit-box;
+    width: 100%;
+    max-width: none;
+    max-height: 2.7em;
+    margin: 17px 0 11px;
+    overflow: hidden;
+    color: var(--archive-ink);
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+    text-wrap: pretty;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__host {
+    gap: 7px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__host span {
+    width: 21px;
+    height: 21px;
+    border-color: var(--archive-muted);
+    color: var(--archive-ink);
+    font-size: 11px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__host strong {
+    color: var(--archive-muted);
+    font-size: 12px;
+    line-height: 21px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__lp {
+    top: 68%;
+    bottom: auto;
+    left: 50%;
+    width: min(86%, 218px);
+    background: #fff1cf;
+    box-shadow: none;
+    animation: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__lp img {
+    width: 42%;
+    height: auto;
+    aspect-ratio: 1;
+    border-width: 4px;
+    border-color: #fff1cf;
+    object-fit: cover;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__lp-hole {
+    width: 6px;
+    height: 6px;
+    background: #07142b;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail {
+    position: relative;
+    display: block;
+    padding: var(--archive-card-padding-top) 0 var(--archive-card-padding-bottom);
+    color: #fff1cf;
+    background: #07142b;
+    border-left: 1px solid rgba(255, 241, 207, 0.13);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail > span {
+    position: absolute;
+    top: var(--archive-card-padding-top);
+    left: 0;
+    width: 100%;
+    color: rgba(255, 241, 207, 0.84);
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    margin: 0;
+    border-color: currentColor;
+    color: #fff1cf;
+    transform: translate(-50%, -50%);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__play-rail small {
+    position: absolute;
+    right: 50%;
+    bottom: var(--archive-card-padding-bottom);
+    left: auto;
+    color: rgba(255, 241, 207, 0.9);
+    font-size: 11px;
+    transform: translateX(50%);
+    writing-mode: vertical-rl;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip {
+    top: -9px;
+    height: 10px;
+    background: #07142b;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip--left {
+    left: 20px;
+    display: block;
+    width: 42px;
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__clip--right,
+  .app .lifestyle-curator .lifestyle-curator__ribbon,
+  .app .lifestyle-curator .lifestyle-curator__explore {
+    display: none;
+  }
+}
+
+.lifestyle-playlist-detail__pagination {
+  display: none;
+}
+
+/* Lifestyle Playlist Detail: compact, flow-based phone composition. */
+@media (max-width: 760px) {
+  .app .lifestyle-playlist-detail {
+    --lifestyle-mobile-gutter: 24px;
+    --lifestyle-mobile-track-size: min(70vw, 300px);
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin-top: 72px;
+    padding: 70px var(--lifestyle-mobile-gutter) 56px;
+    overflow: visible;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__back {
+    position: absolute;
+    top: 16px;
+    left: var(--lifestyle-mobile-gutter);
+    min-height: 32px;
+    margin: 0;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__back > span:last-child {
+    font-size: 11px;
+    letter-spacing: 0.075em;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__panel {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 28px;
+    justify-content: flex-start;
+    flex-direction: column;
+    border-radius: 2px;
+    box-shadow: 6px 6px 0 #07142b;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__eyebrow {
+    margin: 0 0 14px;
+    color: var(--playlist-panel-muted);
+    font-size: 10px;
+    line-height: 1.35;
+    letter-spacing: 0.095em;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__panel h1 {
+    display: -webkit-box;
+    width: 100%;
+    max-width: none;
+    max-height: 2.64em;
+    margin: 0;
+    overflow: hidden;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 650;
+    line-height: 1.32;
+    letter-spacing: -0.035em;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__meta {
+    margin: 14px 0 12px;
+    color: var(--playlist-panel-muted);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.55;
+    letter-spacing: 0;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__host {
+    min-height: 26px;
+    gap: 8px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__host span {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__host strong {
+    color: var(--playlist-panel-muted);
+    font-size: 12px;
+    line-height: 26px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__now-playing {
+    display: none;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__controller {
+    margin-top: 24px;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--playlist-panel-line);
+    border-bottom: 0;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__progress {
+    width: 100%;
+    height: 2px;
+    background: var(--playlist-panel-line);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__small-controls {
+    margin-top: 14px;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__small-controls button {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    border-color: var(--playlist-panel-ink);
+    color: var(--playlist-panel-ink);
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions {
+    display: grid;
+    min-height: 0;
+    margin-top: 16px;
+    grid-template-columns: minmax(0, 1fr) 48px 48px;
+    gap: 8px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button {
+    width: auto;
+    min-width: 0;
+    height: 48px;
+    min-height: 48px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__viewport {
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100vw;
+    height: auto;
+    margin-top: 48px;
+    margin-left: calc(var(--lifestyle-mobile-gutter) * -1);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: calc((100vw - var(--lifestyle-mobile-track-size)) / 2);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__track {
+    display: flex;
+    width: max-content;
+    height: auto;
+    margin: 0;
+    padding: 0 calc((100vw - var(--lifestyle-mobile-track-size)) / 2) 8px;
+    align-items: flex-start;
+    gap: 20px;
+    transform: none !important;
+    transition: none;
+    will-change: auto;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__item,
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__item:nth-child(even) {
+    width: var(--lifestyle-mobile-track-size);
+    min-width: var(--lifestyle-mobile-track-size);
+    margin-top: 0;
+    padding: 0;
+    flex: 0 0 var(--lifestyle-mobile-track-size);
+    text-align: center;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__number {
+    display: block;
+    margin: 0 0 12px;
+    color: #697180;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__number::before,
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__number::after {
+    content: none;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__lp {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    animation: none;
+    box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.34);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__lp img {
+    top: 50%;
+    left: 50%;
+    width: 39%;
+    transform: translate(-50%, -50%);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__hole {
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    transform: translate(-50%, -50%);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__item h2 {
+    margin: 18px 0 0;
+    overflow: hidden;
+    color: #07142b;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 0.9;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__item--active h2 {
+    color: #2759ed;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__item p {
+    margin: 7px 0 0;
+    color: #656d7a;
+    font-size: 12px;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__pagination {
+    display: flex;
+    width: fit-content;
+    min-height: 18px;
+    margin: 18px auto 0;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__pagination span {
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(7, 20, 43, 0.22);
+    transition: width 180ms ease, border-radius 180ms ease, background-color 180ms ease;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__pagination span.is-active {
+    width: 24px;
+    background: #2759ed;
+    border-radius: 999px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-meta {
+    position: static;
+    display: grid;
+    width: 100%;
+    min-height: 0;
+    margin: 56px 0 0;
+    padding: 20px 0 0;
+    gap: 28px;
+    border-top: 1px solid rgba(7, 20, 43, 0.24);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-meta::before {
+    content: none;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-copy {
+    display: grid;
+    width: 100%;
+    gap: 12px;
+    transform: none;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-copy > span {
+    color: #2759ed;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.1em;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-meta blockquote {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    color: #4f5969;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.65;
+    letter-spacing: -0.02em;
+    white-space: normal;
+    word-break: keep-all;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__stats {
+    display: grid;
+    width: 100%;
+    margin: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__stat {
+    display: flex;
+    width: auto;
+    min-width: 0;
+    height: 84px;
+    min-height: 84px;
+    padding: 10px 6px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid rgba(7, 20, 43, 0.28);
+    border-radius: 10px;
+    gap: 4px;
+    background: rgba(243, 244, 240, 0.72);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__stat > span {
+    grid-row: auto;
+    color: #2759ed;
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__stat strong {
+    color: #07142b;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__stat small {
+    color: #697180;
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.055em;
+    white-space: nowrap;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__drag-hint {
+    display: none;
+  }
+}
+
+.lifestyle-playlist-detail__sequence {
+  display: contents;
+}
+
+/* Playlist Detail: information card and LPs share one phone-only sequence. */
+@media (max-width: 760px) {
+  .app .lifestyle-playlist-detail {
+    padding-top: 88px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__sequence {
+    position: relative;
+    display: flex;
+    width: 100vw;
+    margin-left: calc(var(--lifestyle-mobile-gutter) * -1);
+    padding: 0 var(--lifestyle-mobile-gutter) 12px;
+    align-items: flex-start;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: var(--lifestyle-mobile-gutter);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__sequence::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__panel {
+    width: calc(100vw - 72px);
+    min-width: calc(100vw - 72px);
+    max-width: none;
+    flex: 0 0 calc(100vw - 72px);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__viewport,
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__track {
+    display: contents;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__viewport {
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__track {
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    transform: none !important;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__item,
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__item:nth-child(even) {
+    scroll-snap-align: center;
+  }
+}
+
+/* Shared mobile detail header rhythm and Playlist Detail interaction states. */
+.lifestyle-playlist-detail__heart-fill {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .app :is(
+    .time-set-detail,
+    .track-trace-detail,
+    .track-comment-detail,
+    .track-trace-album,
+    .artist-profile,
+    .lifestyle-curator,
+    .lifestyle-playlist-detail,
+    .artist-curator,
+    .artist-playlist-detail,
+    .similar-curator,
+    .archive-blind-page
+  ) {
+    --mobile-detail-gutter: 24px;
+    --mobile-detail-back-top: 28px;
+    --mobile-detail-back-gap: 32px;
+    --mobile-detail-back-size: 40px;
+  }
+
+  .app .detail-back-link {
+    min-height: var(--mobile-detail-back-size);
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.09em;
+  }
+
+  .app .detail-back-link > span:first-child {
+    width: var(--mobile-detail-back-size);
+    height: var(--mobile-detail-back-size);
+    flex: 0 0 var(--mobile-detail-back-size);
+    font-size: 16px;
+  }
+
+  .app :is(.time-set-detail__intro, .track-trace-detail__intro) {
+    padding-top: var(--mobile-detail-back-top);
+    padding-right: var(--mobile-detail-gutter);
+    padding-left: var(--mobile-detail-gutter);
+  }
+
+  .app :is(.time-set-detail__copy, .track-trace-detail__copy) {
+    margin-top: var(--mobile-detail-back-gap);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__intro {
+    padding-top: var(--mobile-detail-back-top);
+    padding-right: var(--mobile-detail-gutter);
+    padding-left: var(--mobile-detail-gutter);
+  }
+
+  .app .lifestyle-curator .lifestyle-curator__intro-copy {
+    margin-top: var(--mobile-detail-back-gap);
+  }
+}
+
+@media (max-width: 760px) {
+  .app .lifestyle-playlist-detail {
+    padding-top: calc(
+      var(--mobile-detail-back-top)
+      + var(--mobile-detail-back-size)
+      + var(--mobile-detail-back-gap)
+    );
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__back {
+    top: var(--mobile-detail-back-top);
+    left: var(--mobile-detail-gutter);
+    min-height: var(--mobile-detail-back-size);
+    gap: 12px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__back > span:last-child {
+    font-size: 12px;
+    letter-spacing: 0.09em;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__progress span {
+    width: var(--mobile-track-progress);
+    transition: width 240ms ease;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__small-controls button {
+    transition: color 220ms ease, background-color 220ms ease, transform 180ms ease;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__small-controls button:active {
+    color: #fff1cf;
+    background: #07142b;
+    transform: scale(0.96);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:not(:first-child),
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:not(:first-child):hover,
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:not(:first-child):active,
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:not(:first-child).is-active {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    padding: 0;
+    border: 1px solid #07142b;
+    border-radius: 50%;
+    color: #fff1cf;
+    background: #07142b;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:not(:first-child) {
+    transition: color 240ms ease, background-color 240ms ease, border-color 240ms ease, transform 180ms ease;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:not(:first-child):active {
+    transform: scale(0.96);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:nth-child(2).is-active {
+    color: #ff454b;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:nth-child(3).is-active {
+    color: #ff454b;
+    transform: scale(1.04);
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:nth-child(3).is-active .lifestyle-playlist-detail__heart-outline {
+    display: none;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:nth-child(3).is-active .lifestyle-playlist-detail__heart-fill {
+    display: inline;
+  }
+
+  .app .lifestyle-playlist-detail :is(
+    .lifestyle-playlist-detail__small-controls button,
+    .lifestyle-playlist-detail__actions button
+  ):focus-visible {
+    outline: 2px solid #fff1cf;
+    outline-offset: 3px;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-meta {
+    margin-top: 28px;
+    padding-top: 18px;
+  }
+}
+
+.artist-playlist-detail__sequence {
+  display: contents;
+}
+
+.artist-playlist-detail__heart-fill {
+  display: none;
+}
+
+/* Artist Curator pages: phone-only archive and playlist sequence. */
+@media (max-width: 760px) {
+  .app .artist-curator {
+    padding-bottom: 0;
+  }
+
+  .app .artist-curator .artist-curator__back {
+    position: absolute;
+    top: var(--mobile-detail-back-top);
+    left: var(--mobile-detail-gutter);
+    z-index: 5;
+    margin: 0;
+  }
+
+  .app .artist-curator .artist-curator__intro {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    min-height: 0;
+    padding:
+      calc(var(--mobile-detail-back-top) + var(--mobile-detail-back-size) + var(--mobile-detail-back-gap))
+      var(--mobile-detail-gutter)
+      44px;
+    border-bottom: 0;
+  }
+
+  .app .artist-curator .artist-curator__eyebrow {
+    margin-bottom: 14px;
+    color: #2759ed;
+    font-size: 13px;
+  }
+
+  .app .artist-curator .artist-curator__intro h1 {
+    margin: 0;
+    font-size: clamp(58px, 17vw, 70px);
+    line-height: 0.82;
+  }
+
+  .app .artist-curator .artist-curator__intro > p:not(.artist-curator__eyebrow) {
+    max-width: none;
+    margin: 18px 0 0;
+    color: #555e6e;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: -0.035em;
+    word-break: keep-all;
+  }
+
+  .app .artist-curator .artist-curator__archive {
+    display: block;
+    width: 100%;
+    padding: 52px 0 68px;
+    overflow: hidden;
+    color: #fff1cf;
+    background: #2759ed;
+  }
+
+  .app .artist-curator .artist-curator__archive-inner {
+    display: block;
+    width: 100%;
+  }
+
+  .app .artist-curator .artist-curator__archive-head {
+    display: flex;
+    padding: 0 var(--mobile-detail-gutter);
+    align-items: center;
+    justify-content: space-between;
+    color: #fff1cf;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.11em;
+  }
+
+  .app .artist-curator .artist-curator__archive-head span:last-child {
+    color: rgba(255, 241, 207, 0.74);
+    font-size: 11px;
+  }
+
+  .app .artist-curator .artist-curator__viewport {
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 42px;
+    padding: 9px var(--mobile-detail-gutter) 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: var(--mobile-detail-gutter);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .artist-curator .artist-curator__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .artist-curator .artist-curator__track {
+    display: flex;
+    width: max-content;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    align-items: stretch;
+    gap: 14px;
+    transform: none !important;
+    transition: none;
+  }
+
+  .app .artist-curator .artist-curator__card {
+    --artist-card-bg: #07142b;
+    --artist-card-ink: #fff1cf;
+    --artist-card-muted: rgba(255, 241, 207, 0.78);
+    --artist-card-line: rgba(255, 241, 207, 0.32);
+    display: grid;
+    width: calc(100vw - 80px);
+    min-width: calc(100vw - 80px);
+    height: 500px;
+    min-height: 500px;
+    flex: 0 0 calc(100vw - 80px);
+    grid-template-rows: 240px 260px;
+    overflow: hidden;
+    border: 1px solid var(--artist-card-line);
+    border-radius: 0;
+    color: var(--artist-card-ink);
+    background: var(--artist-card-bg);
+    box-shadow: none;
+    opacity: 1;
+    translate: none;
+    transform: none;
+    animation: none;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .app .artist-curator .artist-curator__card:nth-child(4n + 2) {
+    --artist-card-bg: #eee5d3;
+    --artist-card-ink: #07142b;
+    --artist-card-muted: rgba(7, 20, 43, 0.7);
+    --artist-card-line: rgba(7, 20, 43, 0.25);
+  }
+
+  .app .artist-curator .artist-curator__card:nth-child(4n + 3) {
+    --artist-card-bg: #a72e36;
+    --artist-card-ink: #fff1cf;
+    --artist-card-muted: rgba(255, 241, 207, 0.8);
+    --artist-card-line: rgba(255, 241, 207, 0.34);
+  }
+
+  .app .artist-curator .artist-curator__card:nth-child(4n) {
+    --artist-card-bg: #858a9c;
+    --artist-card-ink: #07142b;
+    --artist-card-muted: rgba(7, 20, 43, 0.72);
+    --artist-card-line: rgba(7, 20, 43, 0.26);
+  }
+
+  .app .artist-curator .artist-curator__card-copy {
+    display: flex;
+    height: 240px;
+    min-height: 0;
+    padding: 24px;
+    grid-row: 1;
+    color: var(--artist-card-ink);
+  }
+
+  .app .artist-curator .artist-curator__card h2 {
+    display: -webkit-box;
+    max-width: 100%;
+    max-height: 1.84em;
+    margin: auto 0 8px;
+    overflow: hidden;
+    color: var(--artist-card-ink);
+    font-size: 36px;
+    line-height: 0.92;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .artist-curator .artist-curator__card-number,
+  .app .artist-curator .artist-curator__card-copy > p,
+  .app .artist-curator .artist-curator__card-meta,
+  .app .artist-curator .artist-curator__author strong {
+    color: var(--artist-card-muted);
+    font-size: 11px;
+  }
+
+  .app .artist-curator .artist-curator__card-meta {
+    border-top-color: var(--artist-card-line);
+  }
+
+  .app .artist-curator .artist-curator__author > span {
+    border-color: var(--artist-card-line);
+    color: var(--artist-card-ink);
+  }
+
+  .app .artist-curator .artist-curator__image {
+    width: 100%;
+    height: 260px;
+    grid-row: 2;
+    aspect-ratio: auto;
+  }
+
+  .app .artist-curator .artist-curator__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  .app .artist-curator .artist-curator__explore {
+    display: none;
+  }
+
+  .app .artist-playlist-detail {
+    --artist-mobile-gutter: 24px;
+    --artist-mobile-track-size: min(calc(100vw - 80px), 310px);
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin-top: 72px;
+    padding:
+      calc(var(--mobile-detail-back-top) + var(--mobile-detail-back-size) + var(--mobile-detail-back-gap))
+      var(--artist-mobile-gutter)
+      56px;
+    overflow: visible;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__back {
+    position: absolute;
+    top: var(--mobile-detail-back-top);
+    left: var(--artist-mobile-gutter);
+    min-height: var(--mobile-detail-back-size);
+    margin: 0;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__page-meta {
+    position: static;
+    display: flex;
+    width: 100%;
+    margin: 0 0 24px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    color: rgba(7, 20, 43, 0.62);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.1em;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__page-meta span:last-child {
+    flex: 0 0 auto;
+    color: #a72e36;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__sequence {
+    position: relative;
+    display: flex;
+    width: 100vw;
+    margin-left: calc(var(--artist-mobile-gutter) * -1);
+    padding: 0 var(--artist-mobile-gutter) 10px;
+    align-items: center;
+    gap: 24px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: var(--artist-mobile-gutter);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__sequence::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__panel {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: calc(100vw - 64px);
+    min-width: calc(100vw - 64px);
+    max-width: none;
+    height: 600px;
+    min-height: 600px;
+    margin: 0;
+    flex: 0 0 calc(100vw - 64px);
+    border: 1px solid rgba(7, 20, 43, 0.18);
+    color: #fff1cf;
+    background: #07142b;
+    box-shadow: none;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__panel-copy {
+    min-height: 0;
+    padding: 24px;
+    flex: 0 0 350px;
+    background:
+      linear-gradient(145deg, rgba(20, 38, 71, 0.36), transparent 62%),
+      #07142b;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__panel-copy > p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__panel-copy h1 {
+    display: -webkit-box;
+    max-width: 100%;
+    max-height: 1.84em;
+    margin: 14px 0 12px;
+    overflow: hidden;
+    font-size: 38px;
+    line-height: 0.92;
+    letter-spacing: -0.015em;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__meta {
+    display: grid;
+    padding-top: 10px;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__author {
+    margin-top: 12px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__author span {
+    width: 29px;
+    height: 29px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__author strong {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now {
+    margin-top: 16px;
+    padding-top: 14px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now-head {
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now > strong {
+    margin-top: 10px;
+    overflow: hidden;
+    font-size: 32px;
+    line-height: 0.86;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now > small {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__progress {
+    margin-top: 10px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__progress span {
+    width: var(--artist-mobile-progress) !important;
+    transition: width 240ms ease;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__portrait {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    min-height: 0;
+    flex: 0 0 250px;
+    aspect-ratio: auto;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__portrait img {
+    object-position: center 30%;
+    filter: saturate(1.03) contrast(1.01);
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__portrait::after {
+    background:
+      linear-gradient(to bottom, rgba(7, 20, 43, 0.1), transparent 44%, rgba(68, 1, 10, 0.34)),
+      linear-gradient(115deg, rgba(247, 42, 51, 0.15), rgba(87, 0, 11, 0.04));
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions {
+    right: 20px;
+    bottom: 18px;
+    left: 20px;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr) 48px 48px;
+    gap: 8px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button {
+    width: auto;
+    min-width: 0;
+    height: 48px;
+    min-height: 48px;
+    padding: 0 12px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:not(:first-child),
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:not(:first-child):hover,
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:not(:first-child):active,
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:not(:first-child).is-active {
+    width: 48px;
+    min-width: 48px;
+    padding: 0;
+    border: 1px solid #07142b;
+    border-radius: 50%;
+    color: #fff1cf;
+    background: #07142b;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(2).is-active,
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(3).is-active {
+    color: #ff454b;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(3).is-active .artist-playlist-detail__heart-outline {
+    display: none;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(3).is-active .artist-playlist-detail__heart-fill {
+    display: inline;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__viewport,
+  .app .artist-playlist-detail .artist-playlist-detail__track {
+    display: contents;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__track {
+    transform: none !important;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__item {
+    width: var(--artist-mobile-track-size);
+    min-width: var(--artist-mobile-track-size);
+    flex: 0 0 var(--artist-mobile-track-size);
+    opacity: 1;
+    translate: none;
+    transform: none;
+    animation: none;
+    text-align: center;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__number {
+    margin: 0 0 12px;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__lp {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    animation: none;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__item h2 {
+    margin: 18px 0 0;
+    overflow: hidden;
+    font-size: 32px;
+    line-height: 0.9;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__item p {
+    margin-top: 7px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__note {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin: 30px 0 0;
+    padding: 18px 0 0;
+    border-top: 1px solid rgba(7, 20, 43, 0.28);
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__note-head {
+    display: flex;
+    color: #a72e36;
+    font-size: 10px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__note-head span:last-child {
+    display: none;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__note p {
+    max-width: none;
+    margin: 12px 0 0;
+    color: #4f5969;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.65;
+    word-break: keep-all;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:focus-visible {
+    outline: 2px solid #fff1cf;
+    outline-offset: 3px;
+  }
+}
+
+/* Playlist Detail notes: shared phone-only typography and spacing. */
+@media (max-width: 760px) {
+  .app :is(
+    .artist-playlist-detail .artist-playlist-detail__note,
+    .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-meta
+  ) {
+    margin-top: 32px;
+    padding-top: 20px;
+  }
+
+  .app :is(
+    .artist-playlist-detail .artist-playlist-detail__note-head > span:first-child,
+    .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-copy > span
+  ) {
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.09em;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-copy {
+    gap: 14px;
+  }
+
+  .app :is(
+    .artist-playlist-detail .artist-playlist-detail__note p,
+    .lifestyle-playlist-detail .lifestyle-playlist-detail__archive-meta blockquote
+  ) {
+    max-width: none;
+    color: #394454;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.7;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__note p {
+    margin-top: 14px;
+  }
+}
+
+/* Similar Curator: final phone-only archive composition. */
+@media (max-width: 760px) {
+  .app .similar-curator {
+    --similar-mobile-gutter: 24px;
+    --similar-mobile-card-width: min(calc(100vw - 72px), 380px);
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin-top: 72px;
+    padding: 0;
+    overflow: visible;
+    color: #07142b;
+    background: #f3f4f0;
+  }
+
+  .app .similar-curator .similar-curator__back {
+    position: absolute;
+    top: var(--mobile-detail-back-top);
+    left: var(--similar-mobile-gutter);
+    z-index: 5;
+    min-height: var(--mobile-detail-back-size);
+    margin: 0;
+  }
+
+  .app .similar-curator .similar-curator__intro {
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding:
+      calc(var(--mobile-detail-back-top) + var(--mobile-detail-back-size) + var(--mobile-detail-back-gap))
+      var(--similar-mobile-gutter)
+      44px;
+    border-bottom: 1px solid rgba(7, 20, 43, 0.22);
+    transform: none;
+  }
+
+  .app .similar-curator .similar-curator__eyebrow {
+    margin: 0 0 14px;
+    color: #2759ed;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.12em;
+  }
+
+  .app .similar-curator .similar-curator__intro h1 {
+    max-width: none;
+    margin: 0;
+    font-size: clamp(58px, 17vw, 70px);
+    line-height: 0.82;
+    letter-spacing: 0;
+    white-space: normal;
+  }
+
+  .app .similar-curator .similar-curator__intro > p:not(.similar-curator__eyebrow) {
+    max-width: none;
+    margin: 18px 0 0;
+    color: #555e6e;
+    font-size: 16px;
+    line-height: 1.55;
+    letter-spacing: -0.025em;
+    word-break: keep-all;
+  }
+
+  .app .similar-curator .similar-curator__watermark {
+    display: none;
+  }
+
+  .app .similar-curator .similar-curator__archive {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 52px 0 68px;
+    overflow: hidden;
+    color: #07142b;
+    background: var(--similar-curator-yellow);
+  }
+
+  .app .similar-curator .similar-curator__archive-inner {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .app .similar-curator .similar-curator__archive-head {
+    display: flex;
+    padding: 0 var(--similar-mobile-gutter);
+    align-items: center;
+    justify-content: space-between;
+    color: #07142b;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.11em;
+  }
+
+  .app .similar-curator .similar-curator__archive-head span:last-child {
+    color: rgba(7, 20, 43, 0.64);
+    font-size: 11px;
+  }
+
+  .app .similar-curator .similar-curator__viewport {
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 38px;
+    padding: 8px 0 18px var(--similar-mobile-gutter);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: var(--similar-mobile-gutter);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .similar-curator .similar-curator__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .similar-curator .similar-curator__track {
+    display: flex;
+    width: max-content;
+    height: auto;
+    margin: 0;
+    padding: 0 48px 0 0;
+    align-items: stretch;
+    gap: 16px;
+    transform: none !important;
+    transition: none;
+    will-change: auto;
+  }
+
+  .app .similar-curator .similar-curator__card {
+    --similar-card-inset: 24px;
+    display: grid;
+    width: var(--similar-mobile-card-width);
+    min-width: var(--similar-mobile-card-width);
+    height: 620px;
+    min-height: 620px;
+    flex: 0 0 var(--similar-mobile-card-width);
+    grid-template-rows: 280px 340px;
+    overflow: hidden;
+    border: 1px solid rgba(7, 20, 43, 0.32);
+    border-radius: 2px;
+    color: #fff1cf;
+    background: #07142b;
+    box-shadow: 0 10px 24px rgba(7, 20, 43, 0.12);
+    opacity: 1;
+    translate: none;
+    transform: none;
+    animation: none;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .app .similar-curator .similar-curator__tab {
+    left: 24px;
+    width: 52px;
+    height: 5px;
+    background: var(--similar-curator-yellow);
+  }
+
+  .app .similar-curator .similar-curator__card-top {
+    display: flex;
+    min-height: 0;
+    padding: 26px var(--similar-card-inset) 24px;
+    flex-direction: column;
+    color: #fff1cf;
+    background: #07142b;
+  }
+
+  .app .similar-curator .similar-curator__card-index {
+    flex: 0 0 auto;
+    color: rgba(255, 241, 207, 0.58);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.11em;
+  }
+
+  .app .similar-curator .similar-curator__number {
+    color: rgba(255, 241, 207, 0.86);
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 0.13em;
+  }
+
+  .app .similar-curator .similar-curator__card-top h2 {
+    display: -webkit-box;
+    align-self: auto;
+    max-width: 100%;
+    max-height: 2.76em;
+    margin: 26px 0 0;
+    overflow: hidden;
+    color: #fff1cf;
+    font-family: "GalgoVF", "Pretendard", sans-serif;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.015em;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .app .similar-curator .similar-curator__byline {
+    margin: 18px 0 0;
+    color: rgba(255, 241, 207, 0.78);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.09em;
+  }
+
+  .app .similar-curator .similar-curator__meta {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top-color: rgba(255, 241, 207, 0.3);
+    color: rgba(255, 241, 207, 0.74);
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .app .similar-curator .similar-curator__card-bottom {
+    display: grid;
+    min-height: 0;
+    padding: 22px 20px 22px;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 18px;
+    color: #07142b;
+    background: #f6f1e4;
+  }
+
+  .app .similar-curator .similar-curator__tracks {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding-right: 7px;
+    align-content: start;
+    gap: 12px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    touch-action: pan-x pan-y;
+    scrollbar-width: thin;
+  }
+
+  .app .similar-curator .similar-curator__song {
+    min-height: 52px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 13px;
+  }
+
+  .app .similar-curator .similar-curator__song strong {
+    font-size: 14px;
+    line-height: 1.25;
+  }
+
+  .app .similar-curator .similar-curator__song span {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .app .similar-curator .similar-curator__actions {
+    grid-template-columns: minmax(0, 1fr) 48px 48px;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .app .similar-curator .similar-curator__actions button {
+    width: auto;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    padding: 0 12px;
+    border-color: rgba(7, 20, 43, 0.24);
+    color: #07142b;
+    background: #fffaf0;
+    font-size: 13px;
+  }
+
+  .app .similar-curator .similar-curator__actions button:active {
+    border-color: #07142b;
+    color: #fff1cf;
+    background: #07142b;
+    transform: scale(0.97);
+  }
+
+  .app .similar-curator .similar-curator__actions button:focus-visible {
+    outline: 2px solid #2759ed;
+    outline-offset: 2px;
+  }
+
+  .app .similar-curator .similar-curator__explore {
+    display: none;
+  }
+}
+
+/* Artist cards: shared mobile type scale and content-led spacing. */
+@media (max-width: 760px) {
+  .app :is(.artist-curator, .artist-playlist-detail) {
+    --artist-mobile-playlist-title-size: clamp(42px, 11.5vw, 46px);
+    --artist-mobile-playlist-title-line: 0.9;
+    --artist-mobile-playlist-title-spacing: -0.002em;
+    --artist-mobile-label-size: 11px;
+    --artist-mobile-meta-size: 13px;
+    --artist-mobile-supporting-size: 12px;
+  }
+
+  .app .artist-curator .artist-curator__card {
+    height: auto;
+    min-height: 510px;
+    grid-template-rows: minmax(250px, auto) 260px;
+  }
+
+  .app .artist-curator .artist-curator__card-copy {
+    height: auto;
+    min-height: 250px;
+  }
+
+  .app .artist-curator .artist-curator__card h2 {
+    max-height: 2.7em;
+    margin-bottom: 10px;
+    font-size: var(--artist-mobile-playlist-title-size);
+    line-height: var(--artist-mobile-playlist-title-line);
+    letter-spacing: var(--artist-mobile-playlist-title-spacing);
+    overflow-wrap: normal;
+    word-break: keep-all;
+    -webkit-line-clamp: 3;
+  }
+
+  .app .artist-curator :is(
+    .artist-curator__card-number,
+    .artist-curator__card-copy > p
+  ) {
+    font-size: var(--artist-mobile-label-size);
+  }
+
+  .app .artist-curator .artist-curator__card-meta {
+    font-size: var(--artist-mobile-meta-size);
+    line-height: 1.3;
+  }
+
+  .app .artist-curator .artist-curator__author strong {
+    font-size: var(--artist-mobile-supporting-size);
+    line-height: 1.25;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__page-meta {
+    font-size: var(--artist-mobile-label-size);
+    font-weight: 700;
+    letter-spacing: 0.11em;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__page-meta span:last-child {
+    font-size: 12px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__panel {
+    height: auto;
+    min-height: 625px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__panel-copy {
+    display: flex;
+    min-height: 375px;
+    padding: 26px 24px 24px;
+    flex: 0 0 auto;
+    flex-direction: column;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__panel-copy > p {
+    font-size: var(--artist-mobile-label-size);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.11em;
+    opacity: 0.76;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__panel-copy h1 {
+    max-height: 1.8em;
+    margin: 16px 0 0;
+    font-size: var(--artist-mobile-playlist-title-size);
+    line-height: var(--artist-mobile-playlist-title-line);
+    letter-spacing: var(--artist-mobile-playlist-title-spacing);
+    text-wrap: balance;
+    word-break: keep-all;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__details {
+    display: block;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 241, 207, 0.3);
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__meta {
+    display: flex;
+    padding: 0;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 0;
+    gap: 10px;
+    font-size: var(--artist-mobile-meta-size);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__meta span:first-child {
+    min-width: 0;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__meta span:last-child {
+    flex: 0 0 auto;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__author {
+    margin-top: 16px;
+    gap: 10px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__author strong {
+    font-size: var(--artist-mobile-meta-size);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top-color: rgba(255, 241, 207, 0.3);
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now-head {
+    font-size: var(--artist-mobile-label-size);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.11em;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now-head span:last-child {
+    font-size: var(--artist-mobile-meta-size);
+    letter-spacing: 0.02em;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now > strong {
+    margin-top: 12px;
+    font-size: clamp(34px, 9.2vw, 38px);
+    line-height: 0.86;
+    letter-spacing: 0;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__now > small {
+    margin-top: 7px;
+    color: rgba(255, 241, 207, 0.78);
+    font-size: var(--artist-mobile-supporting-size);
+    line-height: 1.3;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__progress {
+    margin-top: 14px;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__item p {
+    color: #59636f;
+    font-size: var(--artist-mobile-supporting-size);
+    line-height: 1.35;
+  }
+}
+
+/* Similar cards keep Korean display type while sharing the mobile spacing scale. */
+@media (max-width: 760px) {
+  .app .similar-curator .similar-curator__card {
+    height: auto;
+    min-height: 620px;
+    grid-template-rows: minmax(280px, auto) minmax(340px, 1fr);
+  }
+
+  .app .similar-curator .similar-curator__card-top h2 {
+    max-height: 3.75em;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: clamp(29px, 7.8vw, 32px);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* Similar cards: fixed mobile shell with an independently scrolling track list. */
+@media (max-width: 760px) {
+  :root {
+    --mobile-korean-playlist-title-size: 24px;
+    --mobile-korean-playlist-title-weight: 650;
+    --mobile-korean-playlist-title-line: 1.32;
+    --mobile-korean-playlist-title-spacing: -0.035em;
+  }
+
+  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__panel h1 {
+    font-size: var(--mobile-korean-playlist-title-size);
+    font-weight: var(--mobile-korean-playlist-title-weight);
+    line-height: var(--mobile-korean-playlist-title-line);
+    letter-spacing: var(--mobile-korean-playlist-title-spacing);
+  }
+
+  .app .similar-curator .similar-curator__card {
+    display: flex;
+    height: 560px;
+    min-height: 560px;
+    max-height: 560px;
+    flex-direction: column;
+  }
+
+  .app .similar-curator .similar-curator__card-top {
+    width: 100%;
+    height: 245px;
+    min-height: 245px;
+    padding: 22px var(--similar-card-inset) 20px;
+    flex: 0 0 245px;
+  }
+
+  .app .similar-curator .similar-curator__card-top h2 {
+    max-height: 3.96em;
+    margin-top: 18px;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: var(--mobile-korean-playlist-title-size);
+    font-weight: var(--mobile-korean-playlist-title-weight);
+    line-height: var(--mobile-korean-playlist-title-line);
+    letter-spacing: var(--mobile-korean-playlist-title-spacing);
+    -webkit-line-clamp: 3;
+  }
+
+  .app .similar-curator .similar-curator__byline {
+    margin-top: 12px;
+  }
+
+  .app .similar-curator .similar-curator__meta {
+    padding-top: 12px;
+  }
+
+  .app .similar-curator .similar-curator__card-bottom {
+    display: flex;
+    width: 100%;
+    height: 315px;
+    min-height: 0;
+    padding: 14px 20px;
+    flex: 0 0 315px;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .app .similar-curator .similar-curator__tracks {
+    width: 100%;
+    height: 227px;
+    min-height: 0;
+    max-height: 227px;
+    padding-right: 7px;
+    flex: 0 0 227px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scroll-behavior: smooth;
+    scrollbar-color: rgba(7, 20, 43, 0.28) transparent;
+    scrollbar-width: thin;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .similar-curator .similar-curator__tracks::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .app .similar-curator .similar-curator__tracks::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(7, 20, 43, 0.28);
+  }
+
+  .app .similar-curator .similar-curator__tracks::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .app .similar-curator .similar-curator__actions {
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    flex: 0 0 48px;
+  }
+
+  .app .similar-curator .similar-curator__actions button {
+    transition:
+      color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .similar-curator .similar-curator__play.is-playing {
+    border-color: #07142b;
+    color: #fff1cf;
+    background: #07142b;
+  }
+
+  .app .similar-curator .similar-curator__icon-action svg {
+    transition:
+      fill 220ms ease,
+      stroke 220ms ease,
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .similar-curator .similar-curator__icon-action.is-shuffled {
+    color: #ff343c;
+    background: #fffaf0;
+  }
+
+  .app .similar-curator .similar-curator__icon-action.is-shuffled svg {
+    transform: rotate(10deg);
+  }
+
+  .app .similar-curator .similar-curator__icon-action.is-liked {
+    color: #ff343c;
+    background: #fffaf0;
+  }
+
+  .app .similar-curator .similar-curator__icon-action.is-liked svg {
+    fill: currentColor;
+    stroke: currentColor;
+    transform: scale(1.06);
+  }
+}
+
+/* Shared Tempy footer: one compact phone composition for every current usage. */
+@media (max-width: 760px) {
+  .app :is(
+    .tempy-footer,
+    .footer.tempy-footer,
+    .archive-page__footer.tempy-footer,
+    .track-detail-lower__footer.tempy-footer,
+    .track-trace-album__footer.tempy-footer,
+    .artist-profile__footer.tempy-footer,
+    .profile-footer.tempy-footer
+  ) {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    color: #ff343c;
+    background: #07142b;
+  }
+
+  .app .tempy-footer > .tempy-footer__inner {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    padding:
+      48px
+      24px
+      calc(24px + env(safe-area-inset-bottom, 0px));
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .app .tempy-footer__inner > .tempy-footer__copy {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    grid-column: 1;
+    grid-row: 1;
+    align-self: auto;
+  }
+
+  .app .tempy-footer .tempy-footer__copy p {
+    margin: 0 0 12px;
+    color: #ff343c;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+  }
+
+  .app .tempy-footer .tempy-footer__title-motion {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  .app .tempy-footer .tempy-footer__copy strong {
+    display: block;
+    max-width: 100%;
+    color: #ff343c;
+    font-size: clamp(38px, 12vw, 50px);
+    font-weight: 400;
+    line-height: 0.78;
+    letter-spacing: var(--galgo-display-spacing);
+    white-space: nowrap;
+  }
+
+  .app .tempy-footer__inner > .tempy-footer__links {
+    display: flex;
+    width: 100%;
+    margin-top: 30px;
+    padding: 0;
+    grid-column: 1;
+    grid-row: 2;
+    align-self: auto;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: clamp(18px, 6vw, 26px);
+    color: #ff343c;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.06em;
+  }
+
+  .app .tempy-footer__links a {
+    display: flex;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 8px 0 0;
+    align-items: center;
+    justify-content: flex-start;
+    color: #ff343c;
+    text-align: left;
+    transition:
+      color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .tempy-footer__links a:active {
+    opacity: 0.62;
+    transform: translateY(1px);
+  }
+
+  .app .tempy-footer__links a:focus-visible {
+    outline: 2px solid #ff343c;
+    outline-offset: 2px;
+  }
+
+  .app .tempy-footer__inner > small {
+    display: block;
+    width: 100%;
+    margin: 24px 0 0;
+    padding: 16px 0 0;
+    grid-column: 1;
+    grid-row: 3;
+    border-top: 1px solid rgba(255, 52, 60, 0.48);
+    color: #ff343c;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (max-width: 760px) and (hover: hover) and (pointer: fine) {
+  .app .tempy-footer__links a:hover {
+    color: #fff1cf;
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  .app .similar-curator .similar-curator__actions button,
+  .app .similar-curator .similar-curator__actions svg,
+  .app .tempy-footer__links a {
+    transition-duration: 1ms;
+  }
+
+  .app .similar-curator .similar-curator__icon-action:is(.is-shuffled, .is-liked) svg,
+  .app .tempy-footer__links a:is(:active, :hover) {
     transform: none;
   }
 }

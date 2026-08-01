@@ -178,25 +178,109 @@ const similarTrackAdditions = [
   ],
 ];
 
+const normalizedSimilarPlaylists = similarPlaylists.map((playlist, index) => ({
+  ...playlist,
+  tracks: [...playlist.tracks, ...(similarTrackAdditions[index] || [])].map(normalizeMusicItem),
+}));
+
 function SimilarCurator() {
   const navigate = useNavigate();
   const [translateX, setTranslateX] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
+  const [activePlaylistIndex, setActivePlaylistIndex] = useState(null);
+  const [activeTrackId, setActiveTrackId] = useState(null);
+  const [isPlaylistPlaying, setIsPlaylistPlaying] = useState(false);
+  const [shuffledPlaylistIndex, setShuffledPlaylistIndex] = useState(null);
+  const [likedPlaylistIndexes, setLikedPlaylistIndexes] = useState(() => new Set());
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
+  const activePlaylistIndexRef = useRef(null);
   const translateRef = useRef(0);
   const maxTranslateRef = useRef(0);
   const pendingWheelDelta = useRef(0);
   const wheelFrame = useRef(null);
   const inputEndTimer = useRef(null);
   const dragState = useRef(null);
-  const isPhone = window.matchMedia("(max-width: 480px)").matches;
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
 
   useLayoutEffect(() => {
-    if (!window.matchMedia("(max-width: 480px)").matches) return;
+    if (!window.matchMedia("(max-width: 760px)").matches) return;
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    const handlePlayerProgress = (event) => {
+      const playlistIndex = activePlaylistIndexRef.current;
+      if (playlistIndex === null) return;
+      const playlist = normalizedSimilarPlaylists[playlistIndex];
+      const nextTrackId = event.detail?.trackId || null;
+      const belongsToPlaylist = playlist?.tracks.some((track) => track.id === nextTrackId);
+      setActiveTrackId(nextTrackId);
+      if (!belongsToPlaylist) {
+        setIsPlaylistPlaying(false);
+        return;
+      }
+      setIsPlaylistPlaying(Boolean(event.detail.isPlaying));
+    };
+
+    window.addEventListener("tempy-player-progress", handlePlayerProgress);
+    return () => window.removeEventListener("tempy-player-progress", handlePlayerProgress);
+  }, []);
+
+  const togglePlaylistPlayback = (event, playlistIndex) => {
+    event.stopPropagation();
+    if (!window.matchMedia("(max-width: 760px)").matches) return;
+    const playlist = normalizedSimilarPlaylists[playlistIndex];
+    const isCurrentPlaylist = activePlaylistIndexRef.current === playlistIndex
+      && playlist.tracks.some((track) => track.id === activeTrackId);
+
+    if (isCurrentPlaylist) {
+      window.dispatchEvent(new CustomEvent("tempy-toggle-playback"));
+      setIsPlaylistPlaying((playing) => !playing);
+      return;
+    }
+
+    const firstTrack = playlist.tracks[0];
+    activePlaylistIndexRef.current = playlistIndex;
+    setActivePlaylistIndex(playlistIndex);
+    setActiveTrackId(firstTrack.id);
+    setIsPlaylistPlaying(true);
+    window.dispatchEvent(new CustomEvent("tempy-play-track", {
+      detail: {
+        track: firstTrack,
+        playlist: playlist.tracks,
+        shuffle: shuffledPlaylistIndex === playlistIndex,
+      },
+    }));
+  };
+
+  const togglePlaylistShuffle = (event, playlistIndex) => {
+    event.stopPropagation();
+    if (!window.matchMedia("(max-width: 760px)").matches) return;
+    const nextIndex = shuffledPlaylistIndex === playlistIndex ? null : playlistIndex;
+    setShuffledPlaylistIndex(nextIndex);
+
+    if (activePlaylistIndexRef.current === playlistIndex) {
+      window.dispatchEvent(new CustomEvent("tempy-set-shuffle", {
+        detail: {
+          enabled: nextIndex === playlistIndex,
+          playlist: normalizedSimilarPlaylists[playlistIndex].tracks,
+        },
+      }));
+    }
+  };
+
+  const togglePlaylistLike = (event, playlistIndex) => {
+    event.stopPropagation();
+    if (!window.matchMedia("(max-width: 760px)").matches) return;
+    setLikedPlaylistIndexes((currentIndexes) => {
+      const nextIndexes = new Set(currentIndexes);
+      if (nextIndexes.has(playlistIndex)) nextIndexes.delete(playlistIndex);
+      else nextIndexes.add(playlistIndex);
+      return nextIndexes;
+    });
+  };
 
   const moveTo = (nextTranslate) => {
     const clamped = Math.min(maxTranslateRef.current, Math.max(0, nextTranslate));
@@ -230,6 +314,7 @@ function SimilarCurator() {
     if (!viewport) return undefined;
 
     const handleWheel = (event) => {
+      if (window.matchMedia("(max-width: 760px)").matches) return;
       const internalTrackList = event.target.closest(".similar-curator__tracks");
       if (internalTrackList && Math.abs(event.deltaY) >= Math.abs(event.deltaX)) {
         const canScrollUp = event.deltaY < 0 && internalTrackList.scrollTop > 0;
@@ -282,7 +367,7 @@ function SimilarCurator() {
   }, []);
 
   const handlePointerDown = (event) => {
-    if (isPhone) return;
+    if (isMobile) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     if (event.target.closest(".similar-curator__tracks")) return;
     dragState.current = {
@@ -293,7 +378,7 @@ function SimilarCurator() {
   };
 
   const handlePointerMove = (event) => {
-    if (isPhone) return;
+    if (isMobile) return;
     const drag = dragState.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
 
@@ -308,7 +393,7 @@ function SimilarCurator() {
   };
 
   const endDrag = (event) => {
-    if (isPhone) return;
+    if (isMobile) return;
     if (dragState.current?.pointerId !== event.pointerId) return;
     dragState.current = null;
     setIsDirectInput(false);
@@ -355,9 +440,9 @@ function SimilarCurator() {
             <div
               className={`similar-curator__track${isDirectInput ? " similar-curator__track--direct" : ""}`}
               ref={trackRef}
-              style={{ transform: isPhone ? undefined : `translateX(${-translateX}px)` }}
+              style={{ transform: isMobile ? undefined : `translateX(${-translateX}px)` }}
             >
-              {similarPlaylists.map((playlist, index) => (
+              {normalizedSimilarPlaylists.map((playlist, index) => (
                 <article
                   className="similar-curator__card"
                   key={`${playlist.title}-${index}`}
@@ -381,7 +466,7 @@ function SimilarCurator() {
 
                   <div className="similar-curator__card-bottom">
                     <div className="similar-curator__tracks" data-similar-track-scroll>
-                      {[...playlist.tracks, ...(similarTrackAdditions[index] || [])].map(normalizeMusicItem).map((track) => (
+                      {playlist.tracks.map((track) => (
                         <div className="similar-curator__song" key={`${playlist.title}-${track.title}`}>
                           <img src={track.cover} alt="" draggable="false" />
                           <div>
@@ -393,18 +478,39 @@ function SimilarCurator() {
                     </div>
 
                     <div className="similar-curator__actions">
-                      <button className="similar-curator__play" type="button" aria-label={`${playlist.title} 재생`}>
+                      <button
+                        className={`similar-curator__play${activePlaylistIndex === index && isPlaylistPlaying ? " is-playing" : ""}`}
+                        type="button"
+                        aria-label={`${playlist.title} ${activePlaylistIndex === index && isPlaylistPlaying ? "일시정지" : "재생"}`}
+                        aria-pressed={activePlaylistIndex === index && isPlaylistPlaying}
+                        onPointerDown={(event) => event.stopPropagation()}
+                        onClick={(event) => togglePlaylistPlayback(event, index)}
+                      >
                         <svg viewBox="0 0 16 16" aria-hidden="true">
-                          <path d="M5 3.25 12 8l-7 4.75z" />
+                          <path d={activePlaylistIndex === index && isPlaylistPlaying ? "M4.25 3h2.5v10h-2.5zM9.25 3h2.5v10h-2.5z" : "M5 3.25 12 8l-7 4.75z"} />
                         </svg>
-                        PLAY
+                        {activePlaylistIndex === index && isPlaylistPlaying ? "PAUSE" : "PLAY"}
                       </button>
-                      <button className="similar-curator__icon-action" type="button" aria-label={`${playlist.title} 셔플`}>
+                      <button
+                        className={`similar-curator__icon-action${shuffledPlaylistIndex === index ? " is-shuffled" : ""}`}
+                        type="button"
+                        aria-label={`${playlist.title} 셔플`}
+                        aria-pressed={shuffledPlaylistIndex === index}
+                        onPointerDown={(event) => event.stopPropagation()}
+                        onClick={(event) => togglePlaylistShuffle(event, index)}
+                      >
                         <svg viewBox="0 0 20 20" aria-hidden="true">
                           <path d="M3 5.5h2.1c3.7 0 5.25 9 8.95 9H17m-3-3 3 3-3 3M3 14.5h2.1c1.45 0 2.55-1.35 3.5-3.05M11.4 8.5c.75-1.65 1.55-3 2.65-3H17m-3-3 3 3-3 3" />
                         </svg>
                       </button>
-                      <button className="similar-curator__icon-action" type="button" aria-label={`${playlist.title} 좋아요`}>
+                      <button
+                        className={`similar-curator__icon-action${likedPlaylistIndexes.has(index) ? " is-liked" : ""}`}
+                        type="button"
+                        aria-label={`${playlist.title} 좋아요`}
+                        aria-pressed={likedPlaylistIndexes.has(index)}
+                        onPointerDown={(event) => event.stopPropagation()}
+                        onClick={(event) => togglePlaylistLike(event, index)}
+                      >
                         <svg viewBox="0 0 20 20" aria-hidden="true">
                           <path d="M10 16.5s-6-3.55-6-8.15A3.35 3.35 0 0 1 10 6.3a3.35 3.35 0 0 1 6 2.05c0 4.6-6 8.15-6 8.15Z" />
                         </svg>

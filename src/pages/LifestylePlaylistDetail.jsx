@@ -38,8 +38,13 @@ function LifestylePlaylistDetail() {
   const [isDirectInput, setIsDirectInput] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const sequenceRef = useRef(null);
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
+  const selectedTrackRef = useRef(0);
+  const mobileScrollEndTimer = useRef(null);
   const translateRef = useRef(0);
   const maxTranslateRef = useRef(0);
   const pendingWheelDelta = useRef(0);
@@ -47,6 +52,45 @@ function LifestylePlaylistDetail() {
   const inputEndTimer = useRef(null);
   const dragState = useRef(null);
   const didDrag = useRef(false);
+
+  const selectMobileTrack = (nextIndex) => {
+    if (!window.matchMedia("(max-width: 760px)").matches) return;
+
+    const normalizedIndex = (nextIndex + playlistTracks.length) % playlistTracks.length;
+    selectedTrackRef.current = normalizedIndex;
+    setSelectedTrack(normalizedIndex);
+
+    window.requestAnimationFrame(() => {
+      const viewport = sequenceRef.current;
+      const item = trackRef.current?.children[normalizedIndex];
+      if (!viewport || !item) return;
+      viewport.scrollTo({
+        left: item.offsetLeft - (viewport.clientWidth - item.clientWidth) / 2,
+        behavior: "smooth",
+      });
+    });
+  };
+
+  const syncMobileTrack = () => {
+    if (!window.matchMedia("(max-width: 760px)").matches) return;
+    if (mobileScrollEndTimer.current !== null) window.clearTimeout(mobileScrollEndTimer.current);
+    mobileScrollEndTimer.current = window.setTimeout(() => {
+      const viewport = sequenceRef.current;
+      const items = Array.from(trackRef.current?.children ?? []);
+      if (!viewport || items.length === 0) return;
+
+      const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
+      const closestIndex = items.reduce((closest, item, index) => {
+        const itemCenter = item.offsetLeft + item.clientWidth / 2;
+        const closestItem = items[closest];
+        const closestCenter = closestItem.offsetLeft + closestItem.clientWidth / 2;
+        return Math.abs(itemCenter - viewportCenter) < Math.abs(closestCenter - viewportCenter) ? index : closest;
+      }, 0);
+      selectedTrackRef.current = closestIndex;
+      setSelectedTrack(closestIndex);
+      mobileScrollEndTimer.current = null;
+    }, 120);
+  };
 
   const moveTo = (nextTranslate) => {
     const clamped = Math.min(maxTranslateRef.current, Math.max(0, nextTranslate));
@@ -71,6 +115,10 @@ function LifestylePlaylistDetail() {
     observer.observe(viewportRef.current);
     observer.observe(trackRef.current);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => () => {
+    if (mobileScrollEndTimer.current !== null) window.clearTimeout(mobileScrollEndTimer.current);
   }, []);
 
   useEffect(() => {
@@ -121,6 +169,7 @@ function LifestylePlaylistDetail() {
   }, []);
 
   const handlePointerDown = (event) => {
+    if (window.matchMedia("(max-width: 760px)").matches) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     didDrag.current = false;
     dragState.current = { pointerId: event.pointerId, startX: event.clientX, startTranslate: translateRef.current };
@@ -156,10 +205,15 @@ function LifestylePlaylistDetail() {
         <span>{String(playlistTracks.length).padStart(2, "0")} TRACKS&nbsp;&nbsp;·&nbsp;&nbsp;21:03</span>
       </div>
 
-      <aside
-        className={`lifestyle-playlist-detail__panel playlist-detail-left lifestyle-playlist-detail__panel--${playlist.tone}`}
-        style={panelStyle}
+      <div
+        className="lifestyle-playlist-detail__sequence"
+        ref={sequenceRef}
+        onScroll={syncMobileTrack}
       >
+        <aside
+          className={`lifestyle-playlist-detail__panel playlist-detail-left lifestyle-playlist-detail__panel--${playlist.tone}`}
+          style={panelStyle}
+        >
         <div>
           <p className="lifestyle-playlist-detail__eyebrow">
             LIFESTYLE CURATOR · PLAYLIST {String(playlistIndex + 1).padStart(2, "0")}
@@ -175,10 +229,12 @@ function LifestylePlaylistDetail() {
         </div>
 
         <div className="lifestyle-playlist-detail__controller">
-          <div className="lifestyle-playlist-detail__progress"><span /></div>
+          <div className="lifestyle-playlist-detail__progress">
+            <span style={{ "--mobile-track-progress": `${((selectedTrack + 1) / playlistTracks.length) * 100}%` }} />
+          </div>
           <div className="lifestyle-playlist-detail__small-controls">
-            <button type="button" aria-label="이전 트랙">‹</button>
-            <button type="button" aria-label="다음 트랙">›</button>
+            <button type="button" aria-label="이전 트랙" onClick={() => selectMobileTrack(selectedTrackRef.current - 1)}>‹</button>
+            <button type="button" aria-label="다음 트랙" onClick={() => selectMobileTrack(selectedTrackRef.current + 1)}>›</button>
           </div>
         </div>
 
@@ -191,61 +247,96 @@ function LifestylePlaylistDetail() {
           >
             <span>{isPlaying ? "Ⅱ" : "▶"}</span> {isPlaying ? "PAUSE" : "PLAY"}
           </button>
-          <button type="button" aria-label="셔플">⌘</button>
-          <button type="button" aria-label="좋아요">♡</button>
+          <button
+            className={isShuffled ? "is-active" : ""}
+            type="button"
+            aria-label="랜덤 재생"
+            aria-pressed={isShuffled}
+            onClick={() => {
+              if (window.matchMedia("(max-width: 760px)").matches) setIsShuffled((active) => !active);
+            }}
+          >
+            <span aria-hidden="true">⌘</span>
+          </button>
+          <button
+            className={isLiked ? "is-active" : ""}
+            type="button"
+            aria-label="좋아요"
+            aria-pressed={isLiked}
+            onClick={() => {
+              if (window.matchMedia("(max-width: 760px)").matches) setIsLiked((active) => !active);
+            }}
+          >
+            <span className="lifestyle-playlist-detail__heart-outline" aria-hidden="true">♡</span>
+            <span className="lifestyle-playlist-detail__heart-fill" aria-hidden="true">♥</span>
+          </button>
         </div>
-      </aside>
+        </aside>
 
-      <section
-        className="lifestyle-playlist-detail__viewport playlist-detail-right"
-        ref={viewportRef}
-        aria-label="Playlist tracks"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onDragStart={(event) => event.preventDefault()}
-      >
-        <div
-          className={`lifestyle-playlist-detail__track playlist-detail-track-row${isDirectInput ? " lifestyle-playlist-detail__track--direct" : ""}`}
-          ref={trackRef}
-          style={{ transform: `translateX(${-translateX}px)` }}
+        <section
+          className="lifestyle-playlist-detail__viewport playlist-detail-right"
+          ref={viewportRef}
+          aria-label="Playlist tracks"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onDragStart={(event) => event.preventDefault()}
         >
-          {playlistTracks.map((track, index) => (
-            <article
-              className={`lifestyle-playlist-detail__item playlist-detail-track-item${selectedTrack === index ? " lifestyle-playlist-detail__item--active" : ""}`}
-              data-tempy-playable
-              data-tempy-title={track.title}
-              data-tempy-artist={track.artist}
-              data-tempy-cover={track.cover}
-              key={`${track.title}-${index}`}
-              role="button"
-              tabIndex={0}
-              aria-current={selectedTrack === index ? "true" : undefined}
-              onClick={() => {
-                if (!didDrag.current) setSelectedTrack(index);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  setSelectedTrack(index);
-                }
-              }}
-            >
-              <span className="lifestyle-playlist-detail__number playlist-detail-track-number">{String(index + 1).padStart(2, "0")}</span>
-              <div className="lifestyle-playlist-detail__lp playlist-detail-lp">
-                <span className="lifestyle-playlist-detail__groove lifestyle-playlist-detail__groove--outer" />
-                <span className="lifestyle-playlist-detail__groove lifestyle-playlist-detail__groove--inner" />
-                <img src={track.cover} alt="" />
-                <span className="lifestyle-playlist-detail__hole" />
-              </div>
-              <h2 className="playlist-detail-track-title">{track.title}</h2>
-              <p className="playlist-detail-track-artist">{track.artist}</p>
-            </article>
-          ))}
-        </div>
+          <div
+            className={`lifestyle-playlist-detail__track playlist-detail-track-row${isDirectInput ? " lifestyle-playlist-detail__track--direct" : ""}`}
+            ref={trackRef}
+            style={{ transform: `translateX(${-translateX}px)` }}
+          >
+            {playlistTracks.map((track, index) => (
+              <article
+                className={`lifestyle-playlist-detail__item playlist-detail-track-item${selectedTrack === index ? " lifestyle-playlist-detail__item--active" : ""}`}
+                data-tempy-playable
+                data-tempy-title={track.title}
+                data-tempy-artist={track.artist}
+                data-tempy-cover={track.cover}
+                key={`${track.title}-${index}`}
+                role="button"
+                tabIndex={0}
+                aria-current={selectedTrack === index ? "true" : undefined}
+                onClick={() => {
+                  if (!didDrag.current) {
+                    selectedTrackRef.current = index;
+                    setSelectedTrack(index);
+                  }
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    selectedTrackRef.current = index;
+                    setSelectedTrack(index);
+                  }
+                }}
+              >
+                <span className="lifestyle-playlist-detail__number playlist-detail-track-number">{String(index + 1).padStart(2, "0")}</span>
+                <div className="lifestyle-playlist-detail__lp playlist-detail-lp">
+                  <span className="lifestyle-playlist-detail__groove lifestyle-playlist-detail__groove--outer" />
+                  <span className="lifestyle-playlist-detail__groove lifestyle-playlist-detail__groove--inner" />
+                  <img src={track.cover} alt="" />
+                  <span className="lifestyle-playlist-detail__hole" />
+                </div>
+                <h2 className="playlist-detail-track-title">{track.title}</h2>
+                <p className="playlist-detail-track-artist">{track.artist}</p>
+              </article>
+            ))}
+          </div>
 
-      </section>
+        </section>
+      </div>
+
+      <div className="lifestyle-playlist-detail__pagination" aria-hidden="true">
+        {playlistTracks.map((track, index) => (
+          <span
+            className={selectedTrack === index ? "is-active" : ""}
+            key={track.id}
+          />
+        ))}
+      </div>
 
       <section className="lifestyle-playlist-detail__archive-meta playlist-detail-note" aria-label="Lifestyle curator note">
           <div className="lifestyle-playlist-detail__archive-copy">

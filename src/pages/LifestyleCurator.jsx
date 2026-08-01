@@ -115,7 +115,6 @@ function LifestyleCurator() {
               >
                 <span className="lifestyle-curator__clip lifestyle-curator__clip--left" />
                 <span className="lifestyle-curator__clip lifestyle-curator__clip--right" />
-                {index === 0 && <span className="lifestyle-curator__ribbon">EDITOR'S PICK</span>}
 
                 <div className="lifestyle-curator__card-main">
                   <div className="lifestyle-curator__card-copy">

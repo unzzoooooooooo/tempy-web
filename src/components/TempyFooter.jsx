@@ -118,33 +118,35 @@ function TempyFooter({ className = "" }) {
 
   return (
     <footer className={footerClassName}>
-      <div className="tempy-footer__copy">
-        <p>ONE ALBUM. A DAY OF MOMENTS</p>
-        <span
-          className="tempy-footer__title-motion"
-          onMouseMove={handleTitleMove}
-          onMouseLeave={resetTitleMotion}
-        >
-          <strong aria-label={footerTitle}>
-            {[...footerTitle].map((character, index) => (
-              <span
-                className="tempy-footer__title-letter"
-                ref={(node) => { titleLetterRefs.current[index] = node; }}
-                aria-hidden="true"
-                key={`${character}-${index}`}
-              >
-                {character}
-              </span>
-            ))}
-          </strong>
-        </span>
+      <div className="tempy-footer__inner">
+        <div className="tempy-footer__copy">
+          <p>ONE ALBUM. A DAY OF MOMENTS</p>
+          <span
+            className="tempy-footer__title-motion"
+            onMouseMove={handleTitleMove}
+            onMouseLeave={resetTitleMotion}
+          >
+            <strong aria-label={footerTitle}>
+              {[...footerTitle].map((character, index) => (
+                <span
+                  className="tempy-footer__title-letter"
+                  ref={(node) => { titleLetterRefs.current[index] = node; }}
+                  aria-hidden="true"
+                  key={`${character}-${index}`}
+                >
+                  {character}
+                </span>
+              ))}
+            </strong>
+          </span>
+        </div>
+        <nav className="tempy-footer__links" aria-label="Footer links">
+          {footerLinks.map((link) => (
+            <Link key={link.to} to={link.to}>{link.label}</Link>
+          ))}
+        </nav>
+        <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
       </div>
-      <nav className="tempy-footer__links" aria-label="Footer links">
-        {footerLinks.map((link) => (
-          <Link key={link.to} to={link.to}>{link.label}</Link>
-        ))}
-      </nav>
-      <small>© 2026 TEMPY! MUSIC ARCHIVE</small>
     </footer>
   );
 }

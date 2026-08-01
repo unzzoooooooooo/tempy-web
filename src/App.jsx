@@ -368,6 +368,8 @@ function GlobalPlayer() {
   const audioRef = useRef(null);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [requestedPlaylist, setRequestedPlaylist] = useState(null);
+  const [isShuffleEnabled, setIsShuffleEnabled] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [progressTime, setProgressTime] = useState(0);
   const [duration, setDuration] = useState(15);
@@ -416,16 +418,32 @@ function GlobalPlayer() {
 
   useEffect(() => {
     const handlePlayRequest = (event) => {
-      setCurrentTrack(event.detail);
+      const requestedTrack = event.detail?.track || event.detail;
+      const nextPlaylist = Array.isArray(event.detail?.playlist) ? event.detail.playlist : null;
+      setCurrentTrack(requestedTrack);
+      setRequestedPlaylist(nextPlaylist);
+      setIsShuffleEnabled(nextPlaylist ? Boolean(event.detail?.shuffle) : false);
       setIsPlaying(true);
       setCurrentTime(0);
       setProgressTime(0);
-      setDuration(parseTrackDuration(event.detail?.duration));
+      setDuration(parseTrackDuration(requestedTrack?.duration));
       setIsSaved(false);
     };
 
     window.addEventListener("tempy-play-track", handlePlayRequest);
     return () => window.removeEventListener("tempy-play-track", handlePlayRequest);
+  }, []);
+
+  useEffect(() => {
+    const handleShuffleRequest = (event) => {
+      if (Array.isArray(event.detail?.playlist)) {
+        setRequestedPlaylist(event.detail.playlist);
+      }
+      setIsShuffleEnabled(Boolean(event.detail?.enabled));
+    };
+
+    window.addEventListener("tempy-set-shuffle", handleShuffleRequest);
+    return () => window.removeEventListener("tempy-set-shuffle", handleShuffleRequest);
   }, []);
 
   useEffect(() => {
@@ -614,8 +632,15 @@ function GlobalPlayer() {
   const handleClosePlayer = () => {
     const audio = audioRef.current;
     if (audio) audio.pause();
+    if (currentTrack) {
+      window.dispatchEvent(new CustomEvent("tempy-player-progress", {
+        detail: { trackId: currentTrack.id, currentTime, isPlaying: false },
+      }));
+    }
     setIsPlaying(false);
     setCurrentTrack(null);
+    setRequestedPlaylist(null);
+    setIsShuffleEnabled(false);
     setCurrentTime(0);
     setProgressTime(0);
     setIsFullPlayerOpen(false);
@@ -625,9 +650,11 @@ function GlobalPlayer() {
 
   if (!currentTrack) return <audio ref={audioRef} />;
 
+  const playerPlaylist = requestedPlaylist?.length ? requestedPlaylist : playlist;
+
   const currentTrackIndex = Math.max(
     0,
-    playlist.findIndex((track) => track.id === currentTrack.id),
+    playerPlaylist.findIndex((track) => track.id === currentTrack.id),
   );
 
   const selectTrack = (track, shouldPlay = isPlaying) => {
@@ -647,21 +674,29 @@ function GlobalPlayer() {
   };
 
   const handlePreviousTrack = () => {
-    const nextIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-    selectTrack(playlist[nextIndex], isPlaying);
+    if (isShuffleEnabled) {
+      handleRandomTrack();
+      return;
+    }
+    const nextIndex = (currentTrackIndex - 1 + playerPlaylist.length) % playerPlaylist.length;
+    selectTrack(playerPlaylist[nextIndex], isPlaying);
   };
 
   const handleNextTrack = () => {
-    const nextIndex = (currentTrackIndex + 1) % playlist.length;
-    selectTrack(playlist[nextIndex], isPlaying);
+    if (isShuffleEnabled) {
+      handleRandomTrack();
+      return;
+    }
+    const nextIndex = (currentTrackIndex + 1) % playerPlaylist.length;
+    selectTrack(playerPlaylist[nextIndex], isPlaying);
   };
 
-  const handleRandomTrack = () => {
-    if (playlist.length <= 1) return;
-    const candidates = playlist.filter((track) => track.id !== currentTrack.id);
+  function handleRandomTrack() {
+    if (playerPlaylist.length <= 1) return;
+    const candidates = playerPlaylist.filter((track) => track.id !== currentTrack.id);
     const randomTrack = candidates[Math.floor(Math.random() * candidates.length)];
     selectTrack(randomTrack, true);
-  };
+  }
 
   const handleMomentSubmit = (event) => {
     event.preventDefault();
@@ -897,7 +932,7 @@ function GlobalPlayer() {
               <div className="full-player__panel-content">
                 <h2>Track lists</h2>
                 <div className="full-player__track-list">
-                  {playlist.map((track, index) => (
+                  {playerPlaylist.map((track, index) => (
                     <button
                       className={track.id === currentTrack.id ? "full-player__track-row is-current" : "full-player__track-row"}
                       type="button"

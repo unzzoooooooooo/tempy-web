@@ -140,6 +140,7 @@ function ArtistCurator() {
     if (!viewport) return undefined;
 
     const handleWheel = (event) => {
+      if (window.matchMedia("(max-width: 760px)").matches) return;
       event.preventDefault();
       event.stopPropagation();
 
@@ -184,7 +185,7 @@ function ArtistCurator() {
   }, []);
 
   const handlePointerDown = (event) => {
-    if (isPhone) return;
+    if (window.matchMedia("(max-width: 760px)").matches) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     didDrag.current = false;
     dragState.current = {
@@ -195,7 +196,7 @@ function ArtistCurator() {
   };
 
   const handlePointerMove = (event) => {
-    if (isPhone) return;
+    if (window.matchMedia("(max-width: 760px)").matches) return;
     const drag = dragState.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
 
@@ -211,7 +212,7 @@ function ArtistCurator() {
   };
 
   const endDrag = (event) => {
-    if (isPhone) return;
+    if (window.matchMedia("(max-width: 760px)").matches) return;
     if (dragState.current?.pointerId !== event.pointerId) return;
     dragState.current = null;
     setIsDirectInput(false);
