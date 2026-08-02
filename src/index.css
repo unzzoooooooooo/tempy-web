@@ -1494,6 +1494,23 @@ button {
   transition: none;
 }
 
+/* Desktop full-player ring: continuous white base with a navy progress arc. */
+@media (min-width: 901px) {
+  .full-player .progress-base-circle {
+    stroke: #ffffff;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  .full-player .progress-active-circle {
+    stroke: #07142b;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    transform: none;
+  }
+}
+
 .full-player__start-dot {
   fill: #07142b;
   stroke: rgba(251, 251, 244, 0.82);

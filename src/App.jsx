@@ -328,6 +328,30 @@ const getCircularPoint = (seconds, totalSeconds) => {
   };
 };
 
+const getCircularProgressPath = (progress) => {
+  const clampedProgress = Math.min(1, Math.max(0, progress));
+  if (clampedProgress <= 0) return "";
+
+  const startX = PLAYER_RING_CENTER;
+  const startY = PLAYER_RING_CENTER - PLAYER_RING_RADIUS;
+
+  if (clampedProgress >= 1) {
+    const bottomY = PLAYER_RING_CENTER + PLAYER_RING_RADIUS;
+    return [
+      `M ${startX} ${startY}`,
+      `A ${PLAYER_RING_RADIUS} ${PLAYER_RING_RADIUS} 0 1 1 ${startX} ${bottomY}`,
+      `A ${PLAYER_RING_RADIUS} ${PLAYER_RING_RADIUS} 0 1 1 ${startX} ${startY}`,
+    ].join(" ");
+  }
+
+  const radians = (clampedProgress * 2 * Math.PI) - (Math.PI / 2);
+  const endX = PLAYER_RING_CENTER + (Math.cos(radians) * PLAYER_RING_RADIUS);
+  const endY = PLAYER_RING_CENTER + (Math.sin(radians) * PLAYER_RING_RADIUS);
+  const largeArcFlag = clampedProgress > 0.5 ? 1 : 0;
+
+  return `M ${startX} ${startY} A ${PLAYER_RING_RADIUS} ${PLAYER_RING_RADIUS} 0 ${largeArcFlag} 1 ${endX} ${endY}`;
+};
+
 const getCircularProgressFromPointer = (event, element) => {
   const svg = element.ownerSVGElement || element;
   const rect = svg.getBoundingClientRect();
@@ -366,6 +390,7 @@ function GlobalPlayer() {
   const isSeekingRef = useRef(false);
   const pendingSeekTimeRef = useRef(null);
   const audioRef = useRef(null);
+  const [isDesktopRing, setIsDesktopRing] = useState(() => window.matchMedia("(min-width: 901px)").matches);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [requestedPlaylist, setRequestedPlaylist] = useState(null);
@@ -403,6 +428,15 @@ function GlobalPlayer() {
       text: "후렴 직전의 숨 고르는 순간이 제일 좋아요.",
     },
   ]);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 901px)");
+    const syncDesktopRing = () => setIsDesktopRing(desktopQuery.matches);
+
+    syncDesktopRing();
+    desktopQuery.addEventListener("change", syncDesktopRing);
+    return () => desktopQuery.removeEventListener("change", syncDesktopRing);
+  }, []);
 
   const playlist = [...localTracks, ...fullPlayerExtraTracks].map((track) => ({
     ...track,
@@ -720,6 +754,7 @@ function GlobalPlayer() {
   const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : parseTrackDuration(currentTrack.duration);
   const playProgress = Math.min(1, Math.max(0, progressTime / safeDuration));
   const progressDashOffset = PLAYER_RING_CIRCUMFERENCE * (1 - playProgress);
+  const desktopProgressPath = getCircularProgressPath(playProgress);
   const progressDotPoint = getCircularPoint(progressTime, safeDuration);
   const momentMarkers = moments.map((moment) => ({
     ...moment,
@@ -798,15 +833,23 @@ function GlobalPlayer() {
                     aria-valuenow={Math.round(progressTime)}
                   >
                     <circle className="progress-base-circle" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER} r={PLAYER_RING_RADIUS} />
-                    <circle
-                      className="progress-active-circle"
-                      cx={PLAYER_RING_CENTER}
-                      cy={PLAYER_RING_CENTER}
-                      r={PLAYER_RING_RADIUS}
-                      strokeDasharray={PLAYER_RING_CIRCUMFERENCE}
-                      strokeDashoffset={progressDashOffset}
-                      strokeOpacity={playProgress > 0.001 ? 1 : 0}
-                    />
+                    {isDesktopRing ? (
+                      <path
+                        className="progress-active-circle"
+                        d={desktopProgressPath}
+                        strokeOpacity={playProgress > 0.001 ? 1 : 0}
+                      />
+                    ) : (
+                      <circle
+                        className="progress-active-circle"
+                        cx={PLAYER_RING_CENTER}
+                        cy={PLAYER_RING_CENTER}
+                        r={PLAYER_RING_RADIUS}
+                        strokeDasharray={PLAYER_RING_CIRCUMFERENCE}
+                        strokeDashoffset={progressDashOffset}
+                        strokeOpacity={playProgress > 0.001 ? 1 : 0}
+                      />
+                    )}
                     <circle className="full-player__start-dot" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER - PLAYER_RING_RADIUS} r="1.2" aria-hidden="true" />
                     <circle
                       className="full-player__progress-dot"
