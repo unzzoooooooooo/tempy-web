@@ -67,7 +67,7 @@ const artistPlaylists = [
     meta: "12곡 · 44 min",
     likes: "912",
     author: "YERIN BAEK",
-    image: "/images/moment-03.png",
+    image: "/images/artist-08.png",
   },
   {
     title: "OUR LITTLE ESCAPE",
@@ -75,7 +75,7 @@ const artistPlaylists = [
     meta: "8곡 · 27 min",
     likes: "845",
     author: "HYUKOH",
-    image: "/images/moment-04.png",
+    image: "/images/artist-04.png",
   },
   {
     title: "FIRST LIGHT, LAST SONG",
@@ -83,7 +83,7 @@ const artistPlaylists = [
     meta: "11곡 · 40 min",
     likes: "806",
     author: "THE BLACK SKIRTS",
-    image: "/images/moment-06.png",
+    image: "/images/artist-07.png",
   },
 ];
 

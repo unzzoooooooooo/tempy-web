@@ -4,6 +4,9 @@ import TempyFooter from "../components/TempyFooter";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
 import { getTrackById, getTracksByIds } from "../data/musicCatalog";
+import { createAlbumImageSequence } from "../data/imageCatalog";
+
+const homeAlbumImages = createAlbumImageSequence(40, "home");
 
 function Home() {
   const navigate = useNavigate();
@@ -187,17 +190,17 @@ function Home() {
 
   const playlistItems = [
     { image: null, title: "유독 여유가 필요한 날", artist: "hostless", context: "10 tracks · slow afternoon" },
-    { image: "/images/album-19.png", title: "비가 그친 뒤 걷는 밤", artist: "hostless", context: "비 온 뒤의 잔잔한 흐름" },
-    { image: "/images/album-20.png", title: "창가에 기대 듣는 노래", artist: "hostless", context: "soft mood · 32 min" },
-    { image: "/images/album-21.png", title: "아무 말 없이 머물고 싶은 오후", artist: "hostless", context: "말보다 조용한 9곡" },
-    { image: "/images/album-22.png", title: "새벽을 천천히 넘기는 음악", artist: "hostless", context: "late night · low tempo" },
-    { image: "/images/album-23.png", title: "집으로 돌아가는 길의 온도", artist: "hostless", context: "퇴근길을 위한 28 min" },
-    { image: "/images/moment-04.png", title: "햇살이 길게 남은 방", artist: "hostless", context: "warm light · 11 tracks" },
-    { image: "/images/moment-02.png", title: "도시의 불빛이 켜질 무렵", artist: "hostless", context: "blue hour city mood" },
-    { image: "/images/album-24.png", title: "혼자 걷기 좋은 저녁", artist: "hostless", context: "가벼운 걸음의 리듬" },
-    { image: "/images/album-25.png", title: "생각이 많아지는 늦은 밤", artist: "hostless", context: "deep focus · 36 min" },
-    { image: "/images/album-26.png", title: "작은 용기가 필요한 순간", artist: "hostless", context: "조금씩 선명해지는 8곡" },
-    { image: "/images/album-27.png", title: "주말 아침을 여는 플레이리스트", artist: "hostless", context: "weekend morning · bright" },
+    { image: homeAlbumImages[0], title: "비가 그친 뒤 걷는 밤", artist: "hostless", context: "비 온 뒤의 잔잔한 흐름" },
+    { image: homeAlbumImages[1], title: "창가에 기대 듣는 노래", artist: "hostless", context: "soft mood · 32 min" },
+    { image: homeAlbumImages[2], title: "아무 말 없이 머물고 싶은 오후", artist: "hostless", context: "말보다 조용한 9곡" },
+    { image: homeAlbumImages[3], title: "새벽을 천천히 넘기는 음악", artist: "hostless", context: "late night · low tempo" },
+    { image: homeAlbumImages[4], title: "집으로 돌아가는 길의 온도", artist: "hostless", context: "퇴근길을 위한 28 min" },
+    { image: homeAlbumImages[5], title: "햇살이 길게 남은 방", artist: "hostless", context: "warm light · 11 tracks" },
+    { image: homeAlbumImages[6], title: "도시의 불빛이 켜질 무렵", artist: "hostless", context: "blue hour city mood" },
+    { image: homeAlbumImages[7], title: "혼자 걷기 좋은 저녁", artist: "hostless", context: "가벼운 걸음의 리듬" },
+    { image: homeAlbumImages[8], title: "생각이 많아지는 늦은 밤", artist: "hostless", context: "deep focus · 36 min" },
+    { image: homeAlbumImages[9], title: "작은 용기가 필요한 순간", artist: "hostless", context: "조금씩 선명해지는 8곡" },
+    { image: homeAlbumImages[10], title: "주말 아침을 여는 플레이리스트", artist: "hostless", context: "weekend morning · bright" },
   ];
   const playlistTracks = getTracksByIds([
     "360",
@@ -215,17 +218,17 @@ function Home() {
   ]);
 
   const moments = [
-    { image: "/images/moment-01.png", title: "비 오는 날 퇴근길에 한 곡", meta: "흐림 · 18°C · 20:59" },
-    { image: "/images/moment-02.png", title: "창밖이 흐린 오후의 노래", meta: "비 · 16°C · 19:42" },
-    { image: "/images/moment-03.png", title: "바다를 바라보며 남긴 순간", meta: "맑음 · 23°C · 14:18" },
-    { image: "/images/moment-04.png", title: "혼자 걷는 저녁의 플레이리스트", meta: "구름 조금 · 20°C · 21:07" },
-    { image: "/images/moment-05.png", title: "잠들기 전 다시 찾은 음악", meta: "바람 · 17°C · 23:16" },
-    { image: "/images/moment-06.png", title: "햇살 좋은 주말의 한 곡", meta: "맑음 · 24°C · 11:28" },
-    { image: "/images/album-28.png", title: "오랜만에 떠오른 장면", meta: "흐림 · 19°C · 18:35" },
-    { image: "/images/album-29.png", title: "도시의 밤과 함께 듣는 노래", meta: "맑음 · 21°C · 22:14" },
-    { image: "/images/album-30.png", title: "천천히 시작하는 아침의 음악", meta: "구름 조금 · 15°C · 08:12" },
-    { image: "/images/album-31.png", title: "노을이 번지는 창가의 순간", meta: "맑음 · 22°C · 17:48" },
-    { image: "/images/album-19.png", title: "비가 멈춘 골목에서 듣는 곡", meta: "비 갬 · 18°C · 20:21" },
+    { image: homeAlbumImages[11], title: "비 오는 날 퇴근길에 한 곡", meta: "흐림 · 18°C · 20:59" },
+    { image: homeAlbumImages[12], title: "창밖이 흐린 오후의 노래", meta: "비 · 16°C · 19:42" },
+    { image: homeAlbumImages[13], title: "바다를 바라보며 남긴 순간", meta: "맑음 · 23°C · 14:18" },
+    { image: homeAlbumImages[14], title: "혼자 걷는 저녁의 플레이리스트", meta: "구름 조금 · 20°C · 21:07" },
+    { image: homeAlbumImages[15], title: "잠들기 전 다시 찾은 음악", meta: "바람 · 17°C · 23:16" },
+    { image: homeAlbumImages[16], title: "햇살 좋은 주말의 한 곡", meta: "맑음 · 24°C · 11:28" },
+    { image: homeAlbumImages[17], title: "오랜만에 떠오른 장면", meta: "흐림 · 19°C · 18:35" },
+    { image: homeAlbumImages[18], title: "도시의 밤과 함께 듣는 노래", meta: "맑음 · 21°C · 22:14" },
+    { image: homeAlbumImages[19], title: "천천히 시작하는 아침의 음악", meta: "구름 조금 · 15°C · 08:12" },
+    { image: homeAlbumImages[20], title: "노을이 번지는 창가의 순간", meta: "맑음 · 22°C · 17:48" },
+    { image: homeAlbumImages[21], title: "비가 멈춘 골목에서 듣는 곡", meta: "비 갬 · 18°C · 20:21" },
   ];
   const momentTracks = getTracksByIds([
     "birds-of-a-feather",
@@ -550,14 +553,14 @@ function Home() {
                 <button>아카이브 보러가기</button>
               </div>
               <div className="archive-mosaic">
-                <img src="/images/album-28.png" alt="archive album 1" />
-                <img src="/images/moment-02.png" alt="archive moment" />
-                <img src="/images/album-29.png" alt="archive album 2" />
-                <img src="/images/album-30.png" alt="archive album 3" />
-                <img src="/images/album-31.png" alt="archive album 4" />
-                <img src="/images/album-27.png" alt="archive album 5" />
-                <img src="/images/moment-03.png" alt="archive moment 2" />
-                <img src="/images/moment-04.png" alt="archive moment 3" />
+                <img src={homeAlbumImages[22]} alt="archive album 1" />
+                <img src={homeAlbumImages[23]} alt="archive moment" />
+                <img src={homeAlbumImages[24]} alt="archive album 2" />
+                <img src={homeAlbumImages[25]} alt="archive album 3" />
+                <img src={homeAlbumImages[26]} alt="archive album 4" />
+                <img src={homeAlbumImages[27]} alt="archive album 5" />
+                <img src={homeAlbumImages[28]} alt="archive moment 2" />
+                <img src={homeAlbumImages[29]} alt="archive moment 3" />
               </div>
             </article>
             <Link className="archive-card archive-similar-card archive-blind-pick-card" to="/archive/blind-pick">

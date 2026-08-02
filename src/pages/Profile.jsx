@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
 import { getTrackById } from "../data/musicCatalog";
+import { createAlbumImageSequence, profileImages } from "../data/imageCatalog";
+
+const profileAlbumImages = createAlbumImageSequence(8, "profile-archive");
 
 const momentCards = [
   {
@@ -10,7 +13,7 @@ const momentCards = [
     time: "20:39 · Rain",
     location: "서울 성북구",
     tags: ["비", "버스"],
-    image: "/images/moment-01.png",
+    image: profileAlbumImages[0],
     music: getTrackById("birds-of-a-feather"),
   },
   {
@@ -20,7 +23,7 @@ const momentCards = [
     time: "23:10 · Seoul",
     location: "한강 산책",
     tags: ["저녁", "혼자"],
-    image: "/images/moment-02.png",
+    image: profileAlbumImages[1],
     music: getTrackById("gone-are-the-days"),
   },
   {
@@ -30,7 +33,7 @@ const momentCards = [
     time: "07:42 · Cloud",
     location: "창가 자리",
     tags: ["아침", "흐림"],
-    image: "/images/moment-03.png",
+    image: profileAlbumImages[2],
     music: getTrackById("sweetener"),
   },
   {
@@ -40,7 +43,7 @@ const momentCards = [
     time: "18:25 · Walk",
     location: "퇴근길",
     tags: ["도시", "산책"],
-    image: "/images/moment-04.png",
+    image: profileAlbumImages[3],
     music: getTrackById("blinding-lights"),
   },
 ];
@@ -51,28 +54,28 @@ const playlists = [
     description: "혼자 남은 시간에 천천히 쌓이는 노래",
     time: "12곡 · 42 min",
     tags: ["비", "저녁"],
-    image: "/images/album-20.png",
+    image: profileAlbumImages[4],
   },
   {
     title: "버스 창가의 기록",
     description: "창밖 풍경과 같은 속도로 흐르는 플레이리스트",
     time: "10곡 · 35 min",
     tags: ["버스", "창가"],
-    image: "/images/album-21.png",
+    image: profileAlbumImages[5],
   },
   {
     title: "새벽에 저장한 마음",
     description: "말수가 줄어드는 시간에 어울리는 사운드",
     time: "9곡 · 31 min",
     tags: ["새벽", "혼자"],
-    image: "/images/album-22.png",
+    image: profileAlbumImages[6],
   },
   {
     title: "성북구 흐림",
     description: "흐린 날의 낮은 온도를 담은 음악",
     time: "11곡 · 38 min",
     tags: ["흐림", "성북구"],
-    image: "/images/album-23.png",
+    image: profileAlbumImages[7],
   },
 ];
 
@@ -128,7 +131,7 @@ function Profile() {
             <small>2026 · PROFILE SUMMARY</small>
           </div>
           <div className="profile-hero__avatar">
-            <img src="/images/artist-04.png" alt="만찐두빵 profile" draggable={false} />
+            <img src={profileImages[8]} alt="만찐두빵 profile" draggable={false} />
           </div>
           <div className="profile-hero__identity-copy">
             <span>TIME CURATOR</span>

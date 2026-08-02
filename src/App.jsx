@@ -115,7 +115,7 @@ function Header() {
             {isLoggedIn ? "Logout" : "Login"}
           </button>
           <Link className="top-profile-button" to={isLoggedIn ? "/my" : "/login"} aria-label="Go to My Profile">
-            <img src="/images/artist-04.png" alt="" draggable={false} />
+            <img src="/images/profile-09.jpg" alt="" draggable={false} />
           </Link>
         </div>
         {isMobile && (
@@ -390,6 +390,7 @@ function GlobalPlayer() {
   const isSeekingRef = useRef(false);
   const pendingSeekTimeRef = useRef(null);
   const audioRef = useRef(null);
+  const commentPanelRef = useRef(null);
   const [isDesktopRing, setIsDesktopRing] = useState(() => window.matchMedia("(min-width: 901px)").matches);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -405,6 +406,8 @@ function GlobalPlayer() {
   const [volume, setVolume] = useState(72);
   const [sidePanelMode, setSidePanelMode] = useState("playlist");
   const [momentInput, setMomentInput] = useState("");
+  const [hoveredCommentPoint, setHoveredCommentPoint] = useState(null);
+  const [selectedCommentPoint, setSelectedCommentPoint] = useState(null);
   const [moments, setMoments] = useState([
     {
       id: "moment-01",
@@ -412,6 +415,19 @@ function GlobalPlayer() {
       name: "오늘은까눌레",
       time: "0:42",
       text: "이 부분에서 오늘 하루가 살짝 정리되는 느낌이에요.",
+      peopleCount: 4,
+      profiles: [
+        "/images/profile-01.png",
+        "/images/profile-02.png",
+        "/images/profile-03.png",
+        "/images/profile-04.png",
+      ],
+      comments: [
+        { name: "오늘은까눌레", profile: "/images/profile-01.png", text: "이 부분에서 갑자기 마음이 벅차올라요." },
+        { name: "bluehour", profile: "/images/profile-02.png", text: "노을 보면서 들으면 정말 좋아요." },
+        { name: "roomtone", profile: "/images/profile-03.png", text: "여기부터 곡의 분위기가 완전히 달라지는 느낌." },
+        { name: "hostless", profile: "/images/profile-04.png", text: "이 순간을 오래 기억하고 싶어요." },
+      ],
     },
     {
       id: "moment-02",
@@ -419,6 +435,17 @@ function GlobalPlayer() {
       name: "hostless",
       time: "1:18",
       text: "비 오는 퇴근길에 들으면 창밖 색이 더 깊어져요.",
+      peopleCount: 3,
+      profiles: [
+        "/images/profile-04.png",
+        "/images/profile-05.png",
+        "/images/profile-06.png",
+      ],
+      comments: [
+        { name: "roomtone", profile: "/images/profile-04.png", text: "이어폰으로 들으면 공간감이 더 크게 느껴져요." },
+        { name: "bluehour", profile: "/images/profile-05.png", text: "퇴근길에 가장 좋아하는 구간이에요." },
+        { name: "hostless", profile: "/images/profile-06.png", text: "비가 오는 날이면 꼭 다시 찾게 돼요." },
+      ],
     },
     {
       id: "moment-03",
@@ -426,6 +453,23 @@ function GlobalPlayer() {
       name: "만두두왕",
       time: "2:09",
       text: "후렴 직전의 숨 고르는 순간이 제일 좋아요.",
+      peopleCount: 6,
+      profiles: [
+        "/images/profile-07.png",
+        "/images/profile-08.png",
+        "/images/profile-02.png",
+        "/images/profile-03.png",
+        "/images/profile-05.png",
+        "/images/profile-06.png",
+      ],
+      comments: [
+        { name: "만두두왕", profile: "/images/profile-07.png", text: "마지막으로 갈수록 감정이 깊어져요." },
+        { name: "softstatic", profile: "/images/profile-08.png", text: "계속 반복해서 듣게 되는 부분이에요." },
+        { name: "bluehour", profile: "/images/profile-02.png", text: "후렴 직전의 여백이 정말 좋아요." },
+        { name: "roomtone", profile: "/images/profile-03.png", text: "여기서 곡의 온도가 달라지는 것 같아요." },
+        { name: "hostless", profile: "/images/profile-05.png", text: "밤에 들으면 더 깊게 남아요." },
+        { name: "mellowday", profile: "/images/profile-06.png", text: "마지막 음까지 놓치고 싶지 않아요." },
+      ],
     },
   ]);
 
@@ -437,6 +481,28 @@ function GlobalPlayer() {
     desktopQuery.addEventListener("change", syncDesktopRing);
     return () => desktopQuery.removeEventListener("change", syncDesktopRing);
   }, []);
+
+  useEffect(() => {
+    if (!isDesktopRing || !selectedCommentPoint) return undefined;
+
+    const closeOnOutsidePointer = (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (commentPanelRef.current?.contains(target)) return;
+      if (target.closest(".full-player__moment-trigger")) return;
+      setSelectedCommentPoint(null);
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setSelectedCommentPoint(null);
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePointer);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isDesktopRing, selectedCommentPoint]);
 
   const playlist = [...localTracks, ...fullPlayerExtraTracks].map((track) => ({
     ...track,
@@ -462,6 +528,8 @@ function GlobalPlayer() {
       setProgressTime(0);
       setDuration(parseTrackDuration(requestedTrack?.duration));
       setIsSaved(false);
+      setHoveredCommentPoint(null);
+      setSelectedCommentPoint(null);
     };
 
     window.addEventListener("tempy-play-track", handlePlayRequest);
@@ -495,6 +563,8 @@ function GlobalPlayer() {
       setProgressTime(nextTime);
       setIsPlaying(true);
       setIsSaved(false);
+      setHoveredCommentPoint(null);
+      setSelectedCommentPoint(null);
 
       const audio = audioRef.current;
       if (audio && track.audioSrc && audio.readyState >= 1) {
@@ -680,6 +750,8 @@ function GlobalPlayer() {
     setIsFullPlayerOpen(false);
     setIsFullPlayerExpanded(false);
     setIsRecording(false);
+    setHoveredCommentPoint(null);
+    setSelectedCommentPoint(null);
   };
 
   if (!currentTrack) return <audio ref={audioRef} />;
@@ -705,6 +777,8 @@ function GlobalPlayer() {
     setDuration(parseTrackDuration(track.duration));
     setIsPlaying(shouldPlay);
     setIsSaved(false);
+    setHoveredCommentPoint(null);
+    setSelectedCommentPoint(null);
   };
 
   const handlePreviousTrack = () => {
@@ -745,6 +819,9 @@ function GlobalPlayer() {
         name: "you",
         time: formatTime(currentTime),
         text,
+        peopleCount: 1,
+        profiles: ["/images/profile-03.png"],
+        comments: [{ name: "you", profile: "/images/profile-03.png", text }],
       },
     ]);
     setMomentInput("");
@@ -760,6 +837,12 @@ function GlobalPlayer() {
     ...moment,
     point: getCircularPoint(parseTrackDuration(moment.time), safeDuration),
   }));
+  const hoveredMoment = isDesktopRing
+    ? momentMarkers.find((moment) => moment.id === hoveredCommentPoint)
+    : null;
+  const selectedMoment = isDesktopRing
+    ? momentMarkers.find((moment) => moment.id === selectedCommentPoint)
+    : null;
   const fullPlayerClassName = [
     "full-player",
     isPlaying ? "full-player--playing" : "",
@@ -793,6 +876,19 @@ function GlobalPlayer() {
     seekToProgress(getCircularProgressFromPointer(event, event.currentTarget));
     isSeekingRef.current = false;
     event.currentTarget.releasePointerCapture?.(event.pointerId);
+  };
+
+  const toggleCommentPoint = (event, momentId) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setSelectedCommentPoint((selectedId) => selectedId === momentId ? null : momentId);
+  };
+
+  const handleCommentPointKeyDown = (event, momentId) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    setSelectedCommentPoint((selectedId) => selectedId === momentId ? null : momentId);
   };
 
   return (
@@ -869,7 +965,6 @@ function GlobalPlayer() {
                         cx={moment.point.x}
                         cy={moment.point.y}
                         r="0.85"
-                        title={`${moment.name} · ${moment.time}`}
                         aria-hidden="true"
                       />
                     ))}
@@ -884,6 +979,58 @@ function GlobalPlayer() {
                       onPointerCancel={handleProgressPointerEnd}
                     />
                   </svg>
+                  {isDesktopRing && momentMarkers.map((moment) => {
+                    const peopleCount = moment.peopleCount || moment.comments?.length || 1;
+                    const profiles = moment.profiles?.length ? moment.profiles : [moment.profile];
+                    const horizontalDirection = moment.point.x > 68
+                      ? "full-player__moment-anchor--left"
+                      : moment.point.x < 32
+                        ? "full-player__moment-anchor--right"
+                        : "full-player__moment-anchor--center";
+                    const verticalDirection = moment.point.y < 24
+                      ? "full-player__moment-anchor--below"
+                      : "full-player__moment-anchor--above";
+                    const isHovered = hoveredMoment?.id === moment.id;
+
+                    return (
+                      <div
+                        className={`full-player__moment-anchor ${horizontalDirection} ${verticalDirection}`}
+                        key={`comment-trigger-${moment.id}`}
+                        style={{ left: `${moment.point.x}%`, top: `${moment.point.y}%` }}
+                        onMouseEnter={() => setHoveredCommentPoint(moment.id)}
+                        onMouseLeave={() => setHoveredCommentPoint((hoveredId) => hoveredId === moment.id ? null : hoveredId)}
+                      >
+                        <button
+                          className="full-player__moment-trigger"
+                          type="button"
+                          aria-label={`${moment.time}에 남겨진 코멘트 ${peopleCount}개 보기`}
+                          aria-expanded={selectedCommentPoint === moment.id}
+                          aria-controls="full-player-comment-panel"
+                          onFocus={() => setHoveredCommentPoint(moment.id)}
+                          onBlur={() => setHoveredCommentPoint((hoveredId) => hoveredId === moment.id ? null : hoveredId)}
+                          onPointerDown={(event) => event.stopPropagation()}
+                          onClick={(event) => toggleCommentPoint(event, moment.id)}
+                          onKeyDown={(event) => handleCommentPointKeyDown(event, moment.id)}
+                        >
+                          <span className="full-player__moment-trigger-dot" aria-hidden="true" />
+                        </button>
+
+                        {isHovered && (
+                          <div className="full-player__moment-summary" role="tooltip">
+                            <span className="full-player__moment-summary-profiles">
+                              {profiles.slice(0, 3).map((profile, profileIndex) => (
+                                <img src={profile} alt="" key={`${moment.id}-profile-${profileIndex}`} draggable={false} />
+                              ))}
+                            </span>
+                            {peopleCount > 3 && (
+                              <span className="full-player__moment-summary-count">+{peopleCount - 3}</span>
+                            )}
+                            <span className="full-player__moment-summary-total">{peopleCount} people</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                   <div className="full-player__disc-copy">
                     <strong>{currentTrack.title}</strong>
                     <p>{currentTrack.artist}</p>
@@ -891,6 +1038,64 @@ function GlobalPlayer() {
                 </div>
               </div>
             </div>
+
+            {selectedMoment && (
+              <section
+                className="full-player__comment-panel"
+                id="full-player-comment-panel"
+                key={selectedMoment.id}
+                ref={commentPanelRef}
+                aria-label={`${selectedMoment.time} time moment comments`}
+              >
+                <header className="full-player__comment-panel-header">
+                  <div>
+                    <span>TIME MOMENT</span>
+                    <strong>{selectedMoment.time}</strong>
+                    <p>{selectedMoment.peopleCount || selectedMoment.comments?.length || 1} PEOPLE LEFT A MOMENT</p>
+                  </div>
+                  <button
+                    type="button"
+                    aria-label="Close time moment comments"
+                    onClick={() => setSelectedCommentPoint(null)}
+                  >
+                    ×
+                  </button>
+                </header>
+
+                <div className="full-player__comment-panel-list">
+                  {(selectedMoment.comments || [{
+                    name: selectedMoment.name,
+                    profile: selectedMoment.profile,
+                    text: selectedMoment.text,
+                  }]).slice(0, 3).map((comment, commentIndex) => (
+                    <article className="full-player__comment-card" key={`${selectedMoment.id}-comment-${commentIndex}`}>
+                      <img src={comment.profile} alt="" draggable={false} />
+                      <div>
+                        <header>
+                          <strong>{comment.name}</strong>
+                          <time>{selectedMoment.time}</time>
+                        </header>
+                        <p>{comment.text}</p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+
+                {(selectedMoment.peopleCount || selectedMoment.comments?.length || 1) > 3 && (
+                  <button
+                    className="full-player__comment-panel-more"
+                    type="button"
+                    onClick={() => {
+                      setSidePanelMode("moments");
+                      setIsFullPlayerExpanded(false);
+                      setSelectedCommentPoint(null);
+                    }}
+                  >
+                    View all {selectedMoment.peopleCount || selectedMoment.comments.length} moments →
+                  </button>
+                )}
+              </section>
+            )}
 
             <div className="full-player__controls" aria-label="Playback controls">
               <div className="full-player__control-group">

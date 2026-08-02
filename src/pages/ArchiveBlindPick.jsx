@@ -21,7 +21,7 @@ const baseBlindPickItems = [
   { id: 7, color: "blue", cover: "/images/album-26.png", title: "Traveler", artist: "Wave Club", meta: "14:09 · Clear", hintMeta: "Afternoon · Clear", hintText: "낯선 동네를 지나며 생각보다 멀리 가고 싶어지는 리듬" },
   { id: 8, color: "navy", cover: "/images/album-27.png", title: "Upside Mood", artist: "Ariana Grande", meta: "11:17 · Cloud", hintMeta: "Late Morning · Soft", hintText: "흐린 마음을 가볍게 뒤집어 작은 농담처럼 띄우는 사운드" },
   { id: 9, color: "red", cover: "/images/album-28.png", title: "Tattoo City", artist: "Night Loop", meta: "02:32 · Rain", hintMeta: "02:32 · Rain", hintText: "잠들지 않는 거리에서 감정을 더 진하게 새기는 비트" },
-  { id: 10, color: "sky", cover: "/images/moment-06.png", title: "Night Walk", artist: "HYUKOH", meta: "22:10 · Rain", hintMeta: "Late Night · Soft", hintText: "혼자 걷는 길에 속도를 조금 늦춰주는 리듬" },
+  { id: 10, color: "sky", cover: "/images/album-40.png", title: "Night Walk", artist: "HYUKOH", meta: "22:10 · Rain", hintMeta: "Late Night · Soft", hintText: "혼자 걷는 길에 속도를 조금 늦춰주는 리듬" },
 ].map(normalizeMusicItem);
 
 function ArchiveBlindPick() {

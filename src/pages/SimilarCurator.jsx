@@ -24,7 +24,7 @@ const similarPlaylists = [
     tracks: [
       { title: "City Light", artist: "ADOY", cover: "/images/album-13.png" },
       { title: "Window Seat", artist: "Rex Orange County", cover: "/images/album-14.png" },
-      { title: "Night Walk", artist: "HYUKOH", cover: "/images/moment-01.png" },
+      { title: "Night Walk", artist: "HYUKOH", cover: "/images/album-40.png" },
       { title: "Neon Signs", artist: "The Black Skirts", cover: "/images/album-15.png" },
       { title: "Last Train", artist: "ADOY", cover: "/images/album-16.png" },
     ],
@@ -37,7 +37,7 @@ const similarPlaylists = [
     tracks: [
       { title: "Paper Rain", artist: "Laufey", cover: "/images/album-15.png" },
       { title: "Quiet Hours", artist: "Men I Trust", cover: "/images/album-16.png" },
-      { title: "First Page", artist: "HONNE", cover: "/images/moment-02.png" },
+      { title: "First Page", artist: "HONNE", cover: "/images/album-06.png" },
       { title: "Bookshop Window", artist: "Laufey", cover: "/images/album-17.png" },
       { title: "Blue Bookmark", artist: "wave to earth", cover: "/images/album-18.png" },
     ],
@@ -50,7 +50,7 @@ const similarPlaylists = [
     tracks: [
       { title: "Blue Hour", artist: "TXT", cover: "/images/album-17.png" },
       { title: "Slow Motion", artist: "Laufey", cover: "/images/album-18.png" },
-      { title: "Last Scene", artist: "Silica Gel", cover: "/images/moment-03.png" },
+      { title: "Last Scene", artist: "Silica Gel", cover: "/images/album-51.png" },
       { title: "Morning Script", artist: "O3ohn", cover: "/images/album-19.png" },
       { title: "Platform No. 4", artist: "JANNABI", cover: "/images/album-20.png" },
     ],
@@ -62,7 +62,7 @@ const similarPlaylists = [
     likes: "1.1k",
     tracks: [
       { title: "Golden Roll", artist: "The Marias", cover: "/images/album-19.png" },
-      { title: "Summer Film", artist: "AKMU", cover: "/images/moment-04.png" },
+      { title: "Summer Film", artist: "AKMU", cover: "/images/artist-02.png" },
       { title: "Soft Focus", artist: "ADOY", cover: "/images/album-20.png" },
       { title: "Weekend Roll", artist: "The Marías", cover: "/images/album-21.png" },
       { title: "Silver Grain", artist: "HYUKOH", cover: "/images/album-22.png" },
@@ -75,7 +75,7 @@ const similarPlaylists = [
     likes: "889",
     tracks: [
       { title: "Green Room", artist: "Wave to Earth", cover: "/images/album-21.png" },
-      { title: "Sunny Side", artist: "백예린", cover: "/images/moment-05.png" },
+      { title: "Sunny Side", artist: "백예린", cover: "/images/album-61.png" },
       { title: "Bloom", artist: "LUCY", cover: "/images/album-22.png" },
       { title: "Morning Leaves", artist: "백예린", cover: "/images/album-23.png" },
       { title: "Green Window", artist: "Hozier", cover: "/images/album-24.png" },
@@ -88,7 +88,7 @@ const similarPlaylists = [
     likes: "1.4k",
     tracks: [
       { title: "Last Call", artist: "The Black Skirts", cover: "/images/album-23.png" },
-      { title: "Amber Light", artist: "Crush", cover: "/images/moment-06.png" },
+      { title: "Amber Light", artist: "Crush", cover: "/images/album-36.png" },
       { title: "Goodnight", artist: "DPR IAN", cover: "/images/album-24.png" },
       { title: "Blue Glass", artist: "Crush", cover: "/images/album-25.png" },
       { title: "Closing Time", artist: "The Black Skirts", cover: "/images/album-26.png" },
@@ -113,7 +113,7 @@ const similarPlaylists = [
     meta: "14곡 · 49 min",
     likes: "1.0k",
     tracks: [
-      { title: "Hostel Blue", artist: "JANNABI", cover: "/images/moment-01.png" },
+      { title: "Hostel Blue", artist: "JANNABI", cover: "/images/album-42.png" },
       { title: "Map Fold", artist: "The Marias", cover: "/images/album-28.png" },
       { title: "Far Window", artist: "검정치마", cover: "/images/album-29.png" },
       { title: "Foreign Ceiling", artist: "The Marías", cover: "/images/album-30.png" },
@@ -127,7 +127,7 @@ const similarPlaylists = [
     likes: "920",
     tracks: [
       { title: "Deep Work", artist: "FKJ", cover: "/images/album-30.png" },
-      { title: "Midnight Push", artist: "O3ohn", cover: "/images/moment-02.png" },
+      { title: "Midnight Push", artist: "O3ohn", cover: "/images/album-49.png" },
       { title: "New Branch", artist: "HONNE", cover: "/images/album-31.png" },
       { title: "Merge at Dawn", artist: "FKJ", cover: "/images/album-30.png" },
       { title: "Blue Terminal", artist: "O3ohn", cover: "/images/album-29.png" },

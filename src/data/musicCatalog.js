@@ -136,6 +136,81 @@ tracks.forEach((track) => {
   if (!coverMap.has(track.cover)) coverMap.set(track.cover, track);
 });
 
+const normalizeIdentity = (value = "") => String(value)
+  .normalize("NFKD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .toLowerCase()
+  .replace(/[^a-z0-9가-힣]+/g, " ")
+  .trim();
+
+const getTrackIdentity = (title, artist) => `${normalizeIdentity(title)}::${normalizeIdentity(artist)}`;
+const trackIdentityMap = new Map(tracks.map((track) => [getTrackIdentity(track.title, track.artist), track]));
+
+export const trackCoverMap = Object.freeze(Object.fromEntries(
+  tracks.map((track) => [track.id, track.cover]),
+));
+
+export const artistAlbumCoverMap = Object.freeze(Object.fromEntries(
+  artists.map((artist) => {
+    const artistCovers = albums
+      .filter((album) => album.artistId === artist.id && album.cover.startsWith("/images/album-"))
+      .map((album) => album.cover);
+    return [artist.id, artistCovers.length ? artistCovers : [artist.profile]];
+  }),
+));
+
+// Stable same-artist fallbacks for editorial/mock track names without a canonical album entry.
+const editorialArtistCoverMap = new Map(Object.entries({
+  "10cm": "/images/album-33.png",
+  adoy: "/images/album-34.png",
+  beabadoobee: "/images/album-35.png",
+  crush: "/images/album-36.png",
+  "dpr ian": "/images/album-37.png",
+  fkj: "/images/album-38.png",
+  hozier: "/images/album-39.png",
+  hyukoh: "/images/album-40.png",
+  "illit 아일릿": "/images/album-41.png",
+  jannabi: "/images/album-42.png",
+  laufey: "/images/album-43.png",
+  leehi: "/images/album-44.png",
+  lucy: "/images/album-45.png",
+  "mariya takeuchi": "/images/album-46.png",
+  "men i trust": "/images/album-47.png",
+  "night loop": "/images/album-48.png",
+  o3ohn: "/images/album-49.png",
+  "rex orange county": "/images/album-50.png",
+  "silica gel": "/images/album-51.png",
+  "stella jang": "/images/album-52.png",
+  "sunset rollercoaster": "/images/album-53.png",
+  surl: "/images/album-54.png",
+  "the black skirts": "/images/album-55.png",
+  "the marias": "/images/album-56.png",
+  "the volunteers": "/images/album-57.png",
+  txt: "/images/album-58.png",
+  "wave club": "/images/album-59.png",
+  "wave to earth": "/images/album-60.png",
+  "yerin baek": "/images/album-61.png",
+  검정치마: "/images/album-55.png",
+  백예린: "/images/album-61.png",
+}));
+
+const artistByNameMap = new Map(artists.map((artist) => [normalizeIdentity(artist.name), artist]));
+
+export const getArtistCover = (artistName, fallbackCover) => {
+  const normalizedArtist = normalizeIdentity(artistName);
+  const canonicalArtist = artistByNameMap.get(normalizedArtist);
+  if (canonicalArtist) {
+    return artistAlbumCoverMap[canonicalArtist.id][0];
+  }
+  return editorialArtistCoverMap.get(normalizedArtist) || fallbackCover;
+};
+
+export const getTrackCover = ({ id, trackId, title, artist, cover, image } = {}) => {
+  const canonical = getTrackById(trackId || id) || trackIdentityMap.get(getTrackIdentity(title, artist));
+  if (canonical) return canonical.cover;
+  return getArtistCover(artist, cover || image);
+};
+
 export const getArtistById = (id) => artistMap.get(id);
 export const getAlbumById = (id) => albumMap.get(id);
 export const getTrackById = (id) => trackMap.get(id);
@@ -147,8 +222,13 @@ export const getTracksByIds = (ids) => ids.map(getTrackById).filter(Boolean);
 export const normalizeMusicItem = (item) => {
   if (!item) return item;
   const cover = item.cover || item.image;
-  const canonical = getTrackById(item.trackId || item.id) || getTrackByCover(cover);
-  if (!canonical) return item;
+  const hasTrackIdentity = Boolean(item.title && item.artist);
+  const canonical = getTrackById(item.trackId || item.id)
+    || (hasTrackIdentity ? trackIdentityMap.get(getTrackIdentity(item.title, item.artist)) : getTrackByCover(cover));
+  if (!canonical) {
+    const matchedCover = getArtistCover(item.artist, cover);
+    return matchedCover ? { ...item, cover: matchedCover, image: matchedCover } : item;
+  }
 
   return {
     ...item,

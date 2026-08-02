@@ -1,17 +1,21 @@
+import { createAlbumImageSequence } from "./imageCatalog";
+
+const lifestyleAlbumImages = createAlbumImageSequence(12, "lifestyle-playlists");
+
 export const lifestylePlaylists = [
-  { id: "dawn-cafe", title: "20년차 카페 사장님의 새벽 플레이리스트", cover: "/images/album-10.png", tone: "soft-blue" },
-  { id: "rainy-window", title: "비 오는 날 오래 머무는 창가의 음악", cover: "/images/album-11.png", tone: "slate-blue" },
-  { id: "slow-sunday", title: "느린 일요일 아침을 위한 커피와 재즈", cover: "/images/album-12.png", tone: "navy" },
-  { id: "han-river-walk", title: "퇴근 후 혼자 걷는 한강의 저녁", cover: "/images/album-13.png", tone: "blue" },
-  { id: "bookshop-opening", title: "작은 서점의 문을 여는 첫 번째 노래", cover: "/images/album-14.png", tone: "soft-blue" },
-  { id: "late-night-kitchen", title: "늦은 밤 주방에서 만드는 따뜻한 한 끼", cover: "/images/album-15.png", tone: "slate-blue" },
-  { id: "weekend-drive", title: "도시를 벗어나는 주말 드라이브", cover: "/images/album-16.png", tone: "navy" },
-  { id: "plants-and-records", title: "햇빛 좋은 오후의 식물과 레코드", cover: "/images/album-17.png", tone: "blue" },
-  { id: "designer-studio", title: "집중이 필요한 디자이너의 작업실", cover: "/images/album-18.png", tone: "soft-blue" },
-  { id: "packing-night", title: "여행 전날 밤 가방을 싸며 듣는 음악", cover: "/images/album-19.png", tone: "slate-blue" },
-  { id: "late-summer-table", title: "친구들과 나누는 늦은 여름의 식탁", cover: "/images/moment-05.png", tone: "navy" },
-  { id: "closing-the-day", title: "불을 낮춘 방에서 하루를 닫는 순간", cover: "/images/moment-06.png", tone: "blue" },
-];
+  { id: "dawn-cafe", title: "20년차 카페 사장님의 새벽 플레이리스트", tone: "soft-blue" },
+  { id: "rainy-window", title: "비 오는 날 오래 머무는 창가의 음악", tone: "slate-blue" },
+  { id: "slow-sunday", title: "느린 일요일 아침을 위한 커피와 재즈", tone: "navy" },
+  { id: "han-river-walk", title: "퇴근 후 혼자 걷는 한강의 저녁", tone: "blue" },
+  { id: "bookshop-opening", title: "작은 서점의 문을 여는 첫 번째 노래", tone: "soft-blue" },
+  { id: "late-night-kitchen", title: "늦은 밤 주방에서 만드는 따뜻한 한 끼", tone: "slate-blue" },
+  { id: "weekend-drive", title: "도시를 벗어나는 주말 드라이브", tone: "navy" },
+  { id: "plants-and-records", title: "햇빛 좋은 오후의 식물과 레코드", tone: "blue" },
+  { id: "designer-studio", title: "집중이 필요한 디자이너의 작업실", tone: "soft-blue" },
+  { id: "packing-night", title: "여행 전날 밤 가방을 싸며 듣는 음악", tone: "slate-blue" },
+  { id: "late-summer-table", title: "친구들과 나누는 늦은 여름의 식탁", tone: "navy" },
+  { id: "closing-the-day", title: "불을 낮춘 방에서 하루를 닫는 순간", tone: "blue" },
+].map((playlist, index) => ({ ...playlist, cover: lifestyleAlbumImages[index] }));
 
 export const lifestylePlaylistThemes = {
   "soft-blue": {
