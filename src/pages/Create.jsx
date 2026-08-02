@@ -1951,6 +1951,515 @@ function Create() {
           }
         }
 
+        /* Mobile Create editors: one shared detail-page rhythm at the iPhone 16 width. */
+        @media (max-width: 480px) {
+          .create-detail-page--moment,
+          .create-detail-page--playlist,
+          .create-detail-page--moment-result,
+          .create-detail-page--playlist-result {
+            --create-mobile-gutter: 24px;
+            --create-mobile-header-height: 72px;
+            --create-mobile-back-top: 28px;
+            --create-mobile-back-gap: 32px;
+            --create-mobile-back-size: 40px;
+            --create-mobile-card-padding: 20px;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .create-detail-page--moment .create-detail-shell,
+          .create-detail-page--playlist .create-detail-shell {
+            display: block !important;
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+
+          .create-detail-page--moment .create-detail-side,
+          .create-detail-page--playlist .create-detail-side {
+            min-height: 0 !important;
+            padding: calc(
+              var(--create-mobile-header-height)
+              + var(--create-mobile-back-top)
+              + var(--create-mobile-back-size)
+              + var(--create-mobile-back-gap)
+            ) var(--create-mobile-gutter) 40px !important;
+            justify-content: flex-start !important;
+          }
+
+          .create-detail-page--moment .create-detail-back,
+          .create-detail-page--playlist .create-detail-back {
+            top: calc(var(--create-mobile-header-height) + var(--create-mobile-back-top)) !important;
+            left: var(--create-mobile-gutter) !important;
+            min-height: var(--create-mobile-back-size) !important;
+            gap: 12px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            line-height: 1 !important;
+            letter-spacing: 0.09em !important;
+          }
+
+          .create-detail-page--moment .create-detail-back > span:first-child,
+          .create-detail-page--playlist .create-detail-back > span:first-child {
+            width: var(--create-mobile-back-size) !important;
+            height: var(--create-mobile-back-size) !important;
+            flex: 0 0 var(--create-mobile-back-size) !important;
+            font-size: 16px !important;
+          }
+
+          .create-detail-page--moment .create-side-intro,
+          .create-detail-page--playlist .create-side-intro {
+            position: static !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            margin: 0 !important;
+            transform: none !important;
+          }
+
+          .create-detail-page--moment .create-detail-side .create-side-intro__eyebrow,
+          .create-detail-page--playlist .create-detail-side .create-side-intro__eyebrow {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 0 14px !important;
+            color: var(--tempy-blue) !important;
+            font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+            font-size: 13px !important;
+            line-height: 1.2 !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.12em !important;
+          }
+
+          .create-detail-page--moment .create-detail-side .create-side-intro__title,
+          .create-detail-page--playlist .create-detail-side .create-side-intro__title {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            font-size: clamp(58px, 17vw, 70px) !important;
+            line-height: 0.82 !important;
+            letter-spacing: var(--galgo-page-title-spacing) !important;
+          }
+
+          .create-detail-page.create-detail-page--moment .create-detail-side .create-side-intro .create-side-intro__description,
+          .create-detail-page.create-detail-page--playlist .create-detail-side .create-side-intro .create-side-intro__description {
+            width: 100% !important;
+            max-width: 340px !important;
+            margin: 12px 0 0 !important;
+            font-size: 16px !important;
+            line-height: 1.55 !important;
+            font-weight: 500 !important;
+            letter-spacing: -0.01em !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+          }
+
+          .create-detail-page--moment .create-detail-description-break,
+          .create-detail-page--playlist .create-detail-description-break {
+            display: none !important;
+          }
+
+          .create-detail-page--moment .create-detail-workspace,
+          .create-detail-page--playlist .create-detail-workspace {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: 40px var(--create-mobile-gutter) 72px !important;
+            overflow-x: hidden !important;
+          }
+
+          .create-detail-page--moment .create-detail-content,
+          .create-detail-page--playlist .create-detail-content,
+          .create-detail-page--moment .create-detail-main,
+          .create-detail-page--playlist .create-detail-main {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+          }
+
+          .create-detail-page--moment .create-detail-header h2,
+          .create-detail-page--playlist .create-detail-header h2 {
+            font-size: 48px !important;
+            line-height: 0.9 !important;
+            letter-spacing: 0.006em !important;
+          }
+
+          .create-detail-page--moment .create-detail-header p,
+          .create-detail-page--playlist .create-detail-header p {
+            max-width: 340px !important;
+            margin-top: 14px !important;
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+            font-weight: 500 !important;
+          }
+
+          .create-detail-page--moment .create-detail-grid,
+          .create-detail-page--playlist .create-detail-grid {
+            width: 100% !important;
+            min-width: 0 !important;
+            margin-top: 28px !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px !important;
+          }
+
+          .create-detail-page--moment .create-detail-card,
+          .create-detail-page--playlist .create-detail-card {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: var(--create-mobile-card-padding) !important;
+          }
+
+          .create-detail-page--moment .create-detail-card h3,
+          .create-detail-page--playlist .create-detail-card h3 {
+            margin: 0 0 24px !important;
+            font-size: 36px !important;
+            line-height: 0.94 !important;
+            letter-spacing: 0.006em !important;
+            white-space: normal !important;
+          }
+
+          .create-detail-page--moment .create-detail-field,
+          .create-detail-page--playlist .create-detail-field {
+            margin-bottom: 24px !important;
+            gap: 10px !important;
+          }
+
+          .create-detail-page--moment .create-detail-field label,
+          .create-detail-page--moment .create-detail-label,
+          .create-detail-page--playlist .create-detail-field label,
+          .create-detail-page--playlist .create-detail-label {
+            font-size: 12px !important;
+            line-height: 1.25 !important;
+            font-weight: 700 !important;
+          }
+
+          .create-detail-page--moment .create-detail-label--spaced,
+          .create-detail-page--playlist .create-detail-label--spaced {
+            margin-top: 30px !important;
+          }
+
+          .create-detail-page--moment :is(.create-detail-label + .create-detail-tags, .create-detail-label + .create-detail-visibility, .create-detail-label + .create-detail-stamps),
+          .create-detail-page--playlist :is(.create-detail-label + .create-detail-tags, .create-detail-label + .create-detail-visibility, .create-detail-label + .create-detail-stamps) {
+            margin-top: 12px !important;
+          }
+
+          .create-detail-page--moment :is(.create-detail-tags, .create-detail-visibility, .create-detail-stamps),
+          .create-detail-page--playlist :is(.create-detail-tags, .create-detail-visibility, .create-detail-stamps) {
+            max-width: 100% !important;
+            gap: 9px 8px !important;
+            flex-wrap: wrap !important;
+          }
+
+          .create-detail-page--moment :is(input, textarea, .create-detail-search, .create-detail-track-list, .create-detail-track),
+          .create-detail-page--playlist :is(input, textarea, .create-detail-search, .create-detail-track-list, .create-detail-track) {
+            max-width: 100% !important;
+          }
+
+          .create-detail-page--moment .create-detail-actions,
+          .create-detail-page--playlist .create-detail-actions {
+            margin-top: 0 !important;
+            padding-top: 24px !important;
+            gap: 10px !important;
+          }
+
+          .create-detail-page--moment .create-detail-actions button,
+          .create-detail-page--playlist .create-detail-actions button {
+            width: 100% !important;
+            min-height: 48px !important;
+            padding: 0 20px !important;
+            font-size: 13px !important;
+          }
+
+          /* Result screens use the same mobile navigation and intro geometry. */
+          .create-detail-page--moment-result .create-detail-shell,
+          .create-detail-page--playlist-result .create-detail-shell {
+            display: block !important;
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-side,
+          .create-detail-page--playlist-result .create-detail-side {
+            min-height: 0 !important;
+            padding: calc(
+              var(--create-mobile-header-height)
+              + var(--create-mobile-back-top)
+              + var(--create-mobile-back-size)
+              + var(--create-mobile-back-gap)
+            ) var(--create-mobile-gutter) 40px !important;
+            justify-content: flex-start !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-back,
+          .create-detail-page--playlist-result .create-detail-back {
+            top: calc(var(--create-mobile-header-height) + var(--create-mobile-back-top)) !important;
+            left: var(--create-mobile-gutter) !important;
+            min-height: var(--create-mobile-back-size) !important;
+            gap: 12px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            line-height: 1 !important;
+            letter-spacing: 0.09em !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-back > span:first-child,
+          .create-detail-page--playlist-result .create-detail-back > span:first-child {
+            width: var(--create-mobile-back-size) !important;
+            height: var(--create-mobile-back-size) !important;
+            flex: 0 0 var(--create-mobile-back-size) !important;
+            font-size: 16px !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-side > .create-detail-eyebrow,
+          .create-detail-page--playlist-result .create-detail-side > .create-detail-eyebrow {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 0 14px !important;
+            color: var(--tempy-blue) !important;
+            font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif !important;
+            font-size: 13px !important;
+            line-height: 1.2 !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.12em !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-side > h1,
+          .create-detail-page--playlist-result .create-detail-side > h1 {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            font-size: clamp(58px, 17vw, 70px) !important;
+            line-height: 0.82 !important;
+            letter-spacing: var(--galgo-page-title-spacing) !important;
+          }
+
+          .create-detail-page.create-detail-page--moment-result .create-detail-side > p.create-detail-description,
+          .create-detail-page.create-detail-page--playlist-result .create-detail-side > p.create-detail-description {
+            width: 100% !important;
+            max-width: 340px !important;
+            margin: 12px 0 0 !important;
+            font-size: 16px !important;
+            line-height: 1.55 !important;
+            font-weight: 500 !important;
+            letter-spacing: -0.01em !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-workspace,
+          .create-detail-page--playlist-result .create-detail-workspace {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: 40px var(--create-mobile-gutter) max(32px, env(safe-area-inset-bottom)) !important;
+            overflow-x: hidden !important;
+            overflow-y: visible !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-content,
+          .create-detail-page--playlist-result .create-detail-content,
+          .create-detail-page--moment-result .create-result-stage,
+          .create-detail-page--playlist-result .create-result-stage,
+          .create-detail-page--moment-result .create-result-group,
+          .create-detail-page--playlist-result .create-result-group {
+            display: block !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            transform: none !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-header h2,
+          .create-detail-page--playlist-result .create-detail-header h2 {
+            font-size: 48px !important;
+            line-height: 0.9 !important;
+            letter-spacing: 0.006em !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-header p,
+          .create-detail-page--playlist-result .create-detail-header p {
+            max-width: 340px !important;
+            margin-top: 12px !important;
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+            font-weight: 500 !important;
+          }
+
+          .create-detail-page--moment-result .create-result-preview,
+          .create-detail-page--playlist-result .create-result-preview {
+            display: grid !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-width: 0 !important;
+            margin: 28px 0 0 !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            align-items: stretch !important;
+          }
+
+          .create-detail-page--moment-result .create-result-cover,
+          .create-detail-page--playlist-result .create-result-cover {
+            width: 100% !important;
+            height: 220px !important;
+            min-height: 220px !important;
+            aspect-ratio: auto !important;
+            place-items: center !important;
+            border-right: 0 !important;
+            border-bottom: 1px solid rgba(7, 20, 43, 0.1) !important;
+          }
+
+          .create-detail-page--moment-result .create-result-cover img,
+          .create-detail-page--playlist-result .create-result-cover img {
+            width: 100% !important;
+            height: 100% !important;
+            aspect-ratio: auto !important;
+            object-fit: cover !important;
+            object-position: center !important;
+          }
+
+          .create-detail-page--moment-result .create-result-body,
+          .create-detail-page--playlist-result .create-result-body {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: 22px 20px 24px !important;
+          }
+
+          .create-detail-page--moment-result .create-result-kicker {
+            font-size: 12px !important;
+            line-height: 1.4 !important;
+          }
+
+          .create-detail-page--moment-result .create-result-body h3 {
+            margin-top: 14px !important;
+            font-size: 44px !important;
+            line-height: 0.92 !important;
+            letter-spacing: 0.012em !important;
+          }
+
+          .create-detail-page--moment-result .create-result-body p {
+            margin-top: 14px !important;
+            font-size: 15px !important;
+            line-height: 1.55 !important;
+          }
+
+          .create-detail-page--moment-result .create-result-meta {
+            margin-top: 20px !important;
+            gap: 8px !important;
+          }
+
+          .create-detail-page--moment-result .create-result-tags {
+            margin-top: 16px !important;
+            padding-top: 0 !important;
+            gap: 8px !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-pill,
+          .create-detail-page--playlist-result .create-detail-pill {
+            min-height: 34px !important;
+            padding: 0 13px !important;
+            font-size: 12px !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-kicker {
+            display: inline-flex !important;
+            width: fit-content !important;
+            min-height: 32px !important;
+            padding: 0 12px !important;
+            align-items: center !important;
+            border: 1px solid rgba(7, 20, 43, 0.24) !important;
+            border-radius: 999px !important;
+            background: var(--tempy-white) !important;
+            color: var(--tempy-navy) !important;
+            font-size: 12px !important;
+            line-height: 1 !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-body h3 {
+            margin-top: 16px !important;
+            font-size: 44px !important;
+            line-height: 0.92 !important;
+            letter-spacing: 0.012em !important;
+            word-break: keep-all !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-body p {
+            margin-top: 14px !important;
+            font-size: 15px !important;
+            line-height: 1.55 !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-tags {
+            margin-top: 18px !important;
+            padding-top: 0 !important;
+            gap: 8px !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track-list {
+            width: 100% !important;
+            max-height: none !important;
+            margin-top: 24px !important;
+            gap: 0 !important;
+            overflow: visible !important;
+            border-top: 1px solid rgba(7, 20, 43, 0.1) !important;
+            border-bottom: 1px solid rgba(7, 20, 43, 0.1) !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 58px !important;
+            padding: 8px 0 !important;
+            grid-template-columns: 42px minmax(0, 1fr) auto !important;
+            gap: 12px !important;
+            background: transparent !important;
+            border: 0 !important;
+            border-bottom: 1px solid rgba(7, 20, 43, 0.08) !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track:last-child {
+            border-bottom: 0 !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track .create-detail-track-cover {
+            display: none !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-track-cover-image {
+            display: block !important;
+            width: 42px !important;
+            height: 42px !important;
+            object-fit: cover !important;
+          }
+
+          .create-detail-page--playlist-result .create-result-empty {
+            margin: 0 !important;
+            padding: 18px 0 !important;
+            font-size: 14px !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-actions,
+          .create-detail-page--playlist-result .create-detail-actions {
+            margin: 0 !important;
+            padding-top: 24px !important;
+            align-items: stretch !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+          }
+
+          .create-detail-page--moment-result .create-detail-actions button,
+          .create-detail-page--playlist-result .create-detail-actions button {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 48px !important;
+            padding: 0 20px !important;
+            font-size: 13px !important;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .create-start-page .create-start-card,
           .create-start-page .create-start-card-select i {
