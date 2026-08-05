@@ -313,8 +313,6 @@ const parseTrackDuration = (durationValue) => {
 
 const PLAYER_RING_CENTER = 50;
 const PLAYER_RING_RADIUS = 46;
-const PLAYER_RING_CIRCUMFERENCE = 2 * Math.PI * PLAYER_RING_RADIUS;
-
 const getCircularPoint = (seconds, totalSeconds) => {
   const safeTotal = Number.isFinite(totalSeconds) && totalSeconds > 0 ? totalSeconds : 1;
   const progress = Math.min(1, Math.max(0, seconds / safeTotal));
@@ -392,6 +390,7 @@ function GlobalPlayer() {
   const audioRef = useRef(null);
   const commentPanelRef = useRef(null);
   const [isDesktopRing, setIsDesktopRing] = useState(() => window.matchMedia("(min-width: 901px)").matches);
+  const [isMobileViewport, setIsMobileViewport] = useState(() => window.matchMedia("(max-width: 768px)").matches);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [requestedPlaylist, setRequestedPlaylist] = useState(null);
@@ -401,6 +400,7 @@ function GlobalPlayer() {
   const [duration, setDuration] = useState(15);
   const [isFullPlayerOpen, setIsFullPlayerOpen] = useState(false);
   const [isFullPlayerExpanded, setIsFullPlayerExpanded] = useState(false);
+  const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [volume, setVolume] = useState(72);
@@ -475,11 +475,20 @@ function GlobalPlayer() {
 
   useEffect(() => {
     const desktopQuery = window.matchMedia("(min-width: 901px)");
-    const syncDesktopRing = () => setIsDesktopRing(desktopQuery.matches);
+    const mobileQuery = window.matchMedia("(max-width: 768px)");
+    const syncDesktopRing = () => {
+      setIsDesktopRing(desktopQuery.matches);
+      setIsMobileViewport(mobileQuery.matches);
+      if (!mobileQuery.matches) setIsMobilePanelOpen(false);
+    };
 
     syncDesktopRing();
     desktopQuery.addEventListener("change", syncDesktopRing);
-    return () => desktopQuery.removeEventListener("change", syncDesktopRing);
+    mobileQuery.addEventListener("change", syncDesktopRing);
+    return () => {
+      desktopQuery.removeEventListener("change", syncDesktopRing);
+      mobileQuery.removeEventListener("change", syncDesktopRing);
+    };
   }, []);
 
   useEffect(() => {
@@ -514,7 +523,34 @@ function GlobalPlayer() {
     previousPathRef.current = location.pathname;
     setIsFullPlayerOpen(false);
     setIsFullPlayerExpanded(false);
+    setIsMobilePanelOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMobileViewport || !isFullPlayerOpen) return undefined;
+
+    const pageScrollY = window.scrollY;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousBodyPosition = document.body.style.position;
+    const previousBodyTop = document.body.style.top;
+    const previousBodyWidth = document.body.style.width;
+
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${pageScrollY}px`;
+    document.body.style.width = "100%";
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+      document.body.style.position = previousBodyPosition;
+      document.body.style.top = previousBodyTop;
+      document.body.style.width = previousBodyWidth;
+      window.scrollTo(0, pageScrollY);
+    };
+  }, [isFullPlayerOpen, isMobileViewport]);
 
   useEffect(() => {
     const handlePlayRequest = (event) => {
@@ -528,6 +564,7 @@ function GlobalPlayer() {
       setProgressTime(0);
       setDuration(parseTrackDuration(requestedTrack?.duration));
       setIsSaved(false);
+      setIsMobilePanelOpen(false);
       setHoveredCommentPoint(null);
       setSelectedCommentPoint(null);
     };
@@ -749,6 +786,7 @@ function GlobalPlayer() {
     setProgressTime(0);
     setIsFullPlayerOpen(false);
     setIsFullPlayerExpanded(false);
+    setIsMobilePanelOpen(false);
     setIsRecording(false);
     setHoveredCommentPoint(null);
     setSelectedCommentPoint(null);
@@ -830,8 +868,7 @@ function GlobalPlayer() {
   const vinylStyle = { "--global-player-cover": `url(${currentTrack.cover})` };
   const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : parseTrackDuration(currentTrack.duration);
   const playProgress = Math.min(1, Math.max(0, progressTime / safeDuration));
-  const progressDashOffset = PLAYER_RING_CIRCUMFERENCE * (1 - playProgress);
-  const desktopProgressPath = getCircularProgressPath(playProgress);
+  const progressPath = getCircularProgressPath(playProgress);
   const progressDotPoint = getCircularPoint(progressTime, safeDuration);
   const momentMarkers = moments.map((moment) => ({
     ...moment,
@@ -847,7 +884,26 @@ function GlobalPlayer() {
     "full-player",
     isPlaying ? "full-player--playing" : "",
     isFullPlayerExpanded ? "full-player--expanded" : "",
+    isMobileViewport && isMobilePanelOpen ? "full-player--mobile-panel-open" : "",
   ].filter(Boolean).join(" ");
+
+  const openMobilePanel = () => {
+    if (!isMobileViewport) return;
+    setSidePanelMode("playlist");
+    setIsMobilePanelOpen(true);
+  };
+
+  const handleDiscActivate = (event) => {
+    if (!isMobileViewport) return;
+    if (event.target.closest?.(".full-player__seek-hit, .full-player__progress-dot")) return;
+    openMobilePanel();
+  };
+
+  const handleDiscKeyDown = (event) => {
+    if (!isMobileViewport || (event.key !== "Enter" && event.key !== " ")) return;
+    event.preventDefault();
+    openMobilePanel();
+  };
 
   const seekToProgress = (progress) => {
     const nextTime = Math.min(safeDuration, Math.max(0, progress * safeDuration));
@@ -906,13 +962,23 @@ function GlobalPlayer() {
               className="full-player__close"
               type="button"
               aria-label="Back to mini player"
-              onClick={() => setIsFullPlayerOpen(false)}
+              onClick={() => {
+                setIsFullPlayerOpen(false);
+                setIsMobilePanelOpen(false);
+              }}
             >
               ×
             </button>
             <div className="full-player__disc-area">
               <div className="full-player__disc-wrap">
-                <div className="full-player__disc-shell full-player-vinyl">
+                <div
+                  className="full-player__disc-shell full-player-vinyl"
+                  role={isMobileViewport ? "button" : undefined}
+                  tabIndex={isMobileViewport ? 0 : undefined}
+                  aria-label={isMobileViewport ? "Open track lists" : undefined}
+                  onClick={handleDiscActivate}
+                  onKeyDown={handleDiscKeyDown}
+                >
                   <div className="full-player__disc vinyl-rotating-disc" style={vinylStyle}>
                     <div className="full-player__disc-label">
                       <img src={currentTrack.cover} alt="" draggable={false} />
@@ -932,17 +998,13 @@ function GlobalPlayer() {
                     {isDesktopRing ? (
                       <path
                         className="progress-active-circle"
-                        d={desktopProgressPath}
+                        d={progressPath}
                         strokeOpacity={playProgress > 0.001 ? 1 : 0}
                       />
                     ) : (
-                      <circle
+                      <path
                         className="progress-active-circle"
-                        cx={PLAYER_RING_CENTER}
-                        cy={PLAYER_RING_CENTER}
-                        r={PLAYER_RING_RADIUS}
-                        strokeDasharray={PLAYER_RING_CIRCUMFERENCE}
-                        strokeDashoffset={progressDashOffset}
+                        d={progressPath}
                         strokeOpacity={playProgress > 0.001 ? 1 : 0}
                       />
                     )}
@@ -1143,18 +1205,49 @@ function GlobalPlayer() {
                     onChange={(event) => setVolume(Number(event.target.value))}
                   />
                 </label>
-                <button
-                  type="button"
-                  aria-label={isFullPlayerExpanded ? "Show side panel" : "Hide side panel"}
-                  onClick={() => setIsFullPlayerExpanded((expanded) => !expanded)}
-                >
-                  ⛶
-                </button>
+                {!isMobileViewport ? (
+                  <button
+                    type="button"
+                    aria-label={isFullPlayerExpanded ? "Show side panel" : "Hide side panel"}
+                    onClick={() => setIsFullPlayerExpanded((expanded) => !expanded)}
+                  >
+                    ⛶
+                  </button>
+                ) : (
+                  <button
+                    className="full-player__list-trigger"
+                    type="button"
+                    aria-label="Open track lists"
+                    aria-expanded={isMobilePanelOpen}
+                    onClick={openMobilePanel}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8 6h12M8 12h12M8 18h12" />
+                      <circle cx="4" cy="6" r="1" />
+                      <circle cx="4" cy="12" r="1" />
+                      <circle cx="4" cy="18" r="1" />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
-          <aside className="full-player__side" aria-label="Player side panel">
+          <aside
+            className="full-player__side"
+            aria-label="Player side panel"
+            aria-hidden={isMobileViewport ? !isMobilePanelOpen : undefined}
+          >
+            {isMobileViewport && (
+              <button
+                className="full-player__mobile-panel-close"
+                type="button"
+                aria-label="Close track lists"
+                onClick={() => setIsMobilePanelOpen(false)}
+              >
+                ×
+              </button>
+            )}
             <div className="full-player__tabs" role="tablist" aria-label="Player panel mode">
               <button
                 className={sidePanelMode === "playlist" ? "is-active" : ""}

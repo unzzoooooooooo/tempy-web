@@ -4564,6 +4564,940 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+/* iPhone-only shape stability and profile layout system. */
+@media (max-width: 768px) {
+  /* Keep the LP and its center artwork geometrically square in mobile Safari. */
+  .app .full-player__disc-shell {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+  }
+
+  .app .full-player__disc,
+  .app .full-player .vinyl-rotating-disc {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    flex: 0 0 auto;
+    border-radius: 50%;
+  }
+
+  .app .full-player__disc-label {
+    width: 31%;
+    height: 31%;
+    min-width: 0;
+    min-height: 0;
+    aspect-ratio: auto;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-width: 3px;
+    border-radius: 50%;
+    clip-path: circle(50% at 50% 50%);
+    -webkit-clip-path: circle(50% at 50% 50%);
+  }
+
+  .app .full-player__disc-label img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    min-width: 100%;
+    min-height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .app .full-player__moments > p {
+    font-weight: 600;
+  }
+
+  .app .full-player__moment-form input,
+  .app .full-player__moment-form input::placeholder {
+    font-weight: 600;
+  }
+
+  .app .full-player__moment-form input::placeholder {
+    color: rgba(7, 20, 43, 0.58);
+    opacity: 1;
+  }
+
+  /* The login-complete backdrop has explicit equal axes so its card cannot stretch it. */
+  .app .login-success-page {
+    min-height: 100svh;
+    padding: 96px 20px 40px;
+    overflow: hidden;
+  }
+
+  .app .login-success-orbit {
+    width: min(calc(100vw - 40px), 353px);
+    height: min(calc(100vw - 40px), 353px);
+    min-width: min(calc(100vw - 40px), 353px);
+    min-height: min(calc(100vw - 40px), 353px);
+    max-width: none;
+    max-height: none;
+    aspect-ratio: auto;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    overflow: visible;
+  }
+
+  .app .login-success-card {
+    width: min(82%, 290px);
+    min-height: 292px;
+    padding: 26px 22px;
+    gap: 11px;
+  }
+
+  .app .login-success-card h1 {
+    margin-top: 12px;
+    font-size: clamp(68px, 20vw, 82px);
+  }
+
+  .app .login-success-card span {
+    max-width: 246px;
+    line-height: 1.55;
+  }
+
+  /* Shared mobile profile rhythm. */
+  .app .profile-page {
+    --profile-mobile-gutter: 20px;
+    padding-top: 72px;
+    background: #f5f2e9;
+    overflow-x: clip;
+  }
+
+  .app .profile-hero {
+    display: grid;
+    min-height: 0;
+    padding: 32px var(--profile-mobile-gutter) 48px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .app .profile-hero__intro {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .app .profile-hero__eyebrow {
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  .app .profile-hero__intro h1 {
+    max-width: 100%;
+    font-size: clamp(50px, 14vw, 58px);
+    line-height: 0.88;
+    letter-spacing: var(--galgo-display-spacing);
+    white-space: normal;
+  }
+
+  .app .profile-hero__intro > p {
+    width: auto;
+    max-width: 340px;
+    margin: 16px 0 22px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.025em;
+    white-space: normal;
+    word-break: keep-all;
+  }
+
+  .app .profile-year-block {
+    width: 100%;
+    min-height: 54px;
+    margin: 0;
+    padding: 0 16px;
+  }
+
+  .app .profile-year-block select {
+    font-size: 19px;
+  }
+
+  .app .profile-hero__identity {
+    display: grid;
+    min-height: 0;
+    padding: 22px;
+    grid-template-columns: 92px minmax(0, 1fr);
+    grid-template-areas:
+      "panel-head panel-head"
+      "avatar profile-copy"
+      "stats stats"
+      "actions actions";
+    grid-template-rows: auto auto auto auto;
+    align-items: center;
+    gap: 20px 18px;
+    border: 0;
+    background: #2759ed;
+    color: #fff;
+    text-align: left;
+  }
+
+  .app .profile-hero__panel-head {
+    display: flex;
+    min-height: 0;
+    padding: 0 0 14px;
+    grid-area: panel-head;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .app .profile-hero__panel-head span,
+  .app .profile-hero__panel-head small {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .app .profile-hero__avatar {
+    width: 92px;
+    height: 92px;
+    aspect-ratio: auto;
+    grid-area: avatar;
+    justify-self: start;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+  }
+
+  .app .profile-hero__avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .app .profile-hero__identity-copy {
+    grid-area: profile-copy;
+    align-self: center;
+  }
+
+  .app .profile-hero__identity-copy > span {
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .app .profile-hero__identity-copy h2 {
+    margin: 7px 0 4px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.05;
+  }
+
+  .app .profile-hero__identity-copy > small {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .app .profile-hero__stats {
+    display: grid;
+    min-height: 78px;
+    margin: 0;
+    grid-area: stats;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .app .profile-hero__stats > span,
+  .app .profile-hero__stats > span:first-child {
+    display: grid;
+    min-width: 0;
+    padding: 14px 8px;
+    align-content: center;
+    justify-items: center;
+    gap: 6px;
+    border-right: 1px solid rgba(255, 255, 255, 0.32);
+    text-align: center;
+  }
+
+  .app .profile-hero__stats > span:last-child {
+    border-right: 0;
+  }
+
+  .app .profile-hero__stats strong {
+    color: #fff;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 0.8;
+  }
+
+  .app .profile-hero__stats small {
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .app .profile-hero__actions {
+    display: grid;
+    width: 100%;
+    padding: 0;
+    grid-area: actions;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .app .profile-hero__actions > span {
+    display: none;
+  }
+
+  .app .profile-hero__actions button {
+    width: 100%;
+    min-width: 0;
+    height: 44px;
+    min-height: 44px;
+    border: 1px solid #fff;
+    color: #fff;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .app .profile-hero__actions button:first-of-type {
+    color: #2759ed;
+    background: #fff;
+  }
+
+  .app :is(.profile-tags-section, .profile-moment-section, .profile-playlist-section) {
+    padding: 48px var(--profile-mobile-gutter) 56px;
+    border-bottom: 1px solid rgba(7, 20, 43, 0.18);
+  }
+
+  .app .profile-section-head {
+    display: grid;
+    margin: 0 0 24px;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 18px;
+  }
+
+  .app .profile-section-heading {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+  }
+
+  .app .profile-section-index {
+    padding-top: 5px;
+    color: #2759ed;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .app .profile-section-heading h2 {
+    max-width: 100%;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: clamp(46px, 13vw, 54px);
+    font-weight: 400;
+    line-height: 0.88;
+    letter-spacing: var(--galgo-display-spacing);
+    white-space: normal;
+  }
+
+  .app .profile-section-heading p {
+    margin: 10px 0 0;
+    color: #596274;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+  }
+
+  .app .profile-section-head > a {
+    display: inline-flex;
+    width: fit-content;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 18px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #07142b;
+    color: #fff;
+    background: #07142b;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* Your Time Tags. */
+  .app .profile-tags-layout {
+    display: grid;
+    width: 100%;
+    margin: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    border: 0;
+  }
+
+  .app .profile-sentence-card {
+    min-height: 218px;
+    padding: 22px;
+    border: 0;
+  }
+
+  .app .profile-sentence-card > div {
+    gap: 12px;
+  }
+
+  .app .profile-sentence-card p {
+    max-width: 100%;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .app .profile-tag-orbits {
+    position: static;
+    display: grid;
+    min-height: 0;
+    padding: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    border: 1px solid rgba(7, 20, 43, 0.16);
+    background: #fbfaf5;
+  }
+
+  .app .profile-tag-orbit,
+  .app .profile-tag-orbit--5,
+  .app .profile-tag-orbit--6 {
+    position: static;
+    display: grid;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    padding: 12px;
+    place-items: center;
+    align-content: center;
+    gap: 8px;
+    border: 1px solid rgba(7, 20, 43, 0.2);
+    border-radius: 50%;
+    background: #d9e8ff;
+    text-align: center;
+    transform: none;
+  }
+
+  .app .profile-tag-orbit:first-child {
+    color: #fff;
+    background: #2759ed;
+  }
+
+  .app .profile-tag-orbit:nth-child(3),
+  .app .profile-tag-orbit:nth-child(6) {
+    background: #fff4d7;
+  }
+
+  .app .profile-tag-orbit > span {
+    color: inherit;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .app .profile-tag-orbit > strong {
+    font-size: 48px;
+    line-height: 0.8;
+  }
+
+  .app .profile-tag-orbit p,
+  .app .profile-tag-orbit p span {
+    margin: 0;
+    color: inherit;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* Created Moment Cards. */
+  .app .profile-moment-grid {
+    display: grid;
+    width: 100%;
+    margin: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    border: 0;
+  }
+
+  .app .profile-moment-card {
+    min-height: 0;
+    padding: 18px;
+    border: 1px solid rgba(7, 20, 43, 0.82);
+  }
+
+  .app .profile-moment-card__top {
+    min-height: 36px;
+  }
+
+  .app .profile-moment-card__top span {
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .app .profile-moment-card__top button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .app .profile-moment-card__visual {
+    width: 100%;
+    margin-top: 14px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .app .profile-moment-card__visual > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .app .profile-moment-card__play {
+    right: 12px;
+    bottom: 12px;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .app .profile-moment-card h3 {
+    width: 100%;
+    max-width: 100%;
+    margin: 18px 0 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .app .profile-moment-card > p {
+    width: 100%;
+    margin: 7px 0 0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .app .profile-moment-card__tags {
+    width: 100%;
+    margin: 12px 0 0;
+    gap: 6px;
+  }
+
+  .app .profile-moment-card__tags span {
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+
+  .app .profile-moment-card__track {
+    width: 100%;
+    min-height: 56px;
+    margin: 15px 0 0;
+    padding-top: 14px;
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+    gap: 10px;
+    border-top: 1px solid rgba(7, 20, 43, 0.18);
+  }
+
+  .app .profile-moment-card__track strong {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .app .profile-moment-card__track div > span,
+  .app .profile-moment-card__track > small,
+  .app .profile-moment-card__track > span {
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* Created Playlists: calm vertical cards instead of overlapping mobile LPs. */
+  .app .profile-playlist-row {
+    display: grid;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    overflow: visible;
+  }
+
+  .app .profile-playlist-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 18px;
+    grid-template-columns: 96px minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .app .profile-playlist-card__lp {
+    width: 96px;
+    height: 96px;
+    aspect-ratio: auto;
+    justify-self: start;
+  }
+
+  .app .profile-playlist-card__lp > span {
+    display: block;
+  }
+
+  .app .profile-playlist-card__lp span:nth-child(1) {
+    inset: 13px;
+  }
+
+  .app .profile-playlist-card__lp span:nth-child(2) {
+    inset: 30px;
+  }
+
+  .app .profile-playlist-card__lp img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .app .profile-playlist-card__copy {
+    min-width: 0;
+    height: auto;
+    padding: 0;
+  }
+
+  .app .profile-playlist-card__copy > small {
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .app .profile-playlist-card__copy h3 {
+    max-width: 100%;
+    margin: 7px 0 5px;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.2;
+    word-break: keep-all;
+  }
+
+  .app .profile-playlist-card__copy > p {
+    max-width: 100%;
+    margin: 0 0 9px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .app .profile-playlist-card__tags {
+    margin: 0 0 8px;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .app .profile-playlist-card__tags span {
+    padding: 5px 7px;
+    font-size: 11px;
+  }
+
+  .app .profile-playlist-card__copy > div:last-child {
+    min-height: 36px;
+    margin: 0;
+    padding: 9px 0 0;
+  }
+
+  .app .profile-playlist-card__copy > div:last-child span {
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .app .profile-playlist-card__copy > div:last-child button {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+/* Requested iPhone-only refinements. Keep every desktop/iMac composition intact. */
+@media (max-width: 768px) {
+  /* Moment Playlist: three vertical items per horizontal snap page. */
+  .app .home-page .playlist-grid {
+    display: grid;
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: none;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    column-gap: 16px;
+    row-gap: 0;
+    padding: 0 0 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 14px;
+  }
+
+  .app .home-page .playlist-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .home-page .playlist-row {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px 0;
+    grid-template-columns: 68px minmax(0, 1fr);
+    align-items: center;
+    gap: 13px;
+    border-bottom: 0;
+    scroll-snap-align: none;
+  }
+
+  .app .home-page .playlist-row:nth-child(3n + 1) {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .app .home-page .playlist-row:not(:nth-child(3n)) {
+    border-bottom: 1px solid rgba(7, 20, 43, 0.18);
+  }
+
+  .app .home-page .playlist-cover-frame {
+    display: block;
+    width: 68px;
+    height: 68px;
+    overflow: hidden;
+    background: #d8e7ff;
+  }
+
+  .app .home-page :is(.playlist-cover-frame > img, .playlist-cover-frame > .playlist-thumb) {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+  }
+
+  .app .home-page .playlist-row > div:last-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .app .home-page .playlist-row strong.home-mobile-copy {
+    display: none !important;
+  }
+
+  .app .home-page .playlist-row strong.home-desktop-copy {
+    display: -webkit-box !important;
+    margin: 0 0 3px;
+    overflow: hidden;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app .home-page .playlist-row .playlist-context {
+    display: block !important;
+    margin: 0 0 6px;
+    overflow: hidden;
+    color: rgba(7, 20, 43, 0.7);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .home-page .playlist-author {
+    display: flex;
+    min-width: 0;
+    margin: 0;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .home-page .playlist-author .home-desktop-avatar {
+    display: block !important;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    border: 1px solid rgba(7, 20, 43, 0.14);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .app .home-page .playlist-author i {
+    display: none;
+  }
+
+  .app .home-page .playlist-stats {
+    display: none;
+  }
+
+  /* Moments Left Now: remove only the two decorative ivory circle controls. */
+  .app .home-page .leftnow-card .leftnow-bottom {
+    display: none;
+  }
+
+  /* Mobile player: a fixed main screen, with the blue list as an overlay. */
+  .app .full-player {
+    inset: 0;
+    z-index: 1100;
+    height: 100svh;
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .app .full-player__stage {
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr) auto;
+    overflow: hidden;
+  }
+
+  .app .full-player__disc-wrap,
+  .app .full-player--expanded .full-player__disc-wrap {
+    width: min(76vw, 310px);
+  }
+
+  .app .full-player__side {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: auto minmax(0, 1fr);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 220ms ease,
+      visibility 0s linear 220ms;
+  }
+
+  .app .full-player--mobile-panel-open .full-player__side {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity 220ms ease,
+      visibility 0s;
+  }
+
+  .app .full-player__tabs {
+    min-height: 56px;
+    margin: 20px 82px 22px 20px;
+    box-sizing: border-box;
+  }
+
+  .app .full-player__panel-content {
+    min-height: 0;
+    padding: 0 20px calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app .full-player__track-list,
+  .app .full-player__moment-list {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .full-player__mobile-panel-close {
+    position: absolute;
+    top: 20px;
+    right: 16px;
+    z-index: 2;
+    display: grid;
+    width: 56px;
+    height: 56px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 50%;
+    color: #fff8df;
+    background: rgba(7, 20, 43, 0.18);
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .app .full-player__list-trigger svg {
+    width: 21px;
+    height: 21px;
+    overflow: visible;
+  }
+
+  .app .full-player__list-trigger path,
+  .app .full-player__list-trigger circle {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+  }
+
+  .app .full-player__track-row > span:first-child {
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+  }
+
+  .app .full-player__disc-shell[role="button"] {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .app .full-player__disc-shell[role="button"]:focus-visible {
+    outline: 2px solid #2759ed;
+    outline-offset: 6px;
+    border-radius: 50%;
+  }
+
+  /* Use the same white base + navy path progress model as the desktop ring. */
+  .app .full-player .progress-base-circle {
+    stroke: #ffffff;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    stroke-opacity: 1;
+  }
+
+  .app .full-player .progress-active-circle {
+    stroke: #07142b;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    transform: none;
+  }
+}
+
 @media (min-width: 1181px) and (prefers-reduced-motion: reduce) {
   .app .home-page .album-card,
   .app .home-page .album-image-wrap,
