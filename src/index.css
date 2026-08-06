@@ -27421,3 +27421,837 @@ body::-webkit-scrollbar:horizontal,
       0 30px 48px rgba(7, 20, 43, 0.14);
   }
 }
+
+/* iPhone-width detail rhythm and player motion. Kept below 394px by design. */
+.create-result-back-label--mobile,
+.create-result-eyebrow-label--mobile,
+.archive-title-label--mobile,
+.create-result-info-grid,
+.full-player__play-icon {
+  display: none;
+}
+
+@media (max-width: 393px) {
+  .app {
+    --phone-detail-gutter: 20px;
+    --phone-detail-title-size: clamp(52px, 15.25vw, 60px);
+  }
+
+  /* Create result: the same back/eyebrow/title/content sequence for both types. */
+  .app .create-result-back-label--desktop,
+  .app .create-result-eyebrow-label--desktop,
+  .app .archive-title-label--desktop {
+    display: none;
+  }
+
+  .app .create-result-back-label--mobile,
+  .app .create-result-eyebrow-label--mobile,
+  .app .archive-title-label--mobile {
+    display: inline;
+  }
+
+  .app .create-detail-page--moment-result,
+  .app .create-detail-page--playlist-result {
+    --create-mobile-gutter: var(--phone-detail-gutter);
+  }
+
+  .app .create-detail-page--moment-result .create-detail-side,
+  .app .create-detail-page--playlist-result .create-detail-side {
+    padding-top: 172px !important;
+    padding-bottom: 30px !important;
+  }
+
+  .app .create-detail-page--moment-result .create-detail-back,
+  .app .create-detail-page--playlist-result .create-detail-back {
+    top: 96px !important;
+    left: var(--phone-detail-gutter) !important;
+    height: 40px;
+  }
+
+  .app .create-detail-page--moment-result .create-detail-side > .create-detail-eyebrow,
+  .app .create-detail-page--playlist-result .create-detail-side > .create-detail-eyebrow,
+  .app .archive-created-detail__header > span {
+    margin: 0 0 12px !important;
+    color: #2759ed;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px !important;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase;
+  }
+
+  .app .create-detail-page--moment-result .create-detail-side > h1,
+  .app .create-detail-page--playlist-result .create-detail-side > h1,
+  .app .archive-created-detail__header h2 {
+    height: auto;
+    margin: 0;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: var(--phone-detail-title-size) !important;
+    font-weight: 400;
+    line-height: 0.9 !important;
+    letter-spacing: 0.005em !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .app .create-detail-page.create-detail-page--moment-result .create-detail-side > p.create-detail-description,
+  .app .create-detail-page.create-detail-page--playlist-result .create-detail-side > p.create-detail-description,
+  .app .archive-created-detail__header > p {
+    margin: 14px 0 0 !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 1.55 !important;
+  }
+
+  .app .create-detail-page--moment-result .create-detail-workspace,
+  .app .create-detail-page--playlist-result .create-detail-workspace {
+    padding: 0 var(--phone-detail-gutter) calc(44px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .app .create-detail-page--moment-result .create-detail-header,
+  .app .create-detail-page--playlist-result .create-detail-header {
+    display: none;
+  }
+
+  .app .create-detail-page--moment-result .create-result-preview,
+  .app .create-detail-page--playlist-result .create-result-preview {
+    margin-top: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .app .create-detail-page--moment-result .create-result-cover,
+  .app .create-detail-page--playlist-result .create-result-cover {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    box-sizing: border-box;
+  }
+
+  .app .create-detail-page--moment-result .create-result-cover img,
+  .app .create-detail-page--playlist-result .create-result-cover img {
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  .app .create-detail-page--moment-result .create-result-body,
+  .app .create-detail-page--playlist-result .create-result-body {
+    padding: 22px 20px 24px !important;
+    box-sizing: border-box;
+  }
+
+  .app .create-detail-page--moment-result .create-result-body h3,
+  .app .create-detail-page--playlist-result .create-result-body h3 {
+    font-size: clamp(40px, 12vw, 47px) !important;
+    line-height: 0.98 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .app .create-result-info-grid {
+    display: grid;
+    margin-top: 22px;
+    padding-top: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 14px;
+    border-top: 1px solid rgba(7, 20, 43, 0.12);
+  }
+
+  .app .create-result-info-grid > span,
+  .app .archive-created-detail__side-meta > span,
+  .app .archive-created-detail__overview > span {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .app .create-result-info-grid small,
+  .app .archive-created-detail__side-meta small,
+  .app .archive-created-detail__overview small {
+    margin: 0;
+    color: rgba(7, 20, 43, 0.55);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .app .create-result-info-grid strong,
+  .app .archive-created-detail__side-meta strong,
+  .app .archive-created-detail__overview strong {
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  /* Archive-created detail: flatten the desktop split view into one ordered column. */
+  .app .archive-created-detail {
+    display: flex;
+    width: 100%;
+    padding: 96px var(--phone-detail-gutter) calc(48px + env(safe-area-inset-bottom, 0px));
+    flex-direction: column;
+    gap: 0;
+    box-sizing: border-box;
+    overflow-x: clip;
+  }
+
+  .app .archive-created-detail__side,
+  .app .archive-created-detail__main {
+    display: contents;
+  }
+
+  .app .archive-created-detail__back {
+    position: static !important;
+    order: 1;
+    width: fit-content;
+    min-height: 40px;
+    margin: 0 0 34px;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .app .archive-created-detail__back > span:first-child {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .app .archive-created-detail__header {
+    order: 2;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .app .archive-created-detail__object {
+    order: 3;
+    width: 100%;
+  }
+
+  .app .archive-created-detail__main > :not(.archive-created-detail__header) {
+    order: 4;
+  }
+
+  .app .archive-created-detail__side > .archive-created-detail__actions {
+    order: 5;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__object {
+    display: none;
+  }
+
+  .app .archive-created-detail__cover {
+    width: 100% !important;
+    max-width: none;
+    max-height: none !important;
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+  }
+
+  .app .archive-created-detail__info,
+  .app .archive-created-moment-card,
+  .app .archive-created-track {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .app .archive-created-detail__info {
+    margin-top: 0 !important;
+    padding: 22px 20px !important;
+  }
+
+  .app .archive-created-detail__info h1,
+  .app .archive-created-moment-card h3 {
+    height: auto;
+    font-size: clamp(40px, 12vw, 47px) !important;
+    line-height: 0.98 !important;
+    letter-spacing: 0.005em;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .app .archive-created-detail__side-meta,
+  .app .archive-created-detail__overview {
+    display: grid;
+    margin-top: 22px;
+    padding-top: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 14px;
+  }
+
+  .app .archive-created-detail__overview {
+    border-top: 1px solid rgba(7, 20, 43, 0.12);
+  }
+
+  .app .archive-created-detail__tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .app .archive-created-detail__actions {
+    width: 100% !important;
+    margin-top: 24px !important;
+    padding-top: 0 !important;
+    gap: 10px;
+  }
+
+  .app .archive-created-detail__actions button {
+    min-width: 0;
+    min-height: 48px !important;
+    flex: 1;
+  }
+
+  .app .archive-created-moment-card {
+    margin-top: 0 !important;
+  }
+
+  .app .archive-created-moment-card > div:last-child {
+    padding: 22px 20px !important;
+  }
+
+  .app .archive-created-tracks {
+    width: 100%;
+    margin-top: 0 !important;
+  }
+
+  .app .archive-created-tracks__head {
+    display: flex;
+    margin-bottom: 14px;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .app .archive-created-tracks__head span,
+  .app .archive-created-tracks__head small {
+    display: block;
+    line-height: 1.3;
+  }
+
+  .app .archive-created-track {
+    min-height: 0 !important;
+    padding: 14px !important;
+    grid-template-columns: 22px 58px minmax(0, 1fr) 36px !important;
+    grid-template-areas:
+      "index visual copy play"
+      ". visual moment time";
+    gap: 8px 10px !important;
+    align-items: center;
+  }
+
+  .app .archive-created-track__index { grid-area: index; }
+  .app .archive-created-track__visual { grid-area: visual; width: 58px; height: 58px; }
+  .app .archive-created-track__copy { grid-area: copy; min-width: 0; }
+  .app .archive-created-track > small { grid-area: moment; min-width: 0; overflow-wrap: anywhere; }
+  .app .archive-created-track time { grid-area: time; justify-self: end; }
+  .app .archive-created-track > button { grid-area: play; width: 36px; height: 36px; }
+
+  .app .archive-created-track__copy strong,
+  .app .archive-created-track__copy span {
+    display: block;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* My Music Archive intro follows the shared mobile page-heading scale. */
+  .app .archive-page .archive-page__intro {
+    padding: 40px var(--phone-detail-gutter) 40px !important;
+  }
+
+  .app .archive-page .archive-page__eyebrow {
+    margin-bottom: 12px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .app .archive-page .archive-page__title {
+    font-size: var(--phone-detail-title-size) !important;
+    line-height: 0.9 !important;
+    letter-spacing: 0.005em !important;
+  }
+
+  .app .archive-page .archive-page__description {
+    margin-top: 14px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 1.55 !important;
+  }
+
+  .app .archive-page .archive-page__year {
+    margin-top: 32px !important;
+  }
+
+  /* Archive and Profile share one phone hero typography system. */
+  .app .profile-hero {
+    padding: 40px var(--phone-detail-gutter) 48px;
+    gap: 32px;
+  }
+
+  .app .profile-hero__intro {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .app .profile-hero__eyebrow,
+  .app .archive-page .archive-page__eyebrow {
+    display: block;
+    margin: 0 0 12px !important;
+    color: #2759ed;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.2;
+    letter-spacing: 0.08em !important;
+  }
+
+  .app .profile-hero__intro h1,
+  .app .archive-page .archive-page__title {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: var(--phone-detail-title-size) !important;
+    font-weight: 400;
+    line-height: 0.9 !important;
+    letter-spacing: 0.005em !important;
+    white-space: normal;
+  }
+
+  .app .profile-hero__intro > p,
+  .app .archive-page .archive-page__description {
+    width: 100%;
+    max-width: 340px;
+    margin: 14px 0 0 !important;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    line-height: 1.55 !important;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+  }
+
+  /* Compact, left-aligned YEAR controls. */
+  .app .profile-year-block {
+    display: flex;
+    width: fit-content;
+    min-height: 44px;
+    height: auto;
+    margin: 30px 0 0;
+    padding: 0;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+    border: 0;
+    background: transparent;
+  }
+
+  .app .profile-year-block > span {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .app .profile-year-block .profile-year-select {
+    display: inline-grid;
+    min-width: 112px;
+    height: 44px;
+    padding: 0 13px 0 17px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    border: 1px solid #07142b;
+    border-radius: 999px;
+    background: #fbfaf5;
+  }
+
+  .app .profile-year-block .profile-year-select select {
+    min-width: 0;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .app .archive-page .archive-page__year {
+    position: relative;
+    display: inline-grid;
+    width: fit-content;
+    min-height: 44px;
+    margin-top: 30px !important;
+    padding: 0;
+    grid-template-columns: auto 132px;
+    align-items: center;
+    gap: 0 18px;
+    border: 0;
+    background: transparent;
+  }
+
+  .app .archive-page .archive-page__year > span:first-child {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .app .archive-page .archive-page__year select {
+    width: 132px;
+    height: 44px;
+    padding: 0 38px 0 17px;
+    border: 1px solid #07142b;
+    border-radius: 999px;
+    background: #fbfaf5;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: left;
+  }
+
+  .app .archive-page .archive-page__year > span:last-child {
+    position: absolute;
+    right: 13px;
+    font-size: 12px;
+    pointer-events: none;
+  }
+
+  /* Profile statistics: Galgo only on the numbers, without changing dividers. */
+  .app .profile-hero__stats strong {
+    display: block;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 0.72;
+    letter-spacing: 0.005em;
+  }
+
+  .app .profile-hero__stats small {
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* Created content uses one shared horizontal, snapping phone carousel. */
+  .app .profile-moment-grid,
+  .app .profile-playlist-row {
+    display: flex;
+    width: calc(100% + var(--phone-detail-gutter));
+    margin: 0;
+    padding: 0 var(--phone-detail-gutter) 8px 0;
+    flex-direction: row;
+    grid-template-columns: none;
+    gap: 18px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0 var(--phone-detail-gutter);
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+
+  .app .profile-moment-grid::-webkit-scrollbar,
+  .app .profile-playlist-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .profile-moment-card,
+  .app .profile-playlist-card {
+    width: calc(100% - 16px);
+    min-width: calc(100% - 16px);
+    max-width: calc(100% - 16px);
+    flex: 0 0 calc(100% - 16px);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    box-sizing: border-box;
+  }
+
+  .app .profile-playlist-card {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  .app .profile-playlist-card__tags {
+    display: flex;
+    width: 100%;
+    margin: 12px 0 10px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .app .profile-playlist-card__tags span {
+    display: inline-flex;
+    width: auto;
+    min-height: 30px;
+    padding: 0 11px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(39, 89, 237, 0.48);
+    border-radius: 999px;
+    color: #2759ed;
+    background: #fbfaf5;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Playlist detail information card and action hierarchy. */
+  .app .archive-created-detail--playlist .archive-created-detail__info > span {
+    display: block;
+    color: #2759ed;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-detail__info h1 {
+    margin-top: 12px;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-detail__info p {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-detail__side-meta {
+    border-top: 1px solid rgba(7, 20, 43, 0.12);
+  }
+
+  .app .archive-created-detail--playlist .archive-created-detail__actions {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-detail__actions button {
+    width: 50%;
+    min-width: 0;
+    height: 48px;
+    border: 1px solid #07142b;
+    color: #07142b;
+    background: #fbfaf5;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-detail__actions button:first-child {
+    border-color: #2759ed;
+    color: #fff;
+    background: #2759ed;
+  }
+
+  /* Track list: compact header and stable information grid. */
+  .app .archive-created-tracks__head {
+    width: 100%;
+    min-width: 0;
+    align-items: baseline;
+  }
+
+  .app .archive-created-tracks__head > span {
+    flex: 0 0 auto;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .app .archive-created-tracks__head > small {
+    min-width: 0;
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .app .archive-created-track {
+    border: 1px solid rgba(7, 20, 43, 0.16);
+    background: #fbfaf5;
+    box-shadow: none;
+  }
+
+  .app .archive-created-track__visual,
+  .app .archive-created-track__visual img,
+  .app .archive-created-track__disc {
+    width: 58px;
+    height: 58px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .app .archive-created-track__visual img {
+    display: block;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  .app .archive-created-track__visual {
+    overflow: hidden;
+    border-radius: 0;
+    background: #e9e9e4;
+  }
+
+  .app .archive-created-track__copy strong {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .app .archive-created-track__copy span,
+  .app .archive-created-track > small,
+  .app .archive-created-track time {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .app .archive-created-track > button {
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    color: #fbfaf5;
+    background: #07142b;
+    font-size: 12px;
+  }
+
+  /* Profile sentence and tag hierarchy. */
+  .app .profile-sentence-card__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px !important;
+  }
+
+  .app .profile-sentence-card__heading > span,
+  .app .profile-sentence-card__heading > small {
+    display: block;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .app .profile-sentence-card__heading > span { color: #89abe6; }
+  .app .profile-sentence-card__heading > small { color: rgba(255, 255, 255, 0.78); }
+
+  .app .profile-tag-orbit > strong {
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 0.82;
+    letter-spacing: 0;
+  }
+
+  /* Slightly larger LP, restrained touch feedback, and directional content swap. */
+  .app .full-player__disc-wrap,
+  .app .full-player--expanded .full-player__disc-wrap {
+    width: min(81vw, 318px);
+  }
+
+  .app .full-player__play,
+  .app .full-player__previous,
+  .app .full-player__next {
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .full-player__play:active,
+  .app .full-player__previous:active,
+  .app .full-player__next:active {
+    transform: scale(0.92);
+    transition-duration: 120ms;
+  }
+
+  .app .full-player__previous > span,
+  .app .full-player__next > span {
+    display: block;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .full-player__previous:active > span { transform: translateX(-3px); }
+  .app .full-player__next:active > span { transform: translateX(3px); }
+
+  .app .full-player__play-icon {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transform: scale(0.78);
+    transition: opacity 140ms ease-out, transform 200ms ease-out;
+  }
+
+  .app .full-player__play-label--desktop {
+    display: none;
+  }
+
+  .app .full-player__play-icon.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .app .full-player--track-exit .full-player__disc-wrap,
+  .app .full-player--track-enter .full-player__disc-wrap {
+    pointer-events: none;
+  }
+
+  .app .full-player--track-exit.full-player--track-next .full-player__disc-wrap {
+    animation: phone-track-exit-next 150ms ease-out both;
+  }
+
+  .app .full-player--track-exit.full-player--track-previous .full-player__disc-wrap {
+    animation: phone-track-exit-previous 150ms ease-out both;
+  }
+
+  .app .full-player--track-enter.full-player--track-next .full-player__disc-wrap {
+    animation: phone-track-enter-next 190ms ease-out both;
+  }
+
+  .app .full-player--track-enter.full-player--track-previous .full-player__disc-wrap {
+    animation: phone-track-enter-previous 190ms ease-out both;
+  }
+}
+
+@keyframes phone-track-exit-next {
+  to { opacity: 0; transform: translateX(-22px); }
+}
+
+@keyframes phone-track-exit-previous {
+  to { opacity: 0; transform: translateX(22px); }
+}
+
+@keyframes phone-track-enter-next {
+  from { opacity: 0; transform: translateX(22px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes phone-track-enter-previous {
+  from { opacity: 0; transform: translateX(-22px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 393px) and (prefers-reduced-motion: reduce) {
+  .app .full-player__play,
+  .app .full-player__previous,
+  .app .full-player__next,
+  .app .full-player__play-icon,
+  .app .full-player__previous > span,
+  .app .full-player__next > span {
+    transition-duration: 1ms;
+  }
+
+  .app .full-player--track-exit .full-player__disc-wrap,
+  .app .full-player--track-enter .full-player__disc-wrap {
+    animation: none;
+  }
+}

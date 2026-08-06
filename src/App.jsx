@@ -389,6 +389,7 @@ function GlobalPlayer() {
   const pendingSeekTimeRef = useRef(null);
   const audioRef = useRef(null);
   const commentPanelRef = useRef(null);
+  const trackTransitionTimerRef = useRef(null);
   const [isDesktopRing, setIsDesktopRing] = useState(() => window.matchMedia("(min-width: 901px)").matches);
   const [isMobileViewport, setIsMobileViewport] = useState(() => window.matchMedia("(max-width: 768px)").matches);
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -408,6 +409,7 @@ function GlobalPlayer() {
   const [momentInput, setMomentInput] = useState("");
   const [hoveredCommentPoint, setHoveredCommentPoint] = useState(null);
   const [selectedCommentPoint, setSelectedCommentPoint] = useState(null);
+  const [trackTransition, setTrackTransition] = useState({ phase: "idle", direction: "next" });
   const [moments, setMoments] = useState([
     {
       id: "moment-01",
@@ -489,6 +491,10 @@ function GlobalPlayer() {
       desktopQuery.removeEventListener("change", syncDesktopRing);
       mobileQuery.removeEventListener("change", syncDesktopRing);
     };
+  }, []);
+
+  useEffect(() => () => {
+    window.clearTimeout(trackTransitionTimerRef.current);
   }, []);
 
   useEffect(() => {
@@ -819,13 +825,38 @@ function GlobalPlayer() {
     setSelectedCommentPoint(null);
   };
 
+  const transitionToTrack = (track, direction, shouldPlay = isPlaying) => {
+    const isPhone = window.matchMedia("(max-width: 393px)").matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!isPhone || reduceMotion) {
+      selectTrack(track, shouldPlay);
+      return;
+    }
+    if (trackTransition.phase !== "idle") return;
+
+    if (track.cover || track.image) {
+      const preload = new Image();
+      preload.src = track.cover || track.image;
+    }
+
+    setTrackTransition({ phase: "exit", direction });
+    trackTransitionTimerRef.current = window.setTimeout(() => {
+      selectTrack(track, shouldPlay);
+      setTrackTransition({ phase: "enter", direction });
+      trackTransitionTimerRef.current = window.setTimeout(() => {
+        setTrackTransition({ phase: "idle", direction });
+      }, 190);
+    }, 150);
+  };
+
   const handlePreviousTrack = () => {
     if (isShuffleEnabled) {
       handleRandomTrack();
       return;
     }
     const nextIndex = (currentTrackIndex - 1 + playerPlaylist.length) % playerPlaylist.length;
-    selectTrack(playerPlaylist[nextIndex], isPlaying);
+    transitionToTrack(playerPlaylist[nextIndex], "previous", isPlaying);
   };
 
   const handleNextTrack = () => {
@@ -834,14 +865,14 @@ function GlobalPlayer() {
       return;
     }
     const nextIndex = (currentTrackIndex + 1) % playerPlaylist.length;
-    selectTrack(playerPlaylist[nextIndex], isPlaying);
+    transitionToTrack(playerPlaylist[nextIndex], "next", isPlaying);
   };
 
   function handleRandomTrack() {
     if (playerPlaylist.length <= 1) return;
     const candidates = playerPlaylist.filter((track) => track.id !== currentTrack.id);
     const randomTrack = candidates[Math.floor(Math.random() * candidates.length)];
-    selectTrack(randomTrack, true);
+    transitionToTrack(randomTrack, "next", true);
   }
 
   const handleMomentSubmit = (event) => {
@@ -885,6 +916,8 @@ function GlobalPlayer() {
     isPlaying ? "full-player--playing" : "",
     isFullPlayerExpanded ? "full-player--expanded" : "",
     isMobileViewport && isMobilePanelOpen ? "full-player--mobile-panel-open" : "",
+    trackTransition.phase !== "idle" ? `full-player--track-${trackTransition.phase}` : "",
+    `full-player--track-${trackTransition.direction}`,
   ].filter(Boolean).join(" ");
 
   const openMobilePanel = () => {
@@ -1181,16 +1214,22 @@ function GlobalPlayer() {
               </div>
 
               <div className="full-player__transport">
-                <button type="button" aria-label="Previous track" onClick={handlePreviousTrack}>‹</button>
+                <button className="full-player__previous" type="button" aria-label="Previous track" onClick={handlePreviousTrack} disabled={trackTransition.phase !== "idle"}>
+                  <span aria-hidden="true">‹</span>
+                </button>
                 <button
                   className="full-player__play"
                   type="button"
                   aria-label={isPlaying ? "Pause current track" : "Play current track"}
                   onClick={() => setIsPlaying((playing) => !playing)}
                 >
-                  {isPlaying ? "Ⅱ" : "▶"}
+                  <span className="full-player__play-label--desktop" aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>
+                  <span className={`full-player__play-icon full-player__play-icon--play${isPlaying ? "" : " is-visible"}`} aria-hidden="true">▶</span>
+                  <span className={`full-player__play-icon full-player__play-icon--pause${isPlaying ? " is-visible" : ""}`} aria-hidden="true">Ⅱ</span>
                 </button>
-                <button type="button" aria-label="Next track" onClick={handleNextTrack}>›</button>
+                <button className="full-player__next" type="button" aria-label="Next track" onClick={handleNextTrack} disabled={trackTransition.phase !== "idle"}>
+                  <span aria-hidden="true">›</span>
+                </button>
               </div>
 
               <div className="full-player__control-group full-player__right-tools">

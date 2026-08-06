@@ -160,7 +160,10 @@ function Profile() {
 
         <div className="profile-tags-layout">
           <article className="profile-sentence-card">
-            <div><span>PROFILE SENTENCE</span><small>2026 · LISTENING IDENTITY</small></div>
+            <div className="profile-sentence-card__heading">
+              <span>PROFILE SENTENCE</span>
+              <small>2026 · LISTENING IDENTITY</small>
+            </div>
             <p>비 오는 저녁, 혼자 있는 시간에 가장 많은 음악을 남기는 사람</p>
             <span className="profile-sentence-card__index">01 / 01</span>
           </article>

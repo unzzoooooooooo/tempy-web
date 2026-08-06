@@ -2911,6 +2911,11 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
   const playlistTracks = (Array.isArray(playlistData.selectedTracks) ? playlistData.selectedTracks : [])
     .map((track) => (typeof track === "object" ? track : trackItems.find((item) => item.id === track)))
     .filter(Boolean);
+  const playlistDurationSeconds = playlistTracks.reduce((total, track) => {
+    const [minutes, seconds] = String(track.time || "0:00").split(":").map(Number);
+    return total + ((Number.isFinite(minutes) ? minutes : 0) * 60) + (Number.isFinite(seconds) ? seconds : 0);
+  }, 0);
+  const playlistDuration = `${Math.floor(playlistDurationSeconds / 60)}:${String(playlistDurationSeconds % 60).padStart(2, "0")}`;
 
   return (
     <main className={`create-detail-page create-detail-page--${isMoment ? "moment" : "playlist"}-result`}>
@@ -2918,9 +2923,13 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
         <aside className="create-detail-side">
           <button className="create-detail-back detail-back-link" type="button" onClick={onRetry} aria-label="작성 화면으로 돌아가기">
             <span aria-hidden="true">←</span>
-            <span>BACK</span>
+            <span className="create-result-back-label create-result-back-label--desktop">BACK</span>
+            <span className="create-result-back-label create-result-back-label--mobile">BACK TO CREATE</span>
           </button>
-          <p className="create-detail-eyebrow">CREATE RESULT</p>
+          <p className="create-detail-eyebrow">
+            <span className="create-result-eyebrow-label create-result-eyebrow-label--desktop">CREATE RESULT</span>
+            <span className="create-result-eyebrow-label create-result-eyebrow-label--mobile">{isMoment ? "MOMENT CARD DETAIL" : "PLAYLIST DETAIL"}</span>
+          </p>
           <h1>{isMoment ? "Moment Card" : "Playlist"}</h1>
           <p className="create-detail-description">
             {isMoment ? (
@@ -2955,6 +2964,12 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
                       </span>
                       <h3>{momentData.selectedTrack.title}</h3>
                       <p>{momentData.momentText || "아직 한 줄 순간이 비어 있어요."}</p>
+                      <div className="create-result-info-grid" aria-label="Moment card information">
+                        <span><small>CREATED</small><strong>방금 전</strong></span>
+                        <span><small>VISIBILITY</small><strong>{momentData.visibility}</strong></span>
+                        <span><small>TRACKS</small><strong>01</strong></span>
+                        <span><small>DURATION</small><strong>{momentData.selectedTrack.time || "--:--"}</strong></span>
+                      </div>
                       <div className="create-result-meta">
                         {[momentData.timeStamp.weather, momentData.timeStamp.temperature, momentData.visibility].map((item) => (
                           <Pill key={item}>{item}</Pill>
@@ -2974,6 +2989,12 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
                       {playlistVisibility && <span className="create-result-kicker">{playlistVisibility}</span>}
                       {playlistTitle && <h3>{playlistTitle}</h3>}
                       {playlistDescription && <p>{playlistDescription}</p>}
+                      <div className="create-result-info-grid" aria-label="Playlist information">
+                        <span><small>CREATED</small><strong>방금 전</strong></span>
+                        <span><small>VISIBILITY</small><strong>{playlistVisibility || "전체 공개"}</strong></span>
+                        <span><small>TRACKS</small><strong>{String(playlistTracks.length).padStart(2, "0")}</strong></span>
+                        <span><small>DURATION</small><strong>{playlistDuration}</strong></span>
+                      </div>
                       {playlistTags.length > 0 && (
                         <div className="create-result-tags">
                           {playlistTags.map((tag) => (

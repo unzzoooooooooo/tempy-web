@@ -371,7 +371,10 @@ function Archive() {
       <section className="archive-page__hero">
         <div className="archive-page__intro">
           <p className="archive-page__eyebrow">MY MUSIC ARCHIVE</p>
-          <h1 className="archive-page__title">Archive your time</h1>
+          <h1 className="archive-page__title">
+            <span className="archive-title-label archive-title-label--desktop">Archive your time</span>
+            <span className="archive-title-label archive-title-label--mobile">My Music Archive</span>
+          </h1>
           <p className="archive-page__description">
             내가 어떤 시간에 어떤 음악을 들었는지 나만의 시간 기록으로 돌아보세요.
           </p>
