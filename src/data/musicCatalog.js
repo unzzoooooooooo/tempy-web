@@ -108,6 +108,14 @@ const rawTracks = [
   ["let-me-love-my-youth", "Let Me Love My Youth", "hanroro-profile-placeholder", "04:09"],
 ];
 
+// Official 30-second previews returned by the iTunes Search API (country=KR).
+// Keep these as remote URLs: Tempy streams the preview and does not bundle it.
+const audioPreviewByTrackId = Object.freeze({
+  "birds-of-a-feather": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/34/31/d3/3431d34e-847f-5d66-df83-0bce688d997e/mzaf_18106743962423782018.plus.aac.p.m4a",
+  "blinding-lights": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/19/d6/60/19d660ff-e3a9-8377-15a3-ce4b28e89cac/mzaf_18422426156481158187.plus.aac.p.m4a",
+  sweetener: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/21/32/e4/2132e4c7-d15a-09d6-7a55-905d05e710ef/mzaf_6065857603198925125.plus.aac.p.m4a",
+});
+
 const artistMap = new Map(artists.map((artist) => [artist.id, artist]));
 const albumMap = new Map(albums.map((album) => [album.id, album]));
 
@@ -126,6 +134,7 @@ export const tracks = rawTracks.map(([id, title, albumId, duration]) => {
     cover: album.cover,
     image: album.cover,
     duration,
+    audioPreview: audioPreviewByTrackId[id],
     isMock: Boolean(album.isMock || artist.isMock),
   };
 });

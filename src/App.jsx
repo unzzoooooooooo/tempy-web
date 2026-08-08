@@ -474,6 +474,7 @@ function GlobalPlayer() {
       ],
     },
   ]);
+  const selectedSong = currentTrack;
 
   useEffect(() => {
     const desktopQuery = window.matchMedia("(min-width: 901px)");
@@ -560,7 +561,11 @@ function GlobalPlayer() {
 
   useEffect(() => {
     const handlePlayRequest = (event) => {
-      const requestedTrack = event.detail?.track || event.detail;
+      const requestedTrackInput = event.detail?.track || event.detail;
+      const canonicalTrack = getTrackById(requestedTrackInput?.trackId || requestedTrackInput?.id);
+      const requestedTrack = canonicalTrack
+        ? { ...requestedTrackInput, ...canonicalTrack }
+        : requestedTrackInput;
       const nextPlaylist = Array.isArray(event.detail?.playlist) ? event.detail.playlist : null;
       setCurrentTrack(requestedTrack);
       setRequestedPlaylist(nextPlaylist);
@@ -593,13 +598,19 @@ function GlobalPlayer() {
 
   useEffect(() => {
     const handleSeekRequest = (event) => {
-      const track = event.detail?.track;
+      const trackInput = event.detail?.track;
+      const canonicalTrack = getTrackById(trackInput?.trackId || trackInput?.id);
+      const track = canonicalTrack ? { ...trackInput, ...canonicalTrack } : trackInput;
       const requestedTime = Number(event.detail?.startTime);
       if (!track || !Number.isFinite(requestedTime)) return;
 
       const nextDuration = parseTrackDuration(track.duration);
-      const nextTime = Math.min(nextDuration, Math.max(0, requestedTime));
-      pendingSeekTimeRef.current = track.audioSrc ? nextTime : null;
+      // iTunes previews are standalone 30-second clips, so a full-track
+      // editorial timestamp cannot be mapped reliably into the preview.
+      const nextTime = track.audioPreview
+        ? 0
+        : Math.min(nextDuration, Math.max(0, requestedTime));
+      pendingSeekTimeRef.current = track.audioPreview ? nextTime : null;
       setCurrentTrack(track);
       setDuration(nextDuration);
       setCurrentTime(nextTime);
@@ -610,7 +621,7 @@ function GlobalPlayer() {
       setSelectedCommentPoint(null);
 
       const audio = audioRef.current;
-      if (audio && track.audioSrc && audio.readyState >= 1) {
+      if (audio && track.audioPreview && audio.readyState >= 1) {
         audio.currentTime = nextTime;
         audio.play().catch(() => setIsPlaying(false));
       }
@@ -676,27 +687,30 @@ function GlobalPlayer() {
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || !currentTrack?.audioSrc) return undefined;
+    if (!audio) return undefined;
 
-    audio.src = currentTrack.audioSrc;
-    audio.volume = volume / 100;
-    if (isPlaying) {
-      audio.play().catch(() => setIsPlaying(false));
+    if (!selectedSong?.audioPreview) {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+      return undefined;
     }
+
+    audio.src = selectedSong.audioPreview;
+    audio.load();
     return undefined;
-  }, [currentTrack, isPlaying, volume]);
+  }, [selectedSong?.audioPreview]);
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || !currentTrack?.audioSrc) return;
+    if (!audio || !selectedSong?.audioPreview) return;
 
-    audio.volume = volume / 100;
     if (isPlaying) {
       audio.play().catch(() => setIsPlaying(false));
     } else {
       audio.pause();
     }
-  }, [isPlaying, currentTrack, volume]);
+  }, [isPlaying, selectedSong?.audioPreview]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -721,7 +735,7 @@ function GlobalPlayer() {
         return;
       }
 
-      if (currentTrack.audioSrc && audio) {
+      if (selectedSong.audioPreview && audio) {
         setCurrentTime(audio.currentTime);
         setProgressTime(audio.currentTime);
       } else {
@@ -744,7 +758,7 @@ function GlobalPlayer() {
         window.cancelAnimationFrame(animationFrame);
       }
     };
-  }, [currentTrack, currentTrack?.audioSrc, duration, isPlaying]);
+  }, [currentTrack, selectedSong?.audioPreview, duration, isPlaying]);
 
   const formatTime = (seconds) => {
     const safeSeconds = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
@@ -774,6 +788,15 @@ function GlobalPlayer() {
       pendingSeekTimeRef.current = null;
       audio.play().catch(() => setIsPlaying(false));
     }
+  };
+
+  const handleAudioEnded = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      setCurrentTime(audio.duration);
+      setProgressTime(audio.duration);
+    }
+    setIsPlaying(false);
   };
 
   const handleClosePlayer = () => {
@@ -808,17 +831,19 @@ function GlobalPlayer() {
   );
 
   const selectTrack = (track, shouldPlay = isPlaying) => {
+    const canonicalTrack = getTrackById(track.trackId || track.id);
+    const selectedTrack = canonicalTrack ? { ...track, ...canonicalTrack } : track;
     setCurrentTrack({
-      id: track.id,
-      title: track.title,
-      artist: track.artist,
-      cover: track.cover || track.image,
-      duration: track.duration,
-      audioSrc: track.audioSrc,
+      id: selectedTrack.id,
+      title: selectedTrack.title,
+      artist: selectedTrack.artist,
+      cover: selectedTrack.cover || selectedTrack.image,
+      duration: selectedTrack.duration,
+      audioPreview: selectedTrack.audioPreview,
     });
     setCurrentTime(0);
     setProgressTime(0);
-    setDuration(parseTrackDuration(track.duration));
+    setDuration(parseTrackDuration(selectedTrack.duration));
     setIsPlaying(shouldPlay);
     setIsSaved(false);
     setHoveredCommentPoint(null);
@@ -941,7 +966,7 @@ function GlobalPlayer() {
   const seekToProgress = (progress) => {
     const nextTime = Math.min(safeDuration, Math.max(0, progress * safeDuration));
     const audio = audioRef.current;
-    if (audio && currentTrack.audioSrc) {
+    if (audio && selectedSong.audioPreview) {
       audio.currentTime = nextTime;
     }
     setCurrentTime(nextTime);
@@ -986,7 +1011,8 @@ function GlobalPlayer() {
         ref={audioRef}
         onLoadedMetadata={handleAudioLoaded}
         onTimeUpdate={handleAudioTimeUpdate}
-        onEnded={() => setIsPlaying(false)}
+        onEnded={handleAudioEnded}
+        onError={() => setIsPlaying(false)}
       />
       {isFullPlayerOpen && (
         <section className={fullPlayerClassName} aria-label="Full music player">
