@@ -520,11 +520,6 @@ function GlobalPlayer() {
     };
   }, [isDesktopRing, selectedCommentPoint]);
 
-  const playlist = musicCatalogTracks.map((track) => ({
-    ...track,
-    cover: track.cover || track.image || "/images/album-10.png",
-  }));
-
   useEffect(() => {
     if (previousPathRef.current === location.pathname) return;
     previousPathRef.current = location.pathname;
@@ -810,7 +805,7 @@ function GlobalPlayer() {
 
   if (!currentTrack) return <audio ref={audioRef} />;
 
-  const playerPlaylist = playlist;
+  const playerPlaylist = musicCatalogTracks;
 
   const currentTrackIndex = Math.max(
     0,
@@ -1339,23 +1334,41 @@ function GlobalPlayer() {
             {sidePanelMode === "playlist" ? (
               <div className="full-player__panel-content">
                 <h2>Track lists</h2>
-                <div className="full-player__track-list">
-                  {playerPlaylist.map((track, index) => (
-                    <button
-                      className={track.id === currentTrack.id ? "full-player__track-row is-current" : "full-player__track-row"}
-                      type="button"
-                      key={track.id}
-                      onClick={() => selectTrack(track, true)}
-                    >
-                      <span>{String(index + 1).padStart(2, "0")}</span>
-                      <img src={track.cover} alt="" draggable={false} />
-                      <span>
-                        <strong>{track.title}</strong>
-                        <small>{track.artist}</small>
-                      </span>
-                      <time>{track.audioPreview ? track.duration : "No Preview"}</time>
-                    </button>
-                  ))}
+                <div className="full-player__track-list" aria-label={`${musicCatalogTracks.length} catalog tracks`}>
+                  {musicCatalogTracks.map((track, index) => {
+                    const isCurrentTrack = track.id === selectedSong.id;
+                    const isMockTrack = Boolean(track.isMockTrack || track.isMock);
+                    const hasPreview = Boolean(track.audioPreview);
+                    const rowClassName = [
+                      "full-player__track-row",
+                      isCurrentTrack ? "is-current" : "",
+                      !hasPreview ? "is-unavailable" : "",
+                      isMockTrack ? "is-mock" : "",
+                    ].filter(Boolean).join(" ");
+
+                    return (
+                      <button
+                        className={rowClassName}
+                        type="button"
+                        key={track.id}
+                        aria-current={isCurrentTrack ? "true" : undefined}
+                        aria-label={`${track.title} by ${track.artist}${hasPreview ? " 재생" : " Preview unavailable"}`}
+                        onClick={() => selectTrack(track, true)}
+                      >
+                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        <img src={track.cover || track.image} alt="" draggable={false} />
+                        <span>
+                          <strong>{track.title}</strong>
+                          <small>{track.artist}</small>
+                        </span>
+                        <span className="full-player__track-status">
+                          <time>{track.duration}</time>
+                          {!hasPreview && <small>No Preview</small>}
+                          {isMockTrack && <small>Mock</small>}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ) : (

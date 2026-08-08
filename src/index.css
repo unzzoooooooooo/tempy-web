@@ -2158,6 +2158,8 @@ button {
 .full-player__moment-list {
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   padding-right: 4px;
 }
 
@@ -2212,6 +2214,26 @@ button {
 .full-player__track-row.is-current > span:first-child {
   color: #f0443e;
   font-weight: 900;
+}
+
+.full-player__track-status {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+}
+
+.full-player__track-status small {
+  width: max-content;
+  padding: 2px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 9px;
+  line-height: 1;
+}
+
+.full-player__track-row.is-unavailable {
+  color: rgba(255, 255, 255, 0.48);
 }
 
 .full-player__moments {
