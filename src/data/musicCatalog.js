@@ -108,12 +108,146 @@ const rawTracks = [
   ["let-me-love-my-youth", "Let Me Love My Youth", "hanroro-profile-placeholder", "04:09"],
 ];
 
-// Official 30-second previews returned by the iTunes Search API (country=KR).
-// Keep these as remote URLs: Tempy streams the preview and does not bundle it.
-const audioPreviewByTrackId = Object.freeze({
-  "birds-of-a-feather": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/34/31/d3/3431d34e-847f-5d66-df83-0bce688d997e/mzaf_18106743962423782018.plus.aac.p.m4a",
-  "blinding-lights": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/19/d6/60/19d660ff-e3a9-8377-15a3-ce4b28e89cac/mzaf_18422426156481158187.plus.aac.p.m4a",
-  sweetener: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/21/32/e4/2132e4c7-d15a-09d6-7a55-905d05e710ef/mzaf_6065857603198925125.plus.aac.p.m4a",
+// Official iTunes Search API links, matched by normalized title + artist.
+// KR results are preferred; US is used only when KR has no exact match.
+// Tempy streams these remote previews and does not bundle audio files.
+const trackLinksByTrackId = Object.freeze({
+  "fate-of-ophelia": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4b/07/28/4b07285f-b50c-7aff-cb40-2d732256b703/mzaf_16739866530441939982.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/the-fate-of-ophelia/1833328839?i=1833328840&uo=4",
+  },
+  showgirl: { audioPreview: null, trackViewUrl: null },
+  "under-the-spotlight": { audioPreview: null, trackViewUrl: null },
+  "velvet-curtain": { audioPreview: null, trackViewUrl: null },
+  "backstage-heart": { audioPreview: null, trackViewUrl: null },
+  encore: { audioPreview: null, trackViewUrl: null },
+  "upside-down": { audioPreview: null, trackViewUrl: null },
+  "birds-of-a-feather": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/34/31/d3/3431d34e-847f-5d66-df83-0bce688d997e/mzaf_18106743962423782018.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/birds-of-a-feather/1739659134?i=1739659142&uo=4",
+  },
+  "super-shy": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a0/0c/47/a00c4790-3bbe-c669-fc8b-d8779508b512/mzaf_4170831274187670095.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/super-shy/1692686264?i=1692686518&uo=4",
+  },
+  "blinding-lights": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/19/d6/60/19d660ff-e3a9-8377-15a3-ce4b28e89cac/mzaf_18422426156481158187.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/blinding-lights/1499378108?i=1499378607&uo=4",
+  },
+  "gone-are-the-days": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/92/a7/a9/92a7a9e8-a82f-706f-7867-013833167335/mzaf_819369403318584232.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/gone-are-the-days/1107603110?i=1107603297&uo=4",
+  },
+  traveler: { audioPreview: null, trackViewUrl: null },
+  sweetener: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/21/32/e4/2132e4c7-d15a-09d6-7a55-905d05e710ef/mzaf_6065857603198925125.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/sweetener/1399202900?i=1399203813&uo=4",
+  },
+  tattoo: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/60/78/c0/6078c0f4-efb2-c2fa-f0cb-74fcfcda8c21/mzaf_912733534683060955.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/tattoo/1754117467?i=1754117752&uo=4",
+  },
+  "anti-hero": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e6/ee/4e/e6ee4ede-237c-71e2-c90a-56ad414821ce/mzaf_12202654298857745709.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/anti-hero/1645937249?i=1645937257&uo=4",
+  },
+  maroon: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/df/17/dc/df17dce2-5e56-b2cc-e5bb-2c0c5b74b092/mzaf_5240602371978171573.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/maroon/1645937249?i=1645937255&uo=4",
+  },
+  "midnight-rain": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/54/f2/6b/54f26bcd-af94-a65e-9861-10c05224e9b1/mzaf_13752008219833128698.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/midnight-rain/1645937249?i=1645937261&uo=4",
+  },
+  willow: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c8/1f/d0/c81fd0ff-9247-cf6e-14df-6111f790bf1f/mzaf_9111987299197928468.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/willow/1544268281?i=1544268298&uo=4",
+  },
+  "cruel-summer": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/44/af/81/44af8168-9609-1b85-5048-ada08dceacf3/mzaf_1341699644335558812.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/cruel-summer/1468058165?i=1468058171&uo=4",
+  },
+  lover: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e0/db/47/e0db47b0-7f70-0631-0414-cd4777d2fb3e/mzaf_6362891154838442638.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/lover/1468058165?i=1468058173&uo=4",
+  },
+  delicate: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a7/24/e8/a724e804-d5df-f7a7-24cc-09df9df57a79/mzaf_4087189896444308455.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/delicate/1440933849?i=1440934254&uo=4",
+  },
+  "good-feeling": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/81/2a/f1/812af15e-5df8-1024-f994-f216451082a0/mzaf_5760566664236261677.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/good-feeling/1656600335?i=1656600336&uo=4",
+  },
+  "catch-me": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b0/ad/2e/b0ad2ef1-6706-b462-5129-954bbd847ffd/mzaf_7781048576059713747.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/catch-me/1639283386?i=1639283389&uo=4",
+  },
+  360: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ee/24/4c/ee244cd0-a68a-64f1-c41a-fe08318d0b41/mzaf_16963438138883503449.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/360/1762679425?i=1762679426&uo=4",
+  },
+  "watermelon-sugar": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/16/86/f5/1686f50d-8b77-7e32-85f7-5f0e804d68fe/mzaf_14195633304344507287.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/watermelon-sugar/1485802965?i=1485802967&uo=4",
+  },
+  "puppet-show": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/d9/dd/ae/d9ddaecf-3f3e-45e8-c5ee-15ccc45fa060/mzaf_12830622419635504873.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/puppet-show/1703356590?i=1703356821&uo=4",
+  },
+  style: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/28/77/36/28773617-eda4-d33d-70f2-23a9dbb08d65/mzaf_13962566637593274280.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/style/1445888258?i=1445888386&uo=4",
+  },
+  "wildest-dreams": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b3/71/df/b371df5a-2196-8492-654d-445955b2afc5/mzaf_11948628759419776446.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/wildest-dreams/1445888258?i=1445888403&uo=4",
+  },
+  mood: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4f/e8/f3/4fe8f38b-4090-34d0-e6b6-fe82e3c99c84/mzaf_5808253253551247130.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/mood/1689195224?i=1689195408&uo=4",
+  },
+  "disco-room": { audioPreview: null, trackViewUrl: null },
+  "mamas-boy": { audioPreview: null, trackViewUrl: null },
+  "soft-static": { audioPreview: null, trackViewUrl: null },
+  "rich-man": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1e/a6/20/1ea6202b-37fd-30a4-2383-6c22c41de762/mzaf_9596143199836663173.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/rich-man/1832407118?i=1832407119&uo=4",
+  },
+  "citrus-glow": { audioPreview: null, trackViewUrl: null },
+  "you-and-me": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/92/c8/06/92c806b3-2977-67f5-1463-fd6ceacd36e7/mzaf_9879973441146838578.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/you-me/1710020667?i=1710020675&uo=4",
+  },
+  "toxic-till-the-end": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/45/15/49/451549d8-ddd7-dad4-0f3d-588a0c9d1b98/mzaf_17766988925119316702.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/toxic-till-the-end/1771105914?i=1771105929&uo=4",
+  },
+  wait: { audioPreview: null, trackViewUrl: null },
+  whiplash: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/91/84/e5/9184e5d0-54c8-eccc-e62c-e3175a88b396/mzaf_13467227653896090925.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/whiplash/1772644600?i=1772644601&uo=4",
+  },
+  armageddon: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f1/d9/40/f1d9406f-b253-80b0-fbf6-72c2dc02576e/mzaf_7682160531840108387.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/armageddon/1745285216?i=1745285228&uo=4",
+  },
+  "like-jennie": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/42/dc/06/42dc069a-1683-2d2b-6442-b3655f2b2a97/mzaf_15363406353889961611.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/like-jennie/1800280826?i=1800281048&uo=4",
+  },
+  mantra: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/91/21/11/91211112-0655-9317-869f-c6c12b21d5dd/mzaf_5377389483986561528.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/mantra/1772760251?i=1772760254&uo=4",
+  },
+  "love-lee": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/75/42/8e/75428efd-bf7c-922a-253a-dcc9f812eddc/mzaf_9614853286254962096.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/love-lee/1702810041?i=1702810042&uo=4",
+  },
+  "let-me-love-my-youth": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/83/4e/85/834e85b0-4dde-b22c-7ae6-63692e393b76/mzaf_10616492005222924951.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/let-me-love-my-youth/1613687888?i=1613687889&uo=4",
+  },
 });
 
 const artistMap = new Map(artists.map((artist) => [artist.id, artist]));
@@ -122,6 +256,7 @@ const albumMap = new Map(albums.map((album) => [album.id, album]));
 export const tracks = rawTracks.map(([id, title, albumId, duration]) => {
   const album = albumMap.get(albumId);
   const artist = artistMap.get(album.artistId);
+  const links = trackLinksByTrackId[id] || { audioPreview: null, trackViewUrl: null };
   return {
     id,
     trackId: id,
@@ -134,7 +269,8 @@ export const tracks = rawTracks.map(([id, title, albumId, duration]) => {
     cover: album.cover,
     image: album.cover,
     duration,
-    audioPreview: audioPreviewByTrackId[id],
+    audioPreview: links.audioPreview,
+    trackViewUrl: links.trackViewUrl,
     isMock: Boolean(album.isMock || artist.isMock),
   };
 });
