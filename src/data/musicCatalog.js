@@ -22,12 +22,14 @@ export const artists = [
   { id: "rose", name: "ROSÉ", profile: "/images/album-27.png", genres: ["Pop", "Pop Rock"] },
   { id: "arlie", name: "Arlie", profile: "/images/album-28.png", genres: ["Indie Pop"] },
   { id: "lany", name: "LANY", profile: "/images/album-22.png", genres: ["Pop", "Indie Pop"] },
+  { id: "the-aces", name: "The Aces", profile: "/images/album-21.png", genres: ["Alternative", "Indie Pop"] },
+  { id: "olivia-rodrigo", name: "Olivia Rodrigo", profile: "/images/album-02.png", genres: ["Pop", "Pop Rock"] },
   { id: "tempy-archive", name: "Tempy Archive", profile: "/images/profile-03.png", genres: ["Archive Pop"], isMock: true },
 ];
 
 export const albums = [
   { id: "life-of-a-showgirl", title: "The Life of a Showgirl", artistId: "taylor-swift", cover: "/images/album-01.png", releaseDate: "2025", language: "English" },
-  { id: "upside-down-archive", title: "Upside Down Archive", artistId: "tempy-archive", cover: "/images/album-02.png", releaseDate: "2025", language: "English", isMock: true },
+  { id: "upside-down-archive", title: "drop dead", artistId: "olivia-rodrigo", cover: "/images/album-02.png", releaseDate: "2025", language: "English" },
   { id: "hit-me-hard-and-soft", title: "HIT ME HARD AND SOFT", artistId: "billie-eilish", cover: "/images/album-03.png", releaseDate: "2024", language: "English" },
   { id: "new-jeans", title: "NewJeans 2nd EP 'Get Up'", artistId: "newjeans", cover: "/images/album-04.png", releaseDate: "2023", language: "Korean" },
   { id: "blinding-lights", title: "Blinding Lights", artistId: "the-weeknd", cover: "/images/album-05.png", releaseDate: "2019", language: "English" },
@@ -46,11 +48,11 @@ export const albums = [
   { id: "puppet-show", title: "NEW DNA (Apple Music Edition) - EP", artistId: "xg", cover: "/images/album-18.png", releaseDate: "2023", language: "English" },
   { id: "1989", title: "1989", artistId: "taylor-swift", cover: "/images/album-19.png", releaseDate: "2014", language: "English" },
   { id: "mood", title: "MOOD", artistId: "jane-and-the-boy", cover: "/images/album-20.png", releaseDate: "2023", language: "English" },
-  { id: "disco-room", title: "Disco Room", artistId: "tempy-archive", cover: "/images/album-21.png", releaseDate: "2025", language: "English", isMock: true },
+  { id: "disco-room", title: "Can't Wait", artistId: "the-aces", cover: "/images/album-21.png", releaseDate: "2025", language: "English" },
   { id: "mamas-boy", title: "mama's boy", artistId: "lany", cover: "/images/album-22.png", releaseDate: "2020", language: "English" },
-  { id: "soft-static", title: "Soft Static", artistId: "tempy-archive", cover: "/images/album-23.png", releaseDate: "2025", language: "English", isMock: true },
+  { id: "soft-static", title: "dna", artistId: "lany", cover: "/images/album-23.png", releaseDate: "2025", language: "English" },
   { id: "rich-man", title: "Rich Man", artistId: "aespa", cover: "/images/album-24.png", releaseDate: "2025", language: "Korean" },
-  { id: "citrus-glow", title: "Citrus Glow", artistId: "tempy-archive", cover: "/images/album-25.png", releaseDate: "2025", language: "English", isMock: true },
+  { id: "citrus-glow", title: "LEMONADE", artistId: "aespa", cover: "/images/album-25.png", releaseDate: "2025", language: "English" },
   { id: "you-and-me", title: "You & Me", artistId: "jennie", cover: "/images/album-26.png", releaseDate: "2023", language: "English" },
   { id: "rosie", title: "rosie", artistId: "rose", cover: "/images/album-27.png", releaseDate: "2024", language: "English" },
   { id: "wait", title: "Wait", artistId: "arlie", cover: "/images/album-28.png", releaseDate: "2018", language: "English" },
@@ -64,12 +66,12 @@ export const albums = [
 
 const rawTracks = [
   ["fate-of-ophelia", "The Fate of Ophelia", "life-of-a-showgirl", "03:24"],
-  ["showgirl", "Showgirl", "life-of-a-showgirl", "03:18"],
-  ["under-the-spotlight", "Under the Spotlight", "life-of-a-showgirl", "03:42"],
-  ["velvet-curtain", "Velvet Curtain", "life-of-a-showgirl", "03:06"],
-  ["backstage-heart", "Backstage Heart", "life-of-a-showgirl", "03:31"],
-  ["encore", "Encore", "life-of-a-showgirl", "03:27"],
-  ["upside-down", "Upside Down", "upside-down-archive", "02:58"],
+  ["showgirl", "Elizabeth Taylor", "life-of-a-showgirl", "03:18"],
+  ["under-the-spotlight", "Opalite", "life-of-a-showgirl", "03:42"],
+  ["velvet-curtain", "Father Figure", "life-of-a-showgirl", "03:06"],
+  ["backstage-heart", "Eldest Daughter", "life-of-a-showgirl", "03:31"],
+  ["encore", "The Life of a Showgirl (feat. Sabrina Carpenter)", "life-of-a-showgirl", "03:27"],
+  ["upside-down", "drop dead", "upside-down-archive", "02:58"],
   ["birds-of-a-feather", "BIRDS OF A FEATHER", "hit-me-hard-and-soft", "03:30"],
   ["super-shy", "Super Shy", "new-jeans", "02:34"],
   ["blinding-lights", "Blinding Lights", "blinding-lights", "03:20"],
@@ -92,14 +94,14 @@ const rawTracks = [
   ["style", "Style", "1989", "03:51"],
   ["wildest-dreams", "Wildest Dreams", "1989", "03:40"],
   ["mood", "MOOD", "mood", "03:04"],
-  ["disco-room", "Disco Room", "disco-room", "03:21"],
+  ["disco-room", "Can't Wait", "disco-room", "03:21"],
   ["mamas-boy", "you!", "mamas-boy", "04:34"],
-  ["soft-static", "Soft Static", "soft-static", "03:26"],
+  ["soft-static", "dna", "soft-static", "03:26"],
   ["rich-man", "Rich Man", "rich-man", "03:18"],
-  ["citrus-glow", "Citrus Glow", "citrus-glow", "02:57"],
+  ["citrus-glow", "LEMONADE", "citrus-glow", "02:57"],
   ["you-and-me", "You & Me", "you-and-me", "02:59"],
   ["toxic-till-the-end", "toxic till the end", "rosie", "02:36"],
-  ["wait", "Wait", "wait", "03:27"],
+  ["wait", "Big Fat Mouth", "wait", "03:27"],
   ["whiplash", "Whiplash", "whiplash", "03:03"],
   ["armageddon", "Armageddon", "armageddon", "03:16"],
   ["like-jennie", "like JENNIE", "ruby", "02:03"],
@@ -250,20 +252,6 @@ const trackLinksByTrackId = Object.freeze({
   },
 });
 
-// Catalog-only placeholders that intentionally have no real-world audio match.
-const mockTrackIds = new Set([
-  "showgirl",
-  "under-the-spotlight",
-  "velvet-curtain",
-  "backstage-heart",
-  "encore",
-  "upside-down",
-  "disco-room",
-  "soft-static",
-  "citrus-glow",
-  "wait",
-]);
-
 // Per-track corrections that must not rename the shared artist everywhere.
 const trackMetadataOverrides = Object.freeze({
   traveler: {
@@ -294,7 +282,6 @@ export const tracks = rawTracks.map(([id, title, albumId, duration]) => {
     duration,
     audioPreview: links.audioPreview,
     trackViewUrl: links.trackViewUrl,
-    ...(mockTrackIds.has(id) ? { isMockTrack: true } : {}),
     isMock: Boolean(album.isMock || artist.isMock),
   };
 });
