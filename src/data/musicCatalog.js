@@ -250,6 +250,29 @@ const trackLinksByTrackId = Object.freeze({
   },
 });
 
+// Catalog-only placeholders that intentionally have no real-world audio match.
+const mockTrackIds = new Set([
+  "showgirl",
+  "under-the-spotlight",
+  "velvet-curtain",
+  "backstage-heart",
+  "encore",
+  "upside-down",
+  "disco-room",
+  "mamas-boy",
+  "soft-static",
+  "citrus-glow",
+  "wait",
+]);
+
+// Per-track corrections that must not rename the shared artist everywhere.
+const trackMetadataOverrides = Object.freeze({
+  traveler: {
+    title: "Travelers",
+    artist: "OFFICIAL HIGE DANDISM",
+  },
+});
+
 const artistMap = new Map(artists.map((artist) => [artist.id, artist]));
 const albumMap = new Map(albums.map((album) => [album.id, album]));
 
@@ -257,12 +280,13 @@ export const tracks = rawTracks.map(([id, title, albumId, duration]) => {
   const album = albumMap.get(albumId);
   const artist = artistMap.get(album.artistId);
   const links = trackLinksByTrackId[id] || { audioPreview: null, trackViewUrl: null };
+  const metadata = trackMetadataOverrides[id];
   return {
     id,
     trackId: id,
-    title,
+    title: metadata?.title || title,
     artistId: artist.id,
-    artist: artist.name,
+    artist: metadata?.artist || artist.name,
     artistProfile: artist.profile,
     albumId,
     album: album.title,
@@ -271,6 +295,7 @@ export const tracks = rawTracks.map(([id, title, albumId, duration]) => {
     duration,
     audioPreview: links.audioPreview,
     trackViewUrl: links.trackViewUrl,
+    ...(mockTrackIds.has(id) ? { isMockTrack: true } : {}),
     isMock: Boolean(album.isMock || artist.isMock),
   };
 });
