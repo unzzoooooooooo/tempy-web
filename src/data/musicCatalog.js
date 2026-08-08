@@ -416,7 +416,8 @@ export const normalizeMusicItem = (item) => {
   const cover = item.cover || item.image;
   const hasTrackIdentity = Boolean(item.title && item.artist);
   const canonical = getTrackById(item.trackId || item.id)
-    || (hasTrackIdentity ? trackIdentityMap.get(getTrackIdentity(item.title, item.artist)) : getTrackByCover(cover));
+    || (hasTrackIdentity ? trackIdentityMap.get(getTrackIdentity(item.title, item.artist)) : null)
+    || getTrackByCover(cover);
   if (!canonical) {
     const matchedCover = getArtistCover(item.artist, cover);
     return matchedCover ? { ...item, cover: matchedCover, image: matchedCover } : item;

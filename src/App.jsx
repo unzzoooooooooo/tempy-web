@@ -21,8 +21,12 @@ import Archive from "./pages/Archive";
 import ArchiveBlindPick from "./pages/ArchiveBlindPick";
 import Profile from "./pages/Profile";
 import Login, { LoginSuccess } from "./pages/Login";
-import { localTracks } from "./data/tracks";
-import { getTrackByCover, getTrackById, getTracksByIds } from "./data/musicCatalog";
+import {
+  getTrackByCover,
+  getTrackById,
+  normalizeMusicItem,
+  tracks as musicCatalogTracks,
+} from "./data/musicCatalog";
 
 const AUTH_STORAGE_KEY = "isLoggedIn";
 
@@ -98,7 +102,12 @@ function Header() {
   return (
     <header className="header">
       <div className="header-left">
-        <Link className="logo-small" to="/" aria-label="Go to Home">
+        <Link
+          className="logo-small"
+          to="/"
+          aria-label="Go to Home"
+          onClick={() => window.dispatchEvent(new CustomEvent("tempy-close-full-player"))}
+        >
           <img src={logoNav} alt="Tempy!" draggable={false} />
         </Link>
       </div>
@@ -288,14 +297,14 @@ const normalizeTrackFromElement = (element) => {
 
   const canonicalTrack = getTrackById(element.dataset.tempyId) || getTrackByCover(cover);
 
-  return {
+  return normalizeMusicItem({
     ...(canonicalTrack || {}),
     id: canonicalTrack?.id || element.dataset.tempyId || `${title}-${artist}`.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-"),
     title: canonicalTrack?.title || title,
     artist: canonicalTrack?.artist || artist,
     cover: canonicalTrack?.cover || cover,
     duration: canonicalTrack?.duration || duration,
-  };
+  });
 };
 
 const parseTrackDuration = (durationValue) => {
@@ -359,31 +368,22 @@ const getCircularProgressFromPointer = (event, element) => {
   return ((angle + 90 + 360) % 360) / 360;
 };
 
-const fullPlayerExtraTracks = getTracksByIds([
-  "anti-hero",
-  "willow",
-  "cruel-summer",
-  "delicate",
-  "360",
-  "watermelon-sugar",
-  "style",
-  "mood",
-  "disco-room",
-  "mamas-boy",
-  "soft-static",
-  "citrus-glow",
-  "you-and-me",
-  "toxic-till-the-end",
-  "wait",
-  "whiplash",
-  "armageddon",
-  "like-jennie",
-  "mantra",
-  "love-lee",
-]);
+const getNextPlayableCatalogTrack = (trackId) => {
+  if (!musicCatalogTracks.length) return null;
+  const currentIndex = musicCatalogTracks.findIndex((track) => track.id === trackId);
+  const startIndex = currentIndex >= 0 ? currentIndex : -1;
+
+  for (let offset = 1; offset <= musicCatalogTracks.length; offset += 1) {
+    const candidate = musicCatalogTracks[(startIndex + offset) % musicCatalogTracks.length];
+    if (candidate?.audioPreview) return candidate;
+  }
+
+  return null;
+};
 
 function GlobalPlayer() {
   const location = useLocation();
+  const navigate = useNavigate();
   const previousPathRef = useRef(location.pathname);
   const isSeekingRef = useRef(false);
   const pendingSeekTimeRef = useRef(null);
@@ -394,11 +394,11 @@ function GlobalPlayer() {
   const [isMobileViewport, setIsMobileViewport] = useState(() => window.matchMedia("(max-width: 768px)").matches);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [requestedPlaylist, setRequestedPlaylist] = useState(null);
   const [isShuffleEnabled, setIsShuffleEnabled] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [progressTime, setProgressTime] = useState(0);
-  const [duration, setDuration] = useState(15);
+  const [duration, setDuration] = useState(0);
+  const [isAudioMetadataReady, setIsAudioMetadataReady] = useState(false);
   const [isFullPlayerOpen, setIsFullPlayerOpen] = useState(false);
   const [isFullPlayerExpanded, setIsFullPlayerExpanded] = useState(false);
   const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
@@ -520,7 +520,7 @@ function GlobalPlayer() {
     };
   }, [isDesktopRing, selectedCommentPoint]);
 
-  const playlist = [...localTracks, ...fullPlayerExtraTracks].map((track) => ({
+  const playlist = musicCatalogTracks.map((track) => ({
     ...track,
     cover: track.cover || track.image || "/images/album-10.png",
   }));
@@ -532,6 +532,17 @@ function GlobalPlayer() {
     setIsFullPlayerExpanded(false);
     setIsMobilePanelOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const closeFullPlayer = () => {
+      setIsFullPlayerOpen(false);
+      setIsFullPlayerExpanded(false);
+      setIsMobilePanelOpen(false);
+    };
+
+    window.addEventListener("tempy-close-full-player", closeFullPlayer);
+    return () => window.removeEventListener("tempy-close-full-player", closeFullPlayer);
+  }, []);
 
   useEffect(() => {
     if (!isMobileViewport || !isFullPlayerOpen) return undefined;
@@ -562,18 +573,15 @@ function GlobalPlayer() {
   useEffect(() => {
     const handlePlayRequest = (event) => {
       const requestedTrackInput = event.detail?.track || event.detail;
-      const canonicalTrack = getTrackById(requestedTrackInput?.trackId || requestedTrackInput?.id);
-      const requestedTrack = canonicalTrack
-        ? { ...requestedTrackInput, ...canonicalTrack }
-        : requestedTrackInput;
-      const nextPlaylist = Array.isArray(event.detail?.playlist) ? event.detail.playlist : null;
+      const requestedTrack = normalizeMusicItem(requestedTrackInput);
+      if (!requestedTrack) return;
       setCurrentTrack(requestedTrack);
-      setRequestedPlaylist(nextPlaylist);
-      setIsShuffleEnabled(nextPlaylist ? Boolean(event.detail?.shuffle) : false);
-      setIsPlaying(true);
+      setIsShuffleEnabled(Boolean(event.detail?.shuffle));
+      setIsPlaying(Boolean(requestedTrack.audioPreview));
       setCurrentTime(0);
       setProgressTime(0);
-      setDuration(parseTrackDuration(requestedTrack?.duration));
+      setDuration(0);
+      setIsAudioMetadataReady(false);
       setIsSaved(false);
       setIsMobilePanelOpen(false);
       setHoveredCommentPoint(null);
@@ -586,9 +594,6 @@ function GlobalPlayer() {
 
   useEffect(() => {
     const handleShuffleRequest = (event) => {
-      if (Array.isArray(event.detail?.playlist)) {
-        setRequestedPlaylist(event.detail.playlist);
-      }
       setIsShuffleEnabled(Boolean(event.detail?.enabled));
     };
 
@@ -599,23 +604,20 @@ function GlobalPlayer() {
   useEffect(() => {
     const handleSeekRequest = (event) => {
       const trackInput = event.detail?.track;
-      const canonicalTrack = getTrackById(trackInput?.trackId || trackInput?.id);
-      const track = canonicalTrack ? { ...trackInput, ...canonicalTrack } : trackInput;
+      const track = normalizeMusicItem(trackInput);
       const requestedTime = Number(event.detail?.startTime);
       if (!track || !Number.isFinite(requestedTime)) return;
 
-      const nextDuration = parseTrackDuration(track.duration);
       // iTunes previews are standalone 30-second clips, so a full-track
       // editorial timestamp cannot be mapped reliably into the preview.
-      const nextTime = track.audioPreview
-        ? 0
-        : Math.min(nextDuration, Math.max(0, requestedTime));
-      pendingSeekTimeRef.current = track.audioPreview ? nextTime : null;
+      const nextTime = 0;
+      pendingSeekTimeRef.current = track.audioPreview ? 0 : null;
       setCurrentTrack(track);
-      setDuration(nextDuration);
+      setDuration(0);
+      setIsAudioMetadataReady(false);
       setCurrentTime(nextTime);
       setProgressTime(nextTime);
-      setIsPlaying(true);
+      setIsPlaying(Boolean(track.audioPreview));
       setIsSaved(false);
       setHoveredCommentPoint(null);
       setSelectedCommentPoint(null);
@@ -633,12 +635,12 @@ function GlobalPlayer() {
 
   useEffect(() => {
     const handlePlaybackToggle = () => {
-      setIsPlaying((currentlyPlaying) => !currentlyPlaying);
+      setIsPlaying((currentlyPlaying) => selectedSong?.audioPreview ? !currentlyPlaying : false);
     };
 
     window.addEventListener("tempy-toggle-playback", handlePlaybackToggle);
     return () => window.removeEventListener("tempy-toggle-playback", handlePlaybackToggle);
-  }, []);
+  }, [selectedSong?.audioPreview]);
 
   useEffect(() => {
     if (!currentTrack) return;
@@ -720,32 +722,21 @@ function GlobalPlayer() {
 
   useEffect(() => {
     if (!currentTrack) return undefined;
-    if (!isPlaying) return undefined;
+    if (!isPlaying || !isAudioMetadataReady) return undefined;
 
     let animationFrame = null;
-    let lastFrameAt = performance.now();
-    const safeTotal = Number.isFinite(duration) && duration > 0 ? duration : 1;
-
-    const renderProgress = (now) => {
+    const renderProgress = () => {
       const audio = audioRef.current;
 
       if (isSeekingRef.current) {
-        lastFrameAt = now;
         animationFrame = window.requestAnimationFrame(renderProgress);
         return;
       }
 
-      if (selectedSong.audioPreview && audio) {
-        setCurrentTime(audio.currentTime);
-        setProgressTime(audio.currentTime);
-      } else {
-        const elapsed = (now - lastFrameAt) / 1000;
-        lastFrameAt = now;
-        setProgressTime((time) => {
-          const nextTime = (time + elapsed) % safeTotal;
-          setCurrentTime(nextTime);
-          return nextTime;
-        });
+      if (selectedSong.audioPreview && audio && Number.isFinite(audio.duration) && audio.duration > 0) {
+        const liveTime = Math.min(audio.duration, Math.max(0, audio.currentTime));
+        setCurrentTime(liveTime);
+        setProgressTime(liveTime);
       }
 
       animationFrame = window.requestAnimationFrame(renderProgress);
@@ -758,7 +749,7 @@ function GlobalPlayer() {
         window.cancelAnimationFrame(animationFrame);
       }
     };
-  }, [currentTrack, selectedSong?.audioPreview, duration, isPlaying]);
+  }, [currentTrack, isAudioMetadataReady, isPlaying, selectedSong?.audioPreview]);
 
   const formatTime = (seconds) => {
     const safeSeconds = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
@@ -767,18 +758,15 @@ function GlobalPlayer() {
     return `${minutes}:${String(restSeconds).padStart(2, "0")}`;
   };
 
-  const handleAudioTimeUpdate = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    setCurrentTime(audio.currentTime);
-    setProgressTime(audio.currentTime);
-  };
-
   const handleAudioLoaded = () => {
     const audio = audioRef.current;
     if (!audio) return;
-    const loadedDuration = Number.isFinite(audio.duration) ? audio.duration : 15;
+    const loadedDuration = Number.isFinite(audio.duration) && audio.duration > 0
+      ? audio.duration
+      : 0;
+    if (!loadedDuration) return;
     setDuration(loadedDuration);
+    setIsAudioMetadataReady(true);
 
     if (pendingSeekTimeRef.current !== null) {
       const nextTime = Math.min(loadedDuration, pendingSeekTimeRef.current);
@@ -791,12 +779,12 @@ function GlobalPlayer() {
   };
 
   const handleAudioEnded = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      setCurrentTime(audio.duration);
-      setProgressTime(audio.duration);
+    const nextTrack = getNextPlayableCatalogTrack(currentTrack?.id);
+    if (!nextTrack) {
+      setIsPlaying(false);
+      return;
     }
-    setIsPlaying(false);
+    transitionToTrack(nextTrack, "next", true);
   };
 
   const handleClosePlayer = () => {
@@ -809,7 +797,6 @@ function GlobalPlayer() {
     }
     setIsPlaying(false);
     setCurrentTrack(null);
-    setRequestedPlaylist(null);
     setIsShuffleEnabled(false);
     setCurrentTime(0);
     setProgressTime(0);
@@ -823,7 +810,7 @@ function GlobalPlayer() {
 
   if (!currentTrack) return <audio ref={audioRef} />;
 
-  const playerPlaylist = requestedPlaylist?.length ? requestedPlaylist : playlist;
+  const playerPlaylist = playlist;
 
   const currentTrackIndex = Math.max(
     0,
@@ -831,20 +818,14 @@ function GlobalPlayer() {
   );
 
   const selectTrack = (track, shouldPlay = isPlaying) => {
-    const canonicalTrack = getTrackById(track.trackId || track.id);
-    const selectedTrack = canonicalTrack ? { ...track, ...canonicalTrack } : track;
-    setCurrentTrack({
-      id: selectedTrack.id,
-      title: selectedTrack.title,
-      artist: selectedTrack.artist,
-      cover: selectedTrack.cover || selectedTrack.image,
-      duration: selectedTrack.duration,
-      audioPreview: selectedTrack.audioPreview,
-    });
+    const selectedTrack = normalizeMusicItem(track);
+    if (!selectedTrack) return;
+    setCurrentTrack(selectedTrack);
     setCurrentTime(0);
     setProgressTime(0);
-    setDuration(parseTrackDuration(selectedTrack.duration));
-    setIsPlaying(shouldPlay);
+    setDuration(0);
+    setIsAudioMetadataReady(false);
+    setIsPlaying(Boolean(shouldPlay && selectedTrack.audioPreview));
     setIsSaved(false);
     setHoveredCommentPoint(null);
     setSelectedCommentPoint(null);
@@ -922,8 +903,11 @@ function GlobalPlayer() {
   };
 
   const vinylStyle = { "--global-player-cover": `url(${currentTrack.cover})` };
-  const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : parseTrackDuration(currentTrack.duration);
-  const playProgress = Math.min(1, Math.max(0, progressTime / safeDuration));
+  const safeDuration = isAudioMetadataReady && Number.isFinite(duration) && duration > 0 ? duration : 1;
+  const isPreviewUnavailable = !selectedSong.audioPreview;
+  const playProgress = isAudioMetadataReady
+    ? Math.min(1, Math.max(0, progressTime / safeDuration))
+    : 0;
   const progressPath = getCircularProgressPath(playProgress);
   const progressDotPoint = getCircularPoint(progressTime, safeDuration);
   const momentMarkers = moments.map((moment) => ({
@@ -974,6 +958,7 @@ function GlobalPlayer() {
   };
 
   const handleProgressPointerDown = (event) => {
+    if (!isAudioMetadataReady) return;
     event.preventDefault();
     isSeekingRef.current = true;
     event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -1010,13 +995,29 @@ function GlobalPlayer() {
       <audio
         ref={audioRef}
         onLoadedMetadata={handleAudioLoaded}
-        onTimeUpdate={handleAudioTimeUpdate}
+        onDurationChange={handleAudioLoaded}
         onEnded={handleAudioEnded}
-        onError={() => setIsPlaying(false)}
+        onError={() => {
+          setIsPlaying(false);
+          setIsAudioMetadataReady(false);
+        }}
       />
       {isFullPlayerOpen && (
         <section className={fullPlayerClassName} aria-label="Full music player">
           <div className="full-player__stage">
+            <button
+              className="full-player__home"
+              type="button"
+              aria-label="Go to Home"
+              onClick={() => {
+                setIsFullPlayerOpen(false);
+                setIsFullPlayerExpanded(false);
+                setIsMobilePanelOpen(false);
+                navigate("/");
+              }}
+            >
+              <img src={logoNav} alt="Tempy!" draggable={false} />
+            </button>
             <button
               className="full-player__close"
               type="button"
@@ -1246,8 +1247,9 @@ function GlobalPlayer() {
                 <button
                   className="full-player__play"
                   type="button"
-                  aria-label={isPlaying ? "Pause current track" : "Play current track"}
-                  onClick={() => setIsPlaying((playing) => !playing)}
+                  aria-label={isPreviewUnavailable ? "Preview unavailable" : isPlaying ? "Pause current track" : "Play current track"}
+                  disabled={isPreviewUnavailable}
+                  onClick={() => setIsPlaying((playing) => selectedSong.audioPreview ? !playing : false)}
                 >
                   <span className="full-player__play-label--desktop" aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>
                   <span className={`full-player__play-icon full-player__play-icon--play${isPlaying ? "" : " is-visible"}`} aria-hidden="true">▶</span>
@@ -1351,7 +1353,7 @@ function GlobalPlayer() {
                         <strong>{track.title}</strong>
                         <small>{track.artist}</small>
                       </span>
-                      <time>{track.duration}</time>
+                      <time>{track.audioPreview ? track.duration : "No Preview"}</time>
                     </button>
                   ))}
                 </div>
@@ -1394,7 +1396,7 @@ function GlobalPlayer() {
         <aside className={`global-player${isPlaying ? " global-player--playing" : ""}`} aria-label="Global music player">
           <div className="global-player__card" onClick={() => setIsFullPlayerOpen(true)}>
             <div className="global-player__copy">
-              <span>{isPlaying ? "NOW PLAYING" : "PREVIEWING"}</span>
+              <span>{isPreviewUnavailable ? "PREVIEW UNAVAILABLE" : isPlaying ? "NOW PLAYING" : "PREVIEWING"}</span>
               <strong>{currentTrack.title}</strong>
               <p>{currentTrack.artist}</p>
             </div>
@@ -1424,10 +1426,11 @@ function GlobalPlayer() {
               <button
                 className="global-player__toggle"
                 type="button"
-                aria-label={isPlaying ? "Pause current track" : "Play current track"}
+                aria-label={isPreviewUnavailable ? "Preview unavailable" : isPlaying ? "Pause current track" : "Play current track"}
+                disabled={isPreviewUnavailable}
                 onClick={(event) => {
                   event.stopPropagation();
-                  setIsPlaying((playing) => !playing);
+                  setIsPlaying((playing) => selectedSong.audioPreview ? !playing : false);
                 }}
               >
                 {isPlaying ? "Ⅱ" : "▶"}
