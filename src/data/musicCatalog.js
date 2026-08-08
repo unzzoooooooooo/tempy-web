@@ -118,12 +118,30 @@ const trackLinksByTrackId = Object.freeze({
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4b/07/28/4b07285f-b50c-7aff-cb40-2d732256b703/mzaf_16739866530441939982.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/the-fate-of-ophelia/1833328839?i=1833328840&uo=4",
   },
-  showgirl: { audioPreview: null, trackViewUrl: null },
-  "under-the-spotlight": { audioPreview: null, trackViewUrl: null },
-  "velvet-curtain": { audioPreview: null, trackViewUrl: null },
-  "backstage-heart": { audioPreview: null, trackViewUrl: null },
-  encore: { audioPreview: null, trackViewUrl: null },
-  "upside-down": { audioPreview: null, trackViewUrl: null },
+  showgirl: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/61/76/0e/61760e63-e648-f861-b4ba-7a8e6e3df9a8/mzaf_9063253245381858922.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/elizabeth-taylor/1838810949?i=1838810952&uo=4",
+  },
+  "under-the-spotlight": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f2/05/dd/f205dd86-131f-39f1-2e48-6a16d1099618/mzaf_2963212195811157220.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/opalite/1838810949?i=1838810953&uo=4",
+  },
+  "velvet-curtain": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/39/f7/2c/39f72c7d-9c4e-a9c3-9441-9bc71969223b/mzaf_7809035169985787132.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/father-figure/1842897453?i=1842897461&uo=4",
+  },
+  "backstage-heart": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/54/50/bd/5450bdfa-0dd5-55a9-0b9c-92eaaa08b7a8/mzaf_14672443160738867693.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/eldest-daughter/1842897453?i=1842897462&uo=4",
+  },
+  encore: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e1/bb/5e/e1bb5e74-0c8a-dd39-0bdd-bfc4af21106d/mzaf_15661137690221964276.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/the-life-of-a-showgirl-feat-sabrina-carpenter/1842897453?i=1842897477&uo=4",
+  },
+  "upside-down": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/89/57/ad/8957adf6-1862-4e4e-bcb5-810d6cf79cc4/mzaf_7752581374620577831.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/drop-dead/1889992111?i=1889992113&uo=4",
+  },
   "birds-of-a-feather": {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/34/31/d3/3431d34e-847f-5d66-df83-0bce688d997e/mzaf_18106743962423782018.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/birds-of-a-feather/1739659134?i=1739659142&uo=4",
@@ -140,7 +158,10 @@ const trackLinksByTrackId = Object.freeze({
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/92/a7/a9/92a7a9e8-a82f-706f-7867-013833167335/mzaf_819369403318584232.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/gone-are-the-days/1107603110?i=1107603297&uo=4",
   },
-  traveler: { audioPreview: null, trackViewUrl: null },
+  traveler: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/55/a8/50/55a850e4-1f98-75c3-5053-88db6781741a/mzaf_11763890874915213695.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/travelers/1479397582?i=1479397875&uo=4",
+  },
   sweetener: {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/21/32/e4/2132e4c7-d15a-09d6-7a55-905d05e710ef/mzaf_6065857603198925125.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/sweetener/1399202900?i=1399203813&uo=4",
@@ -209,14 +230,26 @@ const trackLinksByTrackId = Object.freeze({
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4f/e8/f3/4fe8f38b-4090-34d0-e6b6-fe82e3c99c84/mzaf_5808253253551247130.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/mood/1689195224?i=1689195408&uo=4",
   },
-  "disco-room": { audioPreview: null, trackViewUrl: null },
-  "mamas-boy": { audioPreview: null, trackViewUrl: null },
-  "soft-static": { audioPreview: null, trackViewUrl: null },
+  "disco-room": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/bb/76/47/bb7647bf-1495-8b4c-12ba-234077357382/mzaf_16318773758074767824.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/cant-wait/1880586772?i=1880587419&uo=4",
+  },
+  "mamas-boy": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8a/5f/31/8a5f3140-6511-83b8-db42-54f57f9fcf9c/mzaf_2978547573649057419.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/you/1525736397?i=1525736398&uo=4",
+  },
+  "soft-static": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/0d/a7/ce/0da7ce04-7549-8d05-2341-4e7aa32ba803/mzaf_6180989229907276623.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/dna/1575772342?i=1575772346&uo=4",
+  },
   "rich-man": {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1e/a6/20/1ea6202b-37fd-30a4-2383-6c22c41de762/mzaf_9596143199836663173.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/rich-man/1832407118?i=1832407119&uo=4",
   },
-  "citrus-glow": { audioPreview: null, trackViewUrl: null },
+  "citrus-glow": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/92/69/d4/9269d4e3-fde2-bd50-9aa9-594080843e89/mzaf_10216845447511835614.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/lemonade/1893599771?i=1893599773&uo=4",
+  },
   "you-and-me": {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/92/c8/06/92c806b3-2977-67f5-1463-fd6ceacd36e7/mzaf_9879973441146838578.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/us/album/you-me/1710020667?i=1710020675&uo=4",
@@ -225,7 +258,10 @@ const trackLinksByTrackId = Object.freeze({
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/45/15/49/451549d8-ddd7-dad4-0f3d-588a0c9d1b98/mzaf_17766988925119316702.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/us/album/toxic-till-the-end/1771105914?i=1771105929&uo=4",
   },
-  wait: { audioPreview: null, trackViewUrl: null },
+  wait: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/dd/ec/02/ddec02fb-2394-d75f-92b5-79e671bf519a/mzaf_17409000019741588778.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/big-fat-mouth/1436497346?i=1436497347&uo=4",
+  },
   whiplash: {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/91/84/e5/9184e5d0-54c8-eccc-e62c-e3175a88b396/mzaf_13467227653896090925.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/whiplash/1772644600?i=1772644601&uo=4",
