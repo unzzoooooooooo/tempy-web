@@ -3,6 +3,66 @@
  * `isMock` marks locally identifiable artwork whose real-world metadata could
  * not be verified from the bundled asset alone.
  */
+const addedCatalogArtists = [
+  { id: "sabrina-carpenter", name: "Sabrina Carpenter", profile: "/images/album-33.png", genres: [] },
+  { id: "maisie-peters", name: "Maisie Peters", profile: "/images/album-41.png", genres: [] },
+  { id: "chappell-roan", name: "Chappell Roan", profile: "/images/album-42.png", genres: [] },
+  { id: "lauv", name: "Lauv", profile: "/images/album-47.png", genres: [] },
+  { id: "jake-scott-john-k", name: "Jake Scott, John K", profile: "/images/album-53.png", genres: [] },
+  { id: "john-k", name: "John K", profile: "/images/album-54.png", genres: [] },
+  { id: "olivia-dean", name: "Olivia Dean", profile: "/images/album-59.png", genres: [] },
+  { id: "frank-ocean", name: "Frank Ocean", profile: "/images/album-63.png", genres: [] },
+  { id: "lady-gaga-bruno-mars", name: "Lady Gaga, Bruno Mars", profile: "/images/album-64.png", genres: [] },
+  { id: "alan-walker-sabrina-carpenter", name: "Alan Walker, Sabrina Carpenter", profile: "/images/album-65.png", genres: [] },
+  { id: "julia-michaels", name: "Julia Michaels", profile: "/images/album-66.png", genres: [] },
+  { id: "julia-michaels-maren-morris", name: "Julia Michaels, Maren Morris", profile: "/images/album-67.png", genres: [] },
+  { id: "fka-twigs", name: "FKA twigs", profile: "/images/album-71.png", genres: [] },
+  { id: "sza-travis-scott", name: "SZA, Travis Scott", profile: "/images/album-72.png", genres: [] },
+];
+
+const addedCatalogTracks = [
+  ["sharpest-tool", "Sharpest Tool", "sabrina-carpenter", "/images/album-33.png"],
+  ["feather", "Feather", "sabrina-carpenter", "/images/album-34.png"],
+  ["espresso", "Espresso", "sabrina-carpenter", "/images/album-35.png"],
+  ["mans-best-friend", "Man's Best Friend", "sabrina-carpenter", "/images/album-36.png"],
+  ["tears", "Tears", "sabrina-carpenter", "/images/album-37.png"],
+  ["fruitcake", "fruitcake", "sabrina-carpenter", "/images/album-38.png"],
+  ["let-me-move-you", "Let Me Move You", "sabrina-carpenter", "/images/album-39.png"],
+  ["paris-sabrina-carpenter", "Paris", "sabrina-carpenter", "/images/album-40.png"],
+  ["lost-the-breakup", "Lost The Breakup", "maisie-peters", "/images/album-41.png"],
+  ["good-luck-babe", "Good Luck, Babe!", "chappell-roan", "/images/album-42.png"],
+  ["the-subway", "The Subway", "chappell-roan", "/images/album-43.png"],
+  ["the-giver", "The Giver", "chappell-roan", "/images/album-44.png"],
+  ["red-wine-supernova", "Red Wine Supernova", "chappell-roan", "/images/album-45.png"],
+  ["casual", "Casual", "chappell-roan", "/images/album-46.png"],
+  ["sims", "Sims", "lauv", "/images/album-47.png"],
+  ["all-4-nothing", "All 4 Nothing (I'm So in Love)", "lauv", "/images/album-48.png"],
+  ["feelings", "Feelings", "lauv", "/images/album-49.png"],
+  ["i-like-me-better", "I Like Me Better", "lauv", "/images/album-50.png"],
+  ["paris-in-the-rain", "Paris in the Rain", "lauv", "/images/album-51.png"],
+  ["26", "26", "lauv", "/images/album-52.png"],
+  ["burn", "Burn", "jake-scott-john-k", "/images/album-53.png"],
+  ["days-like-this", "days like this", "john-k", "/images/album-54.png"],
+  ["a-lot", "A LOT", "john-k", "/images/album-55.png"],
+  ["xxl", "XXL", "lany", "/images/album-56.png"],
+  ["know-you-naked", "Know You Naked", "lany", "/images/album-57.png"],
+  ["ouch", "OUCH", "honne", "/images/album-58.png"],
+  ["dive", "Dive", "olivia-dean", "/images/album-59.png"],
+  ["nice-to-each-other", "Nice To Each Other", "olivia-dean", "/images/album-60.png"],
+  ["thru-these-tears", "Thru These Tears", "lany", "/images/album-61.png"],
+  ["less-than-a-lover", "Less than a Lover", "jennie", "/images/album-62.png"],
+  ["pink-and-white", "Pink + White", "frank-ocean", "/images/album-63.png"],
+  ["die-with-a-smile", "Die With A Smile", "lady-gaga-bruno-mars", "/images/album-64.png"],
+  ["my-way", "My Way", "alan-walker-sabrina-carpenter", "/images/album-65.png"],
+  ["try-your-luck", "Try Your Luck", "julia-michaels", "/images/album-66.png"],
+  ["scissors", "Scissors", "julia-michaels-maren-morris", "/images/album-67.png"],
+  ["34-35", "34+35", "ariana-grande", "/images/album-68.png"],
+  ["free-love", "free love", "honne", "/images/album-69.png"],
+  ["crying-over-you", "Crying Over You ◐", "honne", "/images/album-70.png"],
+  ["two-weeks", "Two Weeks", "fka-twigs", "/images/album-71.png"],
+  ["open-arms", "Open Arms", "sza-travis-scott", "/images/album-72.png"],
+];
+
 export const artists = [
   { id: "taylor-swift", name: "Taylor Swift", profile: "/images/album-10.png", genres: ["Pop", "Singer-Songwriter"] },
   { id: "billie-eilish", name: "Billie Eilish", profile: "/images/album-03.png", genres: ["Alternative", "Pop"] },
@@ -25,6 +85,7 @@ export const artists = [
   { id: "the-aces", name: "The Aces", profile: "/images/album-21.png", genres: ["Alternative", "Indie Pop"] },
   { id: "olivia-rodrigo", name: "Olivia Rodrigo", profile: "/images/album-02.png", genres: ["Pop", "Pop Rock"] },
   { id: "tempy-archive", name: "Tempy Archive", profile: "/images/profile-03.png", genres: ["Archive Pop"], isMock: true },
+  ...addedCatalogArtists,
 ];
 
 export const albums = [
@@ -62,15 +123,18 @@ export const albums = [
   { id: "mantra", title: "Mantra", artistId: "jennie", cover: "/images/album-32.jpg", releaseDate: "2024", language: "English" },
   { id: "akmu-profile-placeholder", title: "Love Lee - Single", artistId: "akmu", cover: "/images/artist-02.png", releaseDate: "2023", language: "Korean", isPlaceholder: true },
   { id: "hanroro-profile-placeholder", title: "Let Me Love My Youth - Single", artistId: "hanroro", cover: "/images/artist-03.png", releaseDate: "2022", language: "Korean", isPlaceholder: true },
+  ...addedCatalogTracks.map(([id, title, artistId, cover]) => ({
+    id: `catalog-${id}`,
+    title,
+    artistId,
+    cover,
+    releaseDate: "",
+    language: "",
+  })),
 ];
 
 const rawTracks = [
   ["fate-of-ophelia", "The Fate of Ophelia", "life-of-a-showgirl", "03:24"],
-  ["showgirl", "Elizabeth Taylor", "life-of-a-showgirl", "03:18"],
-  ["under-the-spotlight", "Opalite", "life-of-a-showgirl", "03:42"],
-  ["velvet-curtain", "Father Figure", "life-of-a-showgirl", "03:06"],
-  ["backstage-heart", "Eldest Daughter", "life-of-a-showgirl", "03:31"],
-  ["encore", "The Life of a Showgirl (feat. Sabrina Carpenter)", "life-of-a-showgirl", "03:27"],
   ["upside-down", "drop dead", "upside-down-archive", "02:58"],
   ["birds-of-a-feather", "BIRDS OF A FEATHER", "hit-me-hard-and-soft", "03:30"],
   ["super-shy", "Super Shy", "new-jeans", "02:34"],
@@ -80,11 +144,8 @@ const rawTracks = [
   ["sweetener", "sweetener", "sweetener", "03:28"],
   ["tattoo", "TATTOO", "tattoo", "04:42"],
   ["anti-hero", "Anti-Hero", "midnights", "03:20"],
-  ["maroon", "Maroon", "midnights", "03:38"],
-  ["midnight-rain", "Midnight Rain", "midnights", "02:54"],
   ["willow", "willow", "evermore", "03:34"],
   ["cruel-summer", "Cruel Summer", "lover", "02:58"],
-  ["lover", "Lover", "lover", "03:41"],
   ["delicate", "Delicate", "reputation", "03:52"],
   ["good-feeling", "Good Feeling", "good-feeling", "03:12"],
   ["catch-me", "Catch Me", "catch-me", "02:48"],
@@ -92,7 +153,6 @@ const rawTracks = [
   ["watermelon-sugar", "Watermelon Sugar", "fine-line", "02:54"],
   ["puppet-show", "Puppet Show", "puppet-show", "03:08"],
   ["style", "Style", "1989", "03:51"],
-  ["wildest-dreams", "Wildest Dreams", "1989", "03:40"],
   ["mood", "MOOD", "mood", "03:04"],
   ["disco-room", "Can't Wait", "disco-room", "03:21"],
   ["mamas-boy", "you!", "mamas-boy", "04:34"],
@@ -106,8 +166,7 @@ const rawTracks = [
   ["armageddon", "Armageddon", "armageddon", "03:16"],
   ["like-jennie", "like JENNIE", "ruby", "02:03"],
   ["mantra", "Mantra", "mantra", "02:16"],
-  ["love-lee", "Love Lee", "akmu-profile-placeholder", "02:59"],
-  ["let-me-love-my-youth", "Let Me Love My Youth", "hanroro-profile-placeholder", "04:09"],
+  ...addedCatalogTracks.map(([id, title]) => [id, title, `catalog-${id}`, "--:--"]),
 ];
 
 // Official iTunes Search API links, matched by normalized title + artist.
@@ -323,6 +382,19 @@ export const tracks = rawTracks.map(([id, title, albumId, duration]) => {
 });
 
 const trackMap = new Map(tracks.map((track) => [track.id, track]));
+const legacyTrackIdAliases = new Map(Object.entries({
+  showgirl: "fate-of-ophelia",
+  "under-the-spotlight": "fate-of-ophelia",
+  "velvet-curtain": "fate-of-ophelia",
+  "backstage-heart": "fate-of-ophelia",
+  encore: "fate-of-ophelia",
+  maroon: "anti-hero",
+  "midnight-rain": "anti-hero",
+  lover: "cruel-summer",
+  "wildest-dreams": "style",
+  "love-lee": "sharpest-tool",
+  "let-me-love-my-youth": "feather",
+}));
 const coverMap = new Map();
 tracks.forEach((track) => {
   if (!coverMap.has(track.cover)) coverMap.set(track.cover, track);
@@ -405,7 +477,7 @@ export const getTrackCover = ({ id, trackId, title, artist, cover, image } = {})
 
 export const getArtistById = (id) => artistMap.get(id);
 export const getAlbumById = (id) => albumMap.get(id);
-export const getTrackById = (id) => trackMap.get(id);
+export const getTrackById = (id) => trackMap.get(id) || trackMap.get(legacyTrackIdAliases.get(id));
 export const getTrackByCover = (cover) => coverMap.get(cover);
 export const getTracksByArtist = (artistId) => tracks.filter((track) => track.artistId === artistId);
 export const getTracksByAlbum = (albumId) => tracks.filter((track) => track.albumId === albumId);
