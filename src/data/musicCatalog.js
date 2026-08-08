@@ -24,9 +24,9 @@ const addedCatalogTracks = [
   ["sharpest-tool", "Sharpest Tool", "sabrina-carpenter", "/images/album-33.png"],
   ["feather", "Feather", "sabrina-carpenter", "/images/album-34.png"],
   ["espresso", "Espresso", "sabrina-carpenter", "/images/album-35.png"],
-  ["mans-best-friend", "Man's Best Friend", "sabrina-carpenter", "/images/album-36.png"],
+  ["mans-best-friend", "Never Getting Laid", "sabrina-carpenter", "/images/album-36.png"],
   ["tears", "Tears", "sabrina-carpenter", "/images/album-37.png"],
-  ["fruitcake", "fruitcake", "sabrina-carpenter", "/images/album-38.png"],
+  ["fruitcake", "cindy lou who", "sabrina-carpenter", "/images/album-38.png"],
   ["let-me-move-you", "Let Me Move You", "sabrina-carpenter", "/images/album-39.png"],
   ["paris-sabrina-carpenter", "Paris", "sabrina-carpenter", "/images/album-40.png"],
   ["lost-the-breakup", "Lost The Breakup", "maisie-peters", "/images/album-41.png"],
@@ -46,14 +46,14 @@ const addedCatalogTracks = [
   ["a-lot", "A LOT", "john-k", "/images/album-55.png"],
   ["xxl", "XXL", "lany", "/images/album-56.png"],
   ["know-you-naked", "Know You Naked", "lany", "/images/album-57.png"],
-  ["ouch", "OUCH", "honne", "/images/album-58.png"],
+  ["ouch", "Girl In The Orchestra", "honne", "/images/album-58.png"],
   ["dive", "Dive", "olivia-dean", "/images/album-59.png"],
   ["nice-to-each-other", "Nice To Each Other", "olivia-dean", "/images/album-60.png"],
   ["thru-these-tears", "Thru These Tears", "lany", "/images/album-61.png"],
   ["less-than-a-lover", "Less than a Lover", "jennie", "/images/album-62.png"],
   ["pink-and-white", "Pink + White", "frank-ocean", "/images/album-63.png"],
   ["die-with-a-smile", "Die With A Smile", "lady-gaga-bruno-mars", "/images/album-64.png"],
-  ["my-way", "My Way", "alan-walker-sabrina-carpenter", "/images/album-65.png"],
+  ["my-way", "On My Way", "alan-walker-sabrina-carpenter", "/images/album-65.png"],
   ["try-your-luck", "Try Your Luck", "julia-michaels", "/images/album-66.png"],
   ["scissors", "Scissors", "julia-michaels-maren-morris", "/images/album-67.png"],
   ["34-35", "34+35", "ariana-grande", "/images/album-68.png"],
@@ -344,6 +344,166 @@ const trackLinksByTrackId = Object.freeze({
   "let-me-love-my-youth": {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/83/4e/85/834e85b0-4dde-b22c-7ae6-63692e393b76/mzaf_10616492005222924951.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/us/album/let-me-love-my-youth/1613687888?i=1613687889&uo=4",
+  },
+  "sharpest-tool": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/27/eb/1e/27eb1e5c-6cfb-4e28-32eb-cd42208d8644/mzaf_660528951122919214.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/sharpest-tool/1752214909?i=1752214916&uo=4",
+  },
+  feather: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/07/4b/f1/074bf191-a02c-1d76-5d94-49256f99af6f/mzaf_7725821736642193910.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/feather/1677891658?i=1677892279&uo=4",
+  },
+  espresso: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/99/da/ff/99daffce-cdde-59c6-5ae0-7f922ce411a8/mzaf_5621292401829922816.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/espresso/1752214909?i=1752214923&uo=4",
+  },
+  tears: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/8e/39/c2/8e39c256-a452-8928-5f45-9a82d6873f5e/mzaf_11132789052180673913.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/tears/1819861154?i=1819861157&uo=4",
+  },
+  "let-me-move-you": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/bc/12/b3/bc12b320-b359-2a0a-8106-cf6587bf9514/mzaf_7505452830438589013.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/let-me-move-you-from-the-netflix-film-work-it/1523357415?i=1523357416&uo=4",
+  },
+  "paris-sabrina-carpenter": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/c1/68/16/c16816ff-ea23-404a-e87e-84fad000ffcd/mzaf_2837756822827145870.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/paris/1438671104?i=1438671345&uo=4",
+  },
+  "lost-the-breakup": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/cf/4c/a8/cf4ca8dd-8286-c9e0-05dc-9f332f953e9d/mzaf_1444231746788036017.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/lost-the-breakup/1680968147?i=1680968148&uo=4",
+  },
+  "good-luck-babe": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c3/6d/4f/c36d4f23-b87f-046d-7a0e-e3e05d180b2a/mzaf_17235999651335214399.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/good-luck-babe/1737497078?i=1737497080&uo=4",
+  },
+  "the-subway": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/99/30/63/993063c9-63b1-3ac4-b558-eb1561f3c7c1/mzaf_4724150376642718672.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/the-subway/1831372118?i=1831372120&uo=4",
+  },
+  "the-giver": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/72/47/17/724717d8-d2f2-979b-4f23-befb0031e10e/mzaf_13751565621225225258.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/the-giver/1801197841?i=1801197851&uo=4",
+  },
+  "red-wine-supernova": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/df/34/f1/df34f17a-9222-71d9-c7be-72f425516ba9/mzaf_11637842772411959222.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/red-wine-supernova/1707412988?i=1707413097&uo=4",
+  },
+  casual: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a0/15/a4/a015a449-d9ee-bd4d-faa8-ad5a950df10d/mzaf_5668904369452791603.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/casual/1707412988?i=1707413103&uo=4",
+  },
+  sims: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/f1/6a/95/f16a95b1-eee9-c481-272e-975b11c4e75a/mzaf_2117228302513010519.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/sims/1616957126?i=1616957350&uo=4",
+  },
+  "all-4-nothing": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/51/55/da/5155da26-48ae-5d5c-2798-25ad61e2a069/mzaf_2980686868836985311.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/all-4-nothing-im-so-in-love/1616908862?i=1616909002&uo=4",
+  },
+  feelings: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c3/54/c0/c354c042-69ec-1f2f-6970-4d8fea38f23c/mzaf_9826597951158443421.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/feelings/1480846311?i=1480846730&uo=4",
+  },
+  "i-like-me-better": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1f/f6/8d/1ff68de2-c665-b4da-ff9b-1d813748a50d/mzaf_15362868780074122494.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/i-like-me-better/1771701051?i=1771701062&uo=4",
+  },
+  "paris-in-the-rain": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/0e/c1/fd/0ec1fd20-0f65-e3eb-4134-f8133e74b1c9/mzaf_13950251868834939865.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/paris-in-the-rain/1771701881?i=1771702170&uo=4",
+  },
+  26: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e0/60/1d/e0601da1-4b3b-ad30-5508-cc5a8ff74588/mzaf_5309914826734332864.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/26/1616908862?i=1616908864&uo=4",
+  },
+  burn: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/fb/bf/fe/fbbffee1-b8a8-95c9-6119-02e10a8a1bca/mzaf_3808529493438895022.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/burn-feat-john-k/1693022644?i=1693022645&uo=4",
+  },
+  "days-like-this": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/60/27/87/602787b5-dc0f-b1d7-bd0b-3dc291ef2845/mzaf_6274906912514500274.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/days-like-this/1534387266?i=1534387292&uo=4",
+  },
+  "a-lot": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/9d/67/6b/9d676b82-45d6-8db5-3958-692489a2a34f/mzaf_128137072641770007.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/a-lot/1817690084?i=1817690100&uo=4",
+  },
+  xxl: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/c9/13/95/c91395cd-48dc-381a-846e-026565fc95d5/mzaf_16569738922393134252.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/xxl/1696166342?i=1696166346&uo=4",
+  },
+  "know-you-naked": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/cf/6c/03/cf6c0307-34be-0b7b-e7e2-b4b1369d950c/mzaf_12736594477466650043.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/know-you-naked/1828560356?i=1828560359&uo=4",
+  },
+  dive: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/0e/59/93/0e599312-e752-f780-63ac-951680bf6df1/mzaf_9484989385581807309.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/dive/1676252821?i=1676252825&uo=4",
+  },
+  "nice-to-each-other": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/d9/ae/f8/d9aef823-263d-bbd0-cd01-97eba4b0900f/mzaf_14298659467220432482.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/nice-to-each-other/1817609404?i=1817609406&uo=4",
+  },
+  "thru-these-tears": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/f0/39/a7/f039a7a0-ce5e-803d-7b3a-95c45830f2d0/mzaf_13652505330298211249.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/thru-these-tears/1435482172?i=1435482376&uo=4",
+  },
+  "less-than-a-lover": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/99/32/2e/99322e73-d6e0-1b05-75a4-a7b1111d4598/mzaf_5579403588366016062.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/less-than-a-lover/6792226269?i=6792226270&uo=4",
+  },
+  "pink-and-white": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/45/a8/a2/45a8a2e0-9516-86b2-66ea-e8b2bf71de68/mzaf_10773372944954067241.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/pink-white/1146195596?i=1146195714&uo=4",
+  },
+  "die-with-a-smile": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e9/d1/46/e9d14699-9505-493e-cd27-a501095c81ff/mzaf_7283388936457278756.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/die-with-a-smile/1762656724?i=1762656732&uo=4",
+  },
+  "try-your-luck": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c7/22/45/c7224519-b2e2-cb9b-1af2-0e8d0e2423e8/mzaf_16670762764688546413.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/try-your-luck/1811856920?i=1811856923&uo=4",
+  },
+  scissors: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b9/48/f5/b948f516-9d4b-3613-ca70-7719de3dd5a2/mzaf_9184699183968476239.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/scissors/1811856920?i=1811856922&uo=4",
+  },
+  "34-35": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/77/08/a0/7708a05b-a2f0-3b43-e45f-8b1a5828e2d2/mzaf_7652736334376214445.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/34-35/1537486662?i=1537486672&uo=4",
+  },
+  "free-love": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8b/e5/c9/8be5c9ef-2962-b77b-eaa9-a187c5c318e0/mzaf_348333335530605825.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/free-love/1518053387?i=1518053392&uo=4",
+  },
+  "crying-over-you": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/5e/0c/fb/5e0cfbda-d283-9108-468f-1483c93cdd5a/mzaf_3542535554052415576.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/crying-over-you-feat-beka/1426036150?i=1426036291&uo=4",
+  },
+  "two-weeks": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/5d/e3/d3/5de3d30c-89e7-9586-fb02-b4aee1ed677a/mzaf_8601142887561379104.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/two-weeks/1546107580?i=1546107585&uo=4",
+  },
+  "open-arms": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4f/4f/8b/4f4f8bba-284d-fcc5-bc0a-0cf873f83904/mzaf_8876993850396612637.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/open-arms-feat-travis-scott/1658650093?i=1658650800&uo=4",
+  },
+  "mans-best-friend": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5f/67/1f/5f671f91-3b3e-a025-7985-8b3342ad96ac/mzaf_15351220872115902400.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/never-getting-laid/1836002188?i=1836002474&uo=4",
+  },
+  fruitcake: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ac/bb/38/acbb3896-ef31-2cd7-8b04-e2996fb3c251/mzaf_10411993271624436355.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/cindy-lou-who/1713689507?i=1713689514&uo=4",
+  },
+  ouch: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/45/3c/bc/453cbcfb-7e33-d366-3c68-c170923e3e2f/mzaf_6894138948629167953.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/girl-in-the-orchestra/1758022918?i=1758022920&uo=4",
+  },
+  "my-way": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/21/63/f4/2163f4b2-8e9c-6f1b-e6da-1dd838f0941f/mzaf_952717904460349711.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/on-my-way/1455648995?i=1455648996&uo=4",
   },
 });
 
