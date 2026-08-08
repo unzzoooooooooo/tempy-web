@@ -322,10 +322,10 @@ const parseTrackDuration = (durationValue) => {
 
 const PLAYER_RING_CENTER = 50;
 const PLAYER_RING_RADIUS = 46;
-const getCircularPoint = (seconds, totalSeconds) => {
-  const safeTotal = Number.isFinite(totalSeconds) && totalSeconds > 0 ? totalSeconds : 1;
-  const progress = Math.min(1, Math.max(0, seconds / safeTotal));
-  const radians = (progress * 2 * Math.PI) - (Math.PI / 2);
+const getCircularPoint = (progressValue) => {
+  const progress = Math.min(1, Math.max(0, progressValue));
+  const angle = (progress * 360) - 90;
+  const radians = angle * (Math.PI / 180);
   const x = PLAYER_RING_CENTER + (Math.cos(radians) * PLAYER_RING_RADIUS);
   const y = PLAYER_RING_CENTER + (Math.sin(radians) * PLAYER_RING_RADIUS);
 
@@ -381,11 +381,133 @@ const getNextPlayableCatalogTrack = (trackId) => {
   return null;
 };
 
+function PlaybackProgressRing({ audioRef, duration, isPlaying, isReady, momentMarkers, onSeek }) {
+  const isSeekingRef = useRef(false);
+  const animationFrameRef = useRef(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return undefined;
+
+    const resetEndedProgress = () => setProgress(0);
+    audio.addEventListener("ended", resetEndedProgress);
+    return () => audio.removeEventListener("ended", resetEndedProgress);
+  }, [audioRef]);
+
+  useEffect(() => {
+    if (!isPlaying || !isReady) return undefined;
+
+    const renderProgress = () => {
+      const audio = audioRef.current;
+      if (!isSeekingRef.current) {
+        const liveDuration = audio?.duration;
+        const liveTime = audio?.currentTime;
+        const nextProgress = Number.isFinite(liveDuration) && liveDuration > 0 && Number.isFinite(liveTime)
+          ? Math.min(1, Math.max(0, liveTime / liveDuration))
+          : 0;
+        setProgress(nextProgress);
+      }
+      animationFrameRef.current = window.requestAnimationFrame(renderProgress);
+    };
+
+    animationFrameRef.current = window.requestAnimationFrame(renderProgress);
+    return () => {
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
+  }, [audioRef, isPlaying, isReady]);
+
+  const seekFromPointer = (event) => {
+    const nextProgress = getCircularProgressFromPointer(event, event.currentTarget);
+    const clampedProgress = Math.min(1, Math.max(0, nextProgress));
+    setProgress(clampedProgress);
+    onSeek(clampedProgress);
+  };
+
+  const handlePointerDown = (event) => {
+    if (!isReady) return;
+    event.preventDefault();
+    isSeekingRef.current = true;
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    seekFromPointer(event);
+  };
+
+  const handlePointerMove = (event) => {
+    if (!isSeekingRef.current) return;
+    seekFromPointer(event);
+  };
+
+  const handlePointerEnd = (event) => {
+    if (!isSeekingRef.current) return;
+    seekFromPointer(event);
+    isSeekingRef.current = false;
+    event.currentTarget.releasePointerCapture?.(event.pointerId);
+  };
+
+  const progressPath = getCircularProgressPath(progress);
+  const progressDotPoint = getCircularPoint(progress);
+  const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : 1;
+
+  return (
+    <svg
+      className="full-player__progress-ring"
+      viewBox="0 0 100 100"
+      aria-label={`Playback progress ${Math.round(progress * 100)}%`}
+      role="slider"
+      tabIndex="0"
+      aria-valuemin="0"
+      aria-valuemax={Math.round(safeDuration)}
+      aria-valuenow={Math.round(progress * safeDuration)}
+    >
+      <circle className="progress-base-circle" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER} r={PLAYER_RING_RADIUS} />
+      <path
+        className="progress-active-circle"
+        d={progressPath}
+        strokeOpacity={progress > 0.001 ? 1 : 0}
+      />
+      <circle className="full-player__start-dot" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER - PLAYER_RING_RADIUS} r="1.2" aria-hidden="true" />
+      <circle
+        className="full-player__progress-dot"
+        cx={progressDotPoint.x}
+        cy={progressDotPoint.y}
+        r="1.25"
+        aria-hidden="true"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
+      />
+      {momentMarkers.map((moment) => (
+        <circle
+          className="full-player__moment-dot"
+          key={moment.id}
+          cx={moment.point.x}
+          cy={moment.point.y}
+          r="0.85"
+          aria-hidden="true"
+        />
+      ))}
+      <circle
+        className="full-player__seek-hit"
+        cx={PLAYER_RING_CENTER}
+        cy={PLAYER_RING_CENTER}
+        r={PLAYER_RING_RADIUS}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
+      />
+    </svg>
+  );
+}
+
 function GlobalPlayer() {
   const location = useLocation();
   const navigate = useNavigate();
   const previousPathRef = useRef(location.pathname);
-  const isSeekingRef = useRef(false);
   const pendingSeekTimeRef = useRef(null);
   const audioRef = useRef(null);
   const commentPanelRef = useRef(null);
@@ -396,7 +518,6 @@ function GlobalPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffleEnabled, setIsShuffleEnabled] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [progressTime, setProgressTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isAudioMetadataReady, setIsAudioMetadataReady] = useState(false);
   const [isFullPlayerOpen, setIsFullPlayerOpen] = useState(false);
@@ -574,7 +695,6 @@ function GlobalPlayer() {
       setIsShuffleEnabled(Boolean(event.detail?.shuffle));
       setIsPlaying(Boolean(requestedTrack.audioPreview));
       setCurrentTime(0);
-      setProgressTime(0);
       setDuration(0);
       setIsAudioMetadataReady(false);
       setIsSaved(false);
@@ -611,7 +731,6 @@ function GlobalPlayer() {
       setDuration(0);
       setIsAudioMetadataReady(false);
       setCurrentTime(nextTime);
-      setProgressTime(nextTime);
       setIsPlaying(Boolean(track.audioPreview));
       setIsSaved(false);
       setHoveredCommentPoint(null);
@@ -693,8 +812,10 @@ function GlobalPlayer() {
       return undefined;
     }
 
+    audio.pause();
     audio.src = selectedSong.audioPreview;
     audio.load();
+    audio.currentTime = 0;
     return undefined;
   }, [selectedSong?.audioPreview]);
 
@@ -715,42 +836,17 @@ function GlobalPlayer() {
     audio.volume = volume / 100;
   }, [volume]);
 
-  useEffect(() => {
-    if (!currentTrack) return undefined;
-    if (!isPlaying || !isAudioMetadataReady) return undefined;
-
-    let animationFrame = null;
-    const renderProgress = () => {
-      const audio = audioRef.current;
-
-      if (isSeekingRef.current) {
-        animationFrame = window.requestAnimationFrame(renderProgress);
-        return;
-      }
-
-      if (selectedSong.audioPreview && audio && Number.isFinite(audio.duration) && audio.duration > 0) {
-        const liveTime = Math.min(audio.duration, Math.max(0, audio.currentTime));
-        setCurrentTime(liveTime);
-        setProgressTime(liveTime);
-      }
-
-      animationFrame = window.requestAnimationFrame(renderProgress);
-    };
-
-    animationFrame = window.requestAnimationFrame(renderProgress);
-
-    return () => {
-      if (animationFrame !== null) {
-        window.cancelAnimationFrame(animationFrame);
-      }
-    };
-  }, [currentTrack, isAudioMetadataReady, isPlaying, selectedSong?.audioPreview]);
-
   const formatTime = (seconds) => {
     const safeSeconds = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
     const minutes = Math.floor(safeSeconds / 60);
     const restSeconds = Math.floor(safeSeconds % 60);
     return `${minutes}:${String(restSeconds).padStart(2, "0")}`;
+  };
+
+  const handleAudioTimeUpdate = () => {
+    const audio = audioRef.current;
+    if (!audio || !Number.isFinite(audio.currentTime)) return;
+    setCurrentTime(audio.currentTime);
   };
 
   const handleAudioLoaded = () => {
@@ -761,16 +857,21 @@ function GlobalPlayer() {
       : 0;
     if (!loadedDuration) return;
     setDuration(loadedDuration);
-    setIsAudioMetadataReady(true);
 
     if (pendingSeekTimeRef.current !== null) {
       const nextTime = Math.min(loadedDuration, pendingSeekTimeRef.current);
       audio.currentTime = nextTime;
       setCurrentTime(nextTime);
-      setProgressTime(nextTime);
       pendingSeekTimeRef.current = null;
       audio.play().catch(() => setIsPlaying(false));
     }
+  };
+
+  const handleAudioCanPlay = () => {
+    const audio = audioRef.current;
+    if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
+    setDuration(audio.duration);
+    setIsAudioMetadataReady(true);
   };
 
   const handleAudioEnded = () => {
@@ -794,7 +895,6 @@ function GlobalPlayer() {
     setCurrentTrack(null);
     setIsShuffleEnabled(false);
     setCurrentTime(0);
-    setProgressTime(0);
     setIsFullPlayerOpen(false);
     setIsFullPlayerExpanded(false);
     setIsMobilePanelOpen(false);
@@ -817,7 +917,6 @@ function GlobalPlayer() {
     if (!selectedTrack) return;
     setCurrentTrack(selectedTrack);
     setCurrentTime(0);
-    setProgressTime(0);
     setDuration(0);
     setIsAudioMetadataReady(false);
     setIsPlaying(Boolean(shouldPlay && selectedTrack.audioPreview));
@@ -900,14 +999,9 @@ function GlobalPlayer() {
   const vinylStyle = { "--global-player-cover": `url(${currentTrack.cover})` };
   const safeDuration = isAudioMetadataReady && Number.isFinite(duration) && duration > 0 ? duration : 1;
   const isPreviewUnavailable = !selectedSong.audioPreview;
-  const playProgress = isAudioMetadataReady
-    ? Math.min(1, Math.max(0, progressTime / safeDuration))
-    : 0;
-  const progressPath = getCircularProgressPath(playProgress);
-  const progressDotPoint = getCircularPoint(progressTime, safeDuration);
   const momentMarkers = moments.map((moment) => ({
     ...moment,
-    point: getCircularPoint(parseTrackDuration(moment.time), safeDuration),
+    point: getCircularPoint(parseTrackDuration(moment.time) / safeDuration),
   }));
   const hoveredMoment = isDesktopRing
     ? momentMarkers.find((moment) => moment.id === hoveredCommentPoint)
@@ -949,27 +1043,6 @@ function GlobalPlayer() {
       audio.currentTime = nextTime;
     }
     setCurrentTime(nextTime);
-    setProgressTime(nextTime);
-  };
-
-  const handleProgressPointerDown = (event) => {
-    if (!isAudioMetadataReady) return;
-    event.preventDefault();
-    isSeekingRef.current = true;
-    event.currentTarget.setPointerCapture?.(event.pointerId);
-    seekToProgress(getCircularProgressFromPointer(event, event.currentTarget));
-  };
-
-  const handleProgressPointerMove = (event) => {
-    if (!isSeekingRef.current) return;
-    seekToProgress(getCircularProgressFromPointer(event, event.currentTarget));
-  };
-
-  const handleProgressPointerEnd = (event) => {
-    if (!isSeekingRef.current) return;
-    seekToProgress(getCircularProgressFromPointer(event, event.currentTarget));
-    isSeekingRef.current = false;
-    event.currentTarget.releasePointerCapture?.(event.pointerId);
   };
 
   const toggleCommentPoint = (event, momentId) => {
@@ -991,6 +1064,8 @@ function GlobalPlayer() {
         ref={audioRef}
         onLoadedMetadata={handleAudioLoaded}
         onDurationChange={handleAudioLoaded}
+        onCanPlay={handleAudioCanPlay}
+        onTimeUpdate={handleAudioTimeUpdate}
         onEnded={handleAudioEnded}
         onError={() => {
           setIsPlaying(false);
@@ -1039,63 +1114,15 @@ function GlobalPlayer() {
                       <img src={currentTrack.cover} alt="" draggable={false} />
                     </div>
                   </div>
-                  <svg
-                    className="full-player__progress-ring"
-                    viewBox="0 0 100 100"
-                    aria-label={`Playback progress ${Math.round(playProgress * 100)}%`}
-                    role="slider"
-                    tabIndex="0"
-                    aria-valuemin="0"
-                    aria-valuemax={Math.round(safeDuration)}
-                    aria-valuenow={Math.round(progressTime)}
-                  >
-                    <circle className="progress-base-circle" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER} r={PLAYER_RING_RADIUS} />
-                    {isDesktopRing ? (
-                      <path
-                        className="progress-active-circle"
-                        d={progressPath}
-                        strokeOpacity={playProgress > 0.001 ? 1 : 0}
-                      />
-                    ) : (
-                      <path
-                        className="progress-active-circle"
-                        d={progressPath}
-                        strokeOpacity={playProgress > 0.001 ? 1 : 0}
-                      />
-                    )}
-                    <circle className="full-player__start-dot" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER - PLAYER_RING_RADIUS} r="1.2" aria-hidden="true" />
-                    <circle
-                      className="full-player__progress-dot"
-                      cx={progressDotPoint.x}
-                      cy={progressDotPoint.y}
-                      r="1.25"
-                      aria-hidden="true"
-                      onPointerDown={handleProgressPointerDown}
-                      onPointerMove={handleProgressPointerMove}
-                      onPointerUp={handleProgressPointerEnd}
-                      onPointerCancel={handleProgressPointerEnd}
-                    />
-                    {momentMarkers.map((moment) => (
-                      <circle
-                        className="full-player__moment-dot"
-                        key={moment.id}
-                        cx={moment.point.x}
-                        cy={moment.point.y}
-                        r="0.85"
-                        aria-hidden="true"
-                      />
-                    ))}
-                    <circle
-                      className="full-player__seek-hit"
-                      cx={PLAYER_RING_CENTER}
-                      cy={PLAYER_RING_CENTER}
-                      r={PLAYER_RING_RADIUS}
-                      onPointerDown={handleProgressPointerDown}
-                      onPointerMove={handleProgressPointerMove}
-                      onPointerUp={handleProgressPointerEnd}
-                      onPointerCancel={handleProgressPointerEnd}
-                    />
-                  </svg>
+                  <PlaybackProgressRing
+                    key={selectedSong.id}
+                    audioRef={audioRef}
+                    duration={duration}
+                    isPlaying={isPlaying}
+                    isReady={isAudioMetadataReady}
+                    momentMarkers={momentMarkers}
+                    onSeek={seekToProgress}
+                  />
                   {isDesktopRing && momentMarkers.map((moment) => {
                     const peopleCount = moment.peopleCount || moment.comments?.length || 1;
                     const profiles = moment.profiles?.length ? moment.profiles : [moment.profile];

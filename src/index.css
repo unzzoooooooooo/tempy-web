@@ -1871,6 +1871,7 @@ button {
   stroke-width: 0.75px;
   cursor: grab;
   pointer-events: all;
+  transition: none;
 }
 
 .full-player__progress-dot:active {
