@@ -171,6 +171,7 @@ const getCreatedTracks = (item) => {
       if (typeof track === "object" && track !== null) return track;
       return archiveTrackItems.find((candidate) => candidate.id === track) || null;
     })
+    .map((track) => normalizeMusicItem({ ...track, legacyId: track.id }))
     .filter(Boolean);
 };
 
@@ -694,27 +695,28 @@ function PlaylistDetailView({ item, tracks }) {
           <small>{String(tracks.length).padStart(2, "0")} TRACKS · {duration}</small>
         </div>
         {tracks.length ? tracks.map((track, index) => {
-          const visual = archiveTrackVisuals[track.id] || {};
+          const visual = archiveTrackVisuals[track.id] || archiveTrackVisuals[track.legacyId] || {};
           return (
             <article
               className="archive-created-track"
               data-tempy-playable
+              data-tempy-id={track.trackId || track.id}
               data-tempy-title={track.title}
-              data-tempy-artist={visual.artist || "Tempy Archive"}
-              data-tempy-cover={visual.cover || item.data?.coverImage || "/images/album-10.png"}
-              data-tempy-duration={track.time}
+              data-tempy-artist={track.artist}
+              data-tempy-cover={track.cover}
+              data-tempy-duration={track.duration || track.time}
               key={`${track.id}-${index}`}
             >
               <span className="archive-created-track__index">{String(index + 1).padStart(2, "0")}</span>
               <div className="archive-created-track__visual">
-                {visual.cover ? <img src={visual.cover} alt="" /> : <div className="archive-created-track__disc" aria-hidden="true" />}
+                {track.cover ? <img src={track.cover} alt="" /> : <div className="archive-created-track__disc" aria-hidden="true" />}
               </div>
               <div className="archive-created-track__copy">
                 <strong>{track.title}</strong>
-                <span>{visual.artist || "Tempy Archive"}</span>
+                <span>{track.artist}</span>
               </div>
               <small>{visual.moment || "ARCHIVE MOMENT"}</small>
-              <time>{track.time || "--:--"}</time>
+              <time>{track.duration || track.time || "--:--"}</time>
               <button type="button" aria-label={`${track.title} 재생`}>▶</button>
             </article>
           );

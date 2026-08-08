@@ -1371,6 +1371,16 @@ button {
     #fbfbf4;
 }
 
+.full-player__home {
+  display: none;
+}
+
+.login-logo-link {
+  display: inline-flex;
+  padding: 0;
+  background: transparent;
+}
+
 .full-player__close {
   position: absolute;
   right: 28px;
@@ -5383,6 +5393,23 @@ body::-webkit-scrollbar:horizontal,
     min-height: 0;
     grid-template-rows: minmax(0, 1fr) auto;
     overflow: hidden;
+  }
+
+  .app .full-player__home {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    z-index: 9;
+    display: inline-flex;
+    width: 82px;
+    padding: 0;
+    background: transparent;
+  }
+
+  .app .full-player__home img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .app .full-player__disc-wrap,

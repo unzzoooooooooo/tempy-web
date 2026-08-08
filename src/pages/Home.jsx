@@ -297,11 +297,12 @@ function Home() {
         <section id="home" className="hero-section">
           <div className="hero-inner">
             <div className="hero-copy">
-              <div
+              <Link
+                to="/"
                 className="hero-wordmark"
                 onMouseMove={handleHeroLogoMove}
                 onMouseLeave={resetHeroLogoLetters}
-                aria-label="Tempy!"
+                aria-label="Go to Home"
               >
                 <svg
                   className="hero-wordmark__svg"
@@ -320,7 +321,7 @@ function Home() {
                   <path ref={(node) => { logoLetterRefs.current[4] = node; }} className="hero-wordmark__letter" d="M284.033 199.922H295.596L298.943 168.221H296.204C292.14 168.221 288.945 166.693 286.619 163.639C284.294 160.584 282.816 156.377 282.207 151.042L272.471 21.3164H289.814L299.247 151.042H300.464L313.243 21.3164H330.891L312.026 198.151C311.418 203.287 309.483 207.537 306.245 210.88C303.007 214.245 297.53 215.905 289.814 215.905H284.033V199.922Z" fill="#F62933" />
                   <path ref={(node) => { logoLetterRefs.current[5] = node; }} className="hero-wordmark__letter" d="M339.66 88.044V38.8398H357V88.044L354.332 161.6H342.061L339.66 88.044ZM340.194 167.321H356.733V191.17H340.194V167.321Z" fill="#F62933" />
                 </svg>
-              </div>
+              </Link>
               <p className="hero-subtitle">Catch your Tempo, Meet your Moment</p>
             </div>
             <div className="hero-visual">

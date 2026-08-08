@@ -130,7 +130,7 @@ function ArtistProfile() {
         track: {
           id: moment.id,
           title: moment.title,
-          artist: artist.name,
+          artist: moment.artist,
           cover: moment.cover,
           duration: moment.duration,
           artistId: artist.id,
@@ -265,13 +265,13 @@ function ArtistProfile() {
               data-tempy-playable
               data-tempy-id={track.id}
               data-tempy-title={track.title}
-              data-tempy-artist={artist.name}
+              data-tempy-artist={track.artist}
               data-tempy-cover={track.cover}
               data-tempy-duration={track.duration}
               key={`${track.id}-${index}`}
             >
               <img src={track.cover} alt="" />
-              <div className="artist-profile__track-copy"><small>{String(index + 1).padStart(2, "0")} · FEATURED TRACK</small><h3>{track.title}</h3><p>{artist.name}</p></div>
+              <div className="artist-profile__track-copy"><small>{String(index + 1).padStart(2, "0")} · FEATURED TRACK</small><h3>{track.title}</h3><p>{track.artist}</p></div>
               <div className="artist-profile__track-meta">
                 <span>{track.time}<small>MOMENT</small></span>
                 <div className="artist-profile__track-meta-bottom"><span>♥ {track.likes}</span><button type="button">PLAY <b aria-hidden="true">▶</b></button></div>
@@ -347,7 +347,7 @@ function ArtistProfile() {
             ))}
           </div>
           <ol className="artist-profile__track-list" id="artist-most-left-tracks" role="tabpanel">
-            {leftTracksByFilter[activeTrackFilter].map((track) => <li data-tempy-playable data-tempy-id={track.id} data-tempy-title={track.title} data-tempy-artist={artist.name} data-tempy-cover={track.cover} data-tempy-duration={track.duration} key={`${activeTrackFilter}-${track.number}`}><span>{track.number}</span><strong>{track.title}<small>{artist.name}</small></strong><time>{track.time}</time><span>♥ {track.likes}</span><button type="button">▶</button></li>)}
+            {leftTracksByFilter[activeTrackFilter].map((track) => <li data-tempy-playable data-tempy-id={track.id} data-tempy-title={track.title} data-tempy-artist={track.artist} data-tempy-cover={track.cover} data-tempy-duration={track.duration} key={`${activeTrackFilter}-${track.number}`}><span>{track.number}</span><strong>{track.title}<small>{track.artist}</small></strong><time>{track.time}</time><span>♥ {track.likes}</span><button type="button">▶</button></li>)}
           </ol>
         </article>
       </section>
@@ -391,10 +391,10 @@ function ArtistProfile() {
 
               return (
                 <div className={`artist-profile__ranking-accordion${isExpanded ? " artist-profile__ranking-accordion--open" : ""}`} key={track.title}>
-                  <article className="artist-profile__ranking-row" data-tempy-playable data-tempy-id={track.id} data-tempy-title={track.title} data-tempy-artist={artist.name} data-tempy-cover={track.cover} data-tempy-duration={track.duration}>
+                  <article className="artist-profile__ranking-row" data-tempy-playable data-tempy-id={track.id} data-tempy-title={track.title} data-tempy-artist={track.artist} data-tempy-cover={track.cover} data-tempy-duration={track.duration}>
                     <span>0{index + 1}</span>
                     <img src={track.cover} alt="" />
-                    <strong>{track.title}<small>{artist.name}</small></strong>
+                    <strong>{track.title}<small>{track.artist}</small></strong>
                     <time>{track.time}</time>
                     <span>♥ {track.likes}</span>
                     <button
@@ -414,7 +414,7 @@ function ArtistProfile() {
                         <img className="artist-profile__ranking-cover" src={track.cover} alt={`${track.title} album cover`} />
                         <p className="artist-profile__ranking-kicker">TRACK MOMENT · 0{index + 1}</p>
                         <h4>{track.title}</h4>
-                        <p className="artist-profile__ranking-artist">{artist.name}</p>
+                        <p className="artist-profile__ranking-artist">{track.artist}</p>
                       </div>
 
                       <div className="artist-profile__ranking-detail-copy">

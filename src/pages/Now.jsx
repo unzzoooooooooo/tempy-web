@@ -11,6 +11,7 @@ function Now() {
   const [selectedTrackIndex, setSelectedTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [activeTrackId, setActiveTrackId] = useState(null);
   const safeTrackIndex = tracks.length ? selectedTrackIndex % tracks.length : 0;
   const selectedTrack = tracks[safeTrackIndex] || tracks[0];
   const durationSeconds = parseDuration(selectedTrack.duration);
@@ -18,24 +19,24 @@ function Now() {
   const selectedTrackMeta = `${context.currentTime} · ${context.weatherLabel} · ${context.locationLabel}에서 지금 듣는 노래`;
 
   useEffect(() => {
-    if (!isPlaying) {
-      return undefined;
-    }
+    const syncGlobalPlayer = (event) => {
+      const nextTrackId = event.detail?.trackId || null;
+      setActiveTrackId(nextTrackId);
+      const nextTrackIndex = tracks.findIndex((track) => track.id === nextTrackId);
+      if (nextTrackIndex >= 0 && nextTrackIndex !== safeTrackIndex) {
+        setSelectedTrackIndex(nextTrackIndex);
+      }
+      if (nextTrackId !== selectedTrack.id) {
+        setIsPlaying(false);
+        return;
+      }
+      setElapsedSeconds(Number(event.detail?.currentTime) || 0);
+      setIsPlaying(Boolean(event.detail?.isPlaying));
+    };
 
-    const progressTimer = window.setInterval(() => {
-      setElapsedSeconds((current) => {
-        if (current + 1 >= durationSeconds) {
-          window.clearInterval(progressTimer);
-          setIsPlaying(false);
-          return durationSeconds;
-        }
-
-        return current + 1;
-      });
-    }, 1000);
-
-    return () => window.clearInterval(progressTimer);
-  }, [durationSeconds, isPlaying]);
+    window.addEventListener("tempy-player-progress", syncGlobalPlayer);
+    return () => window.removeEventListener("tempy-player-progress", syncGlobalPlayer);
+  }, [safeTrackIndex, selectedTrack.id, tracks]);
 
   const moveTrack = (direction) => {
     if (!tracks.length) {
@@ -44,27 +45,27 @@ function Now() {
 
     setSelectedTrackIndex((current) => {
       const nextIndex = (current + direction + tracks.length) % tracks.length;
+      const nextTrack = tracks[nextIndex];
+      window.dispatchEvent(new CustomEvent("tempy-play-track", { detail: nextTrack }));
       return nextIndex;
     });
     setElapsedSeconds(0);
   };
 
   const togglePlayback = () => {
-    setIsPlaying((current) => {
-      if (current) {
-        return false;
-      }
-
-      setElapsedSeconds(0);
-      return true;
-    });
+    if (activeTrackId === selectedTrack.id) {
+      window.dispatchEvent(new CustomEvent("tempy-toggle-playback"));
+      return;
+    }
+    window.dispatchEvent(new CustomEvent("tempy-play-track", { detail: selectedTrack }));
   };
 
   const queue = Array.from({ length: 15 }, (_, index) => {
     const track = tracks[(index + 1) % tracks.length];
     return {
       ...track,
-      id: `${track.id}-now-queue-${index + 1}`,
+      queueKey: `${track.id}-now-queue-${index + 1}`,
+      catalogIndex: (index + 1) % tracks.length,
     };
   });
   const weatherSummary = `${context.weatherLabel} · ${context.temperature}`;
@@ -173,7 +174,11 @@ function Now() {
                 data-tempy-artist={track.artist}
                 data-tempy-cover={track.cover || track.image}
                 data-tempy-duration={track.duration}
-                key={track.id}
+                key={track.queueKey}
+                onClick={() => {
+                  setSelectedTrackIndex(track.catalogIndex);
+                  setElapsedSeconds(0);
+                }}
               >
                 <span className="now-page__queue-number">{String(index + 2).padStart(2, "0")}</span>
                 <img src={track.cover || track.image} alt={`${track.title} album cover`} />

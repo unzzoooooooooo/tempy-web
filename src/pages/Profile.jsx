@@ -8,8 +8,6 @@ const profileAlbumImages = createAlbumImageSequence(8, "profile-archive");
 const momentCards = [
   {
     title: "Rainy Bus Stop",
-    track: "BIRDS OF A FEATHER",
-    artist: "Billie Eilish",
     time: "20:39 · Rain",
     location: "서울 성북구",
     tags: ["비", "버스"],
@@ -18,8 +16,6 @@ const momentCards = [
   },
   {
     title: "Late Blue",
-    track: "Gone Are the Days",
-    artist: "HONNE",
     time: "23:10 · Seoul",
     location: "한강 산책",
     tags: ["저녁", "혼자"],
@@ -28,8 +24,6 @@ const momentCards = [
   },
   {
     title: "Window Seat",
-    track: "sweetener",
-    artist: "Ariana Grande",
     time: "07:42 · Cloud",
     location: "창가 자리",
     tags: ["아침", "흐림"],
@@ -38,8 +32,6 @@ const momentCards = [
   },
   {
     title: "After Office",
-    track: "Blinding Lights",
-    artist: "The Weeknd",
     time: "18:25 · Walk",
     location: "퇴근길",
     tags: ["도시", "산책"],
@@ -55,6 +47,7 @@ const playlists = [
     time: "12곡 · 42 min",
     tags: ["비", "저녁"],
     image: profileAlbumImages[4],
+    music: getTrackById("birds-of-a-feather"),
   },
   {
     title: "버스 창가의 기록",
@@ -62,6 +55,7 @@ const playlists = [
     time: "10곡 · 35 min",
     tags: ["버스", "창가"],
     image: profileAlbumImages[5],
+    music: getTrackById("gone-are-the-days"),
   },
   {
     title: "새벽에 저장한 마음",
@@ -69,6 +63,7 @@ const playlists = [
     time: "9곡 · 31 min",
     tags: ["새벽", "혼자"],
     image: profileAlbumImages[6],
+    music: getTrackById("sweetener"),
   },
   {
     title: "성북구 흐림",
@@ -76,6 +71,7 @@ const playlists = [
     time: "11곡 · 38 min",
     tags: ["흐림", "성북구"],
     image: profileAlbumImages[7],
+    music: getTrackById("blinding-lights"),
   },
 ];
 
@@ -218,8 +214,8 @@ function Profile() {
               <div className="profile-moment-card__track">
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <div>
-                  <strong>{card.track}</strong>
-                  <span>{card.artist}</span>
+                  <strong>{card.music.title}</strong>
+                  <span>{card.music.artist}</span>
                 </div>
                 <small>{card.time.split(" · ")[0]}</small>
               </div>
@@ -242,10 +238,11 @@ function Profile() {
             <article
               className="profile-playlist-card"
               data-tempy-playable
-              data-tempy-title={playlist.title}
-              data-tempy-artist="만찐두빵"
-              data-tempy-cover={playlist.image}
-              data-tempy-duration={playlist.time}
+              data-tempy-id={playlist.music.id}
+              data-tempy-title={playlist.music.title}
+              data-tempy-artist={playlist.music.artist}
+              data-tempy-cover={playlist.music.cover}
+              data-tempy-duration={playlist.music.duration}
               key={playlist.title}
             >
               <div className="profile-playlist-card__lp">

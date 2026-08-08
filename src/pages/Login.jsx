@@ -32,7 +32,9 @@ function Login() {
     <main className="login-page">
       <section className="login-card" aria-label="Tempy login">
         <div className="login-brand">
-          <img src={logoNav} alt="Tempy!" draggable={false} />
+          <button className="login-logo-link" type="button" aria-label="Go to Home" onClick={() => navigate("/")}>
+            <img src={logoNav} alt="Tempy!" draggable={false} />
+          </button>
           <p>Catch your Tempo, Meet your Moment</p>
         </div>
 
@@ -96,7 +98,9 @@ export function LoginSuccess() {
     <main className="login-success-page">
       <section className="login-success-orbit" aria-label="Login complete">
         <article className="login-success-card">
-          <img src={logoNav} alt="Tempy!" draggable={false} />
+          <button className="login-logo-link" type="button" aria-label="Go to Home" onClick={() => navigate("/")}>
+            <img src={logoNav} alt="Tempy!" draggable={false} />
+          </button>
           <p>Catch your Tempo, Meet your Moment</p>
           <h1>Welcome!</h1>
           <span>로그인이 완료되었어요. 이제 나만의 음악 순간으로 이동해볼게요.</span>

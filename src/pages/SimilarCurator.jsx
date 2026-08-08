@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { normalizeMusicItem } from "../data/musicCatalog";
+import { tracks as musicCatalogTracks } from "../data/musicCatalog";
 
 const similarPlaylists = [
   {
@@ -180,7 +180,9 @@ const similarTrackAdditions = [
 
 const normalizedSimilarPlaylists = similarPlaylists.map((playlist, index) => ({
   ...playlist,
-  tracks: [...playlist.tracks, ...(similarTrackAdditions[index] || [])].map(normalizeMusicItem),
+  tracks: [...playlist.tracks, ...(similarTrackAdditions[index] || [])].map((_, trackIndex) => (
+    musicCatalogTracks[((index * 7) + trackIndex) % musicCatalogTracks.length]
+  )),
 }));
 
 function SimilarCurator() {
