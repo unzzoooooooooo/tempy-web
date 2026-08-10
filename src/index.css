@@ -28305,3 +28305,151 @@ body::-webkit-scrollbar:horizontal,
     animation: none;
   }
 }
+
+/* Requested phone-only carousel, alignment, and typography refinements. */
+@media (max-width: 768px) {
+  /* Keep the Archive section numbers aligned while matching Tempy's Galgo headings. */
+  .app .archive-page .archive-page__section-title--galgo-mobile {
+    margin: 0;
+    font-family: "GalgoVF", "Arial Narrow", sans-serif;
+    font-size: clamp(42px, 11.7vw, 46px);
+    font-weight: 400;
+    line-height: 0.88;
+    letter-spacing: -0.008em;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  /* Liked curators stay full-size in one touch-scrollable row. */
+  .app .archive-page .archive-page__people--liked {
+    display: flex;
+    width: calc(100% + 20px);
+    padding: 0 20px 8px 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 0 20px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .archive-page .archive-page__people--liked::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .archive-page .archive-page__people--liked .archive-page__person {
+    min-width: 0;
+    flex: 0 0 min(38vw, 150px);
+    scroll-snap-align: start;
+  }
+
+  /* Give artist names more presence and separate the play count below them. */
+  .app .archive-page .archive-page__artist h3 {
+    margin-bottom: 23px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .app .archive-page .archive-page__artist small {
+    display: block;
+    transform: translateY(12px);
+  }
+
+  /* Lower only the two Discover LPs; their size and horizontal position remain intact. */
+  .app .home-page .discover-art {
+    bottom: -30px;
+  }
+
+  /* Both Archive promo CTAs share the same bottom-aligned slot. */
+  .app .home-page .archive-card .archive-text {
+    display: flex;
+    min-height: 166px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app .home-page .archive-card .archive-text > :is(button, .archive-blind-pick__button) {
+    margin-top: auto;
+  }
+
+  /* Preserve three tracks per page and leave a subtle preview of the next page. */
+  .app .home-page .playlist-grid {
+    width: calc(100% + 20px);
+    max-width: none;
+    grid-auto-columns: calc(100% - 53px);
+    column-gap: 52px;
+    padding-right: 53px;
+    scroll-padding-inline: 0 22px;
+  }
+
+  .app .home-page .playlist-row:nth-child(3n + 1) {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .app .home-page .playlist-row:not(:nth-child(3n)) {
+    position: relative;
+    border-bottom: 0;
+  }
+
+  .app .home-page .playlist-row:not(:nth-child(3n))::after {
+    content: "";
+    position: absolute;
+    right: -27px;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: rgba(7, 20, 43, 0.18);
+    pointer-events: none;
+  }
+
+  .app .home-page .playlist-row strong.home-desktop-copy {
+    display: block !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: unset;
+  }
+
+  /* Give the Artist Route real leading/trailing scroll space at both endpoints. */
+  .app .artist-profile .artist-profile__timeline {
+    width: calc(100% + 40px);
+    margin-right: -20px;
+    margin-left: -20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 20px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .artist-profile .artist-profile__timeline::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .artist-profile .artist-profile__timeline article {
+    min-width: var(--artist-route-item-width, 130px);
+    scroll-snap-align: start;
+  }
+
+  /* Explicit square geometry prevents Safari from rendering either user avatar oval. */
+  .app .top-profile-button,
+  .app .top-profile-button img,
+  .app .profile-hero__avatar,
+  .app .profile-hero__avatar img {
+    aspect-ratio: 1 / 1;
+  }
+
+  .app .top-profile-button img,
+  .app .profile-hero__avatar img {
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}

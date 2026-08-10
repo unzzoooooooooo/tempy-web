@@ -78,7 +78,7 @@ export const artists = [
   { id: "aespa", name: "aespa", profile: "/images/album-24.png", genres: ["K-Pop", "Electronic"] },
   { id: "jennie", name: "JENNIE", profile: "/images/artist-01.png", genres: ["K-Pop", "Hip-Hop"] },
   { id: "akmu", name: "AKMU", profile: "/images/artist-02.png", genres: ["K-Pop", "Folk Pop"] },
-  { id: "hanroro", name: "HANRORO", profile: "/images/artist-03.png", genres: ["Indie Rock", "Singer-Songwriter"] },
+  { id: "hanroro", name: "한로로", profile: "/images/artist-03.png", genres: ["Indie Rock", "Singer-Songwriter"] },
   { id: "rose", name: "ROSÉ", profile: "/images/album-27.png", genres: ["Pop", "Pop Rock"] },
   { id: "arlie", name: "Arlie", profile: "/images/album-28.png", genres: ["Indie Pop"] },
   { id: "lany", name: "LANY", profile: "/images/album-22.png", genres: ["Pop", "Indie Pop"] },

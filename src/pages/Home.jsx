@@ -162,7 +162,7 @@ function Home() {
       image: "/images/artist-03.png",
       title: "한로로의 카페에서 듣는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
-      name: "Hanroro",
+      name: "한로로",
       track: getTrackById("let-me-love-my-youth"),
     },
     {
@@ -183,7 +183,7 @@ function Home() {
       image: "/images/artist-03.png",
       title: "한로로의 새벽에 남겨둔 순간의 음악",
       meta: "10곡 · 21:03 · 2026.05.16",
-      name: "Hanroro",
+      name: "한로로",
       track: getTrackById("let-me-love-my-youth"),
     },
   ];

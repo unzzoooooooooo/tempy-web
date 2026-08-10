@@ -26,7 +26,7 @@ const artistPlaylists = [
     artist: "한로로",
     meta: "11곡 · 42 min",
     likes: "1.7k",
-    author: "HANRORO",
+    author: "한로로",
     image: "/images/artist-03.png",
   },
   {

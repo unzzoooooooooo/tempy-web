@@ -73,7 +73,7 @@ const archiveDayRecords = {
     tracks: [
       { title: "BIRDS OF A FEATHER", artist: "Billie Eilish", cover: "/images/album-02.png" },
       { title: "Love Lee", artist: "AKMU", cover: "/images/album-06.png" },
-      { title: "Let Me Go!", artist: "Hanroro", cover: "/images/album-17.png" },
+      { title: "Let Me Go!", artist: "한로로", cover: "/images/album-17.png" },
     ],
   },
   21: {
@@ -282,7 +282,7 @@ function Archive() {
   const artists = [
     { image: artistImages[0], name: "Jennie", count: "32 TIMES" },
     { image: artistImages[1], name: "AKMU", count: "28 TIMES" },
-    { image: artistImages[2], name: "Hanroro", count: "21 TIMES" },
+    { image: artistImages[2], name: "한로로", count: "21 TIMES" },
     { image: artistImages[6], name: "Billie Eilish", count: "18 TIMES" },
     { image: artistImages[3], name: "Wave to Earth", count: "16 TIMES" },
     { image: artistImages[7], name: "HONNE", count: "15 TIMES" },
@@ -438,7 +438,7 @@ function Archive() {
       <section className="archive-page__section">
         <div className="archive-page__section-head">
           <span>02</span>
-          <div><h2>Curators like you</h2><p>나와 가장 비슷한 시간과 취향을 가진 큐레이터</p></div>
+          <div><h2 className="archive-page__section-title--galgo-mobile">Curators like you</h2><p>나와 가장 비슷한 시간과 취향을 가진 큐레이터</p></div>
         </div>
         <div
           className="archive-page__people archive-page__people--scroll"
@@ -457,7 +457,7 @@ function Archive() {
       <section className="archive-page__section">
         <div className="archive-page__section-head">
           <span>03</span>
-          <div><h2>Most played artists</h2><p>이번 달 가장 자주 찾은 아티스트</p></div>
+          <div><h2 className="archive-page__section-title--galgo-mobile">Most played artists</h2><p>이번 달 가장 자주 찾은 아티스트</p></div>
         </div>
         <div
           className="archive-page__artists"
@@ -476,7 +476,7 @@ function Archive() {
       <section className="archive-page__section">
         <div className="archive-page__section-head">
           <span>04</span>
-          <div><h2>Curators you liked</h2><p>내가 좋아요를 남긴 큐레이터</p></div>
+          <div><h2 className="archive-page__section-title--galgo-mobile">Curators you liked</h2><p>내가 좋아요를 남긴 큐레이터</p></div>
         </div>
         <div className="archive-page__people archive-page__people--liked">
           {likedCurators.map((curator) => (
@@ -491,7 +491,7 @@ function Archive() {
       <section className="archive-page__section archive-page__created-section">
         <div className="archive-page__section-head">
           <span>05</span>
-          <div><h2>Created Moments</h2><p>Create에서 남긴 Moment Card와 Playlist</p></div>
+          <div><h2 className="archive-page__section-title--galgo-mobile">Created Moments</h2><p>Create에서 남긴 Moment Card와 Playlist</p></div>
         </div>
 
         {createdItems.length > 0 ? (

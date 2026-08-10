@@ -96,6 +96,8 @@ export const profileImages = [
   "/images/profile-09.jpg",
 ];
 
+export const currentUserProfileImage = "/images/profile-01.png";
+
 export const lpTextureImage = "/images/lp-texture-overlay.png.png";
 
 const hashSeed = (value) => {
@@ -142,4 +144,3 @@ export const getAlbumImage = (index, seed = "tempy") => (
 
 export const getProfileImage = (index) => profileImages[index % profileImages.length];
 export const getArtistImage = (index) => artistImages[index % artistImages.length];
-

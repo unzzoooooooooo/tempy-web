@@ -21,6 +21,7 @@ import Archive from "./pages/Archive";
 import ArchiveBlindPick from "./pages/ArchiveBlindPick";
 import Profile from "./pages/Profile";
 import Login, { LoginSuccess } from "./pages/Login";
+import { currentUserProfileImage } from "./data/imageCatalog";
 import {
   getTrackByCover,
   getTrackById,
@@ -124,7 +125,7 @@ function Header() {
             {isLoggedIn ? "Logout" : "Login"}
           </button>
           <Link className="top-profile-button" to={isLoggedIn ? "/my" : "/login"} aria-label="Go to My Profile">
-            <img src="/images/profile-09.jpg" alt="" draggable={false} />
+            <img src={currentUserProfileImage} alt="" draggable={false} />
           </Link>
         </div>
         {isMobile && (

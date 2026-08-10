@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
 import { getTrackById } from "../data/musicCatalog";
-import { createAlbumImageSequence, profileImages } from "../data/imageCatalog";
+import { createAlbumImageSequence, currentUserProfileImage } from "../data/imageCatalog";
 
 const profileAlbumImages = createAlbumImageSequence(8, "profile-archive");
 
@@ -127,7 +127,7 @@ function Profile() {
             <small>2026 · PROFILE SUMMARY</small>
           </div>
           <div className="profile-hero__avatar">
-            <img src={profileImages[8]} alt="만찐두빵 profile" draggable={false} />
+            <img src={currentUserProfileImage} alt="만찐두빵 profile" draggable={false} />
           </div>
           <div className="profile-hero__identity-copy">
             <span>TIME CURATOR</span>
