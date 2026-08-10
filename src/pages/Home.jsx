@@ -17,8 +17,12 @@ function Home() {
   const { context, tracks: tempoTracks } = useContextRecommendations(10);
   const tempoAlbums = tempoTracks.slice(0, 10);
 
-  const navigateOnDesktop = (path) => {
-    if (window.matchMedia("(min-width: 1181px)").matches) {
+  const navigateHomeCard = (path) => {
+    navigate(path);
+  };
+
+  const navigateHomeCardOnMobile = (path) => {
+    if (window.matchMedia("(max-width: 768px)").matches) {
       navigate(path);
     }
   };
@@ -381,19 +385,19 @@ function Home() {
             <p>같은 순간의 다른 노래, 같은 노래의 다른 순간 속의 음악을 감상해보세요.</p>
           </div>
           <div className="discover-grid">
-            <article className="discover-card discover-card-blue">
+            <article className="discover-card discover-card-blue" onClick={() => navigateHomeCardOnMobile("/discover/time-set")}>
               <div className="discover-copy">
                 <h3>Time Set</h3>
                 <span>같은 순간 · 날씨 · 위치 안에서 다른 사람들이 선택한 음악을<br />감상해보세요</span>
-                <button className="small-button" onClick={() => navigateOnDesktop("/discover/time-set")}>같은 순간의 노래 듣기</button>
+                <button className="small-button" onClick={(event) => { event.stopPropagation(); navigateHomeCard("/discover/time-set"); }}>같은 순간의 노래 듣기</button>
               </div>
               <div className="discover-art blue"><span></span></div>
             </article>
-            <article className="discover-card discover-card-red">
+            <article className="discover-card discover-card-red" onClick={() => navigateHomeCardOnMobile("/discover/track-trace")}>
               <div className="discover-copy">
                 <h3>Track Trace</h3>
                 <span>하나의 노래가 다른 사람에게 어떤 시간과 장면으로 남았는지<br />따라가보세요</span>
-                <button className="small-button" onClick={() => navigateOnDesktop("/discover/track-trace")}>같은 노래의 순간 보기</button>
+                <button className="small-button" onClick={(event) => { event.stopPropagation(); navigateHomeCard("/discover/track-trace"); }}>같은 노래의 순간 보기</button>
               </div>
               <div className="discover-art red"><span></span></div>
             </article>
@@ -547,7 +551,7 @@ function Home() {
             <p>내가 어떤 시간에 무슨 음악을 들었는지 나만의 시간 기록으로 돌아보세요.</p>
           </div>
           <div className="archive-grid">
-            <article className="archive-card archive-identity-card" onClick={() => navigateOnDesktop("/archive")}>
+            <article className="archive-card archive-identity-card" onClick={() => navigateHomeCard("/archive")}>
               <div className="archive-text">
                 <h3>Your Music Identity</h3>
                 <p>아카이브와 함께 10월의 당신을 돌아보세요.</p>

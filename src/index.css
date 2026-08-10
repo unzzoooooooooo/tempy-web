@@ -20493,6 +20493,10 @@ body::-webkit-scrollbar:horizontal,
   animation: archive-blind-page-pick-in 240ms ease both;
 }
 
+.archive-blind-page__revealed-info--item {
+  display: none;
+}
+
 .archive-blind-page__revealed-info span {
   color: rgba(7, 20, 43, 0.62);
   font-size: 12px;
@@ -28451,5 +28455,120 @@ body::-webkit-scrollbar:horizontal,
   .app .profile-hero__avatar img {
     object-fit: cover;
     border-radius: 50%;
+  }
+
+  /* Blind Pick selection details stay attached to the selected mobile album. */
+  .app .archive-blind-page .archive-blind-page__pick,
+  .app .archive-blind-page .archive-blind-page__revealed-info--item {
+    bottom: calc(var(--blind-bar-size) + 12px);
+  }
+
+  .app .archive-blind-page .archive-blind-page__revealed-info--global {
+    display: none;
+  }
+
+  .app .archive-blind-page .archive-blind-page__revealed-info--item {
+    display: grid;
+    z-index: 18;
+  }
+
+  .app .archive-blind-page .archive-blind-page__revealed-info-play {
+    display: inline-flex;
+    height: 27px;
+    padding: 0 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: #fff1cf;
+    background: #07142b;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .app .archive-blind-page--revealed .archive-blind-page__item--selected .archive-blind-page__cover-info {
+    opacity: 0;
+  }
+
+  /* Touch screens show album metadata only after an explicit item selection. */
+  .app .archive-blind-page .archive-blind-page__hover-hint {
+    display: none;
+  }
+
+  .app .archive-blind-page--revealed .archive-blind-page__item .archive-blind-page__cover-info,
+  .app .archive-blind-page--revealed .archive-blind-page__item:hover .archive-blind-page__cover-info {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  .app .archive-blind-page .archive-blind-page__revealed-info--item {
+    pointer-events: none;
+    animation: archive-blind-page-pick-in 220ms ease-out both;
+  }
+
+  /* Home destination cards share one restrained touch response on phones. */
+  .app .home-page :is(
+    .discover-card,
+    .archive-identity-card,
+    .archive-blind-pick-card
+  ) {
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .home-page :is(
+    .discover-card,
+    .archive-identity-card,
+    .archive-blind-pick-card
+  ):active {
+    box-shadow: none;
+    transform: scale(0.985);
+  }
+
+  .app .home-page :is(
+    .discover-card .small-button,
+    .archive-identity-card .archive-text button,
+    .archive-blind-pick-card .archive-blind-pick__button
+  ) {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .app .home-page :is(
+    .discover-card .small-button,
+    .archive-identity-card .archive-text button,
+    .archive-blind-pick-card .archive-blind-pick__button
+  ):active {
+    transform: scale(0.96);
+  }
+
+  .app .home-page :is(.archive-identity-card, .archive-blind-pick-card):active
+    :is(.archive-text button, .archive-blind-pick__button) {
+    color: #fff1cf;
+    background: #07142b;
+    transform: translateY(-1px) scale(0.96);
+  }
+
+  /* Both Discover cards keep the same LP crop, shifted down by the same amount. */
+  .app .home-page .discover-art {
+    bottom: -38px;
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .app .home-page :is(
+    .discover-card,
+    .archive-identity-card,
+    .archive-blind-pick-card,
+    .discover-card .small-button,
+    .archive-identity-card .archive-text button,
+    .archive-blind-pick-card .archive-blind-pick__button
+  ) {
+    transition-duration: 1ms;
   }
 }

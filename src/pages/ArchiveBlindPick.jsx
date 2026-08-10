@@ -468,13 +468,22 @@ function ArchiveBlindPick() {
                     <small>{item.artist}</small>
                   </span>
                 )}
+
+                {isRevealed && selectedId === item.loopKey && (
+                  <span className="archive-blind-page__revealed-info archive-blind-page__revealed-info--item">
+                    <span>{item.meta}</span>
+                    <span className="archive-blind-page__revealed-info-play">Play</span>
+                    <strong>{item.title}</strong>
+                    <small>{item.artist}</small>
+                  </span>
+                )}
               </button>
             ))}
           </div>
         </div>
 
         {isRevealed && selectedItem && (
-          <div className="archive-blind-page__revealed-info">
+          <div className="archive-blind-page__revealed-info archive-blind-page__revealed-info--global">
             <span>{selectedItem.meta}</span>
             <button type="button">Play</button>
             <strong>{selectedItem.title}</strong>
