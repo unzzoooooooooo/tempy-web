@@ -71,6 +71,15 @@ export const albumImages = [
   "/images/album-70.png",
   "/images/album-71.png",
   "/images/album-72.png",
+  "/images/album-73.jpg",
+  "/images/album-74.jpg",
+  "/images/album-75.jpg",
+  "/images/album-76.jpg",
+  "/images/album-77.jpg",
+  "/images/album-78.jpg",
+  "/images/album-79.jpg",
+  "/images/album-80.jpg",
+  "/images/album-81.png",
 ];
 
 export const artistImages = [

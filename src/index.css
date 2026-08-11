@@ -1930,6 +1930,14 @@ button {
   white-space: nowrap;
 }
 
+/* Preserve ellipsis while giving the title/artist glow room beyond the text box. */
+.full-player__disc-copy strong,
+.full-player__disc-copy p {
+  box-sizing: content-box;
+  padding: 12px 18px;
+  margin: -12px -18px;
+}
+
 .full-player__disc-label {
   position: absolute;
   left: 50%;
@@ -2106,6 +2114,27 @@ button {
 .full-player--expanded .full-player__disc-wrap {
   width: min(calc(100vh - 156px), 940px);
   max-width: min(86vw, 940px);
+}
+
+/* Scale the complete LP as one desktop-only unit while preserving its center. */
+@media (min-width: 901px) {
+  .full-player__disc-wrap {
+    width: min(calc(100vh - 220px), 1008px);
+    max-width: min(calc(100vw - 420px), 1008px);
+    aspect-ratio: 1;
+    place-items: center;
+  }
+
+  .full-player--expanded .full-player__disc-wrap {
+    width: min(calc(100vh - 220px), 1052.8px);
+    max-width: min(86vw, 1052.8px);
+  }
+
+  .full-player__disc-shell {
+    width: 89.285714%;
+    transform: scale(1.12);
+    transform-origin: center;
+  }
 }
 
 .full-player--expanded .full-player__controls {

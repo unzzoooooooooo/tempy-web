@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import logoNav from "./assets/Tempy!_logo_nav.svg";
@@ -391,33 +391,75 @@ function PlaybackProgressRing({ audioRef, duration, isPlaying, isReady, momentMa
     const audio = audioRef.current;
     if (!audio) return undefined;
 
-    const resetEndedProgress = () => setProgress(0);
-    audio.addEventListener("ended", resetEndedProgress);
-    return () => audio.removeEventListener("ended", resetEndedProgress);
-  }, [audioRef]);
-
-  useEffect(() => {
-    if (!isPlaying || !isReady) return undefined;
-
-    const renderProgress = () => {
-      const audio = audioRef.current;
+    const syncProgress = () => {
       if (!isSeekingRef.current) {
-        const liveDuration = audio?.duration;
-        const liveTime = audio?.currentTime;
+        const liveDuration = audio.duration;
+        const liveTime = audio.currentTime;
         const nextProgress = Number.isFinite(liveDuration) && liveDuration > 0 && Number.isFinite(liveTime)
           ? Math.min(1, Math.max(0, liveTime / liveDuration))
           : 0;
         setProgress(nextProgress);
       }
-      animationFrameRef.current = window.requestAnimationFrame(renderProgress);
     };
 
-    animationFrameRef.current = window.requestAnimationFrame(renderProgress);
-    return () => {
+    const stopProgressLoop = () => {
       if (animationFrameRef.current !== null) {
         window.cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
       }
+    };
+
+    const renderProgress = () => {
+      syncProgress();
+      if (!audio.paused && !audio.ended) {
+        animationFrameRef.current = window.requestAnimationFrame(renderProgress);
+      } else {
+        animationFrameRef.current = null;
+      }
+    };
+
+    const startProgressLoop = () => {
+      syncProgress();
+      if (animationFrameRef.current === null && !audio.paused && !audio.ended) {
+        animationFrameRef.current = window.requestAnimationFrame(renderProgress);
+      }
+    };
+
+    const stopAndSyncProgress = () => {
+      stopProgressLoop();
+      syncProgress();
+    };
+    const resetEndedProgress = () => {
+      stopProgressLoop();
+      setProgress(0);
+    };
+
+    audio.addEventListener("playing", startProgressLoop);
+    audio.addEventListener("waiting", stopAndSyncProgress);
+    audio.addEventListener("pause", stopAndSyncProgress);
+    audio.addEventListener("seeking", syncProgress);
+    audio.addEventListener("seeked", startProgressLoop);
+    audio.addEventListener("timeupdate", syncProgress);
+    audio.addEventListener("loadedmetadata", syncProgress);
+    audio.addEventListener("durationchange", syncProgress);
+    audio.addEventListener("ended", resetEndedProgress);
+    audio.addEventListener("emptied", resetEndedProgress);
+
+    syncProgress();
+    if (isPlaying && isReady && !audio.paused) startProgressLoop();
+
+    return () => {
+      stopProgressLoop();
+      audio.removeEventListener("playing", startProgressLoop);
+      audio.removeEventListener("waiting", stopAndSyncProgress);
+      audio.removeEventListener("pause", stopAndSyncProgress);
+      audio.removeEventListener("seeking", syncProgress);
+      audio.removeEventListener("seeked", startProgressLoop);
+      audio.removeEventListener("timeupdate", syncProgress);
+      audio.removeEventListener("loadedmetadata", syncProgress);
+      audio.removeEventListener("durationchange", syncProgress);
+      audio.removeEventListener("ended", resetEndedProgress);
+      audio.removeEventListener("emptied", resetEndedProgress);
     };
   }, [audioRef, isPlaying, isReady]);
 
@@ -513,10 +555,14 @@ function GlobalPlayer() {
   const audioRef = useRef(null);
   const commentPanelRef = useRef(null);
   const trackTransitionTimerRef = useRef(null);
+  const currentTrackRef = useRef(null);
+  const transitionTargetRef = useRef(null);
+  const pendingTrackTransitionRef = useRef(null);
   const [isDesktopRing, setIsDesktopRing] = useState(() => window.matchMedia("(min-width: 901px)").matches);
   const [isMobileViewport, setIsMobileViewport] = useState(() => window.matchMedia("(max-width: 768px)").matches);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaybackRequested, setIsPlaybackRequested] = useState(false);
   const [isShuffleEnabled, setIsShuffleEnabled] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -597,6 +643,10 @@ function GlobalPlayer() {
     },
   ]);
   const selectedSong = currentTrack;
+  currentTrackRef.current = currentTrack;
+  const togglePlayback = useCallback(() => {
+    setIsPlaybackRequested((requested) => selectedSong?.audioPreview ? !requested : false);
+  }, [selectedSong?.audioPreview]);
 
   useEffect(() => {
     const desktopQuery = window.matchMedia("(min-width: 901px)");
@@ -618,6 +668,8 @@ function GlobalPlayer() {
 
   useEffect(() => () => {
     window.clearTimeout(trackTransitionTimerRef.current);
+    transitionTargetRef.current = null;
+    pendingTrackTransitionRef.current = null;
   }, []);
 
   useEffect(() => {
@@ -691,10 +743,16 @@ function GlobalPlayer() {
     const handlePlayRequest = (event) => {
       const requestedTrackInput = event.detail?.track || event.detail;
       const requestedTrack = normalizeMusicItem(requestedTrackInput);
-      if (!requestedTrack) return;
+      if (!requestedTrack || requestedTrack.id === currentTrackRef.current?.id) return;
+      window.clearTimeout(trackTransitionTimerRef.current);
+      transitionTargetRef.current = null;
+      pendingTrackTransitionRef.current = null;
+      currentTrackRef.current = requestedTrack;
+      setTrackTransition({ phase: "idle", direction: "next" });
       setCurrentTrack(requestedTrack);
       setIsShuffleEnabled(Boolean(event.detail?.shuffle));
-      setIsPlaying(Boolean(requestedTrack.audioPreview));
+      setIsPlaybackRequested(Boolean(requestedTrack.audioPreview));
+      setIsPlaying(false);
       setCurrentTime(0);
       setDuration(0);
       setIsAudioMetadataReady(false);
@@ -732,16 +790,12 @@ function GlobalPlayer() {
       setDuration(0);
       setIsAudioMetadataReady(false);
       setCurrentTime(nextTime);
-      setIsPlaying(Boolean(track.audioPreview));
+      setIsPlaybackRequested(Boolean(track.audioPreview));
+      setIsPlaying(false);
       setIsSaved(false);
       setHoveredCommentPoint(null);
       setSelectedCommentPoint(null);
 
-      const audio = audioRef.current;
-      if (audio && track.audioPreview && audio.readyState >= 1) {
-        audio.currentTime = nextTime;
-        audio.play().catch(() => setIsPlaying(false));
-      }
     };
 
     window.addEventListener("tempy-seek-track", handleSeekRequest);
@@ -749,13 +803,28 @@ function GlobalPlayer() {
   }, []);
 
   useEffect(() => {
-    const handlePlaybackToggle = () => {
-      setIsPlaying((currentlyPlaying) => selectedSong?.audioPreview ? !currentlyPlaying : false);
+    window.addEventListener("tempy-toggle-playback", togglePlayback);
+    return () => window.removeEventListener("tempy-toggle-playback", togglePlayback);
+  }, [togglePlayback]);
+
+  useEffect(() => {
+    if (!isFullPlayerOpen || !selectedSong?.audioPreview) return undefined;
+
+    const handleSpaceShortcut = (event) => {
+      if ((event.code !== "Space" && event.key !== " ") || event.repeat) return;
+      const target = event.target;
+      if (target instanceof HTMLElement) {
+        const isEditable = target.isContentEditable
+          || Boolean(target.closest("input, textarea, select, button, [contenteditable]:not([contenteditable='false'])"));
+        if (isEditable) return;
+      }
+      event.preventDefault();
+      togglePlayback();
     };
 
-    window.addEventListener("tempy-toggle-playback", handlePlaybackToggle);
-    return () => window.removeEventListener("tempy-toggle-playback", handlePlaybackToggle);
-  }, [selectedSong?.audioPreview]);
+    window.addEventListener("keydown", handleSpaceShortcut);
+    return () => window.removeEventListener("keydown", handleSpaceShortcut);
+  }, [isFullPlayerOpen, selectedSong?.audioPreview, togglePlayback]);
 
   useEffect(() => {
     if (!currentTrack) return;
@@ -824,12 +893,15 @@ function GlobalPlayer() {
     const audio = audioRef.current;
     if (!audio || !selectedSong?.audioPreview) return;
 
-    if (isPlaying) {
-      audio.play().catch(() => setIsPlaying(false));
+    if (isPlaybackRequested) {
+      audio.play().catch(() => {
+        setIsPlaybackRequested(false);
+        setIsPlaying(false);
+      });
     } else {
       audio.pause();
     }
-  }, [isPlaying, selectedSong?.audioPreview]);
+  }, [isPlaybackRequested, selectedSong?.audioPreview]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -864,7 +936,6 @@ function GlobalPlayer() {
       audio.currentTime = nextTime;
       setCurrentTime(nextTime);
       pendingSeekTimeRef.current = null;
-      audio.play().catch(() => setIsPlaying(false));
     }
   };
 
@@ -878,6 +949,7 @@ function GlobalPlayer() {
   const handleAudioEnded = () => {
     const nextTrack = getNextPlayableCatalogTrack(currentTrack?.id);
     if (!nextTrack) {
+      setIsPlaybackRequested(false);
       setIsPlaying(false);
       return;
     }
@@ -887,12 +959,16 @@ function GlobalPlayer() {
   const handleClosePlayer = () => {
     const audio = audioRef.current;
     if (audio) audio.pause();
+    window.clearTimeout(trackTransitionTimerRef.current);
+    transitionTargetRef.current = null;
+    pendingTrackTransitionRef.current = null;
     if (currentTrack) {
       window.dispatchEvent(new CustomEvent("tempy-player-progress", {
         detail: { trackId: currentTrack.id, currentTime, isPlaying: false },
       }));
     }
     setIsPlaying(false);
+    setIsPlaybackRequested(false);
     setCurrentTrack(null);
     setIsShuffleEnabled(false);
     setCurrentTime(0);
@@ -902,6 +978,7 @@ function GlobalPlayer() {
     setIsRecording(false);
     setHoveredCommentPoint(null);
     setSelectedCommentPoint(null);
+    setTrackTransition({ phase: "idle", direction: "next" });
   };
 
   if (!currentTrack) return <audio ref={audioRef} />;
@@ -913,42 +990,69 @@ function GlobalPlayer() {
     playerPlaylist.findIndex((track) => track.id === currentTrack.id),
   );
 
-  const selectTrack = (track, shouldPlay = isPlaying) => {
+  const selectTrack = (track, shouldPlay = isPlaybackRequested) => {
     const selectedTrack = normalizeMusicItem(track);
-    if (!selectedTrack) return;
+    if (!selectedTrack || selectedTrack.id === currentTrackRef.current?.id) return false;
+    currentTrackRef.current = selectedTrack;
     setCurrentTrack(selectedTrack);
     setCurrentTime(0);
     setDuration(0);
     setIsAudioMetadataReady(false);
-    setIsPlaying(Boolean(shouldPlay && selectedTrack.audioPreview));
+    setIsPlaybackRequested(Boolean(shouldPlay && selectedTrack.audioPreview));
+    setIsPlaying(false);
     setIsSaved(false);
     setHoveredCommentPoint(null);
     setSelectedCommentPoint(null);
+    return true;
   };
 
-  const transitionToTrack = (track, direction, shouldPlay = isPlaying) => {
+  const runTrackTransition = ({ track, direction, shouldPlay }) => {
     const isPhone = window.matchMedia("(max-width: 393px)").matches;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Desktop and tablet players switch tracks immediately. The existing
+    // phone-only transition remains isolated to the mobile breakpoint.
     if (!isPhone || reduceMotion) {
       selectTrack(track, shouldPlay);
       return;
     }
-    if (trackTransition.phase !== "idle") return;
 
-    if (track.cover || track.image) {
+    const finishTransition = () => {
+      transitionTargetRef.current = null;
+      setTrackTransition({ phase: "idle", direction });
+      const pendingTransition = pendingTrackTransitionRef.current;
+      pendingTrackTransitionRef.current = null;
+      if (pendingTransition && pendingTransition.track.id !== currentTrackRef.current?.id) {
+        runTrackTransition(pendingTransition);
+      }
+    };
+
+    const nextCover = track.cover || track.image;
+    if (nextCover) {
       const preload = new Image();
-      preload.src = track.cover || track.image;
+      preload.src = nextCover;
     }
 
+    transitionTargetRef.current = track;
     setTrackTransition({ phase: "exit", direction });
     trackTransitionTimerRef.current = window.setTimeout(() => {
       selectTrack(track, shouldPlay);
       setTrackTransition({ phase: "enter", direction });
-      trackTransitionTimerRef.current = window.setTimeout(() => {
-        setTrackTransition({ phase: "idle", direction });
-      }, 190);
+      trackTransitionTimerRef.current = window.setTimeout(finishTransition, 190);
     }, 150);
+  };
+
+  const transitionToTrack = (track, direction, shouldPlay = isPlaybackRequested) => {
+    const selectedTrack = normalizeMusicItem(track);
+    if (!selectedTrack || selectedTrack.id === currentTrackRef.current?.id) return;
+
+    const transitionRequest = { track: selectedTrack, direction, shouldPlay };
+    if (transitionTargetRef.current) {
+      pendingTrackTransitionRef.current = transitionRequest;
+      return;
+    }
+
+    runTrackTransition(transitionRequest);
   };
 
   const handlePreviousTrack = () => {
@@ -956,8 +1060,12 @@ function GlobalPlayer() {
       handleRandomTrack();
       return;
     }
-    const nextIndex = (currentTrackIndex - 1 + playerPlaylist.length) % playerPlaylist.length;
-    transitionToTrack(playerPlaylist[nextIndex], "previous", isPlaying);
+    const navigationBase = pendingTrackTransitionRef.current?.track
+      || transitionTargetRef.current
+      || currentTrackRef.current;
+    const navigationBaseIndex = Math.max(0, playerPlaylist.findIndex((track) => track.id === navigationBase?.id));
+    const nextIndex = (navigationBaseIndex - 1 + playerPlaylist.length) % playerPlaylist.length;
+    transitionToTrack(playerPlaylist[nextIndex], "previous", isPlaybackRequested);
   };
 
   const handleNextTrack = () => {
@@ -965,8 +1073,12 @@ function GlobalPlayer() {
       handleRandomTrack();
       return;
     }
-    const nextIndex = (currentTrackIndex + 1) % playerPlaylist.length;
-    transitionToTrack(playerPlaylist[nextIndex], "next", isPlaying);
+    const navigationBase = pendingTrackTransitionRef.current?.track
+      || transitionTargetRef.current
+      || currentTrackRef.current;
+    const navigationBaseIndex = Math.max(0, playerPlaylist.findIndex((track) => track.id === navigationBase?.id));
+    const nextIndex = (navigationBaseIndex + 1) % playerPlaylist.length;
+    transitionToTrack(playerPlaylist[nextIndex], "next", isPlaybackRequested);
   };
 
   function handleRandomTrack() {
@@ -1067,8 +1179,12 @@ function GlobalPlayer() {
         onDurationChange={handleAudioLoaded}
         onCanPlay={handleAudioCanPlay}
         onTimeUpdate={handleAudioTimeUpdate}
+        onPlaying={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onWaiting={() => setIsPlaying(false)}
         onEnded={handleAudioEnded}
         onError={() => {
+          setIsPlaybackRequested(false);
           setIsPlaying(false);
           setIsAudioMetadataReady(false);
         }}
@@ -1264,7 +1380,7 @@ function GlobalPlayer() {
               </div>
 
               <div className="full-player__transport">
-                <button className="full-player__previous" type="button" aria-label="Previous track" onClick={handlePreviousTrack} disabled={trackTransition.phase !== "idle"}>
+                <button className="full-player__previous" type="button" aria-label="Previous track" onClick={handlePreviousTrack}>
                   <span aria-hidden="true">‹</span>
                 </button>
                 <button
@@ -1272,13 +1388,13 @@ function GlobalPlayer() {
                   type="button"
                   aria-label={isPreviewUnavailable ? "Preview unavailable" : isPlaying ? "Pause current track" : "Play current track"}
                   disabled={isPreviewUnavailable}
-                  onClick={() => setIsPlaying((playing) => selectedSong.audioPreview ? !playing : false)}
+                  onClick={togglePlayback}
                 >
                   <span className="full-player__play-label--desktop" aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>
                   <span className={`full-player__play-icon full-player__play-icon--play${isPlaying ? "" : " is-visible"}`} aria-hidden="true">▶</span>
                   <span className={`full-player__play-icon full-player__play-icon--pause${isPlaying ? " is-visible" : ""}`} aria-hidden="true">Ⅱ</span>
                 </button>
-                <button className="full-player__next" type="button" aria-label="Next track" onClick={handleNextTrack} disabled={trackTransition.phase !== "idle"}>
+                <button className="full-player__next" type="button" aria-label="Next track" onClick={handleNextTrack}>
                   <span aria-hidden="true">›</span>
                 </button>
               </div>
@@ -1381,7 +1497,11 @@ function GlobalPlayer() {
                         key={track.id}
                         aria-current={isCurrentTrack ? "true" : undefined}
                         aria-label={`${track.title} by ${track.artist}${hasPreview ? " 재생" : " Preview unavailable"}`}
-                        onClick={() => selectTrack(track, true)}
+                        onClick={() => transitionToTrack(
+                          track,
+                          index >= currentTrackIndex ? "next" : "previous",
+                          true,
+                        )}
                       >
                         <span>{String(index + 1).padStart(2, "0")}</span>
                         <img src={track.cover || track.image} alt="" draggable={false} />
@@ -1471,7 +1591,7 @@ function GlobalPlayer() {
                 disabled={isPreviewUnavailable}
                 onClick={(event) => {
                   event.stopPropagation();
-                  setIsPlaying((playing) => selectedSong.audioPreview ? !playing : false);
+                  togglePlayback();
                 }}
               >
                 {isPlaying ? "Ⅱ" : "▶"}

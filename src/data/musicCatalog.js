@@ -18,6 +18,13 @@ const addedCatalogArtists = [
   { id: "julia-michaels-maren-morris", name: "Julia Michaels, Maren Morris", profile: "/images/album-67.png", genres: [] },
   { id: "fka-twigs", name: "FKA twigs", profile: "/images/album-71.png", genres: [] },
   { id: "sza-travis-scott", name: "SZA, Travis Scott", profile: "/images/album-72.png", genres: [] },
+  { id: "chloe-x-halle", name: "Chloe x Halle", profile: "/images/album-73.jpg", genres: [] },
+  { id: "tinashe", name: "Tinashe", profile: "/images/album-74.jpg", genres: [] },
+  { id: "sza", name: "SZA", profile: "/images/album-75.jpg", genres: [] },
+  { id: "enhypen", name: "ENHYPEN", profile: "/images/album-76.jpg", genres: [] },
+  { id: "allday-project", name: "ALLDAY PROJECT", profile: "/images/album-78.jpg", genres: [] },
+  { id: "flor", name: "flor", profile: "/images/album-79.jpg", genres: [] },
+  { id: "bruno-mars", name: "Bruno Mars", profile: "/images/album-81.png", genres: [] },
 ];
 
 const addedCatalogTracks = [
@@ -61,6 +68,15 @@ const addedCatalogTracks = [
   ["crying-over-you", "Crying Over You ◐", "honne", "/images/album-70.png"],
   ["two-weeks", "Two Weeks", "fka-twigs", "/images/album-71.png"],
   ["open-arms", "Open Arms", "sza-travis-scott", "/images/album-72.png"],
+  ["ungodly-hour", "Ungodly Hour", "chloe-x-halle", "/images/album-73.jpg"],
+  ["naturally", "Bouncin'", "tinashe", "/images/album-74.jpg"],
+  ["bmf", "BMF", "sza", "/images/album-75.jpg"],
+  ["upper-side-dreamin", "Upper Side Dreamin", "enhypen", "/images/album-76.jpg"],
+  ["paranormal", "Paranormal", "enhypen", "/images/album-77.jpg"],
+  ["famous", "FAMOUS", "allday-project", "/images/album-78.jpg"],
+  ["future-shine", "Future Shine", "flor", "/images/album-79.jpg"],
+  ["imho", "Come Over Now", "flor", "/images/album-80.jpg"],
+  ["just-the-way-you-are", "Just the Way You Are", "bruno-mars", "/images/album-81.png"],
 ];
 
 export const artists = [
@@ -92,7 +108,7 @@ export const albums = [
   { id: "life-of-a-showgirl", title: "The Life of a Showgirl", artistId: "taylor-swift", cover: "/images/album-01.png", releaseDate: "2025", language: "English" },
   { id: "upside-down-archive", title: "drop dead", artistId: "olivia-rodrigo", cover: "/images/album-02.png", releaseDate: "2025", language: "English" },
   { id: "hit-me-hard-and-soft", title: "HIT ME HARD AND SOFT", artistId: "billie-eilish", cover: "/images/album-03.png", releaseDate: "2024", language: "English" },
-  { id: "new-jeans", title: "NewJeans 2nd EP 'Get Up'", artistId: "newjeans", cover: "/images/album-04.png", releaseDate: "2023", language: "Korean" },
+  { id: "new-jeans", title: "NEW DNA", artistId: "xg", cover: "/images/album-04.png", releaseDate: "2023", language: "English" },
   { id: "blinding-lights", title: "Blinding Lights", artistId: "the-weeknd", cover: "/images/album-05.png", releaseDate: "2019", language: "English" },
   { id: "gone-are-the-days", title: "Gone Are the Days", artistId: "honne", cover: "/images/album-06.png", releaseDate: "2016", language: "English" },
   { id: "traveler", title: "Traveler", artistId: "official-hige-dandism", cover: "/images/album-07.png", releaseDate: "2019", language: "Japanese" },
@@ -137,10 +153,10 @@ const rawTracks = [
   ["fate-of-ophelia", "The Fate of Ophelia", "life-of-a-showgirl", "03:24"],
   ["upside-down", "drop dead", "upside-down-archive", "02:58"],
   ["birds-of-a-feather", "BIRDS OF A FEATHER", "hit-me-hard-and-soft", "03:30"],
-  ["super-shy", "Super Shy", "new-jeans", "02:34"],
+  ["super-shy", "NEW DANCE", "new-jeans", "03:18"],
   ["blinding-lights", "Blinding Lights", "blinding-lights", "03:20"],
   ["gone-are-the-days", "Gone Are the Days", "gone-are-the-days", "03:42"],
-  ["traveler", "Traveler", "traveler", "03:16"],
+  ["traveler", "Pretender", "traveler", "05:26"],
   ["sweetener", "sweetener", "sweetener", "03:28"],
   ["tattoo", "TATTOO", "tattoo", "04:42"],
   ["anti-hero", "Anti-Hero", "midnights", "03:20"],
@@ -206,8 +222,8 @@ const trackLinksByTrackId = Object.freeze({
     trackViewUrl: "https://music.apple.com/kr/album/birds-of-a-feather/1739659134?i=1739659142&uo=4",
   },
   "super-shy": {
-    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a0/0c/47/a00c4790-3bbe-c669-fc8b-d8779508b512/mzaf_4170831274187670095.plus.aac.p.m4a",
-    trackViewUrl: "https://music.apple.com/us/album/super-shy/1692686264?i=1692686518&uo=4",
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/cd/b4/12/cdb41207-dbfe-2a26-af67-89d73425d14e/mzaf_15928103081103994062.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/new-dance/1703356590?i=1703356604&uo=4",
   },
   "blinding-lights": {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/19/d6/60/19d660ff-e3a9-8377-15a3-ce4b28e89cac/mzaf_18422426156481158187.plus.aac.p.m4a",
@@ -218,8 +234,8 @@ const trackLinksByTrackId = Object.freeze({
     trackViewUrl: "https://music.apple.com/kr/album/gone-are-the-days/1107603110?i=1107603297&uo=4",
   },
   traveler: {
-    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/55/a8/50/55a850e4-1f98-75c3-5053-88db6781741a/mzaf_11763890874915213695.plus.aac.p.m4a",
-    trackViewUrl: "https://music.apple.com/kr/album/travelers/1479397582?i=1479397875&uo=4",
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/ce/0f/9c/ce0f9cf6-edfd-d964-317a-56781936a96b/mzaf_10158629645505453806.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/pretender/1459216693?i=1459216694&uo=4",
   },
   sweetener: {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/21/32/e4/2132e4c7-d15a-09d6-7a55-905d05e710ef/mzaf_6065857603198925125.plus.aac.p.m4a",
@@ -505,20 +521,143 @@ const trackLinksByTrackId = Object.freeze({
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/21/63/f4/2163f4b2-8e9c-6f1b-e6da-1dd838f0941f/mzaf_952717904460349711.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/on-my-way/1455648995?i=1455648996&uo=4",
   },
+  "ungodly-hour": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/cc/4e/5e/cc4e5e19-0d96-29cc-49ab-e0abe6383b61/mzaf_14867092240278762538.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/ungodly-hour/1512283811?i=1512284184&uo=4",
+  },
+  naturally: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/65/e0/25/65e025b4-46dd-6a6e-dfb6-85b771f66bf9/mzaf_1546794130249884339.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/bouncin/1834854332?i=1834854517&uo=4",
+  },
+  bmf: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3a/49/12/3a4912e6-ed39-e9e5-fd79-5ec64a6e854c/mzaf_13702222499479449855.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/bmf/1796270264?i=1796270481&uo=4",
+  },
+  "upper-side-dreamin": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/49/a6/68/49a66800-4e6c-68e6-1e35-3be2919ac57e/mzaf_6950604213995548513.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/upper-side-dreamin/1587989646?i=1587989649&uo=4",
+  },
+  paranormal: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/07/4a/60/074a60bf-fc46-7ce5-5183-c907db3d3305/mzaf_3171772884638522266.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/paranormal/1752178854?i=1752179036&uo=4",
+  },
+  famous: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/0c/6e/3c/0c6e3cf2-8bf1-9321-7c29-74fadbc76959/mzaf_5360007931296785649.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/famous/1821577351?i=1821577352&uo=4",
+  },
+  "future-shine": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/88/ef/8d/88ef8df9-ab8b-f5cd-af6a-e20eaa2ac319/mzaf_11358992181994830624.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/future-shine/1613788140?i=1613788507&uo=4",
+  },
+  imho: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/8a/65/f1/8a65f1f0-3347-152d-1f45-dae50c157e22/mzaf_5909905582628954207.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/come-over-now/1613788140?i=1613788386&uo=4",
+  },
+  "just-the-way-you-are": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/a5/27/a8/a527a84c-9962-6673-c848-8aeeb05b4a7c/mzaf_7000909875279010673.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/just-the-way-you-are/578054234?i=578054244&uo=4",
+  },
 });
 
 // Per-track corrections that must not rename the shared artist everywhere.
 const trackMetadataOverrides = Object.freeze({
   traveler: {
-    title: "Travelers",
+    title: "Pretender",
     artist: "OFFICIAL HIGE DANDISM",
   },
 });
 
+// Fixed, intentionally interleaved catalog order used by every Track lists view.
+// Track metadata stays in rawTracks; only its presentation/playback sequence changes.
+const fixedTrackOrder = Object.freeze([
+  "disco-room",
+  "bmf",
+  "ungodly-hour",
+  "wait",
+  "pink-and-white",
+  "blinding-lights",
+  "paris-sabrina-carpenter",
+  "toxic-till-the-end",
+  "scissors",
+  "i-like-me-better",
+  "cruel-summer",
+  "casual",
+  "watermelon-sugar",
+  "feather",
+  "soft-static",
+  "armageddon",
+  "gone-are-the-days",
+  "you-and-me",
+  "mood",
+  "all-4-nothing",
+  "mans-best-friend",
+  "delicate",
+  "the-subway",
+  "super-shy",
+  "dive",
+  "upper-side-dreamin",
+  "days-like-this",
+  "future-shine",
+  "sweetener",
+  "traveler",
+  "thru-these-tears",
+  "citrus-glow",
+  "tears",
+  "crying-over-you",
+  "sims",
+  "mantra",
+  "willow",
+  "red-wine-supernova",
+  "birds-of-a-feather",
+  "die-with-a-smile",
+  "good-feeling",
+  "sharpest-tool",
+  "open-arms",
+  "xxl",
+  "26",
+  "whiplash",
+  "style",
+  "ouch",
+  "less-than-a-lover",
+  "the-giver",
+  "fruitcake",
+  "puppet-show",
+  "nice-to-each-other",
+  "paranormal",
+  "a-lot",
+  "imho",
+  "34-35",
+  "tattoo",
+  "know-you-naked",
+  "feelings",
+  "anti-hero",
+  "catch-me",
+  "espresso",
+  "rich-man",
+  "free-love",
+  "like-jennie",
+  "good-luck-babe",
+  "just-the-way-you-are",
+  "mamas-boy",
+  "paris-in-the-rain",
+  "fate-of-ophelia",
+  "let-me-move-you",
+  "360",
+  "famous",
+  "upside-down",
+  "two-weeks",
+  "burn",
+  "my-way",
+  "naturally",
+  "lost-the-breakup",
+  "try-your-luck",
+]);
+
 const artistMap = new Map(artists.map((artist) => [artist.id, artist]));
 const albumMap = new Map(albums.map((album) => [album.id, album]));
+const rawTrackMap = new Map(rawTracks.map((track) => [track[0], track]));
 
-export const tracks = rawTracks.map(([id, title, albumId, duration]) => {
+export const tracks = fixedTrackOrder.map((id) => rawTrackMap.get(id)).map(([id, title, albumId, duration]) => {
   const album = albumMap.get(albumId);
   const artist = artistMap.get(album.artistId);
   const links = trackLinksByTrackId[id] || { audioPreview: null, trackViewUrl: null };
