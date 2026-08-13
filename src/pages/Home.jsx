@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
+import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
 import { getTrackById, getTracksByIds } from "../data/musicCatalog";
@@ -426,13 +427,13 @@ function Home() {
                 <div className="artist-copy" style={{ backgroundImage: `url(${artist.image})` }}>
                   <strong>{artist.title}</strong>
                   <span className="artist-meta-primary">{artist.meta}</span>
-                  <span className="artist-meta-likes">♡ 1.5k</span>
+                  <span className="artist-meta-likes tempy-icon-stat"><HeartIcon size="small" /> 1.5k</span>
                   <span className="artist-name">{artist.name}</span>
                 </div>
                 <div className="artist-info">
                   <button>▶ Play</button>
-                  <button>⤨</button>
-                  <button>♡</button>
+                  <button className="tempy-icon-button" type="button" aria-label="Shuffle artist moment"><ShuffleIcon size="small" /></button>
+                  <button className="tempy-icon-button" type="button" aria-label="Like artist moment"><HeartIcon size="small" /></button>
                 </div>
               </article>
             ))}
@@ -478,7 +479,7 @@ function Home() {
                     <i aria-hidden="true">○</i>
                     {item.artist}
                   </span>
-                  <span className="playlist-stats">♡ 1.5k  ⟲ 3891</span>
+                  <span className="playlist-stats tempy-icon-stat"><HeartIcon size="small" /> 1.5k&nbsp;&nbsp;⟲ 3891</span>
                 </div>
               </article>
             ))}
@@ -522,7 +523,7 @@ function Home() {
                 <img className="leftnow-image" src={moment.image} alt={`Moment card ${index + 1}`} />
                 <div className="leftnow-bottom">
                   <button>▶ Play</button>
-                  <button>♡</button>
+                  <button className="tempy-icon-button" type="button" aria-label="Like moment"><HeartIcon size="small" /></button>
                 </div>
               </article>
             ))}

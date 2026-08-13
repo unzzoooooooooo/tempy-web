@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
+import { HeartIcon } from "../components/TempyIcons";
 import { getTrackById } from "../data/musicCatalog";
 import { createAlbumImageSequence, currentUserProfileImage } from "../data/imageCatalog";
 
@@ -199,7 +200,7 @@ function Profile() {
             >
               <div className="profile-moment-card__top">
                 <span>MOMENT · {String(index + 1).padStart(2, "0")}</span>
-                <button type="button" aria-label={`${card.title} 좋아요`}>♡</button>
+                <button className="tempy-icon-button" type="button" aria-label={`${card.title} 좋아요`}><HeartIcon size="small" /></button>
               </div>
               <div className="profile-moment-card__visual">
                 <img src={card.image} alt="" draggable={false} />

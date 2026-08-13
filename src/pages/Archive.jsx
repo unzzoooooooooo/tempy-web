@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import TempyFooter from "../components/TempyFooter";
+import { HeartIcon } from "../components/TempyIcons";
 import { getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
 import { artistImages, profileImages } from "../data/imageCatalog";
 
@@ -481,7 +482,7 @@ function Archive() {
         <div className="archive-page__people archive-page__people--liked">
           {likedCurators.map((curator) => (
             <article className="archive-page__person" key={curator.name}>
-              <div><img src={curator.image} alt={`${curator.name} profile`} /><span>♡</span></div>
+              <div><img src={curator.image} alt={`${curator.name} profile`} /><span><HeartIcon size="small" /></span></div>
               <strong>{curator.name}</strong><small>MOMENT CURATOR</small>
             </article>
           ))}

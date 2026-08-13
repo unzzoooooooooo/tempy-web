@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
 import {
   getLifestylePlaylist,
   lifestylePlaylists,
@@ -219,7 +220,7 @@ function LifestylePlaylistDetail() {
             LIFESTYLE CURATOR · PLAYLIST {String(playlistIndex + 1).padStart(2, "0")}
           </p>
           <h1>{playlist.title}</h1>
-          <p className="lifestyle-playlist-detail__meta">{playlistTracks.length}곡 · 21:03 · 2026.05.16&nbsp;&nbsp; ♡ 1.5k</p>
+          <p className="lifestyle-playlist-detail__meta tempy-icon-stat">{playlistTracks.length}곡 · 21:03 · 2026.05.16&nbsp;&nbsp; <HeartIcon size="small" /> 1.5k</p>
           <div className="lifestyle-playlist-detail__host"><span>H</span><strong>hostless</strong></div>
           <div className="lifestyle-playlist-detail__now-playing">
             <span>NOW PLAYING · {String(selectedTrack + 1).padStart(2, "0")}</span>
@@ -248,7 +249,7 @@ function LifestylePlaylistDetail() {
             <span>{isPlaying ? "Ⅱ" : "▶"}</span> {isPlaying ? "PAUSE" : "PLAY"}
           </button>
           <button
-            className={isShuffled ? "is-active" : ""}
+            className={`tempy-icon-button${isShuffled ? " is-active" : ""}`}
             type="button"
             aria-label="랜덤 재생"
             aria-pressed={isShuffled}
@@ -256,10 +257,10 @@ function LifestylePlaylistDetail() {
               if (window.matchMedia("(max-width: 760px)").matches) setIsShuffled((active) => !active);
             }}
           >
-            <span aria-hidden="true">⌘</span>
+            <ShuffleIcon />
           </button>
           <button
-            className={isLiked ? "is-active" : ""}
+            className={`tempy-icon-button${isLiked ? " is-active" : ""}`}
             type="button"
             aria-label="좋아요"
             aria-pressed={isLiked}
@@ -267,8 +268,7 @@ function LifestylePlaylistDetail() {
               if (window.matchMedia("(max-width: 760px)").matches) setIsLiked((active) => !active);
             }}
           >
-            <span className="lifestyle-playlist-detail__heart-outline" aria-hidden="true">♡</span>
-            <span className="lifestyle-playlist-detail__heart-fill" aria-hidden="true">♥</span>
+            <HeartIcon filled={isLiked} />
           </button>
         </div>
         </aside>
@@ -357,7 +357,7 @@ function LifestylePlaylistDetail() {
               <small>TRACKS</small>
             </div>
             <div className="lifestyle-playlist-detail__stat">
-              <span aria-hidden="true">♡</span>
+              <span aria-hidden="true"><HeartIcon size="small" /></span>
               <strong>1.5K</strong>
               <small>LIKES</small>
             </div>

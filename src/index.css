@@ -6,6 +6,89 @@
   font-display: swap;
 }
 
+/* Shared Tempy glyphs: one geometry and size scale across every surface. */
+.tempy-icon {
+  display: block;
+  width: var(--tempy-icon-size, 18px);
+  height: var(--tempy-icon-size, 18px);
+  flex: 0 0 var(--tempy-icon-size, 18px);
+  overflow: visible;
+  color: inherit;
+}
+
+.tempy-icon--small { --tempy-icon-size: 14px; }
+.tempy-icon--medium { --tempy-icon-size: 18px; }
+.tempy-icon--large { --tempy-icon-size: 22px; }
+
+.tempy-icon--shuffle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tempy-icon--heart {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tempy-icon--heart.is-filled {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.tempy-icon-button {
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(7, 20, 43, 0.18);
+  border-radius: 50%;
+  color: #07142b;
+  background: #fffaf0;
+  line-height: 0;
+  transition:
+    color 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.tempy-icon-button > .tempy-icon {
+  margin: auto;
+}
+
+.tempy-icon-button:active {
+  transform: scale(0.96);
+}
+
+.tempy-icon-button:focus-visible {
+  outline: 2px solid #2759ed;
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tempy-icon-button:hover {
+    border-color: rgba(7, 20, 43, 0.36);
+    background-color: #f3f4f0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tempy-icon-button,
+  .tempy-icon-button .tempy-icon {
+    transition-duration: 1ms !important;
+  }
+}
+
+.app .tempy-icon-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .app .archive-created-detail--edit .archive-created-detail__edit-back {
   display: none;
 }
@@ -3854,26 +3937,6 @@ header.header {
   padding: 0;
   font-size: 0;
   font-weight: 500;
-}
-
-.artist-info button:nth-child(2)::before {
-  content: "↝";
-  color: #07142b;
-  font-size: 20px;
-  line-height: 1;
-  font-family: Arial, sans-serif;
-  font-weight: 700;
-  transform: translateY(-1px) rotate(180deg);
-}
-
-.artist-info button:nth-child(3)::before {
-  content: "♡";
-  color: #07142b;
-  font-size: 25px;
-  line-height: 0.9;
-  font-family: Arial, sans-serif;
-  font-weight: 700;
-  transform: translateY(-1px);
 }
 
 /* Moment Playlist */
@@ -19829,15 +19892,9 @@ body::-webkit-scrollbar:horizontal,
 .similar-curator__actions svg {
   width: 17px;
   height: 17px;
-  fill: currentColor;
-  stroke: currentColor;
-  stroke-width: 1.45;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 .similar-curator__play svg { stroke: none; }
-.similar-curator__icon-action svg { fill: none; }
 
 .similar-curator__actions button:hover {
   color: #f4fbff;
@@ -26190,10 +26247,6 @@ body::-webkit-scrollbar:horizontal,
 }
 
 /* Shared mobile detail header rhythm and Playlist Detail interaction states. */
-.lifestyle-playlist-detail__heart-fill {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .app :is(
     .time-set-detail,
@@ -26319,14 +26372,6 @@ body::-webkit-scrollbar:horizontal,
     transform: scale(1.04);
   }
 
-  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:nth-child(3).is-active .lifestyle-playlist-detail__heart-outline {
-    display: none;
-  }
-
-  .app .lifestyle-playlist-detail .lifestyle-playlist-detail__actions button:nth-child(3).is-active .lifestyle-playlist-detail__heart-fill {
-    display: inline;
-  }
-
   .app .lifestyle-playlist-detail :is(
     .lifestyle-playlist-detail__small-controls button,
     .lifestyle-playlist-detail__actions button
@@ -26343,10 +26388,6 @@ body::-webkit-scrollbar:horizontal,
 
 .artist-playlist-detail__sequence {
   display: contents;
-}
-
-.artist-playlist-detail__heart-fill {
-  display: none;
 }
 
 /* Artist Curator pages: phone-only archive and playlist sequence. */
@@ -26787,14 +26828,6 @@ body::-webkit-scrollbar:horizontal,
   .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(2).is-active,
   .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(3).is-active {
     color: #ff454b;
-  }
-
-  .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(3).is-active .artist-playlist-detail__heart-outline {
-    display: none;
-  }
-
-  .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(3).is-active .artist-playlist-detail__heart-fill {
-    display: inline;
   }
 
   .app .artist-playlist-detail .artist-playlist-detail__viewport,

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
 import { getTracksByIds } from "../data/musicCatalog";
 
 const playlistTracks = getTracksByIds([
@@ -205,7 +206,7 @@ function ArtistPlaylistDetail() {
           <div className="artist-playlist-detail__details">
             <div className="artist-playlist-detail__meta">
               <span>{selectedPlaylist.meta} · {selectedPlaylist.date}</span>
-              <span>♡ {selectedPlaylist.likes}</span>
+              <span className="tempy-icon-stat"><HeartIcon size="small" /> {selectedPlaylist.likes}</span>
             </div>
             <div className="artist-playlist-detail__author">
               <span>{selectedPlaylist.author?.slice(0, 1) || "J"}</span>
@@ -243,16 +244,16 @@ function ArtistPlaylistDetail() {
             data-tempy-cover={activeTrack.cover}
           ><span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span> {isPlaying ? "PAUSE" : "PLAY"}</button>
           <button
-            className={isShuffled ? "is-active" : ""}
+            className={`tempy-icon-button${isShuffled ? " is-active" : ""}`}
             type="button"
             aria-label="랜덤 재생"
             aria-pressed={isShuffled}
             onClick={() => {
               if (window.matchMedia("(max-width: 760px)").matches) setIsShuffled((active) => !active);
             }}
-          ><span aria-hidden="true">⌘</span></button>
+          ><ShuffleIcon /></button>
           <button
-            className={isLiked ? "is-active" : ""}
+            className={`tempy-icon-button${isLiked ? " is-active" : ""}`}
             type="button"
             aria-label="좋아요"
             aria-pressed={isLiked}
@@ -260,8 +261,7 @@ function ArtistPlaylistDetail() {
               if (window.matchMedia("(max-width: 760px)").matches) setIsLiked((active) => !active);
             }}
           >
-            <span className="artist-playlist-detail__heart-outline" aria-hidden="true">♡</span>
-            <span className="artist-playlist-detail__heart-fill" aria-hidden="true">♥</span>
+            <HeartIcon filled={isLiked} />
           </button>
         </div>
       </aside>

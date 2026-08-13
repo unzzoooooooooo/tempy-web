@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HeartIcon } from "../components/TempyIcons";
 
 const artistPlaylists = [
   {
@@ -298,7 +299,7 @@ function ArtistCurator() {
                     <p>{playlist.artist}</p>
                     <div className="artist-curator__card-meta">
                       <span>{playlist.meta}</span>
-                      <span>♡ {playlist.likes}</span>
+                      <span className="tempy-icon-stat"><HeartIcon size="small" /> {playlist.likes}</span>
                     </div>
                     <div className="artist-curator__author">
                       <span>{playlist.author.slice(0, 1)}</span>

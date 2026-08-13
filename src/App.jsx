@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import logoNav from "./assets/Tempy!_logo_nav.svg";
+import { HeartIcon, ShuffleIcon } from "./components/TempyIcons";
 import Home from "./pages/Home";
 import Now from "./pages/Now";
 import Discover from "./pages/Discover";
@@ -1372,14 +1373,16 @@ function GlobalPlayer() {
 
             <div className="full-player__controls" aria-label="Playback controls">
               <div className="full-player__control-group">
-                <button type="button" aria-label="Shuffle track" onClick={handleRandomTrack}>↝</button>
+                <button className="tempy-icon-button" type="button" aria-label="Shuffle track" onClick={handleRandomTrack}>
+                  <ShuffleIcon />
+                </button>
                 <button
-                  className={isSaved ? "full-player__heart full-player__heart--active" : "full-player__heart"}
+                  className={`tempy-icon-button full-player__heart${isSaved ? " full-player__heart--active" : ""}`}
                   type="button"
                   aria-label={isSaved ? "Remove from saved" : "Save track"}
                   onClick={() => setIsSaved((saved) => !saved)}
                 >
-                  ♥
+                  <HeartIcon filled={isSaved} />
                 </button>
                 <button
                   className={isRecording ? "full-player__record full-player__record--active" : "full-player__record"}

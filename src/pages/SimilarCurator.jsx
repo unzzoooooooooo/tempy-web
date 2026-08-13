@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
 import { tracks as musicCatalogTracks } from "../data/musicCatalog";
 
 const similarPlaylists = [
@@ -462,7 +463,7 @@ function SimilarCurator() {
                     <p className="similar-curator__byline">CURATED BY {playlist.author}</p>
                     <div className="similar-curator__meta">
                       <span>{playlist.meta}</span>
-                      <span>♡ {playlist.likes}</span>
+                      <span className="tempy-icon-stat"><HeartIcon size="small" /> {playlist.likes}</span>
                     </div>
                   </div>
 
@@ -494,28 +495,24 @@ function SimilarCurator() {
                         {activePlaylistIndex === index && isPlaylistPlaying ? "PAUSE" : "PLAY"}
                       </button>
                       <button
-                        className={`similar-curator__icon-action${shuffledPlaylistIndex === index ? " is-shuffled" : ""}`}
+                        className={`tempy-icon-button similar-curator__icon-action${shuffledPlaylistIndex === index ? " is-shuffled" : ""}`}
                         type="button"
                         aria-label={`${playlist.title} 셔플`}
                         aria-pressed={shuffledPlaylistIndex === index}
                         onPointerDown={(event) => event.stopPropagation()}
                         onClick={(event) => togglePlaylistShuffle(event, index)}
                       >
-                        <svg viewBox="0 0 20 20" aria-hidden="true">
-                          <path d="M3 5.5h2.1c3.7 0 5.25 9 8.95 9H17m-3-3 3 3-3 3M3 14.5h2.1c1.45 0 2.55-1.35 3.5-3.05M11.4 8.5c.75-1.65 1.55-3 2.65-3H17m-3-3 3 3-3 3" />
-                        </svg>
+                        <ShuffleIcon />
                       </button>
                       <button
-                        className={`similar-curator__icon-action${likedPlaylistIndexes.has(index) ? " is-liked" : ""}`}
+                        className={`tempy-icon-button similar-curator__icon-action${likedPlaylistIndexes.has(index) ? " is-liked" : ""}`}
                         type="button"
                         aria-label={`${playlist.title} 좋아요`}
                         aria-pressed={likedPlaylistIndexes.has(index)}
                         onPointerDown={(event) => event.stopPropagation()}
                         onClick={(event) => togglePlaylistLike(event, index)}
                       >
-                        <svg viewBox="0 0 20 20" aria-hidden="true">
-                          <path d="M10 16.5s-6-3.55-6-8.15A3.35 3.35 0 0 1 10 6.3a3.35 3.35 0 0 1 6 2.05c0 4.6-6 8.15-6 8.15Z" />
-                        </svg>
+                        <HeartIcon filled={likedPlaylistIndexes.has(index)} />
                       </button>
                     </div>
                   </div>
