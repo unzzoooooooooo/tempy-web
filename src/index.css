@@ -119,6 +119,10 @@
   display: none;
 }
 
+.app .archive-created-detail--edit .archive-created-detail__edit-mobile-back {
+  display: none;
+}
+
 /* Archive-created details share one desktop grid and Galgo title rhythm. */
 @media (min-width: 901px) {
   .app .archive-created-detail {
@@ -22271,12 +22275,9 @@ body::-webkit-scrollbar:horizontal,
     width: 32px;
   }
 
-  .home-page .artist-info button:nth-child(2)::before {
-    font-size: 18px;
-  }
-
-  .home-page .artist-info button:nth-child(3)::before {
-    font-size: 22px;
+  .home-page .artist-info .tempy-icon--artist-action {
+    --tempy-icon-size: 16px;
+    stroke-width: 1.8;
   }
 
   .home-page .playlist-grid {
@@ -29011,5 +29012,274 @@ body::-webkit-scrollbar:horizontal,
     .archive-blind-pick-card .archive-blind-pick__button
   ) {
     transition-duration: 1ms;
+  }
+}
+
+/* Archive editor/detail spacing refinements — mobile only. */
+@media (max-width: 768px) {
+  /* Keep the avatar and curator name visually distinct without resizing either. */
+  .app .home-page .leftnow-author {
+    gap: 16px;
+  }
+
+  /* Edit routes use the same single-column reading order as mobile detail routes. */
+  .app .archive-created-detail--edit {
+    --archive-edit-mobile-gutter: var(--phone-detail-gutter, var(--mobile-page-gutter, 20px));
+    display: flex;
+    width: 100%;
+    min-height: calc(100svh - 72px);
+    padding:
+      96px
+      var(--archive-edit-mobile-gutter)
+      calc(52px + env(safe-area-inset-bottom, 0px));
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-x: clip;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-detail__side,
+    .archive-created-detail__main
+  ) {
+    display: contents;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__edit-back {
+    display: none;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__edit-mobile-back {
+    position: static !important;
+    display: inline-flex;
+    order: 1;
+    width: fit-content;
+    min-height: 40px;
+    margin: 0 0 30px;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__edit-mobile-back > span:first-child {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .app .archive-created-detail--edit .archive-created-cover-picker {
+    display: grid;
+    order: 2;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto 20px;
+  }
+
+  .app .archive-created-detail--edit .archive-created-cover-picker .archive-created-detail__cover {
+    width: 100% !important;
+    max-width: none;
+    max-height: none;
+    aspect-ratio: 1 / 1;
+  }
+
+  .app .archive-created-detail--edit .archive-created-cover-picker > span {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__info {
+    order: 3;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto 38px !important;
+    padding: 22px 20px !important;
+    box-sizing: border-box;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__info > span {
+    display: block;
+    margin: 0 0 12px;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__info h1 {
+    margin: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__info p {
+    margin: 14px 0 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__header {
+    order: 4;
+    width: 100%;
+    margin: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__header > span {
+    display: block;
+    margin: 0 0 12px;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__header h2 {
+    margin: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__header > p {
+    margin: 14px 0 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid {
+    display: grid;
+    order: 5;
+    width: 100%;
+    max-width: none;
+    margin: 34px 0 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid > :is(label, div) {
+    min-width: 0;
+    margin: 0;
+    padding: 30px 0 0;
+    border-top: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid > :first-child {
+    padding-top: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid label {
+    gap: 12px;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-label {
+    display: block;
+    margin: 0;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-pills,
+    .archive-created-edit-tracks
+  ) {
+    margin-top: 12px;
+    gap: 10px;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-pills button,
+    .archive-created-edit-add button
+  ) {
+    min-height: 44px;
+    padding-inline: 14px;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-add {
+    margin-top: 10px;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__actions {
+    order: 6;
+    display: flex;
+    width: 100% !important;
+    margin: 40px 0 0 !important;
+    padding: 0 !important;
+    gap: 10px;
+    border-top: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__actions button {
+    min-width: 0;
+    min-height: 48px !important;
+    flex: 1;
+  }
+
+  /* Separate the playlist summary card from its track section. */
+  .app .archive-created-detail--playlist .archive-created-tracks {
+    display: grid;
+    width: 100%;
+    margin-top: 34px !important;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-tracks__head {
+    display: flex;
+    width: 100%;
+    min-height: 28px;
+    margin: 0 0 4px;
+    padding: 0;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-tracks__head > :is(span, small) {
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-tracks__head > small {
+    margin-left: auto;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-track {
+    display: grid;
+    width: 100%;
+    min-height: 88px !important;
+    padding: 14px !important;
+    grid-template-columns: 22px 58px minmax(0, 1fr) 36px !important;
+    grid-template-areas:
+      "index visual copy play"
+      "index visual moment time";
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 6px 10px !important;
+    box-sizing: border-box;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-track__index {
+    grid-area: index;
+    align-self: center;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-track__visual {
+    grid-area: visual;
+    align-self: center;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-track__copy {
+    grid-area: copy;
+    align-self: end;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-track > small {
+    grid-area: moment;
+    align-self: start;
+    margin: 0;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-track > button {
+    grid-area: play;
+    width: 36px;
+    height: 36px;
+    justify-self: end;
+  }
+
+  .app .archive-created-detail--playlist .archive-created-track > time {
+    grid-area: time;
+    justify-self: end;
+    align-self: start;
   }
 }

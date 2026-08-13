@@ -802,6 +802,15 @@ function CreatedItemEditor({ item, onBack, onCancel, onSave }) {
           <span aria-hidden="true">←</span>
           <span>BACK TO ARCHIVE</span>
         </button>
+        <button
+          className="archive-created-detail__back archive-created-detail__edit-mobile-back detail-back-link"
+          type="button"
+          onClick={onCancel}
+          aria-label="수정 전 상세 화면으로 돌아가기"
+        >
+          <span aria-hidden="true">←</span>
+          <span>BACK</span>
+        </button>
         <CreatedCoverPicker image={draft.coverImage} onChange={(coverImage) => update({ coverImage })} />
         <div className="archive-created-detail__info">
           <span>{isPlaylist ? "Edit Playlist" : "Edit Moment Card"}</span>
