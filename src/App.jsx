@@ -673,6 +673,18 @@ function GlobalPlayer() {
   }, []);
 
   useEffect(() => {
+    const isPlayerBarOpen = Boolean(currentTrack && !isFullPlayerOpen);
+    document.documentElement.classList.toggle("tempy-player-bar-open", isPlayerBarOpen);
+    window.dispatchEvent(new CustomEvent("tempy-player-visibility", {
+      detail: { isOpen: isPlayerBarOpen },
+    }));
+  }, [currentTrack, isFullPlayerOpen]);
+
+  useEffect(() => () => {
+    document.documentElement.classList.remove("tempy-player-bar-open");
+  }, []);
+
+  useEffect(() => {
     if (!isDesktopRing || !selectedCommentPoint) return undefined;
 
     const closeOnOutsidePointer = (event) => {

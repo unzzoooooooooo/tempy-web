@@ -61,6 +61,7 @@ function ArchiveBlindPick() {
   const animationFrameRef = useRef(null);
   const closingTimeoutRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
+  const [hoveredTrackId, setHoveredTrackId] = useState(null);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [hoverHint, setHoverHint] = useState({
@@ -79,8 +80,6 @@ function ArchiveBlindPick() {
       }))
     )).flat()
   ), []);
-
-  const selectedItem = loopItems.find((item) => item.loopKey === selectedId);
 
   const applyOffset = useCallback((offset) => {
     if (!trackRef.current) return;
@@ -121,6 +120,7 @@ function ArchiveBlindPick() {
     if (!bar) {
       hintVisibleRef.current = false;
       hoveredRenderIndexRef.current = null;
+      setHoveredTrackId(null);
       setHoverHint((current) => (current.visible ? { ...current, visible: false } : current));
       return;
     }
@@ -128,6 +128,7 @@ function ArchiveBlindPick() {
     const renderIndex = Number(bar.dataset.renderIndex);
     const item = loopItems[renderIndex];
     if (!item) return;
+    setHoveredTrackId(item.loopKey);
     if (
       hintVisibleRef.current
       && hoveredRenderIndexRef.current === renderIndex
@@ -332,6 +333,20 @@ function ArchiveBlindPick() {
     };
   }, [measureAndCenter, updateRevealDelays]);
 
+  useLayoutEffect(() => {
+    const clearStaleHover = (event) => {
+      if (event.detail?.isOpen === false) {
+        pointerActiveRef.current = false;
+        hoveredBarRef.current = null;
+        pointerXRef.current = null;
+        updateHoverHint(null);
+      }
+    };
+
+    window.addEventListener("tempy-player-visibility", clearStaleHover);
+    return () => window.removeEventListener("tempy-player-visibility", clearStaleHover);
+  }, [updateHoverHint]);
+
   const handleWheel = (event) => {
     event.preventDefault();
     const rawDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY)
@@ -450,51 +465,29 @@ function ArchiveBlindPick() {
                     <span className="archive-blind-page__cover-mask" aria-hidden={!isRevealed}>
                       <span className="archive-blind-page__cover-inner">
                         <img src={item.cover} alt="" draggable="false" />
-                        <span className="archive-blind-page__cover-info">
-                          <span>{item.meta}</span>
-                          <strong>{item.title}</strong>
-                          <small>{item.artist}</small>
-                        </span>
                       </span>
                     </span>
                   </span>
                 </span>
 
-                {!isRevealed && selectedId === item.loopKey && (
-                  <span className="archive-blind-page__pick">
-                    <span className="archive-blind-page__pick-meta">{item.meta}</span>
-                    <span className="archive-blind-page__play">Play</span>
-                    <strong>{item.title}</strong>
-                    <small>{item.artist}</small>
-                  </span>
-                )}
-
-                {isRevealed && selectedId === item.loopKey && (
-                  <span className="archive-blind-page__revealed-info archive-blind-page__revealed-info--item">
-                    <span>{item.meta}</span>
-                    <span className="archive-blind-page__revealed-info-play">Play</span>
-                    <strong>{item.title}</strong>
-                    <small>{item.artist}</small>
-                  </span>
-                )}
+                <span
+                  className={`archive-blind-page__album-hover-card${isRevealed && hoveredTrackId === item.loopKey ? " is-visible" : ""}`}
+                  aria-hidden={!(isRevealed && hoveredTrackId === item.loopKey)}
+                >
+                  <span className="archive-blind-page__pick-meta">{item.meta}</span>
+                  <span className="archive-blind-page__play">Play</span>
+                  <strong>{item.title}</strong>
+                  <small>{item.artist}</small>
+                </span>
               </button>
             ))}
           </div>
         </div>
 
-        {isRevealed && selectedItem && (
-          <div className="archive-blind-page__revealed-info archive-blind-page__revealed-info--global">
-            <span>{selectedItem.meta}</span>
-            <button type="button">Play</button>
-            <strong>{selectedItem.title}</strong>
-            <small>{selectedItem.artist}</small>
-          </div>
-        )}
-
         <div
-          className={`archive-blind-page__hover-hint${hoverHint.visible ? " archive-blind-page__hover-hint--visible" : ""}`}
+          className={`archive-blind-page__hover-hint${hoverHint.visible && !isRevealed ? " archive-blind-page__hover-hint--visible" : ""}`}
           ref={hintRef}
-          aria-hidden={!hoverHint.visible}
+          aria-hidden={!hoverHint.visible || isRevealed}
         >
           <span className="archive-blind-page__hover-hint-line archive-blind-page__hover-hint-meta">
             {hoverHint.meta}

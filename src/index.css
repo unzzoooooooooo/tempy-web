@@ -20836,11 +20836,11 @@ body::-webkit-scrollbar:horizontal,
   filter: saturate(1.1) contrast(1.02);
 }
 
-.archive-blind-page__pick {
+.archive-blind-page__album-hover-card {
   position: absolute;
-  bottom: 206px;
+  bottom: calc(var(--blind-bar-size) + 16px);
   left: 50%;
-  z-index: 6;
+  z-index: 32;
   display: grid;
   width: 156px;
   padding: 14px 16px 15px;
@@ -20850,10 +20850,22 @@ body::-webkit-scrollbar:horizontal,
   color: #07142b;
   background: rgba(241, 240, 235, 0.92);
   box-shadow: 0 14px 28px rgba(7, 20, 43, 0.13);
+  opacity: 0;
+  visibility: hidden;
   text-align: center;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(6px);
   pointer-events: none;
-  animation: archive-blind-page-pick-in 260ms ease both;
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out,
+    visibility 0s linear 150ms;
+}
+
+.archive-blind-page__album-hover-card.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition-delay: 0s;
 }
 
 .archive-blind-page__pick-meta {
@@ -20876,8 +20888,8 @@ body::-webkit-scrollbar:horizontal,
   font-weight: 900;
 }
 
-.archive-blind-page__pick strong,
-.archive-blind-page__pick small {
+.archive-blind-page__album-hover-card strong,
+.archive-blind-page__album-hover-card small {
   display: block;
   max-width: 124px;
   overflow: hidden;
@@ -20885,12 +20897,12 @@ body::-webkit-scrollbar:horizontal,
   white-space: nowrap;
 }
 
-.archive-blind-page__pick strong {
+.archive-blind-page__album-hover-card strong {
   font-size: 14px;
   font-weight: 900;
 }
 
-.archive-blind-page__pick small {
+.archive-blind-page__album-hover-card small {
   margin-top: 4px;
   color: rgba(7, 20, 43, 0.62);
   font-size: 12px;
@@ -20957,105 +20969,10 @@ body::-webkit-scrollbar:horizontal,
   transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1), filter 520ms ease;
 }
 
-.archive-blind-page__cover-info {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  left: 10px;
-  display: grid;
-  gap: 2px;
-  padding: 10px 11px;
-  border-radius: 6px;
-  color: #ffffff;
-  background: rgba(7, 20, 43, 0.72);
-  opacity: 0;
-  text-align: left;
-  transform: translate3d(0, 10px, 0);
-  transition:
-    opacity 360ms ease,
-    transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-
-.archive-blind-page__cover-info span {
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.archive-blind-page__cover-info strong {
-  overflow: hidden;
-  font-size: 12px;
-  font-weight: 900;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.archive-blind-page__cover-info small {
-  overflow: hidden;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 12px;
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .archive-blind-page--revealed .archive-blind-page__item:hover .archive-blind-page__cover-inner img,
-.archive-blind-page--revealed .archive-blind-page__item--selected .archive-blind-page__cover-inner img {
+.archive-blind-page--revealed .archive-blind-page__item:focus-visible .archive-blind-page__cover-inner img {
   filter: saturate(1.12) contrast(1.05);
   transform: scale(1.035);
-}
-
-.archive-blind-page--revealed .archive-blind-page__item:hover .archive-blind-page__cover-info,
-.archive-blind-page--revealed .archive-blind-page__item--selected .archive-blind-page__cover-info {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
-.archive-blind-page__revealed-info {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(86px, 11vh, 126px);
-  z-index: 5;
-  display: grid;
-  min-width: 190px;
-  justify-items: center;
-  gap: 6px;
-  color: #07142b;
-  text-align: center;
-  transform: translateX(-50%);
-  animation: archive-blind-page-pick-in 240ms ease both;
-}
-
-.archive-blind-page__revealed-info--item {
-  display: none;
-}
-
-.archive-blind-page__revealed-info span {
-  color: rgba(7, 20, 43, 0.62);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.archive-blind-page__revealed-info button {
-  height: 27px;
-  padding: 0 20px;
-  border-radius: 999px;
-  color: #fff1cf;
-  background: #07142b;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.archive-blind-page__revealed-info strong {
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.archive-blind-page__revealed-info small {
-  color: rgba(7, 20, 43, 0.62);
-  font-size: 12px;
-  font-weight: 700;
 }
 
 .archive-blind-page__hover-hint {
@@ -21121,7 +21038,14 @@ body::-webkit-scrollbar:horizontal,
   background: #07142b;
   box-shadow: 0 16px 28px rgba(7, 20, 43, 0.22);
   transform: translateX(-50%);
-  transition: transform 200ms ease, background-color 200ms ease;
+  transition:
+    bottom 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms ease,
+    background-color 200ms ease;
+}
+
+.tempy-player-bar-open .archive-blind-page__eye {
+  bottom: 184px;
 }
 
 .archive-blind-page__eye:hover {
@@ -21158,30 +21082,6 @@ body::-webkit-scrollbar:horizontal,
   animation: archive-blind-page-eye-pop 360ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes archive-blind-page-cover-in {
-  from {
-    opacity: 0;
-    transform: translateX(-22px) translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0) translateY(0);
-  }
-}
-
-@keyframes archive-blind-page-pick-in {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
 @keyframes archive-blind-page-eye-pop {
   0% {
     transform: translateX(-50%) scale(0.94);
@@ -21206,15 +21106,9 @@ body::-webkit-scrollbar:horizontal,
   .archive-blind-page__cover-mask,
   .archive-blind-page__cover-inner,
   .archive-blind-page__cover-inner img,
-  .archive-blind-page__cover-info,
+  .archive-blind-page__album-hover-card,
   .archive-blind-page__hover-hint {
     transition-duration: 1ms;
-  }
-
-  .archive-blind-page__pick,
-  .archive-blind-page__revealed-info {
-    opacity: 1;
-    animation: none;
   }
 
   .archive-blind-page--revealed .archive-blind-page__cover-mask {
@@ -21233,9 +21127,14 @@ body::-webkit-scrollbar:horizontal,
     transform: none;
   }
 
-  .archive-blind-page__pick,
-  .archive-blind-page__revealed-info {
+  .archive-blind-page__album-hover-card.is-visible {
     transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .tempy-player-bar-open .archive-blind-page__eye {
+    bottom: 124px;
   }
 }
 
@@ -24163,22 +24062,14 @@ body::-webkit-scrollbar:horizontal,
   :is(
     .archive-blind-page__pick-meta,
     .archive-blind-page__play,
-    .archive-blind-page__pick strong,
-    .archive-blind-page__pick small,
-    .archive-blind-page__cover-info span,
-    .archive-blind-page__cover-info strong,
-    .archive-blind-page__cover-info small,
-    .archive-blind-page__revealed-info span,
-    .archive-blind-page__revealed-info button,
-    .archive-blind-page__revealed-info strong,
-    .archive-blind-page__revealed-info small,
+    .archive-blind-page__album-hover-card strong,
+    .archive-blind-page__album-hover-card small,
     .archive-blind-page__hover-hint-line
   ) {
     font-size: 13px;
   }
 
-  .archive-blind-page__eye,
-  .archive-blind-page__revealed-info button {
+  .archive-blind-page__eye {
     min-width: 44px;
     min-height: 44px;
   }
@@ -28991,52 +28882,9 @@ body::-webkit-scrollbar:horizontal,
     border-radius: 50%;
   }
 
-  /* Blind Pick selection details stay attached to the selected mobile album. */
-  .app .archive-blind-page .archive-blind-page__pick,
-  .app .archive-blind-page .archive-blind-page__revealed-info--item {
-    bottom: calc(var(--blind-bar-size) + 12px);
-  }
-
-  .app .archive-blind-page .archive-blind-page__revealed-info--global {
-    display: none;
-  }
-
-  .app .archive-blind-page .archive-blind-page__revealed-info--item {
-    display: grid;
-    z-index: 18;
-  }
-
-  .app .archive-blind-page .archive-blind-page__revealed-info-play {
-    display: inline-flex;
-    height: 27px;
-    padding: 0 20px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    color: #fff1cf;
-    background: #07142b;
-    font-size: 13px;
-    font-weight: 900;
-  }
-
-  .app .archive-blind-page--revealed .archive-blind-page__item--selected .archive-blind-page__cover-info {
-    opacity: 0;
-  }
-
-  /* Touch screens show album metadata only after an explicit item selection. */
+  /* The blind-state hint remains hidden on touch layouts. */
   .app .archive-blind-page .archive-blind-page__hover-hint {
     display: none;
-  }
-
-  .app .archive-blind-page--revealed .archive-blind-page__item .archive-blind-page__cover-info,
-  .app .archive-blind-page--revealed .archive-blind-page__item:hover .archive-blind-page__cover-info {
-    opacity: 0;
-    transform: translate3d(0, 10px, 0);
-  }
-
-  .app .archive-blind-page .archive-blind-page__revealed-info--item {
-    pointer-events: none;
-    animation: archive-blind-page-pick-in 220ms ease-out both;
   }
 
   /* Home destination cards share one restrained touch response on phones. */
