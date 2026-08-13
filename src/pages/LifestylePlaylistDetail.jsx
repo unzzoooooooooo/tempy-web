@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
+import { ClockIcon, HeartIcon, ShuffleIcon, TrackListIcon } from "../components/TempyIcons";
 import {
   getLifestylePlaylist,
   lifestylePlaylists,
@@ -347,17 +347,17 @@ function LifestylePlaylistDetail() {
           </div>
           <div className="lifestyle-playlist-detail__stats" aria-label="플레이리스트 통계">
             <div className="lifestyle-playlist-detail__stat">
-              <span aria-hidden="true">◷</span>
+              <span aria-hidden="true"><ClockIcon size="small" className="tempy-icon--playlist-stat" /></span>
               <strong>21:03</strong>
               <small>TOTAL TIME</small>
             </div>
             <div className="lifestyle-playlist-detail__stat">
-              <span aria-hidden="true">≡</span>
+              <span aria-hidden="true"><TrackListIcon size="small" className="tempy-icon--playlist-stat" /></span>
               <strong>{playlistTracks.length}</strong>
               <small>TRACKS</small>
             </div>
             <div className="lifestyle-playlist-detail__stat">
-              <span aria-hidden="true"><HeartIcon size="small" /></span>
+              <span aria-hidden="true"><HeartIcon size="small" className="tempy-icon--playlist-stat" /></span>
               <strong>1.5K</strong>
               <small>LIKES</small>
             </div>

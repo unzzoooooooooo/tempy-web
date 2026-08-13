@@ -42,3 +42,30 @@ export function HeartIcon({ filled = false, size = "medium", className = "" }) {
     </svg>
   );
 }
+
+export function ClockIcon({ size = "medium", className = "" }) {
+  return (
+    <svg
+      className={iconClassName("clock", size, className)}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 7.5V12h4.5" />
+    </svg>
+  );
+}
+
+export function TrackListIcon({ size = "medium", className = "" }) {
+  return (
+    <svg
+      className={iconClassName("track-list", size, className)}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M6 7h12M6 12h12M6 17h12" />
+    </svg>
+  );
+}

@@ -41,6 +41,32 @@
   stroke: currentColor;
 }
 
+.tempy-icon--clock,
+.tempy-icon--track-list {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tempy-icon--playlist-stat,
+.tempy-icon--artist-action {
+  stroke-width: 1.8;
+}
+
+@media (min-width: 769px) {
+  .app .home-page .artist-info .tempy-icon--artist-action {
+    --tempy-icon-size: 16px;
+  }
+}
+
+@media (min-width: 901px) {
+  .app .playlist-detail--lifestyle .lifestyle-playlist-detail__stat .tempy-icon--playlist-stat {
+    --tempy-icon-size: 20px;
+  }
+}
+
 .tempy-icon-button {
   display: inline-grid;
   place-items: center;

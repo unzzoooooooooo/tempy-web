@@ -432,8 +432,8 @@ function Home() {
                 </div>
                 <div className="artist-info">
                   <button>▶ Play</button>
-                  <button className="tempy-icon-button" type="button" aria-label="Shuffle artist moment"><ShuffleIcon size="small" /></button>
-                  <button className="tempy-icon-button" type="button" aria-label="Like artist moment"><HeartIcon size="small" /></button>
+                  <button className="tempy-icon-button" type="button" aria-label="Shuffle artist moment"><ShuffleIcon size="small" className="tempy-icon--artist-action" /></button>
+                  <button className="tempy-icon-button" type="button" aria-label="Like artist moment"><HeartIcon size="small" className="tempy-icon--artist-action" /></button>
                 </div>
               </article>
             ))}
