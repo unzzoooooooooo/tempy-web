@@ -6,6 +6,511 @@
   font-display: swap;
 }
 
+.app .archive-created-detail--edit .archive-created-detail__edit-back {
+  display: none;
+}
+
+/* Archive-created details share one desktop grid and Galgo title rhythm. */
+@media (min-width: 901px) {
+  .app .archive-created-detail {
+    --archive-detail-galgo-spacing: var(--galgo-page-title-spacing);
+  }
+
+  .app .archive-created-detail :is(
+    .archive-created-detail__info h1,
+    .archive-created-detail__header h2,
+    .archive-created-moment-card h3
+  ) {
+    letter-spacing: var(--archive-detail-galgo-spacing);
+  }
+
+  .app .archive-created-detail {
+    grid-template-columns: 40% minmax(0, 60%);
+  }
+
+  .app .archive-created-detail--moment {
+    min-height: 100vh;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__side {
+    --archive-created-left-width: min(100%, 520px);
+    min-height: calc(100vh - 86px);
+    padding: 126px 24px 52px var(--detail-back-inline);
+    align-items: stretch;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__back {
+    position: absolute;
+    top: var(--detail-back-block);
+    left: var(--detail-back-inline);
+    margin: 0;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__object {
+    width: var(--archive-created-left-width);
+    margin: 0;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__cover {
+    width: 100%;
+    max-height: none;
+    aspect-ratio: 1;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__info {
+    width: 100%;
+    margin-top: 0;
+    padding: 28px 30px;
+    border: 1px solid #07142b;
+    border-top: 0;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__info h1 {
+    margin-top: 12px;
+    font-size: clamp(50px, 3.7vw, 70px);
+    line-height: 0.82;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__info p {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__info small {
+    margin-top: 14px;
+    line-height: 1.45;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__tags {
+    margin-top: 18px;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__side > .archive-created-detail__actions {
+    width: var(--archive-created-left-width);
+    margin-top: 24px;
+    padding-top: 20px;
+    gap: 10px;
+    border-top: 1px solid rgba(7, 20, 43, 0.18);
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__actions button {
+    min-height: 44px;
+    flex: 1;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__actions button:last-child {
+    border-color: rgba(246, 41, 51, 0.58);
+    color: #d72029;
+    background: transparent;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__main {
+    min-height: calc(100vh - 86px);
+    padding: var(--detail-back-block) var(--detail-back-inline) 76px;
+    overflow: visible;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__header {
+    width: 100%;
+    max-width: 980px;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__header h2 {
+    max-width: 900px;
+    margin-top: 14px;
+    font-size: clamp(84px, 7vw, 128px);
+    line-height: 0.76;
+  }
+
+  .app .archive-created-detail--moment .archive-created-detail__header > p {
+    max-width: 720px;
+    margin-top: 24px;
+    font-size: 17px;
+    line-height: 1.58;
+  }
+
+  .app .archive-created-detail--moment .archive-created-moment-card {
+    width: 100%;
+    max-width: 980px;
+    margin-top: 46px;
+    grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.08fr);
+    border: 1px solid rgba(7, 20, 43, 0.32);
+    background: rgba(251, 250, 245, 0.56);
+  }
+
+  .app .archive-created-detail--moment .archive-created-moment-card .archive-created-detail__cover {
+    border: 0;
+    border-right: 1px solid rgba(7, 20, 43, 0.32);
+  }
+
+  .app .archive-created-detail--moment .archive-created-moment-card > div:last-child {
+    padding: clamp(30px, 3vw, 48px);
+    background: #fbfaf5;
+  }
+
+  .app .archive-created-detail--moment .archive-created-moment-card h3 {
+    margin-top: 18px;
+    font-size: clamp(52px, 4.2vw, 76px);
+    line-height: 0.82;
+  }
+
+  .app .archive-created-detail--moment .archive-created-moment-card p {
+    margin-top: 24px;
+    font-size: 17px;
+    line-height: 1.58;
+  }
+
+  .app .archive-created-detail--moment .archive-created-moment-card small {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(7, 20, 43, 0.18);
+  }
+
+  /* Created-item editor: shared desktop structure for Playlist and Moment. */
+  .app .archive-created-detail--edit {
+    --archive-editor-left-width: min(100%, 520px);
+    grid-template-columns: 40% minmax(0, 60%);
+    min-height: 100vh;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__side {
+    min-height: calc(100vh - 86px);
+    padding: 126px 24px 64px var(--detail-back-inline);
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__edit-back {
+    position: absolute;
+    top: var(--detail-back-block);
+    left: var(--detail-back-inline);
+    display: inline-flex;
+    margin: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-cover-picker,
+  .app .archive-created-detail--edit .archive-created-detail__info,
+  .app .archive-created-detail--edit .archive-created-detail__actions {
+    width: var(--archive-editor-left-width);
+  }
+
+  .app .archive-created-detail--edit .archive-created-cover-picker {
+    display: grid;
+    margin: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-cover-picker .archive-created-detail__cover {
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    aspect-ratio: 1;
+  }
+
+  .app .archive-created-detail--edit .archive-created-cover-picker > span {
+    display: flex;
+    width: 100%;
+    min-height: 46px;
+    margin: 0;
+    padding: 0 18px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #2759ed;
+    border-top: 0;
+    color: #fff;
+    background: #2759ed;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    transition: color 180ms ease, background-color 180ms ease;
+  }
+
+  .app .archive-created-detail--edit .archive-created-cover-picker:hover > span {
+    color: #2759ed;
+    background: #fbfaf5;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__info {
+    margin: 0;
+    padding: 28px 30px 30px;
+    border: 1px solid #07142b;
+    border-top: 0;
+    background: #fbfaf5;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__info > span {
+    font-size: 11px;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__info h1 {
+    margin-top: 12px;
+    font-size: clamp(54px, 4vw, 74px);
+    font-weight: 400;
+    line-height: 0.82;
+    letter-spacing: var(--archive-detail-galgo-spacing);
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__info p {
+    margin-top: 16px;
+    color: rgba(7, 20, 43, 0.74);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.55;
+    letter-spacing: -0.025em;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__actions {
+    margin: 24px 0 0;
+    padding: 20px 0 0;
+    gap: 10px;
+    border-top: 1px solid rgba(7, 20, 43, 0.18);
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__actions button {
+    min-width: 0;
+    min-height: 48px;
+    flex: 1;
+    border-color: #07142b;
+    background: #fbfaf5;
+    font-size: 13px;
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 120ms ease;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__actions button:first-child {
+    border-color: #2759ed;
+    color: #fff;
+    background: #2759ed;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__actions button:first-child:hover {
+    border-color: #07142b;
+    background: #07142b;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__actions button:last-child:hover {
+    color: #fff;
+    background: #07142b;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__actions button:active {
+    transform: translateY(1px);
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__main {
+    min-height: calc(100vh - 86px);
+    padding: var(--detail-back-block) var(--detail-back-inline) 76px;
+    overflow: visible;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__header,
+  .app .archive-created-detail--edit .archive-created-edit-grid {
+    width: 100%;
+    max-width: 980px;
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__header h2 {
+    margin-top: 14px;
+    font-size: clamp(78px, 6vw, 112px);
+    line-height: 0.78;
+    letter-spacing: var(--archive-detail-galgo-spacing);
+  }
+
+  .app .archive-created-detail--edit .archive-created-detail__header > p {
+    max-width: 720px;
+    margin-top: 22px;
+    color: rgba(7, 20, 43, 0.78);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.58;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid {
+    display: grid;
+    margin-top: 44px;
+    gap: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid > :is(label, div) {
+    min-width: 0;
+    padding: 26px 0;
+    border-top: 1px solid rgba(7, 20, 43, 0.2);
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid > :first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid label {
+    gap: 12px;
+    color: #2759ed;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-label {
+    display: block;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-grid input,
+    .archive-created-edit-grid textarea,
+    .archive-created-edit-add input
+  ) {
+    box-sizing: border-box;
+    border: 1px solid rgba(7, 20, 43, 0.3);
+    color: #07142b;
+    background: #fbfaf5;
+    font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.55;
+    transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-grid input,
+    .archive-created-edit-add input
+  ) {
+    height: 52px;
+    padding: 0 16px;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-grid textarea {
+    min-height: 142px;
+    padding: 15px 16px;
+  }
+
+  .app .archive-created-detail--edit-moment .archive-created-edit-grid textarea {
+    min-height: 184px;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-grid input,
+    .archive-created-edit-grid textarea,
+    .archive-created-edit-add input
+  ):focus {
+    border-color: #2759ed;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px #2759ed;
+    outline: 0;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-pills,
+    .archive-created-edit-tracks
+  ) {
+    margin-top: 14px;
+    gap: 10px;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-pills button,
+    .archive-created-edit-tracks button,
+    .archive-created-edit-add button
+  ) {
+    min-height: 42px;
+    border-color: rgba(7, 20, 43, 0.3);
+    background: #fbfaf5;
+    font-size: 12px;
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 120ms ease;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-pills button,
+    .archive-created-edit-add button
+  ) {
+    padding: 0 16px;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-pills button,
+    .archive-created-edit-tracks button,
+    .archive-created-edit-add button
+  ):not(.is-active):hover {
+    border-color: #2759ed;
+    color: #2759ed;
+    background: #fff;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-pills button,
+    .archive-created-edit-tracks button
+  ).is-active {
+    border-color: #2759ed;
+    color: #fff;
+    background: #2759ed;
+  }
+
+  .app .archive-created-detail--edit :is(
+    .archive-created-edit-pills button,
+    .archive-created-edit-tracks button,
+    .archive-created-edit-add button
+  ):active {
+    transform: translateY(1px);
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-tracks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-tracks button {
+    position: relative;
+    min-width: 0;
+    min-height: 68px;
+    padding: 14px 44px 14px 16px;
+    align-content: center;
+    justify-items: start;
+    gap: 7px;
+    text-align: left;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-tracks button::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    font-size: 18px;
+    font-weight: 500;
+    transform: translateY(-50%);
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-tracks button.is-active::after {
+    content: "✓";
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-tracks button strong {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-tracks button span {
+    color: #657086;
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-tracks button.is-active span {
+    color: rgba(255, 255, 255, 0.74);
+  }
+
+  .app .archive-created-detail--edit .archive-created-edit-add {
+    margin-top: 12px;
+  }
+}
+
 :root {
   --similar-curator-yellow: #f5ca3c;
 }
@@ -55,7 +560,7 @@
     margin-top: 12px;
     font-size: clamp(52px, 4.2vw, 74px);
     line-height: 0.82;
-    letter-spacing: 0.018em;
+    letter-spacing: var(--archive-detail-galgo-spacing);
   }
 
   .app .archive-created-detail--playlist .archive-created-detail__info p {
@@ -133,7 +638,7 @@
     margin-top: 14px;
     font-size: clamp(84px, 7vw, 128px);
     line-height: 0.76;
-    letter-spacing: 0.018em;
+    letter-spacing: var(--archive-detail-galgo-spacing);
   }
 
   .app .archive-created-detail--playlist .archive-created-detail__header > p {

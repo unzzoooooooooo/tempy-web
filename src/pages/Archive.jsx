@@ -613,6 +613,7 @@ function CreatedItemDetail({ item, isEditing, onBack, onEdit, onCancelEdit, onDe
     return (
       <CreatedItemEditor
         item={item}
+        onBack={onBack}
         onCancel={onCancelEdit}
         onSave={onSave}
       />
@@ -754,7 +755,7 @@ function MomentDetailView({ item }) {
   );
 }
 
-function CreatedItemEditor({ item, onCancel, onSave }) {
+function CreatedItemEditor({ item, onBack, onCancel, onSave }) {
   const isPlaylist = item.type === "playlist";
   const [draft, setDraft] = useState(() => normalizeDraftData(item));
 
@@ -788,9 +789,18 @@ function CreatedItemEditor({ item, onCancel, onSave }) {
   };
 
   return (
-    <main className="archive-created-detail archive-created-detail--edit">
+    <main className={`archive-created-detail archive-created-detail--edit archive-created-detail--edit-${isPlaylist ? "playlist" : "moment"}`}>
       <ArchiveCreatedDetailStyle />
       <aside className="archive-created-detail__side">
+        <button
+          className="archive-created-detail__back archive-created-detail__edit-back detail-back-link"
+          type="button"
+          onClick={onBack}
+          aria-label="Archive 목록으로 돌아가기"
+        >
+          <span aria-hidden="true">←</span>
+          <span>BACK TO ARCHIVE</span>
+        </button>
         <CreatedCoverPicker image={draft.coverImage} onChange={(coverImage) => update({ coverImage })} />
         <div className="archive-created-detail__info">
           <span>{isPlaylist ? "Edit Playlist" : "Edit Moment Card"}</span>
