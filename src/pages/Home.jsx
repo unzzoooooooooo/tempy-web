@@ -4,8 +4,8 @@ import TempyFooter from "../components/TempyFooter";
 import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
-import { getTrackById, getTracksByIds } from "../data/musicCatalog";
-import { createAlbumImageSequence } from "../data/imageCatalog";
+import { getArtistDisplayImage, getTrackById, getTracksByIds } from "../data/musicCatalog";
+import { createAlbumImageSequence, getCuratorProfileImage } from "../data/imageCatalog";
 
 const homeAlbumImages = createAlbumImageSequence(40, "home");
 
@@ -150,42 +150,42 @@ function Home() {
 
   const artistCards = [
     {
-      image: "/images/artist-01.png",
+      image: getArtistDisplayImage("Jennie"),
       title: "제니의 무대 전 워밍업 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "Jennie",
       track: getTrackById("like-jennie"),
     },
     {
-      image: "/images/artist-02.png",
+      image: getArtistDisplayImage("AKMU"),
       title: "악뮤의 작업할 때 영감을 많이 받았던 곡",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "AKMU",
       track: getTrackById("love-lee"),
     },
     {
-      image: "/images/artist-03.png",
+      image: getArtistDisplayImage("한로로"),
       title: "한로로의 카페에서 듣는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "한로로",
       track: getTrackById("let-me-love-my-youth"),
     },
     {
-      image: "/images/artist-01.png",
+      image: getArtistDisplayImage("Jennie"),
       title: "공연 전 템포를 맞추는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "Jennie",
       track: getTrackById("mantra"),
     },
     {
-      image: "/images/artist-02.png",
+      image: getArtistDisplayImage("AKMU"),
       title: "악뮤의 저녁 작업을 위한 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "AKMU",
       track: getTrackById("love-lee"),
     },
     {
-      image: "/images/artist-03.png",
+      image: getArtistDisplayImage("한로로"),
       title: "한로로의 새벽에 남겨둔 순간의 음악",
       meta: "10곡 · 21:03 · 2026.05.16",
       name: "한로로",
@@ -265,7 +265,10 @@ function Home() {
     { image: "/images/profile-08.png", name: "hostless" },
     { image: "/images/profile-03.png", name: "hostless" },
     { image: "/images/profile-05.png", name: "hostless" },
-  ];
+  ].map((curator) => ({
+    ...curator,
+    image: getCuratorProfileImage(curator.image),
+  }));
 
   const desktopCuratorNames = [
     "만두두왕",
@@ -294,7 +297,7 @@ function Home() {
     "/images/profile-08.png",
     "/images/profile-02.png",
     "/images/profile-05.png",
-  ];
+  ].map(getCuratorProfileImage);
 
   return (
     <>

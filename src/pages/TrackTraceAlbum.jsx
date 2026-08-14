@@ -4,6 +4,7 @@ import TempyFooter from "../components/TempyFooter";
 import {
   getAlbumById,
   getArtistById,
+  getArtistDisplayImage,
   getTracksByAlbum,
 } from "../data/musicCatalog";
 
@@ -30,6 +31,7 @@ function TrackTraceAlbum() {
   const { albumId } = useParams();
   const album = getAlbumById(albumId || location.state?.albumId) || getAlbumById("life-of-a-showgirl");
   const artist = getArtistById(album.artistId);
+  const artistImage = getArtistDisplayImage(artist.name, { trackCover: album.cover });
   const albumTracks = useMemo(() => getTracksByAlbum(album.id), [album.id]);
   const totalDuration = albumTracks.reduce((total, track) => {
     const [minutes, seconds] = track.duration.split(":").map(Number);
@@ -64,7 +66,7 @@ function TrackTraceAlbum() {
 
           <div className="track-trace-album__intro">
             <Link className="track-trace-album__artist-link" to={`/artist/${artist.id}`}>
-              <img src={artist.profile} alt={artist.name} />
+              <img src={artistImage} alt={artist.name} />
               <span>{artist.name}</span>
               <span aria-hidden="true">›</span>
             </Link>

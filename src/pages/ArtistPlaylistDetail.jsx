@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
-import { getTracksByIds } from "../data/musicCatalog";
+import { getArtistDisplayImage, getTracksByIds } from "../data/musicCatalog";
 
 const playlistTracks = getTracksByIds([
   "like-jennie",
@@ -22,7 +22,7 @@ const fallbackPlaylist = {
   meta: "10곡 · 21:03",
   likes: "1.5k",
   author: "JENNIE",
-  image: "/images/artist-01.png",
+  image: getArtistDisplayImage("JENNIE"),
   date: "2026.05.16",
   theme: "ruby",
   note: "무대 위의 강한 순간과 밤의 감정을 따라 이어지는 아티스트 큐레이션입니다.",
@@ -32,7 +32,11 @@ const fallbackPlaylist = {
 function ArtistPlaylistDetail() {
   const navigate = useNavigate();
   const location = useLocation();
-  const selectedPlaylist = location.state?.playlist || fallbackPlaylist;
+  const routePlaylist = location.state?.playlist || fallbackPlaylist;
+  const selectedPlaylist = {
+    ...routePlaylist,
+    image: getArtistDisplayImage(routePlaylist.artist, { trackCover: routePlaylist.image }),
+  };
   const [translateX, setTranslateX] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);

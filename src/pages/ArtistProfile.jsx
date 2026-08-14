@@ -5,6 +5,7 @@ import { HeartIcon } from "../components/TempyIcons";
 import {
   getAlbumById,
   getArtistById,
+  getArtistDisplayImage,
   getTracksByArtist,
 } from "../data/musicCatalog";
 
@@ -44,6 +45,7 @@ function ArtistProfile() {
   const { artistId = "taylor-swift" } = useParams();
   const artist = getArtistById(artistId) || getArtistById("taylor-swift");
   const artistTracks = getTracksByArtist(artist.id);
+  const artistImage = getArtistDisplayImage(artist.name, { trackCover: artistTracks[0]?.cover });
   const displayTracks = Array.from({ length: 12 }, (_, index) => artistTracks[index % artistTracks.length]);
   const featuredTracks = displayTracks.map((track, index) => ({
     ...track,
@@ -154,7 +156,7 @@ function ArtistProfile() {
         <div className="artist-profile__hero">
           <div className="artist-profile__hero-main">
             <div className="artist-profile__image-frame">
-              <img className="artist-profile__image" src={artist.profile} alt={artist.name} />
+              <img className="artist-profile__image" src={artistImage} alt={artist.name} />
             </div>
             <div className="artist-profile__intro">
               <p className="artist-profile__label">ARTIST PROFILE · {artist.genres[0].toUpperCase()}</p>

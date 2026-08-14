@@ -91,7 +91,42 @@ export const artistImages = [
   "/images/artist-06.png",
   "/images/artist-07.png",
   "/images/artist-08.png",
+  "/images/artist-09.png",
+  "/images/artist-10.png",
+  "/images/artist-11.png",
+  "/images/artist-12.jpg",
+  "/images/artist-13.jpg",
+  "/images/artist-14.jpg",
+  "/images/artist-15.png",
+  "/images/artist-16.jpg",
+  "/images/artist-17.jpeg",
 ];
+
+const normalizeArtistName = (value = "") => String(value)
+  .normalize("NFKD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .normalize("NFC")
+  .toLowerCase()
+  .replace(/[^a-z0-9가-힣]+/g, " ")
+  .trim();
+
+// Only relationships explicitly established by the existing artist curator data
+// belong here. Unmapped artwork remains in `artistImages` until its artist is known.
+export const artistImageByName = Object.freeze({
+  jennie: "/images/artist-01.png",
+  akmu: "/images/artist-02.png",
+  "한로로": "/images/artist-03.png",
+  "wave to earth": "/images/artist-04.png",
+  laufey: "/images/artist-05.png",
+  "the marias": "/images/artist-06.png",
+  adoy: "/images/artist-07.png",
+  "백예린": "/images/artist-08.png",
+  "yerin baek": "/images/artist-08.png",
+});
+
+export const getArtistImageByName = (artistName) => (
+  artistImageByName[normalizeArtistName(artistName)]
+);
 
 export const profileImages = [
   "/images/profile-01.png",
@@ -104,6 +139,14 @@ export const profileImages = [
   "/images/profile-08.png",
   "/images/profile-09.jpg",
 ];
+
+export const genericCuratorProfileImage = "/images/profile-03.png";
+
+export const getCuratorProfileImage = (profileImage) => (
+  typeof profileImage === "string" && profileImage.startsWith("/images/profile-")
+    ? profileImage
+    : genericCuratorProfileImage
+);
 
 export const currentUserProfileImage = "/images/profile-01.png";
 
@@ -151,5 +194,6 @@ export const getAlbumImage = (index, seed = "tempy") => (
   createAlbumImageSequence(index + 1, seed)[index]
 );
 
-export const getProfileImage = (index) => profileImages[index % profileImages.length];
-export const getArtistImage = (index) => artistImages[index % artistImages.length];
+export const getProfileImage = (index) => (
+  getCuratorProfileImage(profileImages[index % profileImages.length])
+);

@@ -1,3 +1,5 @@
+import { getArtistImageByName } from "./imageCatalog.js";
+
 /*
  * Stable music metadata shared by cards, detail views, and the global player.
  * `isMock` marks locally identifiable artwork whose real-world metadata could
@@ -92,15 +94,15 @@ export const artists = [
   { id: "harry-styles", name: "Harry Styles", profile: "/images/album-17.png", genres: ["Pop", "Rock"] },
   { id: "xg", name: "XG", profile: "/images/album-18.png", genres: ["Pop", "R&B"] },
   { id: "aespa", name: "aespa", profile: "/images/album-24.png", genres: ["K-Pop", "Electronic"] },
-  { id: "jennie", name: "JENNIE", profile: "/images/artist-01.png", genres: ["K-Pop", "Hip-Hop"] },
-  { id: "akmu", name: "AKMU", profile: "/images/artist-02.png", genres: ["K-Pop", "Folk Pop"] },
-  { id: "hanroro", name: "한로로", profile: "/images/artist-03.png", genres: ["Indie Rock", "Singer-Songwriter"] },
+  { id: "jennie", name: "JENNIE", profile: getArtistImageByName("JENNIE"), genres: ["K-Pop", "Hip-Hop"] },
+  { id: "akmu", name: "AKMU", profile: getArtistImageByName("AKMU"), genres: ["K-Pop", "Folk Pop"] },
+  { id: "hanroro", name: "한로로", profile: getArtistImageByName("한로로"), genres: ["Indie Rock", "Singer-Songwriter"] },
   { id: "rose", name: "ROSÉ", profile: "/images/album-27.png", genres: ["Pop", "Pop Rock"] },
   { id: "arlie", name: "Arlie", profile: "/images/album-28.png", genres: ["Indie Pop"] },
   { id: "lany", name: "LANY", profile: "/images/album-22.png", genres: ["Pop", "Indie Pop"] },
   { id: "the-aces", name: "The Aces", profile: "/images/album-21.png", genres: ["Alternative", "Indie Pop"] },
   { id: "olivia-rodrigo", name: "Olivia Rodrigo", profile: "/images/album-02.png", genres: ["Pop", "Pop Rock"] },
-  { id: "tempy-archive", name: "Tempy Archive", profile: "/images/profile-03.png", genres: ["Archive Pop"], isMock: true },
+  { id: "tempy-archive", name: "Tempy Archive", profile: null, genres: ["Archive Pop"], isMock: true },
   ...addedCatalogArtists,
 ];
 
@@ -668,7 +670,7 @@ export const tracks = fixedTrackOrder.map((id) => rawTrackMap.get(id)).map(([id,
     title: metadata?.title || title,
     artistId: artist.id,
     artist: metadata?.artist || artist.name,
-    artistProfile: artist.profile,
+    artistProfile: getArtistImageByName(artist.name) || artist.profile,
     albumId,
     album: album.title,
     cover: album.cover,
@@ -702,6 +704,7 @@ tracks.forEach((track) => {
 const normalizeIdentity = (value = "") => String(value)
   .normalize("NFKD")
   .replace(/[\u0300-\u036f]/g, "")
+  .normalize("NFC")
   .toLowerCase()
   .replace(/[^a-z0-9가-힣]+/g, " ")
   .trim();
@@ -718,7 +721,7 @@ export const artistAlbumCoverMap = Object.freeze(Object.fromEntries(
     const artistCovers = albums
       .filter((album) => album.artistId === artist.id && album.cover.startsWith("/images/album-"))
       .map((album) => album.cover);
-    return [artist.id, artistCovers.length ? artistCovers : [artist.profile]];
+    return [artist.id, artistCovers];
   }),
 ));
 
@@ -759,14 +762,28 @@ const editorialArtistCoverMap = new Map(Object.entries({
 
 const artistByNameMap = new Map(artists.map((artist) => [normalizeIdentity(artist.name), artist]));
 
+const isAlbumCover = (imagePath) => (
+  typeof imagePath === "string" && imagePath.startsWith("/images/album-")
+);
+
 export const getArtistCover = (artistName, fallbackCover) => {
   const normalizedArtist = normalizeIdentity(artistName);
   const canonicalArtist = artistByNameMap.get(normalizedArtist);
   if (canonicalArtist) {
-    return artistAlbumCoverMap[canonicalArtist.id][0];
+    return artistAlbumCoverMap[canonicalArtist.id][0]
+      || (isAlbumCover(canonicalArtist.profile) ? canonicalArtist.profile : fallbackCover);
   }
   return editorialArtistCoverMap.get(normalizedArtist) || fallbackCover;
 };
+
+export const getArtistDisplayImage = (artistName, { trackCover, representativeCover } = {}) => (
+  getArtistImageByName(artistName)
+  || (isAlbumCover(trackCover) ? trackCover : null)
+  || getArtistCover(
+    artistName,
+    isAlbumCover(representativeCover) ? representativeCover : undefined,
+  )
+);
 
 export const getTrackCover = ({ id, trackId, title, artist, cover, image } = {}) => {
   const canonical = getTrackById(trackId || id) || trackIdentityMap.get(getTrackIdentity(title, artist));

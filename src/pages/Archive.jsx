@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import TempyFooter from "../components/TempyFooter";
 import { HeartIcon } from "../components/TempyIcons";
-import { getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
-import { artistImages, profileImages } from "../data/imageCatalog";
+import { getArtistDisplayImage, getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
+import { getCuratorProfileImage, profileImages } from "../data/imageCatalog";
 
 const CREATED_ITEMS_KEY = "tempyCreatedItems";
 const archiveDefaultTags = ["비", "버스", "성북구"];
@@ -278,20 +278,26 @@ function Archive() {
     { image: "/images/profile-07.png", name: "bluehour", match: "67%", note: "BLUE HOUR" },
     { image: profileImages[8], name: "slowtempo", match: "64%", note: "SLOW TEMPO" },
     { image: profileImages[1], name: "cloudtea", match: "61%", note: "CLOUD TEA" },
-  ];
+  ].map((curator) => ({
+    ...curator,
+    image: getCuratorProfileImage(curator.image),
+  }));
 
   const artists = [
-    { image: artistImages[0], name: "Jennie", count: "32 TIMES" },
-    { image: artistImages[1], name: "AKMU", count: "28 TIMES" },
-    { image: artistImages[2], name: "한로로", count: "21 TIMES" },
-    { image: artistImages[6], name: "Billie Eilish", count: "18 TIMES" },
-    { image: artistImages[3], name: "Wave to Earth", count: "16 TIMES" },
-    { image: artistImages[7], name: "HONNE", count: "15 TIMES" },
-    { image: artistImages[5], name: "HYUKOH", count: "13 TIMES" },
-    { image: artistImages[5], name: "The Marías", count: "12 TIMES" },
-    { image: artistImages[4], name: "Men I Trust", count: "10 TIMES" },
-    { image: artistImages[4], name: "Laufey", count: "9 TIMES" },
-  ];
+    { name: "Jennie", count: "32 TIMES" },
+    { name: "AKMU", count: "28 TIMES" },
+    { name: "한로로", count: "21 TIMES" },
+    { name: "Billie Eilish", count: "18 TIMES" },
+    { name: "Wave to Earth", count: "16 TIMES" },
+    { name: "HONNE", count: "15 TIMES" },
+    { name: "HYUKOH", count: "13 TIMES" },
+    { name: "The Marías", count: "12 TIMES" },
+    { name: "Men I Trust", count: "10 TIMES" },
+    { name: "Laufey", count: "9 TIMES" },
+  ].map((artist) => ({
+    ...artist,
+    image: getArtistDisplayImage(artist.name),
+  }));
 
   const likedCurators = [
     { image: "/images/profile-04.png", name: "roomtone" },
@@ -299,7 +305,10 @@ function Archive() {
     { image: "/images/profile-07.png", name: "slowday" },
     { image: "/images/profile-03.png", name: "hostless" },
     { image: "/images/profile-01.png", name: "만두두왕" },
-  ];
+  ].map((curator) => ({
+    ...curator,
+    image: getCuratorProfileImage(curator.image),
+  }));
 
   const selectedCreatedItem = createdItems.find((item) => item.id === selectedCreatedId) || null;
 

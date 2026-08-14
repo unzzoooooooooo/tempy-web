@@ -1,6 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeartIcon } from "../components/TempyIcons";
+import { getArtistDisplayImage } from "../data/musicCatalog";
+
+const getCuratorArtistImage = (artistName) => getArtistDisplayImage(artistName);
 
 const artistPlaylists = [
   {
@@ -9,7 +12,7 @@ const artistPlaylists = [
     meta: "10곡 · 21:03",
     likes: "1.5k",
     author: "JENNIE",
-    image: "/images/artist-01.png",
+    image: getCuratorArtistImage("JENNIE"),
     date: "2026.05.16",
     theme: "ruby",
     note: "무대 위의 강한 순간과 밤의 감정을 따라 이어지는 아티스트 큐레이션입니다.",
@@ -20,7 +23,7 @@ const artistPlaylists = [
     meta: "10곡 · 31 min",
     likes: "2.1k",
     author: "AKMU",
-    image: "/images/artist-02.png",
+    image: getCuratorArtistImage("AKMU"),
   },
   {
     title: "THE WAY I SEE THE NIGHT",
@@ -28,7 +31,7 @@ const artistPlaylists = [
     meta: "11곡 · 42 min",
     likes: "1.7k",
     author: "한로로",
-    image: "/images/artist-03.png",
+    image: getCuratorArtistImage("한로로"),
   },
   {
     title: "CITY LIGHTS AFTER MIDNIGHT",
@@ -36,7 +39,7 @@ const artistPlaylists = [
     meta: "13곡 · 47 min",
     likes: "1.5k",
     author: "WAVE TO EARTH",
-    image: "/images/artist-04.png",
+    image: getCuratorArtistImage("Wave to Earth"),
   },
   {
     title: "A QUIET SUNDAY MORNING",
@@ -44,7 +47,7 @@ const artistPlaylists = [
     meta: "9곡 · 29 min",
     likes: "1.3k",
     author: "LAUFEY",
-    image: "/images/artist-05.png",
+    image: getCuratorArtistImage("Laufey"),
   },
   {
     title: "WINDOWS DOWN, MUSIC UP",
@@ -52,7 +55,7 @@ const artistPlaylists = [
     meta: "14곡 · 51 min",
     likes: "1.1k",
     author: "THE MARÍAS",
-    image: "/images/artist-06.png",
+    image: getCuratorArtistImage("The Marías"),
   },
   {
     title: "BLUE HOUR DIARY",
@@ -60,7 +63,7 @@ const artistPlaylists = [
     meta: "10곡 · 36 min",
     likes: "984",
     author: "ADOY",
-    image: "/images/artist-07.png",
+    image: getCuratorArtistImage("ADOY"),
   },
   {
     title: "SONGS FOR LONG WALKS",
@@ -68,7 +71,7 @@ const artistPlaylists = [
     meta: "12곡 · 44 min",
     likes: "912",
     author: "YERIN BAEK",
-    image: "/images/artist-08.png",
+    image: getCuratorArtistImage("백예린"),
   },
   {
     title: "OUR LITTLE ESCAPE",
@@ -76,7 +79,7 @@ const artistPlaylists = [
     meta: "8곡 · 27 min",
     likes: "845",
     author: "HYUKOH",
-    image: "/images/artist-04.png",
+    image: getCuratorArtistImage("HYUKOH"),
   },
   {
     title: "FIRST LIGHT, LAST SONG",
@@ -84,7 +87,7 @@ const artistPlaylists = [
     meta: "11곡 · 40 min",
     likes: "806",
     author: "THE BLACK SKIRTS",
-    image: "/images/artist-07.png",
+    image: getCuratorArtistImage("검정치마"),
   },
 ];
 
