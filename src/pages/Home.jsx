@@ -4,10 +4,31 @@ import TempyFooter from "../components/TempyFooter";
 import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
-import { getArtistDisplayImage, getTrackById, getTracksByIds } from "../data/musicCatalog";
+import {
+  getArtistCover,
+  getArtistDisplayImage,
+  getTrackById,
+  getTracksByIds,
+} from "../data/musicCatalog";
 import { createAlbumImageSequence, getCuratorProfileImage } from "../data/imageCatalog";
 
 const homeAlbumImages = createAlbumImageSequence(40, "home");
+
+const createArtistMomentTrack = (id, title, artist, duration = "03:30") => ({
+  id,
+  title,
+  artist,
+  cover: getArtistCover(artist) || getArtistDisplayImage(artist),
+  duration,
+});
+
+const createArtistMomentItem = ({ artist, title, meta, track }) => ({
+  artist,
+  artistImage: getArtistDisplayImage(artist, { trackCover: track.cover }),
+  title,
+  meta,
+  track,
+});
 
 function Home() {
   const navigate = useNavigate();
@@ -149,48 +170,54 @@ function Home() {
   };
 
   const artistCards = [
-    {
-      image: getArtistDisplayImage("Jennie"),
-      title: "제니의 무대 전 워밍업 플레이리스트",
+    createArtistMomentItem({
+      artist: "JENNIE",
+      title: "JENNIE의 무대 전 워밍업 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
-      name: "Jennie",
       track: getTrackById("like-jennie"),
-    },
-    {
-      image: getArtistDisplayImage("AKMU"),
-      title: "악뮤의 작업할 때 영감을 많이 받았던 곡",
+    }),
+    createArtistMomentItem({
+      artist: "AKMU",
+      title: "AKMU가 작업실에서 꺼내 듣는 곡들",
       meta: "10곡 · 21:03 · 2026.05.16",
-      name: "AKMU",
-      track: getTrackById("love-lee"),
-    },
-    {
-      image: getArtistDisplayImage("한로로"),
-      title: "한로로의 카페에서 듣는 플레이리스트",
+      track: createArtistMomentTrack("artist-moment-akmu", "Love Lee", "AKMU", "02:59"),
+    }),
+    createArtistMomentItem({
+      artist: "한로로",
+      title: "한로로와 새벽 카페에 남겨둔 음악",
       meta: "10곡 · 21:03 · 2026.05.16",
-      name: "한로로",
-      track: getTrackById("let-me-love-my-youth"),
-    },
-    {
-      image: getArtistDisplayImage("Jennie"),
-      title: "공연 전 템포를 맞추는 플레이리스트",
+      track: createArtistMomentTrack("artist-moment-hanroro", "Let Me Love My Youth", "한로로", "04:08"),
+    }),
+    createArtistMomentItem({
+      artist: "Chappell Roan",
+      title: "Chappell Roan이 무대에 오르기 전 듣는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
-      name: "Jennie",
-      track: getTrackById("mantra"),
-    },
-    {
-      image: getArtistDisplayImage("AKMU"),
-      title: "악뮤의 저녁 작업을 위한 플레이리스트",
+      track: createArtistMomentTrack("artist-moment-wave-to-earth", "Wave", "Wave to Earth", "04:14"),
+    }),
+    createArtistMomentItem({
+      artist: "flowerovlove",
+      title: "flowerovlove가 느린 오후에 듣는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
-      name: "AKMU",
-      track: getTrackById("love-lee"),
-    },
-    {
-      image: getArtistDisplayImage("한로로"),
-      title: "한로로의 새벽에 남겨둔 순간의 음악",
+      track: createArtistMomentTrack("artist-moment-laufey", "From The Start", "Laufey", "02:49"),
+    }),
+    createArtistMomentItem({
+      artist: "Justin Bieber",
+      title: "Justin Bieber가 늦은 밤에 듣는 플레이리스트",
       meta: "10곡 · 21:03 · 2026.05.16",
-      name: "한로로",
-      track: getTrackById("let-me-love-my-youth"),
-    },
+      track: createArtistMomentTrack("artist-moment-the-marias", "Velvet Morning", "The Marías", "03:36"),
+    }),
+    createArtistMomentItem({
+      artist: "bülow",
+      title: "bülow가 혼자 걷는 저녁에 듣는 플레이리스트",
+      meta: "10곡 · 21:03 · 2026.05.16",
+      track: createArtistMomentTrack("artist-moment-adoy", "City Light", "ADOY", "03:42"),
+    }),
+    createArtistMomentItem({
+      artist: "LANY",
+      title: "LANY가 밤 드라이브할 때 듣는 플레이리스트",
+      meta: "10곡 · 21:03 · 2026.05.16",
+      track: createArtistMomentTrack("artist-moment-yerin-baek", "Square", "백예린", "04:21"),
+    }),
   ];
 
   const playlistItems = [
@@ -424,14 +451,17 @@ function Home() {
                 data-tempy-artist={artist.track.artist}
                 data-tempy-cover={artist.track.cover}
                 data-tempy-duration={artist.track.duration}
-                key={`${artist.name}-${index}`}
+                key={`${artist.artist}-${index}`}
               >
-                <img className="artist-art" src={artist.image} alt={`${artist.name} artist moment`} />
-                <div className="artist-copy" style={{ backgroundImage: `url(${artist.image})` }}>
+                <img className="artist-art" src={artist.artistImage} alt={`${artist.artist} artist moment`} />
+                <div className="artist-copy" style={{ backgroundImage: `url(${artist.artistImage})` }}>
                   <strong>{artist.title}</strong>
                   <span className="artist-meta-primary">{artist.meta}</span>
                   <span className="artist-meta-likes tempy-icon-stat"><HeartIcon size="small" /> 1.5k</span>
-                  <span className="artist-name">{artist.name}</span>
+                  <span className="artist-name">
+                    <img className="artist-name__avatar" src={artist.artistImage} alt="" aria-hidden="true" />
+                    {artist.artist}
+                  </span>
                 </div>
                 <div className="artist-info">
                   <button>▶ Play</button>

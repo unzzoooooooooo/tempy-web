@@ -288,15 +288,15 @@ function Archive() {
     { name: "AKMU", count: "28 TIMES" },
     { name: "한로로", count: "21 TIMES" },
     { name: "Billie Eilish", count: "18 TIMES" },
-    { name: "Wave to Earth", count: "16 TIMES" },
+    { name: "Chappell Roan", count: "16 TIMES", image: "/images/artist-04.png" },
     { name: "HONNE", count: "15 TIMES" },
-    { name: "HYUKOH", count: "13 TIMES" },
-    { name: "The Marías", count: "12 TIMES" },
-    { name: "Men I Trust", count: "10 TIMES" },
-    { name: "Laufey", count: "9 TIMES" },
+    { name: "Sabrina Carpenter", count: "13 TIMES", image: "/images/album-40.png" },
+    { name: "Justin Bieber", count: "12 TIMES", image: "/images/artist-06.png" },
+    { name: "LAUV", count: "10 TIMES", image: "/images/album-47.png" },
+    { name: "flowerovlove", count: "9 TIMES", image: "/images/artist-05.png" },
   ].map((artist) => ({
     ...artist,
-    image: getArtistDisplayImage(artist.name),
+    image: artist.image || getArtistDisplayImage(artist.name),
   }));
 
   const likedCurators = [

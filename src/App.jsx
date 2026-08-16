@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import logoNav from "./assets/Tempy!_logo_nav.svg";
 import { HeartIcon, ShuffleIcon } from "./components/TempyIcons";
@@ -115,11 +115,11 @@ function Header() {
       </div>
       <div className="header-right">
         <nav className="top-nav">
-          <Link to="/now">Now</Link>
-          <Link to="/discover">Discover</Link>
-          <Link to="/curator">Curator</Link>
-          <Link to="/create">Create</Link>
-          <Link to="/archive">Archive</Link>
+          <NavLink to="/now">Now</NavLink>
+          <NavLink to="/discover">Discover</NavLink>
+          <NavLink to="/curator">Curator</NavLink>
+          <NavLink to="/create">Create</NavLink>
+          <NavLink to="/archive">Archive</NavLink>
         </nav>
         <div className="header-profile-actions">
           <button className="header-auth-button" type="button" onClick={handleAuthClick}>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTracksByIds } from "../data/musicCatalog";
+import { fallbackContext, useLiveContext } from "../utils/context";
 
 const visibilityOptions = ["전체 공개", "팔로워만", "비공개"];
 const defaultTags = ["비", "버스", "성북구"];
@@ -25,7 +26,7 @@ const formatTime = (date = new Date()) => (
   })
 );
 
-const createMomentState = () => ({
+const createMomentState = (context = fallbackContext) => ({
   coverImage: "",
   selectedTags: ["비"],
   customTags: [],
@@ -34,9 +35,9 @@ const createMomentState = () => ({
   selectedTrack: trackItems[0],
   timeStamp: {
     time: formatTime(),
-    location: "서울 성북구",
-    weather: "흐림",
-    temperature: "18°C",
+    location: context.locationLabel,
+    weather: context.weatherLabel,
+    temperature: context.temperature,
   },
 });
 
@@ -52,12 +53,22 @@ const createPlaylistState = () => ({
 
 function Create() {
   const navigate = useNavigate();
+  const { context } = useLiveContext();
   const [selectedType, setSelectedType] = useState(null);
   const [resultType, setResultType] = useState(null);
   const [toastMessage, setToastMessage] = useState("");
   const [momentData, setMomentData] = useState(() => createMomentState());
   const [playlistData, setPlaylistData] = useState(() => createPlaylistState());
   const toastTimeoutRef = useRef(null);
+  const liveMomentData = {
+    ...momentData,
+    timeStamp: {
+      ...momentData.timeStamp,
+      location: context.locationLabel,
+      weather: context.weatherLabel,
+      temperature: context.temperature,
+    },
+  };
 
   useEffect(() => (
     () => {
@@ -105,6 +116,9 @@ function Create() {
         timeStamp: {
           ...current.timeStamp,
           time: formatTime(),
+          location: context.locationLabel,
+          weather: context.weatherLabel,
+          temperature: context.temperature,
         },
       }));
     }
@@ -124,10 +138,10 @@ function Create() {
   const handleCreate = () => {
     if (selectedType === "moment") {
       const data = {
-        ...momentData,
+        ...liveMomentData,
         timeStamp: {
-          ...momentData.timeStamp,
-          time: momentData.timeStamp.time || formatTime(),
+          ...liveMomentData.timeStamp,
+          time: liveMomentData.timeStamp.time || formatTime(),
         },
       };
       setMomentData(data);
@@ -2476,7 +2490,7 @@ function Create() {
       {resultType ? (
         <CreateResult
           type={resultType}
-          momentData={momentData}
+          momentData={liveMomentData}
           playlistData={playlistData}
           onRetry={() => setResultType(null)}
           onBackToCreate={handleBackToChoice}
@@ -2487,7 +2501,7 @@ function Create() {
       ) : (
         <CreateDetail
           type={selectedType}
-          momentData={momentData}
+          momentData={liveMomentData}
           playlistData={playlistData}
           onMomentChange={setMomentData}
           onPlaylistChange={setPlaylistData}

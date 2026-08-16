@@ -3181,6 +3181,25 @@ header.header {
   letter-spacing: -0.01em;
 }
 
+@media (min-width: 901px) {
+  .top-nav a {
+    color: #ff3038;
+    opacity: 0.82;
+    transition: color 210ms ease-out, opacity 210ms ease-out;
+  }
+
+  .top-nav a.active {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 901px) and (hover: hover) {
+  .top-nav a:hover {
+    color: #ff4a51;
+    opacity: 1;
+  }
+}
+
 
 .top-icons {
   display: flex;
@@ -3878,31 +3897,15 @@ header.header {
   overflow: visible;
 }
 
-.artist-name::before {
-  content: "";
+.artist-name__avatar {
   width: 22px;
   height: 22px;
   flex: 0 0 22px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.22);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   border: 1px solid rgba(255, 255, 255, 0.35);
   box-shadow: 0 0 0 1px rgba(7, 20, 43, 0.16);
+  object-fit: cover;
   overflow: hidden;
-}
-
-.artist-card:nth-child(1) .artist-name::before {
-  background-image: url("/images/artist-01.png");
-}
-
-.artist-card:nth-child(2) .artist-name::before {
-  background-image: url("/images/artist-02.png");
-}
-
-.artist-card:nth-child(3) .artist-name::before {
-  background-image: url("/images/artist-03.png");
 }
 
 .artist-info {
@@ -9627,6 +9630,12 @@ body::-webkit-scrollbar:horizontal,
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
+}
+
+@media (min-width: 901px) {
+  .archive-page__artist h3 {
+    min-height: 2.43em;
+  }
 }
 
 .archive-page__created-grid {
@@ -16464,13 +16473,14 @@ body::-webkit-scrollbar:horizontal,
   .lifestyle-curator__card-copy .lifestyle-curator__card-title {
     width: 100%;
     max-width: none;
+    max-height: 2.88em;
     margin: 20px 0 11px;
     color: var(--archive-ink);
     display: -webkit-box;
     overflow: hidden;
     font-size: clamp(19px, 0.95vw, 22px);
-    font-weight: 600;
-    line-height: 1.32;
+    font-weight: 500;
+    line-height: 1.44;
     letter-spacing: -0.025em;
     overflow-wrap: normal;
     text-wrap: pretty;
@@ -20180,12 +20190,12 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .similar-curator__card-top h2 {
-    max-height: 2.4em;
+    max-height: 2.76em;
     margin: 18px 0;
     font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
     font-size: clamp(25px, 1.5vw, 29px);
     font-weight: 800;
-    line-height: 1.22;
+    line-height: 1.38;
     letter-spacing: -0.025em;
     text-wrap: balance;
     -webkit-line-clamp: 2;

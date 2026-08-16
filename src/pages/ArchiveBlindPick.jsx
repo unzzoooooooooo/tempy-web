@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { useNavigate } from "react-router-dom";
-import { getTracksByIds } from "../data/musicCatalog";
+import { tracks } from "../data/musicCatalog";
 
 const LOOP_COUNT = 5;
 const MIDDLE_LOOP_INDEX = Math.floor(LOOP_COUNT / 2);
@@ -24,18 +24,16 @@ const blindPickPresentation = [
   { color: "sky", meta: "22:10 · Rain", hintMeta: "Late Night · Soft", hintText: "혼자 걷는 길에 속도를 조금 늦춰주는 리듬" },
 ];
 
-const baseBlindPickItems = getTracksByIds([
-  "mood",
-  "disco-room",
-  "mamas-boy",
-  "soft-static",
-  "rich-man",
-  "citrus-glow",
-  "you-and-me",
-  "toxic-till-the-end",
-  "wait",
-  "traveler",
-]).map((track, index) => ({ ...blindPickPresentation[index], ...track }));
+const blindPickAlbumTracks = tracks.filter((track, index, catalogTracks) => (
+  typeof track.cover === "string"
+  && track.cover.startsWith("/images/album-")
+  && catalogTracks.findIndex((candidate) => candidate.cover === track.cover) === index
+));
+
+const baseBlindPickItems = blindPickAlbumTracks.map((track, index) => ({
+  ...blindPickPresentation[index % blindPickPresentation.length],
+  ...track,
+}));
 
 function ArchiveBlindPick() {
   const navigate = useNavigate();
