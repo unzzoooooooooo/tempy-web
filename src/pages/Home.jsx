@@ -591,15 +591,8 @@ function Home() {
                 <p>아카이브와 함께 10월의 당신을 돌아보세요.</p>
                 <button>아카이브 보러가기</button>
               </div>
-              <div className="archive-mosaic">
-                <img src={homeAlbumImages[22]} alt="archive album 1" />
-                <img src={homeAlbumImages[23]} alt="archive moment" />
-                <img src={homeAlbumImages[24]} alt="archive album 2" />
-                <img src={homeAlbumImages[25]} alt="archive album 3" />
-                <img src={homeAlbumImages[26]} alt="archive album 4" />
-                <img src={homeAlbumImages[27]} alt="archive album 5" />
-                <img src={homeAlbumImages[28]} alt="archive moment 2" />
-                <img src={homeAlbumImages[29]} alt="archive moment 3" />
+              <div className="archive-identity-visual">
+                <img src="/images/archive-identity-grid.png" alt="Your Music Identity collage" />
               </div>
             </article>
             <Link className="archive-card archive-similar-card archive-blind-pick-card" to="/archive/blind-pick">
