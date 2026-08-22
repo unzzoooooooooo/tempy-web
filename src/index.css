@@ -3193,10 +3193,51 @@ header.header {
   }
 }
 
+.top-nav__label {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.top-nav__label-current,
+.top-nav__label-next {
+  display: block;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.top-nav__label-next {
+  position: absolute;
+  inset: 0;
+  transform: translateY(110%);
+}
+
 @media (min-width: 901px) and (hover: hover) {
   .top-nav a:hover {
     color: #ff4a51;
     opacity: 1;
+  }
+}
+
+@media (min-width: 901px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .top-nav__label-current,
+  .top-nav__label-next {
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .top-nav a:hover .top-nav__label-current {
+    transform: translateY(-110%);
+  }
+
+  .top-nav a:hover .top-nav__label-next {
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 901px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .top-nav__label-current,
+  .top-nav__label-next {
+    transition: none;
   }
 }
 

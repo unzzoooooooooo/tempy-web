@@ -115,11 +115,21 @@ function Header() {
       </div>
       <div className="header-right">
         <nav className="top-nav">
-          <NavLink to="/now">Now</NavLink>
-          <NavLink to="/discover">Discover</NavLink>
-          <NavLink to="/curator">Curator</NavLink>
-          <NavLink to="/create">Create</NavLink>
-          <NavLink to="/archive">Archive</NavLink>
+          <NavLink to="/now">
+            <span className="top-nav__label"><span className="top-nav__label-current">Now</span><span className="top-nav__label-next" aria-hidden="true">Now</span></span>
+          </NavLink>
+          <NavLink to="/discover">
+            <span className="top-nav__label"><span className="top-nav__label-current">Discover</span><span className="top-nav__label-next" aria-hidden="true">Discover</span></span>
+          </NavLink>
+          <NavLink to="/curator">
+            <span className="top-nav__label"><span className="top-nav__label-current">Curator</span><span className="top-nav__label-next" aria-hidden="true">Curator</span></span>
+          </NavLink>
+          <NavLink to="/create">
+            <span className="top-nav__label"><span className="top-nav__label-current">Create</span><span className="top-nav__label-next" aria-hidden="true">Create</span></span>
+          </NavLink>
+          <NavLink to="/archive">
+            <span className="top-nav__label"><span className="top-nav__label-current">Archive</span><span className="top-nav__label-next" aria-hidden="true">Archive</span></span>
+          </NavLink>
         </nav>
         <div className="header-profile-actions">
           <button className="header-auth-button" type="button" onClick={handleAuthClick}>
