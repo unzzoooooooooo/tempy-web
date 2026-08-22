@@ -383,8 +383,20 @@ const getNextPlayableCatalogTrack = (trackId) => {
   return null;
 };
 
-function PlaybackProgressRing({ audioRef, duration, isPlaying, isReady, momentMarkers, onSeek }) {
-  const isSeekingRef = useRef(false);
+function PlaybackProgressRing({
+  audioRef,
+  duration,
+  isPlaying,
+  isReady,
+  momentMarkers,
+  onScrubStart,
+  onScrubPreview,
+  onSeek,
+}) {
+  const isScrubbingRef = useRef(false);
+  const scrubProgressRef = useRef(0);
+  const pendingSeekProgressRef = useRef(null);
+  const wasPlayingBeforeScrubRef = useRef(false);
   const animationFrameRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
@@ -393,14 +405,13 @@ function PlaybackProgressRing({ audioRef, duration, isPlaying, isReady, momentMa
     if (!audio) return undefined;
 
     const syncProgress = () => {
-      if (!isSeekingRef.current) {
-        const liveDuration = audio.duration;
-        const liveTime = audio.currentTime;
-        const nextProgress = Number.isFinite(liveDuration) && liveDuration > 0 && Number.isFinite(liveTime)
-          ? Math.min(1, Math.max(0, liveTime / liveDuration))
-          : 0;
-        setProgress(nextProgress);
-      }
+      if (isScrubbingRef.current || pendingSeekProgressRef.current !== null) return;
+      const liveDuration = audio.duration;
+      const liveTime = audio.currentTime;
+      const nextProgress = Number.isFinite(liveDuration) && liveDuration > 0 && Number.isFinite(liveTime)
+        ? Math.min(1, Math.max(0, liveTime / liveDuration))
+        : 0;
+      setProgress(nextProgress);
     };
 
     const stopProgressLoop = () => {
@@ -426,6 +437,11 @@ function PlaybackProgressRing({ audioRef, duration, isPlaying, isReady, momentMa
       }
     };
 
+    const finishPendingSeek = () => {
+      pendingSeekProgressRef.current = null;
+      startProgressLoop();
+    };
+
     const stopAndSyncProgress = () => {
       stopProgressLoop();
       syncProgress();
@@ -436,10 +452,9 @@ function PlaybackProgressRing({ audioRef, duration, isPlaying, isReady, momentMa
     };
 
     audio.addEventListener("playing", startProgressLoop);
-    audio.addEventListener("waiting", stopAndSyncProgress);
     audio.addEventListener("pause", stopAndSyncProgress);
     audio.addEventListener("seeking", syncProgress);
-    audio.addEventListener("seeked", startProgressLoop);
+    audio.addEventListener("seeked", finishPendingSeek);
     audio.addEventListener("timeupdate", syncProgress);
     audio.addEventListener("loadedmetadata", syncProgress);
     audio.addEventListener("durationchange", syncProgress);
@@ -452,10 +467,9 @@ function PlaybackProgressRing({ audioRef, duration, isPlaying, isReady, momentMa
     return () => {
       stopProgressLoop();
       audio.removeEventListener("playing", startProgressLoop);
-      audio.removeEventListener("waiting", stopAndSyncProgress);
       audio.removeEventListener("pause", stopAndSyncProgress);
       audio.removeEventListener("seeking", syncProgress);
-      audio.removeEventListener("seeked", startProgressLoop);
+      audio.removeEventListener("seeked", finishPendingSeek);
       audio.removeEventListener("timeupdate", syncProgress);
       audio.removeEventListener("loadedmetadata", syncProgress);
       audio.removeEventListener("durationchange", syncProgress);
@@ -464,31 +478,47 @@ function PlaybackProgressRing({ audioRef, duration, isPlaying, isReady, momentMa
     };
   }, [audioRef, isPlaying, isReady]);
 
-  const seekFromPointer = (event) => {
+  const getProgressFromPointer = (event) => {
     const nextProgress = getCircularProgressFromPointer(event, event.currentTarget);
-    const clampedProgress = Math.min(1, Math.max(0, nextProgress));
+    return Math.min(1, Math.max(0, nextProgress));
+  };
+
+  const previewFromPointer = (event) => {
+    const clampedProgress = getProgressFromPointer(event);
+    scrubProgressRef.current = clampedProgress;
     setProgress(clampedProgress);
-    onSeek(clampedProgress);
+    onScrubPreview(clampedProgress);
+    return clampedProgress;
   };
 
   const handlePointerDown = (event) => {
     if (!isReady) return;
     event.preventDefault();
-    isSeekingRef.current = true;
+    isScrubbingRef.current = true;
+    pendingSeekProgressRef.current = null;
+    wasPlayingBeforeScrubRef.current = Boolean(
+      audioRef.current && !audioRef.current.paused && !audioRef.current.ended,
+    );
+    onScrubStart(wasPlayingBeforeScrubRef.current);
     event.currentTarget.setPointerCapture?.(event.pointerId);
-    seekFromPointer(event);
+    previewFromPointer(event);
   };
 
   const handlePointerMove = (event) => {
-    if (!isSeekingRef.current) return;
-    seekFromPointer(event);
+    if (!isScrubbingRef.current) return;
+    previewFromPointer(event);
   };
 
   const handlePointerEnd = (event) => {
-    if (!isSeekingRef.current) return;
-    seekFromPointer(event);
-    isSeekingRef.current = false;
+    if (!isScrubbingRef.current) return;
+    const finalProgress = event.type === "pointercancel"
+      ? scrubProgressRef.current
+      : previewFromPointer(event);
+    pendingSeekProgressRef.current = finalProgress;
+    isScrubbingRef.current = false;
     event.currentTarget.releasePointerCapture?.(event.pointerId);
+    const didSeek = onSeek(finalProgress, wasPlayingBeforeScrubRef.current);
+    if (!didSeek) pendingSeekProgressRef.current = null;
   };
 
   const progressPath = getCircularProgressPath(progress);
@@ -554,6 +584,14 @@ function GlobalPlayer() {
   const previousPathRef = useRef(location.pathname);
   const pendingSeekTimeRef = useRef(null);
   const audioRef = useRef(null);
+  const audioDeckRefs = useRef([null, null]);
+  const activeAudioDeckRef = useRef(0);
+  const preloadedTrackRef = useRef(null);
+  const promotedTrackIdRef = useRef(null);
+  const previewWarmupsRef = useRef(new Map());
+  const isPlaybackScrubbingRef = useRef(false);
+  const pendingScrubSeekTimeRef = useRef(null);
+  const resumeAfterScrubRef = useRef(false);
   const commentPanelRef = useRef(null);
   const trackTransitionTimerRef = useRef(null);
   const currentTrackRef = useRef(null);
@@ -579,6 +617,14 @@ function GlobalPlayer() {
   const [hoveredCommentPoint, setHoveredCommentPoint] = useState(null);
   const [selectedCommentPoint, setSelectedCommentPoint] = useState(null);
   const [trackTransition, setTrackTransition] = useState({ phase: "idle", direction: "next" });
+  const setFirstAudioDeckRef = useCallback((audio) => {
+    audioDeckRefs.current[0] = audio;
+    if (activeAudioDeckRef.current === 0) audioRef.current = audio;
+  }, []);
+  const setSecondAudioDeckRef = useCallback((audio) => {
+    audioDeckRefs.current[1] = audio;
+    if (activeAudioDeckRef.current === 1) audioRef.current = audio;
+  }, []);
   const [moments, setMoments] = useState([
     {
       id: "moment-01",
@@ -648,6 +694,21 @@ function GlobalPlayer() {
   const togglePlayback = useCallback(() => {
     setIsPlaybackRequested((requested) => selectedSong?.audioPreview ? !requested : false);
   }, [selectedSong?.audioPreview]);
+  const warmPreviewResource = useCallback((previewUrl) => {
+    if (!previewUrl || previewWarmupsRef.current.has(previewUrl)) return;
+
+    const controller = new AbortController();
+    const request = window.fetch(previewUrl, {
+      cache: "force-cache",
+      mode: "cors",
+      signal: controller.signal,
+    })
+      .then((response) => response.ok ? response.arrayBuffer() : null)
+      .then(() => true)
+      .catch(() => false);
+
+    previewWarmupsRef.current.set(previewUrl, { controller, request });
+  }, []);
 
   useEffect(() => {
     const desktopQuery = window.matchMedia("(min-width: 901px)");
@@ -671,6 +732,9 @@ function GlobalPlayer() {
     window.clearTimeout(trackTransitionTimerRef.current);
     transitionTargetRef.current = null;
     pendingTrackTransitionRef.current = null;
+    previewWarmupsRef.current.forEach(({ controller }) => controller.abort());
+    previewWarmupsRef.current.clear();
+    audioDeckRefs.current.forEach((audio) => audio?.pause());
   }, []);
 
   useEffect(() => {
@@ -888,10 +952,26 @@ function GlobalPlayer() {
     const audio = audioRef.current;
     if (!audio) return undefined;
 
+    isPlaybackScrubbingRef.current = false;
+    pendingScrubSeekTimeRef.current = null;
+    resumeAfterScrubRef.current = false;
+
     if (!selectedSong?.audioPreview) {
       audio.pause();
       audio.removeAttribute("src");
       audio.load();
+      return undefined;
+    }
+
+    warmPreviewResource(selectedSong.audioPreview);
+
+    if (promotedTrackIdRef.current === selectedSong.id) {
+      promotedTrackIdRef.current = null;
+      const promotedDuration = Number.isFinite(audio.duration) && audio.duration > 0
+        ? audio.duration
+        : 0;
+      setDuration(promotedDuration);
+      setIsAudioMetadataReady(promotedDuration > 0 && audio.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA);
       return undefined;
     }
 
@@ -900,26 +980,53 @@ function GlobalPlayer() {
     audio.load();
     audio.currentTime = 0;
     return undefined;
-  }, [selectedSong?.audioPreview]);
+  }, [selectedSong?.audioPreview, selectedSong?.id, warmPreviewResource]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !selectedSong?.audioPreview) return;
 
     if (isPlaybackRequested) {
-      audio.play().catch(() => {
-        setIsPlaybackRequested(false);
-        setIsPlaying(false);
-      });
-    } else {
+      if (audio.paused) {
+        audio.play().catch(() => {
+          setIsPlaybackRequested(false);
+          setIsPlaying(false);
+        });
+      }
+    } else if (!audio.paused) {
       audio.pause();
     }
   }, [isPlaybackRequested, selectedSong?.audioPreview]);
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = volume / 100;
+    if (!selectedSong?.audioPreview) {
+      preloadedTrackRef.current = null;
+      return;
+    }
+
+    const nextTrack = getNextPlayableCatalogTrack(selectedSong.id);
+    const standbyDeck = activeAudioDeckRef.current === 0 ? 1 : 0;
+    const standbyAudio = audioDeckRefs.current[standbyDeck];
+    if (!nextTrack?.audioPreview || !standbyAudio) {
+      preloadedTrackRef.current = null;
+      return;
+    }
+
+    standbyAudio.pause();
+    standbyAudio.preload = "auto";
+    standbyAudio.volume = volume / 100;
+    if (standbyAudio.getAttribute("src") !== nextTrack.audioPreview) {
+      standbyAudio.src = nextTrack.audioPreview;
+      standbyAudio.load();
+    }
+    preloadedTrackRef.current = { track: nextTrack, deck: standbyDeck };
+    warmPreviewResource(nextTrack.audioPreview);
+  }, [selectedSong?.audioPreview, selectedSong?.id, volume, warmPreviewResource]);
+
+  useEffect(() => {
+    audioDeckRefs.current.forEach((audio) => {
+      if (audio) audio.volume = volume / 100;
+    });
   }, [volume]);
 
   const formatTime = (seconds) => {
@@ -929,15 +1036,39 @@ function GlobalPlayer() {
     return `${minutes}:${String(restSeconds).padStart(2, "0")}`;
   };
 
-  const handleAudioTimeUpdate = () => {
-    const audio = audioRef.current;
-    if (!audio || !Number.isFinite(audio.currentTime)) return;
+  const handleAudioTimeUpdate = (event) => {
+    const audio = event.currentTarget;
+    if (
+      !audio
+      || audio !== audioRef.current
+      || !Number.isFinite(audio.currentTime)
+      || isPlaybackScrubbingRef.current
+      || pendingScrubSeekTimeRef.current !== null
+    ) return;
     setCurrentTime(audio.currentTime);
   };
 
-  const handleAudioLoaded = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  const handleAudioSeeked = (event) => {
+    const audio = event.currentTarget;
+    if (audio !== audioRef.current || pendingScrubSeekTimeRef.current === null) return;
+    const resolvedTime = Number.isFinite(audio.currentTime)
+      ? audio.currentTime
+      : pendingScrubSeekTimeRef.current;
+    pendingScrubSeekTimeRef.current = null;
+    setCurrentTime(resolvedTime);
+
+    if (resumeAfterScrubRef.current && audio.paused && !audio.ended) {
+      audio.play().catch(() => {
+        setIsPlaybackRequested(false);
+        setIsPlaying(false);
+      });
+    }
+    resumeAfterScrubRef.current = false;
+  };
+
+  const handleAudioLoaded = (event) => {
+    const audio = event.currentTarget;
+    if (audio !== audioRef.current) return;
     const loadedDuration = Number.isFinite(audio.duration) && audio.duration > 0
       ? audio.duration
       : 0;
@@ -952,26 +1083,91 @@ function GlobalPlayer() {
     }
   };
 
-  const handleAudioCanPlay = () => {
-    const audio = audioRef.current;
-    if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
+  const handleAudioCanPlay = (event) => {
+    const audio = event.currentTarget;
+    if (audio !== audioRef.current || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
     setDuration(audio.duration);
     setIsAudioMetadataReady(true);
   };
 
-  const handleAudioEnded = () => {
+  const promotePreloadedTrack = (track) => {
+    const preload = preloadedTrackRef.current;
+    if (!preload || preload.track.id !== track.id) return false;
+
+    const nextAudio = audioDeckRefs.current[preload.deck];
+    if (!nextAudio || nextAudio.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) return false;
+
+    activeAudioDeckRef.current = preload.deck;
+    audioRef.current = nextAudio;
+    preloadedTrackRef.current = null;
+    promotedTrackIdRef.current = track.id;
+    isPlaybackScrubbingRef.current = false;
+    pendingScrubSeekTimeRef.current = null;
+    resumeAfterScrubRef.current = false;
+    currentTrackRef.current = track;
+
+    if (nextAudio.currentTime !== 0) nextAudio.currentTime = 0;
+    nextAudio.volume = volume / 100;
+    setCurrentTrack(track);
+    setCurrentTime(0);
+    setDuration(Number.isFinite(nextAudio.duration) ? nextAudio.duration : 0);
+    setIsAudioMetadataReady(true);
+    setIsPlaybackRequested(true);
+    setIsPlaying(true);
+    setIsSaved(false);
+    setHoveredCommentPoint(null);
+    setSelectedCommentPoint(null);
+    setTrackTransition({ phase: "idle", direction: "next" });
+
+    nextAudio.play().catch(() => {
+      setIsPlaybackRequested(false);
+      setIsPlaying(false);
+    });
+    return true;
+  };
+
+  const handleAudioPlaying = (event) => {
+    if (event.currentTarget === audioRef.current) setIsPlaying(true);
+  };
+
+  const handleAudioPause = (event) => {
+    const audio = event.currentTarget;
+    if (audio !== audioRef.current) return;
+    const isNaturalEnding = audio.ended
+      || (Number.isFinite(audio.duration) && audio.duration - audio.currentTime < 0.05 && isPlaybackRequested);
+    if (!isNaturalEnding) setIsPlaying(false);
+  };
+
+  const handleAudioEnded = (event) => {
+    if (event.currentTarget !== audioRef.current) return;
     const nextTrack = getNextPlayableCatalogTrack(currentTrack?.id);
     if (!nextTrack) {
       setIsPlaybackRequested(false);
       setIsPlaying(false);
       return;
     }
+    if (promotePreloadedTrack(nextTrack)) return;
     transitionToTrack(nextTrack, "next", true);
+  };
+
+  const handleAudioError = (event) => {
+    if (event.currentTarget !== audioRef.current) return;
+    setIsPlaybackRequested(false);
+    setIsPlaying(false);
+    setIsAudioMetadataReady(false);
   };
 
   const handleClosePlayer = () => {
     const audio = audioRef.current;
     if (audio) audio.pause();
+    audioDeckRefs.current.forEach((deckAudio) => {
+      if (deckAudio && deckAudio !== audio) deckAudio.pause();
+    });
+    preloadedTrackRef.current = null;
+    promotedTrackIdRef.current = null;
+    isPlaybackScrubbingRef.current = false;
+    pendingScrubSeekTimeRef.current = null;
+    resumeAfterScrubRef.current = false;
     window.clearTimeout(trackTransitionTimerRef.current);
     transitionTargetRef.current = null;
     pendingTrackTransitionRef.current = null;
@@ -994,7 +1190,14 @@ function GlobalPlayer() {
     setTrackTransition({ phase: "idle", direction: "next" });
   };
 
-  if (!currentTrack) return <audio ref={audioRef} />;
+  if (!currentTrack) {
+    return (
+      <>
+        <audio key="audio-deck-0" ref={setFirstAudioDeckRef} preload="auto" />
+        <audio key="audio-deck-1" ref={setSecondAudioDeckRef} preload="auto" />
+      </>
+    );
+  }
 
   const playerPlaylist = musicCatalogTracks;
 
@@ -1162,13 +1365,45 @@ function GlobalPlayer() {
     openMobilePanel();
   };
 
-  const seekToProgress = (progress) => {
+  const handleScrubStart = (wasPlaying) => {
+    isPlaybackScrubbingRef.current = true;
+    pendingScrubSeekTimeRef.current = null;
+    resumeAfterScrubRef.current = wasPlaying;
+  };
+
+  const previewScrubProgress = (progress) => {
+    const previewTime = Math.min(safeDuration, Math.max(0, progress * safeDuration));
+    setCurrentTime(previewTime);
+  };
+
+  const seekToProgress = (progress, wasPlayingBeforeScrub) => {
     const nextTime = Math.min(safeDuration, Math.max(0, progress * safeDuration));
     const audio = audioRef.current;
-    if (audio && selectedSong.audioPreview) {
-      audio.currentTime = nextTime;
-    }
+    isPlaybackScrubbingRef.current = false;
+    resumeAfterScrubRef.current = wasPlayingBeforeScrub;
     setCurrentTime(nextTime);
+
+    if (!audio || !selectedSong.audioPreview) {
+      pendingScrubSeekTimeRef.current = null;
+      resumeAfterScrubRef.current = false;
+      return false;
+    }
+
+    if (Math.abs(audio.currentTime - nextTime) < 0.01) {
+      pendingScrubSeekTimeRef.current = null;
+      if (wasPlayingBeforeScrub && audio.paused && !audio.ended) {
+        audio.play().catch(() => {
+          setIsPlaybackRequested(false);
+          setIsPlaying(false);
+        });
+      }
+      resumeAfterScrubRef.current = false;
+      return false;
+    }
+
+    pendingScrubSeekTimeRef.current = nextTime;
+    audio.currentTime = nextTime;
+    return true;
   };
 
   const toggleCommentPoint = (event, momentId) => {
@@ -1187,20 +1422,32 @@ function GlobalPlayer() {
   return (
     <>
       <audio
-        ref={audioRef}
+        key="audio-deck-0"
+        ref={setFirstAudioDeckRef}
+        preload="auto"
         onLoadedMetadata={handleAudioLoaded}
         onDurationChange={handleAudioLoaded}
         onCanPlay={handleAudioCanPlay}
         onTimeUpdate={handleAudioTimeUpdate}
-        onPlaying={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onWaiting={() => setIsPlaying(false)}
+        onSeeked={handleAudioSeeked}
+        onPlaying={handleAudioPlaying}
+        onPause={handleAudioPause}
         onEnded={handleAudioEnded}
-        onError={() => {
-          setIsPlaybackRequested(false);
-          setIsPlaying(false);
-          setIsAudioMetadataReady(false);
-        }}
+        onError={handleAudioError}
+      />
+      <audio
+        key="audio-deck-1"
+        ref={setSecondAudioDeckRef}
+        preload="auto"
+        onLoadedMetadata={handleAudioLoaded}
+        onDurationChange={handleAudioLoaded}
+        onCanPlay={handleAudioCanPlay}
+        onTimeUpdate={handleAudioTimeUpdate}
+        onSeeked={handleAudioSeeked}
+        onPlaying={handleAudioPlaying}
+        onPause={handleAudioPause}
+        onEnded={handleAudioEnded}
+        onError={handleAudioError}
       />
       {isFullPlayerOpen && (
         <section className={fullPlayerClassName} aria-label="Full music player">
@@ -1251,6 +1498,8 @@ function GlobalPlayer() {
                     isPlaying={isPlaying}
                     isReady={isAudioMetadataReady}
                     momentMarkers={momentMarkers}
+                    onScrubStart={handleScrubStart}
+                    onScrubPreview={previewScrubProgress}
                     onSeek={seekToProgress}
                   />
                   {isDesktopRing && momentMarkers.map((moment) => {
