@@ -6,28 +6,118 @@ import { getArtistImageByName } from "./imageCatalog.js";
  * not be verified from the bundled asset alone.
  */
 const addedCatalogArtists = [
-  { id: "sabrina-carpenter", name: "Sabrina Carpenter", profile: "/images/album-33.png", genres: [] },
-  { id: "maisie-peters", name: "Maisie Peters", profile: "/images/album-41.png", genres: [] },
-  { id: "chappell-roan", name: "Chappell Roan", profile: "/images/album-42.png", genres: [] },
-  { id: "lauv", name: "Lauv", profile: "/images/album-47.png", genres: [] },
+  { id: "sabrina-carpenter", name: "Sabrina Carpenter", profile: "/images/album-33.png", genres: ["Pop"] },
+  { id: "maisie-peters", name: "Maisie Peters", profile: "/images/album-41.png", genres: ["Pop", "Singer-Songwriter"] },
+  { id: "chappell-roan", name: "Chappell Roan", profile: "/images/album-42.png", genres: ["Pop"] },
+  { id: "lauv", name: "Lauv", profile: "/images/album-47.png", genres: ["Pop", "Electronic"] },
   { id: "jake-scott-john-k", name: "Jake Scott, John K", profile: "/images/album-53.png", genres: [] },
   { id: "john-k", name: "John K", profile: "/images/album-54.png", genres: [] },
-  { id: "olivia-dean", name: "Olivia Dean", profile: "/images/album-59.png", genres: [] },
-  { id: "frank-ocean", name: "Frank Ocean", profile: "/images/album-63.png", genres: [] },
+  { id: "olivia-dean", name: "Olivia Dean", profile: "/images/album-59.png", genres: ["Soul", "Pop"] },
+  { id: "frank-ocean", name: "Frank Ocean", profile: "/images/album-63.png", genres: ["R&B", "Alternative"] },
   { id: "lady-gaga-bruno-mars", name: "Lady Gaga, Bruno Mars", profile: "/images/album-64.png", genres: [] },
   { id: "alan-walker-sabrina-carpenter", name: "Alan Walker, Sabrina Carpenter", profile: "/images/album-65.png", genres: [] },
-  { id: "julia-michaels", name: "Julia Michaels", profile: "/images/album-66.png", genres: [] },
+  { id: "julia-michaels", name: "Julia Michaels", profile: "/images/album-66.png", genres: ["Pop", "Singer-Songwriter"] },
   { id: "julia-michaels-maren-morris", name: "Julia Michaels, Maren Morris", profile: "/images/album-67.png", genres: [] },
-  { id: "fka-twigs", name: "FKA twigs", profile: "/images/album-71.png", genres: [] },
+  { id: "fka-twigs", name: "FKA twigs", profile: "/images/album-71.png", genres: ["Alternative", "Electronic"] },
   { id: "sza-travis-scott", name: "SZA, Travis Scott", profile: "/images/album-72.png", genres: [] },
   { id: "chloe-x-halle", name: "Chloe x Halle", profile: "/images/album-73.jpg", genres: [] },
   { id: "tinashe", name: "Tinashe", profile: "/images/album-74.jpg", genres: [] },
-  { id: "sza", name: "SZA", profile: "/images/album-75.jpg", genres: [] },
-  { id: "enhypen", name: "ENHYPEN", profile: "/images/album-76.jpg", genres: [] },
-  { id: "allday-project", name: "ALLDAY PROJECT", profile: "/images/album-78.jpg", genres: [] },
-  { id: "flor", name: "flor", profile: "/images/album-79.jpg", genres: [] },
-  { id: "bruno-mars", name: "Bruno Mars", profile: "/images/album-81.png", genres: [] },
+  { id: "sza", name: "SZA", profile: "/images/album-75.jpg", genres: ["R&B"] },
+  { id: "enhypen", name: "ENHYPEN", profile: "/images/album-76.jpg", genres: ["K-Pop"] },
+  { id: "allday-project", name: "ALLDAY PROJECT", profile: "/images/album-78.jpg", genres: ["K-Pop", "Hip-Hop"] },
+  { id: "flor", name: "flor", profile: "/images/album-79.jpg", genres: ["Indie Pop"] },
+  { id: "bruno-mars", name: "Bruno Mars", profile: "/images/album-81.png", genres: ["Pop", "R&B"] },
 ];
+
+const artistExperienceById = Object.freeze({
+  "taylor-swift": { tags: ["#STORY", "#MEMORY", "#MIDNIGHT"], description: "선명한 멜로디와 구체적인 가사로 관계와 시간의 변화를 포착합니다. 밝은 드라이브부터 혼자 기억을 되짚는 밤까지, Tempy에서 노래마다 달라지는 이야기의 온도를 따라가보세요." },
+  "billie-eilish": { tags: ["#NIGHT", "#INTIMATE", "#AFTERGLOW"], description: "낮게 속삭이는 보컬과 넓은 여백, 미니멀한 전자음이 내밀한 감정을 가까이 끌어옵니다. 불을 낮춘 늦은 밤이나 혼자 머무는 시간에 특히 깊게 스며들며, Tempy에서는 그 고요 속에서 시작된 리스너들의 장면을 탐색할 수 있습니다.", portrait: { title: "Quiet Blue Hours", time: "00:14", note: "소리가 잦아든 밤, 가장 사적인 감정이 음악 가까이에 머뭅니다.", moods: [["REFLECTIVE", 78], ["ROMANTIC", 41], ["ENERGETIC", 24]], words: ["blue room", "midnight", "solitude"] } },
+  newjeans: { tags: ["#YOUTH", "#BREEZE", "#CITY"], description: "가볍게 튀는 리듬과 맑은 보컬이 일상의 속도를 산뜻하게 바꿉니다. 친구와 걷는 오후나 도시를 오가는 순간, Tempy에서 자연스럽게 겹쳐진 젊은 장면들을 만나보세요." },
+  "the-weeknd": { tags: ["#NEON", "#NIGHT", "#DRIVE"], description: "어두운 신스와 매끄러운 보컬이 네온빛 도시의 긴장과 쓸쓸함을 함께 만듭니다. 늦은 밤 드라이브와 잘 맞는 곡들 속에서, Tempy에 남겨진 빛과 그림자의 순간을 따라가보세요." },
+  honne: { tags: ["#WARM", "#CITY", "#NIGHTDRIVE"], description: "따뜻한 신스와 부드러운 electronic soul의 결이 도시의 밤을 포근하게 감쌉니다. 퇴근 뒤 드라이브나 조용한 대화가 이어지는 시간, Tempy에서 HONNE와 함께 남은 온기 있는 장면을 살펴보세요.", portrait: { title: "Warm City Lights", time: "22:36", note: "도시의 불빛이 부드러워질 무렵, 따뜻한 리듬이 가장 오래 이어집니다.", moods: [["REFLECTIVE", 58], ["ROMANTIC", 72], ["ENERGETIC", 37]], words: ["night drive", "warm light", "together"] } },
+  "official-hige-dandism": { tags: ["#MELODY", "#JOURNEY", "#HEART"], description: "힘 있게 뻗는 보컬과 풍성한 밴드 편곡이 감정의 고조를 선명하게 이끕니다. 긴 이동이나 마음을 크게 환기하고 싶은 순간, Tempy에서 멜로디가 열어 둔 장면을 만나보세요." },
+  "ariana-grande": { tags: ["#VOCAL", "#GLOW", "#POP"], description: "유연하게 흐르는 보컬과 섬세한 하모니가 가벼운 자신감과 부드러운 여운을 함께 전합니다. 기분을 환기하는 오후부터 달콤한 밤까지, Tempy에서 빛나는 팝의 순간을 찾아보세요." },
+  "jane-and-the-boy": { tags: ["#BRIGHT", "#INDIE", "#DAY"], description: "경쾌한 기타와 산뜻한 멜로디가 평범한 하루를 한 톤 밝게 만듭니다. 가벼운 산책이나 새로운 일을 시작할 때, Tempy에 기록된 작은 활력의 순간을 만나보세요." },
+  "charli-xcx": { tags: ["#CLUB", "#BOLD", "#ELECTRIC"], description: "날카로운 전자음과 직진하는 비트가 과감하고 즉각적인 에너지를 만듭니다. 밤의 움직임과 강한 전환이 필요한 순간, Tempy에서 폭발적으로 남은 장면을 따라가보세요." },
+  "harry-styles": { tags: ["#SUNLIGHT", "#POP", "#FREEDOM"], description: "따뜻한 밴드 질감과 편안한 보컬이 햇빛 같은 개방감을 전합니다. 창문을 연 드라이브나 느긋한 휴일, Tempy에서 자유롭게 번진 순간들을 모아볼 수 있습니다." },
+  xg: { tags: ["#BOLD", "#RHYTHM", "#STAGE"], description: "정교한 리듬과 단단한 퍼포먼스 에너지가 선명한 캐릭터를 만듭니다. 집중력을 끌어올리거나 움직이고 싶은 때, Tempy에 남은 강렬한 장면을 탐색해보세요." },
+  aespa: { tags: ["#FUTURE", "#POWER", "#NEON"], description: "금속적인 신스와 강한 비트, 또렷한 보컬이 미래적인 긴장감을 쌓습니다. 밤거리와 운동처럼 에너지가 필요한 순간, Tempy에서 강렬하게 각인된 장면을 만나보세요." },
+  jennie: { tags: ["#RUBY", "#CONFIDENCE", "#STAGE"], description: "절제된 보컬 톤과 날카로운 리듬 감각이 여유로운 자신감을 드러냅니다. 무대 전의 집중이나 도시의 밤과 어울리는 순간을 Tempy에서 선명하게 따라가보세요." },
+  akmu: { tags: ["#STORY", "#BREEZE", "#DUET"], description: "서로 다른 두 목소리와 재치 있는 멜로디가 일상의 이야기를 따뜻하게 펼칩니다. 계절이 바뀌는 산책길이나 편안한 오후, Tempy에서 소박하게 오래 남은 순간을 만나보세요." },
+  hanroro: { tags: ["#YOUTH", "#DAWN", "#GUITAR"], description: "거친 듯 솔직한 보컬과 점층하는 밴드 사운드가 청춘의 흔들림을 생생하게 담습니다. 새벽의 복잡한 마음이나 오래 걷는 밤, Tempy에서 뜨겁게 남은 장면을 찾아보세요." },
+  rose: { tags: ["#HEART", "#POP", "#LATE"], description: "섬세하게 갈라지는 음색과 팝 록의 질감이 솔직한 감정을 가까이 전합니다. 혼자 마음을 정리하는 늦은 시간, Tempy에서 여운이 길게 남은 순간을 살펴보세요." },
+  arlie: { tags: ["#INDIE", "#PLAYFUL", "#ROAD"], description: "비틀린 듯 유쾌한 기타와 탄력 있는 리듬이 자유로운 인디 팝의 기분을 만듭니다. 목적 없는 드라이브나 가벼운 모험에 어울리는 장면을 Tempy에서 만나보세요." },
+  lany: { tags: ["#DREAMY", "#MEMORY", "#EVENING"], description: "몽환적인 신스와 담백한 보컬이 관계와 기억의 잔상을 천천히 펼칩니다. 해가 진 뒤 혼자 걷거나 오래된 대화를 떠올릴 때, Tempy에서 늦은 저녁의 장면을 탐색해보세요.", portrait: { title: "Dreamy Evening", time: "21:48", note: "저녁이 깊어질수록 관계와 기억의 잔상이 더 또렷해집니다.", moods: [["REFLECTIVE", 69], ["ROMANTIC", 66], ["ENERGETIC", 29]], words: ["old message", "evening", "drive home"] } },
+  "the-aces": { tags: ["#INDIEPOP", "#FRIENDS", "#NIGHT"], description: "선명한 기타와 유연한 팝 리듬이 친밀하면서도 시원한 분위기를 만듭니다. 친구들과 나선 밤이나 가볍게 달리고 싶은 순간, Tempy의 경쾌한 기록을 만나보세요." },
+  "olivia-rodrigo": { tags: ["#YOUTH", "#HEART", "#LOUD"], description: "솔직한 보컬과 선명한 팝 록의 대비가 복잡한 마음을 크게 터뜨립니다. 감정을 숨기고 싶지 않은 밤, Tempy에서 함께 소리 높여 남긴 청춘의 장면을 찾아보세요." },
+  "sabrina-carpenter": { tags: ["#WITTY", "#BRIGHT", "#POP"], description: "경쾌한 팝 리듬과 재치 있는 보컬 표현이 밝고 영리한 기분을 만듭니다. 준비하는 아침이나 친구들과 웃는 순간, Tempy에서 가볍게 반짝인 장면들을 만나보세요.", portrait: { title: "Golden Pop Hours", time: "17:22", note: "하루가 가장 가볍게 빛나는 시간, 재치 있는 팝의 온도가 올라갑니다.", moods: [["REFLECTIVE", 32], ["ROMANTIC", 57], ["ENERGETIC", 76]], words: ["getting ready", "sunshine", "inside joke"] } },
+  "maisie-peters": { tags: ["#DIARY", "#STORY", "#POP"], description: "대화하듯 이어지는 가사와 또렷한 팝 멜로디가 개인적인 일기를 듣는 듯한 친밀함을 줍니다. 마음을 정리하는 귀갓길, Tempy에서 솔직한 기억의 조각을 찾아보세요." },
+  "chappell-roan": { tags: ["#THEATRICAL", "#FREEDOM", "#STAGE"], description: "극적인 보컬과 선명한 캐릭터, 크게 펼쳐지는 팝 사운드가 해방감을 끌어냅니다. 공연장처럼 마음껏 자신을 드러내고 싶은 순간, Tempy에서 뜨겁게 반응한 장면을 만나보세요.", portrait: { title: "Electric Spotlight", time: "20:44", note: "조명이 켜지는 저녁, 강한 캐릭터와 해방감이 가장 크게 번집니다.", moods: [["REFLECTIVE", 28], ["ROMANTIC", 54], ["ENERGETIC", 88]], words: ["spotlight", "freedom", "sing along"] } },
+  lauv: { tags: ["#FEELING", "#SYNTH", "#LATE"], description: "부드러운 전자 팝과 가까이 속삭이는 보컬이 관계의 미묘한 감정을 담아냅니다. 늦은 귀갓길이나 메시지를 망설이는 순간, Tempy에서 섬세하게 남은 마음을 살펴보세요." },
+  "olivia-dean": { tags: ["#SOUL", "#WARM", "#SUNDAY"], description: "따뜻한 소울 리듬과 자연스러운 보컬이 여유롭고 단단한 온기를 전합니다. 햇빛 드는 방이나 느린 일요일, Tempy에서 편안하게 머문 순간을 만나보세요." },
+  "frank-ocean": { tags: ["#INTIMATE", "#MEMORY", "#DUSK"], description: "유연한 R&B와 여백 많은 서사가 기억의 조각을 비선형적으로 비춥니다. 해 질 무렵이나 오래된 장면이 떠오를 때, Tempy에서 깊게 가라앉은 순간을 탐색해보세요." },
+  "fka-twigs": { tags: ["#ARTPOP", "#TEXTURE", "#MOTION"], description: "섬세한 보컬과 실험적인 전자 질감이 몸의 움직임처럼 긴장과 해방을 오갑니다. 집중이 필요한 밤, Tempy에서 낯설고 아름답게 남은 장면을 만나보세요." },
+  sza: { tags: ["#HONEST", "#RNB", "#NIGHT"], description: "유연한 멜로디와 솔직한 보컬이 흔들리는 관계와 자기 대화를 가깝게 담습니다. 혼자 생각이 많아지는 밤, Tempy에서 복잡한 마음과 겹친 순간을 찾아보세요." },
+  enhypen: { tags: ["#DARK", "#MOTION", "#KPOP"], description: "어두운 신스와 정교한 리듬, 선명한 퍼포먼스가 긴장감 있는 흐름을 만듭니다. 속도를 높이고 싶은 밤, Tempy에서 역동적으로 남은 장면을 따라가보세요." },
+  "allday-project": { tags: ["#BOLD", "#RHYTHM", "#CITY"], description: "단단한 비트와 자신감 있는 보컬의 교차가 도시적인 추진력을 만듭니다. 새로운 하루를 밀어붙이거나 에너지를 끌어올릴 때, Tempy에서 강하게 남은 순간을 만나보세요." },
+  flor: { tags: ["#SOFT", "#INDIE", "#GLOW"], description: "부드러운 기타와 맑게 번지는 신스가 포근한 인디 팝의 공간을 만듭니다. 느린 오후나 조용한 드라이브, Tempy에서 은은하게 빛난 장면을 찾아보세요." },
+  "bruno-mars": { tags: ["#GROOVE", "#ROMANCE", "#CLASSIC"], description: "탄탄한 그루브와 풍부한 보컬이 클래식한 팝의 즐거움과 로맨스를 살립니다. 함께 춤추거나 마음을 전하고 싶은 순간, Tempy에 남은 따뜻한 장면을 만나보세요." },
+  "tempy-archive": { tags: ["#ARCHIVE", "#DISCOVERY", "#MOMENT"], description: "서로 다른 무드와 시대의 트랙을 한곳에서 발견하도록 엮은 Tempy의 아카이브입니다. 익숙하지 않은 음악이 새로운 장면이 되는 순간을 천천히 탐색해보세요." },
+  "jake-scott-john-k": { tags: ["#DUET", "#POP", "#WARM"], description: "두 보컬의 편안한 온도와 간결한 팝 편곡이 가까운 대화처럼 이어집니다. 느긋한 이동이나 누군가와 하루를 나누는 순간, Tempy에서 부드럽게 남은 장면을 만나보세요." },
+  "john-k": { tags: ["#EASY", "#POP", "#DAY"], description: "담백한 보컬과 가벼운 팝 리듬이 일상의 작은 기분을 자연스럽게 끌어올립니다. 햇빛 좋은 오후나 편안한 드라이브, Tempy에서 산뜻하게 기록된 순간을 찾아보세요." },
+  "lady-gaga-bruno-mars": { tags: ["#DUET", "#ROMANCE", "#TIMELESS"], description: "풍부한 두 보컬과 클래식한 팝 발라드의 질감이 큰 감정을 정면으로 전합니다. 마음을 오래 붙잡고 싶은 밤, Tempy에서 함께 머문 로맨틱한 장면을 살펴보세요." },
+  "alan-walker-sabrina-carpenter": { tags: ["#ELECTRONIC", "#ESCAPE", "#ROAD"], description: "공간감 있는 전자음과 맑은 팝 보컬이 멀리 떠나는 듯한 추진력을 만듭니다. 새로운 길을 나서는 순간, Tempy에서 속도감 있게 펼쳐진 장면을 만나보세요." },
+  "julia-michaels": { tags: ["#HONEST", "#POP", "#DIARY"], description: "가까이 말하듯 들리는 보컬과 세밀한 팝 작법이 솔직한 마음의 결을 드러냅니다. 혼자 생각을 정리하는 저녁, Tempy에서 개인적인 감정과 겹친 순간을 찾아보세요." },
+  "julia-michaels-maren-morris": { tags: ["#DUET", "#HEART", "#STORY"], description: "서로 다른 음색이 주고받는 하모니와 서사적인 팝 사운드가 관계의 복잡함을 또렷하게 만듭니다. 긴 대화가 필요한 밤, Tempy에서 두 목소리와 함께 남은 장면을 만나보세요." },
+  "sza-travis-scott": { tags: ["#ATMOSPHERE", "#RNB", "#LATE"], description: "몽환적인 R&B 공간 위로 대비되는 보컬이 겹치며 느슨한 긴장감을 만듭니다. 늦은 밤 불빛 사이를 이동할 때, Tempy에서 깊게 번진 순간을 탐색해보세요." },
+  "chloe-x-halle": { tags: ["#HARMONY", "#RNB", "#GLOW"], description: "촘촘한 보컬 하모니와 유연한 R&B 리듬이 우아하면서도 힘 있는 분위기를 만듭니다. 스스로의 감각에 집중하고 싶은 순간, Tempy에서 반짝이는 장면을 만나보세요." },
+  tinashe: { tags: ["#RHYTHM", "#MOTION", "#NIGHT"], description: "매끄러운 보컬과 탄력적인 R&B 비트가 몸을 자연스럽게 움직이게 합니다. 밤의 시작이나 리듬이 필요한 순간, Tempy에서 유연하게 이어진 장면을 찾아보세요." },
+});
+
+const artistDescriptionExtensionById = Object.freeze({
+  "taylor-swift": "어쿠스틱한 고백에서 정교한 신스 팝까지 사운드의 폭이 넓지만, 언제나 한 장면을 또렷하게 기억하게 하는 서사가 중심에 있습니다.",
+  "billie-eilish": "작게 흔들리는 숨과 갑자기 깊어지는 저음은 긴장과 고요를 동시에 만들고, 넓은 공간감 속의 작은 소리까지 감정의 일부로 들리게 합니다.",
+  newjeans: "과하게 힘주지 않은 프로덕션과 반복되는 훅은 짧은 이동이나 사진을 남기는 순간에도 자연스럽게 스며들어, 익숙한 하루를 새로운 기억처럼 바꿉니다.",
+  "the-weeknd": "반짝이는 팝의 표면 아래에는 불안과 공허가 남아 있어, 빠른 리듬 속에서도 혼자만의 감정이 선명해지는 대비를 들려줍니다.",
+  honne: "둥글게 번지는 베이스와 차분한 그루브는 늦은 산책에도 잘 어울리고, 반복해 들을수록 사적인 대화처럼 가까워지는 감각을 남깁니다.",
+  "official-hige-dandism": "피아노와 리듬 섹션이 촘촘하게 움직이는 가운데 보컬의 드라마가 크게 확장되어, 평범한 이동도 영화의 한 장면처럼 느끼게 합니다.",
+  "ariana-grande": "리듬 위를 가볍게 넘나드는 프레이징과 겹겹의 코러스는 밝은 곡에서도 세밀한 감정을 놓치지 않아, 짧은 휴식에도 풍성한 기분 전환을 줍니다.",
+  "jane-and-the-boy": "꾸밈을 덜어낸 편곡과 친근한 보컬은 창가에 햇빛이 드는 시간처럼 가볍고, 리스너가 자신의 일상을 편안하게 겹쳐 놓게 합니다.",
+  "charli-xcx": "거칠게 잘린 질감과 예측을 비트는 프로덕션은 클럽의 속도뿐 아니라 스스로를 과감하게 드러내는 순간의 해방감까지 밀어 올립니다.",
+  "harry-styles": "복고적인 록과 소울의 온기가 현대적인 팝 감각과 자연스럽게 섞여, 혼자 듣는 시간에도 넓고 다정한 풍경을 만들어냅니다.",
+  xg: "랩과 보컬이 빠르게 교차하는 구성은 무대의 긴장감을 유지하면서도 각 멤버의 색을 분명히 보여주어, 짧은 순간에도 강한 인상을 남깁니다.",
+  aespa: "급격한 전환과 층층이 쌓인 프로덕션은 낯선 세계를 통과하는 듯한 몰입을 만들며, 리스너의 움직임과 자신감을 동시에 끌어올립니다.",
+  jennie: "낮게 눌러 말하는 구간과 폭발하는 훅의 대비가 강한 존재감을 만들고, 작은 제스처에도 자신만의 장면을 부여하는 힘을 보여줍니다.",
+  akmu: "어쿠스틱한 질감과 예상 밖의 리듬 전환이 유머와 쓸쓸함을 함께 품어, 함께 듣는 사람마다 서로 다른 추억을 꺼내게 합니다.",
+  hanroro: "조용히 시작한 기타가 감정을 따라 거칠게 커지는 순간에는 망설임과 용기가 동시에 들려, 말로 정리하기 어려운 마음을 대신 꺼내 줍니다.",
+  rose: "가까이 떨리는 보컬과 크게 열리는 후렴의 대비는 상처와 회복을 한 호흡 안에 담아, 혼자 이어폰을 낀 순간을 더욱 솔직하게 만듭니다.",
+  arlie: "장난스러운 구조와 빈티지한 밴드 톤은 예측 가능한 팝의 흐름을 살짝 비틀며, 익숙한 거리에서도 새로운 풍경을 발견하게 합니다.",
+  lany: "반복되는 코드와 잔잔하게 번지는 프로덕션은 오래된 사진이나 보내지 못한 메시지를 떠올리게 하고, 사적인 기억을 천천히 현재로 불러옵니다.",
+  "the-aces": "선명한 리듬 기타와 단단한 드럼은 친밀한 보컬을 가볍게 밀어주며, 함께 부를수록 더 또렷해지는 우정과 자유의 기분을 남깁니다.",
+  "olivia-rodrigo": "속삭이듯 눌러 둔 구절에서 거칠게 터지는 후렴까지 감정의 낙차가 커서, 참아 둔 말을 한꺼번에 꺼내는 듯한 해방감을 줍니다.",
+  "sabrina-carpenter": "리듬을 타는 정확한 프레이징과 위트 있는 표현은 매끈한 프로덕션에 생기를 더해, 가볍게 기분을 바꾸고 싶은 순간을 자신감 있게 채웁니다.",
+  "maisie-peters": "빠르게 이어지는 문장과 작은 디테일은 관계의 장면을 또렷하게 그려내며, 혼자 듣는 사람에게도 오래 알고 지낸 친구의 이야기처럼 다가옵니다.",
+  "chappell-roan": "폭발적인 후렴과 과감한 신스, 극적으로 변하는 보컬은 공연장의 열기를 그대로 옮겨와, 자신을 숨기지 않는 순간의 자신감을 크게 확장합니다.",
+  lauv: "가까이 들리는 호흡과 잔잔하게 겹치는 신스는 관계의 불안정함과 솔직한 망설임을 세밀하게 비추며, 혼자 휴대폰을 바라보는 시간과 자연스럽게 연결됩니다.",
+  "olivia-dean": "여유 있게 뒤로 기대는 리듬과 풍성한 코러스는 소박한 일상에도 깊이를 더하고, 서두르지 않아도 괜찮다는 안정감을 남깁니다.",
+  "frank-ocean": "목소리의 거리와 질감이 장면마다 달라지고 이야기는 여백 속에서 이어져, 한 번의 감상보다 반복해서 돌아올 때 더 많은 기억을 드러냅니다.",
+  "fka-twigs": "숨소리처럼 가는 음과 무겁게 꺾이는 비트의 대비는 연약함과 통제를 동시에 표현하며, 음악을 듣는 경험을 시각적인 움직임처럼 확장합니다.",
+  sza: "느슨하게 밀고 당기는 리듬과 겹쳐지는 화음은 확신과 의심이 공존하는 마음을 숨김없이 보여주며, 반복할수록 새로운 감정의 결을 발견하게 합니다.",
+  enhypen: "정교하게 끊기는 비트와 빠른 분위기 전환은 서사를 따라가는 긴장감을 만들고, 퍼포먼스가 떠오르는 순간마다 음악의 속도를 더욱 크게 느끼게 합니다.",
+  "allday-project": "서로 다른 톤의 랩과 보컬이 빠르게 교대하며 만들어내는 추진력은 도시의 복잡한 에너지를 닮아, 새로운 움직임을 시작하게 합니다.",
+  flor: "섬세하게 겹친 기타와 공기처럼 퍼지는 보컬은 소리를 크게 높이지 않고도 감정을 채우며, 오래 머물고 싶은 편안한 공간을 만듭니다.",
+  "bruno-mars": "리듬을 정확히 밀어내는 보컬과 생생한 악기 편곡은 익숙한 스타일에도 활력을 더해, 혼자 듣는 방까지 작은 무대처럼 바꿉니다.",
+  "tempy-archive": "장르와 분위기가 자연스럽게 교차하도록 이어져 있어, 정해진 취향 밖의 곡도 현재의 날씨와 시간에 맞는 개인적인 발견으로 남길 수 있습니다.",
+  "jake-scott-john-k": "부드럽게 주고받는 멜로디와 절제된 리듬은 감정을 과장하지 않으면서도, 함께한 사람과의 평범한 시간을 오래 기억하게 합니다.",
+  "john-k": "가까운 거리에서 말하듯 부르는 음색과 매끈한 리듬은 복잡한 하루의 힘을 덜어주며, 짧은 이동에도 편안한 속도를 만들어냅니다.",
+  "lady-gaga-bruno-mars": "절제된 도입에서 크게 열리는 하모니까지 두 목소리의 에너지가 단계적으로 쌓여, 중요한 사람을 떠올리는 순간을 한층 극적으로 만듭니다.",
+  "alan-walker-sabrina-carpenter": "선명한 빌드업과 넓게 퍼지는 신스 위로 가벼운 보컬이 중심을 잡아, 낯선 장소로 향하는 길에도 밝은 긴장과 기대를 더합니다.",
+  "julia-michaels": "호흡과 발음의 작은 흔들림까지 남겨 둔 보컬은 세련된 비트 안에서도 감정을 꾸미지 않으며, 말하지 못한 생각을 조용히 정리하게 합니다.",
+  "julia-michaels-maren-morris": "팝의 선명함과 따뜻한 밴드 질감이 두 음색 사이를 연결해, 서로 다른 입장에서 바라본 한 관계의 이야기를 입체적으로 들려줍니다.",
+  "sza-travis-scott": "낮게 가라앉은 베이스와 떠다니는 듯한 보컬 레이어는 시간 감각을 느슨하게 만들고, 혼자 남은 도시의 새벽과 잘 맞는 여운을 남깁니다.",
+  "chloe-x-halle": "촘촘하게 갈라졌다 다시 합쳐지는 두 목소리는 미세한 리듬까지 악기처럼 활용하며, 차분한 순간에도 단단한 자신감을 전합니다.",
+  tinashe: "미끄러지듯 이어지는 프레이징과 정교한 전자 프로덕션은 에너지를 과하게 밀어붙이지 않고도, 몸과 기분의 흐름을 자연스럽게 바꿉니다.",
+});
 
 const addedCatalogTracks = [
   ["sharpest-tool", "Sharpest Tool", "sabrina-carpenter", "/images/album-33.png"],
@@ -81,7 +171,7 @@ const addedCatalogTracks = [
   ["just-the-way-you-are", "Just the Way You Are", "bruno-mars", "/images/album-81.png"],
 ];
 
-export const artists = [
+const baseArtists = [
   { id: "taylor-swift", name: "Taylor Swift", profile: "/images/album-10.png", genres: ["Pop", "Singer-Songwriter"] },
   { id: "billie-eilish", name: "Billie Eilish", profile: "/images/album-03.png", genres: ["Alternative", "Pop"] },
   { id: "newjeans", name: "NewJeans", profile: "/images/album-04.png", genres: ["K-Pop", "Pop"] },
@@ -105,6 +195,36 @@ export const artists = [
   { id: "tempy-archive", name: "Tempy Archive", profile: null, genres: ["Archive Pop"], isMock: true },
   ...addedCatalogArtists,
 ];
+
+const portraitDefaults = Object.freeze({
+  title: "Listening Hours",
+  time: "21:30",
+  note: "하루의 감정이 음악과 겹치는 시간, 리스너의 장면이 가장 선명해집니다.",
+  moods: [["REFLECTIVE", 56], ["ROMANTIC", 47], ["ENERGETIC", 52]],
+  words: ["daily scene", "repeat", "memory"],
+});
+
+const createArtistPortrait = (artist) => {
+  const seed = [...artist.id].reduce((total, character) => total + character.charCodeAt(0), 0);
+  const hour = 17 + (seed % 8);
+  const minute = (seed * 7) % 60;
+  const tags = artistExperienceById[artist.id].tags;
+  return {
+    ...portraitDefaults,
+    title: `${artist.genres[0] || "Listening"} Hours`,
+    time: `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`,
+    note: `${artist.name}의 음악과 하루의 감정이 가장 선명하게 겹치는 시간입니다.`,
+    moods: [["REFLECTIVE", 42 + (seed % 31)], ["ROMANTIC", 35 + ((seed * 3) % 38)], ["ENERGETIC", 30 + ((seed * 5) % 55)]],
+    words: tags.map((tag) => tag.slice(1).toLowerCase()),
+  };
+};
+
+export const artists = baseArtists.map((artist) => ({
+  ...artist,
+  tags: artistExperienceById[artist.id].tags,
+  description: `${artistExperienceById[artist.id].description} ${artistDescriptionExtensionById[artist.id]}`,
+  portrait: artistExperienceById[artist.id].portrait || createArtistPortrait(artist),
+}));
 
 export const albums = [
   { id: "life-of-a-showgirl", title: "The Life of a Showgirl", artistId: "taylor-swift", cover: "/images/album-01.png", releaseDate: "2025", language: "English" },
@@ -822,22 +942,11 @@ export const normalizeMusicItem = (item) => {
   };
 };
 
-export const trackTraceTracks = getTracksByIds([
-  "birds-of-a-feather",
-  "gone-are-the-days",
-  "sweetener",
-  "traveler",
-  "soft-static",
-  "rich-man",
-  "citrus-glow",
-  "good-feeling",
-  "puppet-show",
-  "blinding-lights",
-  "whiplash",
-  "armageddon",
-  "like-jennie",
-  "mantra",
-]);
+export const trackTraceTracks = tracks.filter((track, index, catalog) => {
+  if (!track.id || !track.title || !track.artist || !track.artistId || !track.cover || !track.audioPreview) return false;
+  const identity = getTrackIdentity(track.title, track.artist);
+  return catalog.findIndex((candidate) => getTrackIdentity(candidate.title, candidate.artist) === identity) === index;
+});
 
 export const timeSetTracks = getTracksByIds([
   "mamas-boy",

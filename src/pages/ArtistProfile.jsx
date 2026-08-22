@@ -46,6 +46,7 @@ function ArtistProfile() {
   const artist = getArtistById(artistId) || getArtistById("taylor-swift");
   const artistTracks = getTracksByArtist(artist.id);
   const artistImage = getArtistDisplayImage(artist.name, { trackCover: artistTracks[0]?.cover });
+  const portrait = artist.portrait;
   const displayTracks = Array.from({ length: 12 }, (_, index) => artistTracks[index % artistTracks.length]);
   const featuredTracks = displayTracks.map((track, index) => ({
     ...track,
@@ -87,9 +88,9 @@ function ArtistProfile() {
   const latestTrack = artistTracks[0];
   const latestAlbum = getAlbumById(latestTrack.albumId);
   const artistReports = [
-    reports[0],
+    { ...reports[0], value: portrait.time },
     { ...reports[1], note: `${artist.name}의 음악과 함께 축적된 리스너 모먼트의 전체 기록입니다.` },
-    reports[2],
+    { ...reports[2], value: artist.tags[0].replace("#", "") },
   ];
   const [expandedTrackIndex, setExpandedTrackIndex] = useState(null);
   const [activeTrackFilter, setActiveTrackFilter] = useState("ALL");
@@ -159,20 +160,15 @@ function ArtistProfile() {
               <img className="artist-profile__image" src={artistImage} alt={artist.name} />
             </div>
             <div className="artist-profile__intro">
-              <p className="artist-profile__label">ARTIST PROFILE · {artist.genres[0].toUpperCase()}</p>
+              <p className="artist-profile__label">ARTIST PROFILE · {(artist.genres[0] || "MUSIC").toUpperCase()}</p>
               <h1>{artist.name}</h1>
               <div className="artist-profile__popularity">
                 <strong>18.4K</strong><span>LIKED MOMENTS</span>
               </div>
               <div className="artist-profile__tags">
-                <span>#NIGHT</span><span>#AFTERGLOW</span><span>#STORYTELLING</span>
+                {artist.tags.map((tag) => <span key={tag}>{tag}</span>)}
               </div>
-              <p className="artist-profile__description">
-                선명한 장면과 섬세한 감정을 노래로 기록하는 아티스트. {artist.name}의 음악은
-                아침의 첫 빛부터 늦은 밤의 고요까지, 서로 다른 순간의 기억을 하나의 이야기로 이어줍니다.
-                한 곡 안에서도 시간과 감정의 결이 섬세하게 바뀌며, 듣는 사람마다 각자의 장면을 떠올리게 합니다.
-                Tempy에서는 그 순간들이 언제 시작되고 어떤 기억으로 남는지 더 입체적으로 탐색할 수 있습니다.
-              </p>
+              <p className="artist-profile__description">{artist.description}</p>
               <div className="artist-profile__actions">
                 <button type="button">View Track Trace <span>↗</span></button>
                 <button type="button">Add Moment <span>＋</span></button>
@@ -184,35 +180,29 @@ function ArtistProfile() {
             <div className="artist-profile__portrait-head">
               <div>
                 <p className="artist-profile__label">LISTENING PORTRAIT</p>
-                <h2>Afterglow Hours</h2>
+                <h2>{portrait.title}</h2>
               </div>
               <span aria-hidden="true">TS · 01</span>
             </div>
 
             <div className="artist-profile__portrait-time">
               <span>MOST ACTIVE TIME</span>
-              <strong>23:10</strong>
-              <p>하루가 조용해진 뒤, 가장 많은 기억이 이 음악에 머뭅니다.</p>
+              <strong>{portrait.time}</strong>
+              <p>{portrait.note}</p>
             </div>
 
             <div className="artist-profile__portrait-moods">
-              <div>
-                <span>REFLECTIVE</span><strong>64%</strong>
-                <i><b style={{ width: "64%" }} /></i>
-              </div>
-              <div>
-                <span>ROMANTIC</span><strong>48%</strong>
-                <i><b style={{ width: "48%" }} /></i>
-              </div>
-              <div>
-                <span>ENERGETIC</span><strong>31%</strong>
-                <i><b style={{ width: "31%" }} /></i>
-              </div>
+              {portrait.moods.map(([label, value]) => (
+                <div key={label}>
+                  <span>{label}</span><strong>{value}%</strong>
+                  <i><b style={{ width: `${value}%` }} /></i>
+                </div>
+              ))}
             </div>
 
             <div className="artist-profile__portrait-foot">
               <span>RECENT MOMENT WORDS</span>
-              <div><b>rainy drive</b><b>midnight</b><b>recovery</b></div>
+              <div>{portrait.words.map((word) => <b key={word}>{word}</b>)}</div>
             </div>
           </aside>
         </div>
@@ -236,16 +226,16 @@ function ArtistProfile() {
           <article>
             <div className="artist-profile__summary-card-head"><small>MOST REMEMBERED TIME</small><span>02</span></div>
             <div className="artist-profile__summary-card-body">
-              <strong>23:10</strong><p>late night listening</p>
+              <strong>{portrait.time}</strong><p>{portrait.title.toLowerCase()}</p>
               <div className="artist-profile__summary-time-dots" aria-hidden="true"><i /><i /><i /><i /><i /></div>
             </div>
-            <div className="artist-profile__summary-card-foot"><span>NIGHT · AFTERGLOW</span><small>PEAK LISTENING</small></div>
+            <div className="artist-profile__summary-card-foot"><span>{artist.tags.slice(0, 2).map((tag) => tag.replace("#", "")).join(" · ")}</span><small>PEAK LISTENING</small></div>
           </article>
           <article>
             <div className="artist-profile__summary-card-head"><small>ARTIST MOMENT TAGS</small><span>03</span></div>
             <div className="artist-profile__summary-card-body artist-profile__summary-card-body--tags">
-              <div className="artist-profile__tag-cloud"><b>#NIGHT</b><b>#LOVE</b><b>#MEMORY</b><b>#DRIVE</b></div>
-              <p>기억과 밤의 장면이 가장 자주 함께 기록됩니다.</p>
+              <div className="artist-profile__tag-cloud">{artist.tags.map((tag) => <b key={tag}>{tag}</b>)}</div>
+              <p>{artist.name}의 음악과 함께 가장 자주 기록된 감정과 장면입니다.</p>
             </div>
             <div className="artist-profile__summary-card-foot"><span>42 ACTIVE TAGS</span><small>UPDATED TODAY</small></div>
           </article>

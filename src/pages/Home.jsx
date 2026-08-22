@@ -370,7 +370,9 @@ function Home() {
             </div>
             <div className="hero-visual">
               <div className="lp-large">
-                <div className="lp-center"></div>
+                <div className="lp-large__disc">
+                  <div className="lp-center"></div>
+                </div>
               </div>
             </div>
           </div>

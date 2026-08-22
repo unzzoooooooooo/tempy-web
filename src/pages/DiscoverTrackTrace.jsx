@@ -1,13 +1,19 @@
+import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { trackTraceTracks } from "../data/musicCatalog";
+import { useLiveContext } from "../utils/context";
+import { createRecommendationSeed, hashSeed, seededShuffle } from "../utils/recommendations";
 
 function DiscoverTrackTrace() {
   const navigate = useNavigate();
-  const commentCounts = [128, 84, 56, 72, 91, 64, 77, 118, 69, 83, 95, 61, 74, 102];
-  const tracks = trackTraceTracks.map((track, index) => ({
-    ...track,
-    comments: commentCounts[index],
-  }));
+  const { context } = useLiveContext();
+  const shuffleSeed = createRecommendationSeed(context, "trackTrace");
+  const tracks = useMemo(() => (
+    seededShuffle(trackTraceTracks, shuffleSeed).map((track) => ({
+      ...track,
+      comments: 48 + (hashSeed(track.id) % 83),
+    }))
+  ), [shuffleSeed]);
 
   const getTrackRouteState = (track, index) => ({
     track: {
@@ -22,13 +28,6 @@ function DiscoverTrackTrace() {
       number: String(index + 1).padStart(2, "0"),
     },
   });
-
-  const openTrackDetailOnDesktop = (track, index) => {
-    if (!window.matchMedia("(min-width: 1181px)").matches) return;
-    navigate(`/discover/track-trace/detail/${track.id}`, {
-      state: getTrackRouteState(track, index),
-    });
-  };
 
   return (
     <main className="track-trace-detail">
@@ -54,7 +53,7 @@ function DiscoverTrackTrace() {
         <div className="split-page-panel__inner split-archive-panel__inner track-trace-detail__gallery-inner">
           <div className="track-trace-detail__gallery-heading split-page-panel__header split-archive-panel__header">
             <span>TRACK ARCHIVE</span>
-            <span>14 TRACKS</span>
+            <span>{tracks.length} TRACKS</span>
           </div>
 
           <div className="track-trace-detail__track split-page-panel__content split-archive-panel__viewport">
@@ -86,27 +85,15 @@ function DiscoverTrackTrace() {
                     <h2>{track.title}</h2>
                     <span>{track.artist}</span>
                   </div>
-                  {index === 0 ? (
-                    <Link
-                      className="track-trace-detail__arrow"
-                      to={`/discover/track-trace/detail/${track.id}`}
-                      state={getTrackRouteState(track, index)}
-                      data-tempy-navigation-control
-                      aria-label={`${track.title} 코멘트 보기`}
-                    >
-                      <span aria-hidden="true">→</span>
-                    </Link>
-                  ) : (
-                    <button
-                      className="track-trace-detail__arrow"
-                      type="button"
-                      data-tempy-navigation-control
-                      aria-label={`${track.title} 코멘트 보기`}
-                      onClick={() => openTrackDetailOnDesktop(track, index)}
-                    >
-                      <span aria-hidden="true">→</span>
-                    </button>
-                  )}
+                  <Link
+                    className="track-trace-detail__arrow"
+                    to={`/discover/track-trace/detail/${track.id}`}
+                    state={getTrackRouteState(track, index)}
+                    data-tempy-navigation-control
+                    aria-label={`${track.title} 코멘트 보기`}
+                  >
+                    <span aria-hidden="true">→</span>
+                  </Link>
                 </div>
               </article>
             ))}
