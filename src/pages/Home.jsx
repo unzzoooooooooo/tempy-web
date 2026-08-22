@@ -11,6 +11,7 @@ import {
   getTracksByIds,
 } from "../data/musicCatalog";
 import { createAlbumImageSequence, getCuratorProfileImage } from "../data/imageCatalog";
+import { inferTrackTags, selectContextItems } from "../utils/recommendations";
 
 const homeAlbumImages = createAlbumImageSequence(40, "home");
 
@@ -169,7 +170,7 @@ function Home() {
     });
   };
 
-  const artistCards = [
+  const artistCards = selectContextItems([
     createArtistMomentItem({
       artist: "JENNIE",
       title: "JENNIE의 무대 전 워밍업 플레이리스트",
@@ -218,22 +219,8 @@ function Home() {
       meta: "10곡 · 21:03 · 2026.05.16",
       track: createArtistMomentTrack("artist-moment-yerin-baek", "Square", "백예린", "04:21"),
     }),
-  ];
+  ], context, "artistMoment", (item) => inferTrackTags(item.track));
 
-  const playlistItems = [
-    { image: null, title: "유독 여유가 필요한 날", artist: "hostless", context: "10 tracks · slow afternoon" },
-    { image: homeAlbumImages[0], title: "비가 그친 뒤 걷는 밤", artist: "hostless", context: "비 온 뒤의 잔잔한 흐름" },
-    { image: homeAlbumImages[1], title: "창가에 기대 듣는 노래", artist: "hostless", context: "soft mood · 32 min" },
-    { image: homeAlbumImages[2], title: "아무 말 없이 머물고 싶은 오후", artist: "hostless", context: "말보다 조용한 9곡" },
-    { image: homeAlbumImages[3], title: "새벽을 천천히 넘기는 음악", artist: "hostless", context: "late night · low tempo" },
-    { image: homeAlbumImages[4], title: "집으로 돌아가는 길의 온도", artist: "hostless", context: "퇴근길을 위한 28 min" },
-    { image: homeAlbumImages[5], title: "햇살이 길게 남은 방", artist: "hostless", context: "warm light · 11 tracks" },
-    { image: homeAlbumImages[6], title: "도시의 불빛이 켜질 무렵", artist: "hostless", context: "blue hour city mood" },
-    { image: homeAlbumImages[7], title: "혼자 걷기 좋은 저녁", artist: "hostless", context: "가벼운 걸음의 리듬" },
-    { image: homeAlbumImages[8], title: "생각이 많아지는 늦은 밤", artist: "hostless", context: "deep focus · 36 min" },
-    { image: homeAlbumImages[9], title: "작은 용기가 필요한 순간", artist: "hostless", context: "조금씩 선명해지는 8곡" },
-    { image: homeAlbumImages[10], title: "주말 아침을 여는 플레이리스트", artist: "hostless", context: "weekend morning · bright" },
-  ];
   const playlistTracks = getTracksByIds([
     "360",
     "style",
@@ -248,20 +235,32 @@ function Home() {
     "you-and-me",
     "toxic-till-the-end",
   ]);
+  const playlistItems = selectContextItems([
+    { image: null, title: "유독 여유가 필요한 날", artist: "hostless", context: "10 tracks · slow afternoon", tags: ["slow", "mellow", "afternoon"] },
+    { image: homeAlbumImages[0], title: "비가 그친 뒤 걷는 밤", artist: "hostless", context: "비 온 뒤의 잔잔한 흐름", tags: ["rainy", "night", "reflective"] },
+    { image: homeAlbumImages[1], title: "창가에 기대 듣는 노래", artist: "hostless", context: "soft mood · 32 min", tags: ["soft", "calm", "reflective"] },
+    { image: homeAlbumImages[2], title: "아무 말 없이 머물고 싶은 오후", artist: "hostless", context: "말보다 조용한 9곡", tags: ["quiet", "afternoon", "mellow"] },
+    { image: homeAlbumImages[3], title: "새벽을 천천히 넘기는 음악", artist: "hostless", context: "late night · low tempo", tags: ["dawn", "night", "slow", "ambient"] },
+    { image: homeAlbumImages[4], title: "집으로 돌아가는 길의 온도", artist: "hostless", context: "퇴근길을 위한 28 min", tags: ["evening", "drive", "warm", "city"] },
+    { image: homeAlbumImages[5], title: "햇살이 길게 남은 방", artist: "hostless", context: "warm light · 11 tracks", tags: ["bright", "warm", "light"] },
+    { image: homeAlbumImages[6], title: "도시의 불빛이 켜질 무렵", artist: "hostless", context: "blue hour city mood", tags: ["city", "lateAfternoon", "evening", "groove"] },
+    { image: homeAlbumImages[7], title: "혼자 걷기 좋은 저녁", artist: "hostless", context: "가벼운 걸음의 리듬", tags: ["evening", "chill", "groove"] },
+    { image: homeAlbumImages[8], title: "생각이 많아지는 늦은 밤", artist: "hostless", context: "deep focus · 36 min", tags: ["night", "reflective", "moody"] },
+    { image: homeAlbumImages[9], title: "작은 용기가 필요한 순간", artist: "hostless", context: "조금씩 선명해지는 8곡", tags: ["fresh", "bright", "upbeat"] },
+    { image: homeAlbumImages[10], title: "주말 아침을 여는 플레이리스트", artist: "hostless", context: "weekend morning · bright", tags: ["morning", "fresh", "bright", "acoustic"] },
+  ].map((item, index) => ({ ...item, track: playlistTracks[index] })), context, "momentPlaylist");
 
-  const moments = [
-    { image: homeAlbumImages[11], title: "비 오는 날 퇴근길에 한 곡", meta: "흐림 · 18°C · 20:59" },
-    { image: homeAlbumImages[12], title: "창밖이 흐린 오후의 노래", meta: "비 · 16°C · 19:42" },
-    { image: homeAlbumImages[13], title: "바다를 바라보며 남긴 순간", meta: "맑음 · 23°C · 14:18" },
-    { image: homeAlbumImages[14], title: "혼자 걷는 저녁의 플레이리스트", meta: "구름 조금 · 20°C · 21:07" },
-    { image: homeAlbumImages[15], title: "잠들기 전 다시 찾은 음악", meta: "바람 · 17°C · 23:16" },
-    { image: homeAlbumImages[16], title: "햇살 좋은 주말의 한 곡", meta: "맑음 · 24°C · 11:28" },
-    { image: homeAlbumImages[17], title: "오랜만에 떠오른 장면", meta: "흐림 · 19°C · 18:35" },
-    { image: homeAlbumImages[18], title: "도시의 밤과 함께 듣는 노래", meta: "맑음 · 21°C · 22:14" },
-    { image: homeAlbumImages[19], title: "천천히 시작하는 아침의 음악", meta: "구름 조금 · 15°C · 08:12" },
-    { image: homeAlbumImages[20], title: "노을이 번지는 창가의 순간", meta: "맑음 · 22°C · 17:48" },
-    { image: homeAlbumImages[21], title: "비가 멈춘 골목에서 듣는 곡", meta: "비 갬 · 18°C · 20:21" },
-  ];
+  const curatorProfileImages = [
+    "/images/profile-03.png",
+    "/images/profile-07.png",
+    "/images/profile-01.png",
+    "/images/profile-06.png",
+    "/images/profile-04.png",
+    "/images/profile-08.png",
+    "/images/profile-02.png",
+    "/images/profile-05.png",
+  ].map(getCuratorProfileImage);
+
   const momentTracks = getTracksByIds([
     "birds-of-a-feather",
     "gone-are-the-days",
@@ -275,8 +274,25 @@ function Home() {
     "like-jennie",
     "style",
   ]);
+  const moments = selectContextItems([
+    { image: homeAlbumImages[11], title: "비 오는 날 퇴근길에 한 곡", meta: "흐림 · 18°C · 20:59", curator: "hostless", tags: ["rainy", "evening", "reflective"] },
+    { image: homeAlbumImages[12], title: "창밖이 흐린 오후의 노래", meta: "비 · 16°C · 19:42", curator: "오늘은까눌레", tags: ["cloudy", "mellow", "reflective"] },
+    { image: homeAlbumImages[13], title: "바다를 바라보며 남긴 순간", meta: "맑음 · 23°C · 14:18", curator: "bluehour", tags: ["bright", "afternoon", "calm"] },
+    { image: homeAlbumImages[14], title: "혼자 걷는 저녁의 플레이리스트", meta: "구름 조금 · 20°C · 21:07", curator: "느린파도", tags: ["evening", "chill", "city"] },
+    { image: homeAlbumImages[15], title: "잠들기 전 다시 찾은 음악", meta: "바람 · 17°C · 23:16", curator: "midnightnote", tags: ["night", "dreamy", "slow"] },
+    { image: homeAlbumImages[16], title: "햇살 좋은 주말의 한 곡", meta: "맑음 · 24°C · 11:28", curator: "만두두왕", tags: ["sunny", "morning", "bright", "upbeat"] },
+    { image: homeAlbumImages[17], title: "오랜만에 떠오른 장면", meta: "흐림 · 19°C · 18:35", curator: "오래된헤드폰", tags: ["cloudy", "reflective", "mellow"] },
+    { image: homeAlbumImages[18], title: "도시의 밤과 함께 듣는 노래", meta: "맑음 · 21°C · 22:14", curator: "moonletter", tags: ["night", "city", "electronic"] },
+    { image: homeAlbumImages[19], title: "천천히 시작하는 아침의 음악", meta: "구름 조금 · 15°C · 08:12", curator: "새벽버스", tags: ["earlyMorning", "soft", "fresh"] },
+    { image: homeAlbumImages[20], title: "노을이 번지는 창가의 순간", meta: "맑음 · 22°C · 17:48", curator: "여름끝", tags: ["lateAfternoon", "warm", "reflective"] },
+    { image: homeAlbumImages[21], title: "비가 멈춘 골목에서 듣는 곡", meta: "비 갬 · 18°C · 20:21", curator: "작은소음", tags: ["rainy", "evening", "calm"] },
+  ].map((moment, index) => ({
+    ...moment,
+    track: momentTracks[index],
+    curatorImage: curatorProfileImages[(index + 3) % curatorProfileImages.length],
+  })), context, "momentsLeftNow");
 
-  const curators = [
+  const curatorPool = [
     { image: "/images/profile-01.png", name: "만두두왕" },
     { image: "/images/profile-02.png", name: "오늘은까눌레" },
     { image: "/images/profile-03.png", name: "hostless" },
@@ -292,10 +308,7 @@ function Home() {
     { image: "/images/profile-08.png", name: "hostless" },
     { image: "/images/profile-03.png", name: "hostless" },
     { image: "/images/profile-05.png", name: "hostless" },
-  ].map((curator) => ({
-    ...curator,
-    image: getCuratorProfileImage(curator.image),
-  }));
+  ];
 
   const desktopCuratorNames = [
     "만두두왕",
@@ -315,16 +328,12 @@ function Home() {
     "midnightnote",
   ];
 
-  const curatorProfileImages = [
-    "/images/profile-03.png",
-    "/images/profile-07.png",
-    "/images/profile-01.png",
-    "/images/profile-06.png",
-    "/images/profile-04.png",
-    "/images/profile-08.png",
-    "/images/profile-02.png",
-    "/images/profile-05.png",
-  ].map(getCuratorProfileImage);
+  const curators = selectContextItems(curatorPool.map((curator, index) => ({
+    ...curator,
+    desktopName: desktopCuratorNames[index],
+    image: getCuratorProfileImage(curator.image),
+    tags: inferTrackTags(tempoAlbums[index % tempoAlbums.length]),
+  })), context, "momentCurator");
 
   return (
     <>
@@ -484,11 +493,11 @@ function Home() {
                 className="playlist-row"
                 tabIndex={0}
                 data-tempy-playable
-                data-tempy-id={playlistTracks[index].id}
-                data-tempy-title={playlistTracks[index].title}
-                data-tempy-artist={playlistTracks[index].artist}
-                data-tempy-cover={playlistTracks[index].cover}
-                data-tempy-duration={playlistTracks[index].duration}
+                data-tempy-id={item.track.id}
+                data-tempy-title={item.track.title}
+                data-tempy-artist={item.track.artist}
+                data-tempy-cover={item.track.cover}
+                data-tempy-duration={item.track.duration}
                 key={`${item.title}-${index}`}
               >
                 <div className="playlist-cover-frame">
@@ -499,7 +508,7 @@ function Home() {
                   )}
                 </div>
                 <div>
-                  <strong className="home-mobile-copy">유독 여유가 심한 날</strong>
+                  <strong className="home-mobile-copy">{item.title}</strong>
                   <strong className="home-desktop-copy">{item.title}</strong>
                   <span className="playlist-context home-desktop-copy">{item.context}</span>
                   <span className="playlist-author">
@@ -530,27 +539,27 @@ function Home() {
                 className="leftnow-card"
                 tabIndex={0}
                 data-tempy-playable
-                data-tempy-id={momentTracks[index].id}
-                data-tempy-title={momentTracks[index].title}
-                data-tempy-artist={momentTracks[index].artist}
-                data-tempy-cover={momentTracks[index].cover}
-                data-tempy-duration={momentTracks[index].duration}
+                data-tempy-id={moment.track.id}
+                data-tempy-title={moment.track.title}
+                data-tempy-artist={moment.track.artist}
+                data-tempy-cover={moment.track.cover}
+                data-tempy-duration={moment.track.duration}
                 key={`${moment.image}-${index}`}
               >
                 <div className="leftnow-text">
-                  <strong className="home-mobile-copy">비 오는 날 퇴근길에 한 곡</strong>
+                  <strong className="home-mobile-copy">{moment.title}</strong>
                   <strong className="home-desktop-copy">{moment.title}</strong>
                   <span className="home-mobile-copy">{context.weatherLabel} · {context.temperature} · {context.currentTime}</span>
                   <span className="home-desktop-copy">{moment.meta}</span>
                   <span className="leftnow-author">
                     <img
                       className="home-desktop-avatar"
-                      src={curatorProfileImages[(index + 3) % curatorProfileImages.length]}
+                      src={moment.curatorImage}
                       alt=""
                       aria-hidden="true"
                     />
                     <i aria-hidden="true">●</i>
-                    hostless
+                    {moment.curator}
                   </span>
                 </div>
                 <img className="leftnow-image" src={moment.image} alt={`Moment card ${index + 1}`} />
@@ -573,7 +582,7 @@ function Home() {
               <div className="curator-item" tabIndex={0} key={`${curator.image}-${index}`}>
                 <img className="curator-circle" src={curator.image} alt={`${curator.name} profile`} />
                 <span className="home-mobile-copy">{curator.name}</span>
-                <span className="home-desktop-copy">{desktopCuratorNames[index]}</span>
+                <span className="home-desktop-copy">{curator.desktopName}</span>
               </div>
             ))}
           </div>

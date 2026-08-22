@@ -7,7 +7,7 @@ const parseDuration = (duration) => {
 };
 
 function Now() {
-  const { context, tracks } = useContextRecommendations(10);
+  const { context, tracks } = useContextRecommendations(16, "nowQueue");
   const [selectedTrackIndex, setSelectedTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -60,14 +60,17 @@ function Now() {
     window.dispatchEvent(new CustomEvent("tempy-play-track", { detail: selectedTrack }));
   };
 
-  const queue = Array.from({ length: 15 }, (_, index) => {
-    const track = tracks[(index + 1) % tracks.length];
-    return {
-      ...track,
-      queueKey: `${track.id}-now-queue-${index + 1}`,
-      catalogIndex: (index + 1) % tracks.length,
-    };
-  });
+  const queue = tracks
+    .map((track, catalogIndex) => ({ track, catalogIndex }))
+    .filter(({ catalogIndex }) => catalogIndex !== safeTrackIndex)
+    .slice(0, 15)
+    .map(({ track, catalogIndex }, index) => {
+      return {
+        ...track,
+        queueKey: `${track.id}-now-queue-${index + 1}`,
+        catalogIndex,
+      };
+    });
   const weatherSummary = `${context.weatherLabel} · ${context.temperature}`;
 
   return (

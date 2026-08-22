@@ -1,15 +1,17 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { timeSetTracks } from "../data/musicCatalog";
+import { useContextRecommendations } from "../utils/context";
 
 const timeSetColors = ["#2759ed", "#1f9c75", "#ff343c", "#f2cb28", "#07142b"];
-const timeSetRecords = timeSetTracks.map((track, index) => ({
-  ...track,
-  color: timeSetColors[index % timeSetColors.length],
-}));
 
 function DiscoverTimeSet() {
   const navigate = useNavigate();
+  const { tracks } = useContextRecommendations(timeSetTracks.length, "discoverTimeSet");
+  const timeSetRecords = tracks.map((track, index) => ({
+    ...track,
+    color: timeSetColors[index % timeSetColors.length],
+  }));
   const [activeIndex, setActiveIndex] = useState(0);
   const [showAlbum, setShowAlbum] = useState(false);
   const lastWheelTime = useRef(0);

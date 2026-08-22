@@ -1,16 +1,32 @@
 import { useEffect, useMemo, useState } from "react";
-import { defaultRecommendedTracks, localTracks } from "../data/tracks";
+import { tracks as musicCatalogTracks } from "../data/musicCatalog";
+import {
+  createRecommendationSeed,
+  formatSeedDate,
+  getDaypart,
+  normalizeWeather,
+  recommendTracks,
+} from "./recommendations";
 
 export const fallbackContext = {
   currentTime: "--:--",
   currentDate: "",
   dayLabel: "",
-  locationLabel: "서울 성북구",
+  seedDate: "",
+  locationLabel: "위치 확인 불가",
   weatherLabel: "흐림",
   temperature: "18°C",
   timeTag: "evening",
   weatherTag: "cloudy",
-  locationTag: "seongbuk",
+  locationTag: "urban",
+  latitude: null,
+  longitude: null,
+  coordinateSource: "fallback",
+  locationSource: "fallback",
+  locationStatus: "loading",
+  locationErrorCode: null,
+  locationErrorMessage: "",
+  isSecureContext: false,
   isFallback: true,
 };
 
@@ -22,8 +38,12 @@ const weatherLabels = {
 };
 
 const timeLabels = {
+  lateNight: "Late Night",
+  dawn: "Dawn",
+  earlyMorning: "Early Morning",
   morning: "Morning",
   afternoon: "Afternoon",
+  lateAfternoon: "Late Afternoon",
   evening: "Evening",
   night: "Night",
 };
@@ -49,44 +69,42 @@ function formatDay(date) {
 }
 
 export function getTimeTag(date) {
-  const hour = date.getHours();
-  if (hour >= 5 && hour < 12) return "morning";
-  if (hour >= 12 && hour < 17) return "afternoon";
-  if (hour >= 17 && hour < 21) return "evening";
-  return "night";
+  return getDaypart(date.getHours());
 }
 
 export function getTimeLabel(timeTag) {
   return timeLabels[timeTag] || "Now";
 }
 
-function getWeatherTag(weatherCode) {
-  if (weatherCode === 0) return "sunny";
-  if ([1, 2, 3, 45, 48].includes(weatherCode)) return "cloudy";
-  if (
-    (weatherCode >= 51 && weatherCode <= 67)
-    || (weatherCode >= 80 && weatherCode <= 82)
-    || [95, 96, 99].includes(weatherCode)
-  ) {
-    return "rain";
-  }
-  if ((weatherCode >= 71 && weatherCode <= 77) || [85, 86].includes(weatherCode)) return "snow";
-  return "cloudy";
-}
+export { getDaypart, normalizeWeather };
 
 function getCurrentPosition() {
   return new Promise((resolve, reject) => {
+    if (!window.isSecureContext) {
+      reject(Object.assign(new Error("Geolocation requires a secure context."), { code: 0 }));
+      return;
+    }
+
     if (!navigator.geolocation) {
-      reject(new Error("Geolocation is unavailable."));
+      reject(Object.assign(new Error("Geolocation is unavailable."), { code: 0 }));
       return;
     }
 
     navigator.geolocation.getCurrentPosition(resolve, reject, {
-      enableHighAccuracy: false,
-      timeout: 8000,
-      maximumAge: 1000 * 60 * 10,
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 60000,
     });
   });
+}
+
+function getLocationFailureStatus(error) {
+  if (!window.isSecureContext) return "insecure";
+  if (!navigator.geolocation) return "unsupported";
+  if (error?.code === 1) return "denied";
+  if (error?.code === 2) return "unavailable";
+  if (error?.code === 3) return "timeout";
+  return "unavailable";
 }
 
 async function fetchWeather(latitude, longitude) {
@@ -118,6 +136,8 @@ async function reverseGeocode(latitude, longitude) {
     lat: String(latitude),
     lon: String(longitude),
     "accept-language": "ko",
+    addressdetails: "1",
+    zoom: "10",
   });
 
   try {
@@ -127,17 +147,105 @@ async function reverseGeocode(latitude, longitude) {
     if (!response.ok) throw new Error("Reverse geocoding failed.");
     const result = await response.json();
     const address = result.address || {};
-    const rawCity = address.city || address.province || address.state || "";
-    const city = rawCity.includes("서울") ? "서울" : rawCity;
-    const district = address.borough || address.city_district || address.county || address.suburb || "";
-    const locationLabel = [city, district].filter(Boolean).join(" ").trim() || fallbackContext.locationLabel;
-    const normalized = `${city} ${district}`;
-    const locationTag = normalized.includes("성북") ? "seongbuk" : normalized.includes("서울") ? "seoul" : "urban";
+    const regionRaw = address.state || address.province || address.city || "";
+    const cityRaw = address.city || address.municipality || address.county || "";
+    const districtRaw = address.borough || address.city_district || address.district || address.county || "";
+    const isMetropolitan = /(특별시|광역시)/.test(`${regionRaw} ${cityRaw}`);
+    const region = (regionRaw || cityRaw)
+      .replace("서울특별시", "서울")
+      .replace("인천광역시", "인천")
+      .replace("부산광역시", "부산")
+      .replace("대구광역시", "대구")
+      .replace("광주광역시", "광주")
+      .replace("대전광역시", "대전")
+      .replace("울산광역시", "울산")
+      .replace("세종특별자치시", "세종")
+      .replace("경기도", "경기")
+      .replace("강원특별자치도", "강원")
+      .replace("충청북도", "충북")
+      .replace("충청남도", "충남")
+      .replace("전북특별자치도", "전북")
+      .replace("전라남도", "전남")
+      .replace("경상북도", "경북")
+      .replace("경상남도", "경남")
+      .replace("제주특별자치도", "제주");
+    const locality = isMetropolitan ? districtRaw : cityRaw;
+    const locationParts = [region, locality].filter((part, index, parts) => part && parts.indexOf(part) === index);
+    const locationLabel = locationParts.join(" ").trim();
+    if (!locationLabel) throw new Error("Reverse geocoding returned no administrative area.");
+    const locationTag = locationLabel.includes("서울") ? "seoul" : "urban";
 
     return { locationLabel, locationTag };
   } finally {
     window.clearTimeout(timeoutId);
   }
+}
+
+let liveEnvironmentRequest;
+let liveEnvironmentRequestedAt = 0;
+let liveEnvironmentRetryAllowed = true;
+
+async function requestLiveEnvironment() {
+  const cacheLifetime = 5 * 60 * 1000;
+  if (
+    liveEnvironmentRequest
+    && (!liveEnvironmentRetryAllowed || Date.now() - liveEnvironmentRequestedAt < cacheLifetime)
+  ) {
+    return liveEnvironmentRequest;
+  }
+
+  liveEnvironmentRequestedAt = Date.now();
+  liveEnvironmentRequest = getCurrentPosition().then(async (position) => {
+    const { latitude, longitude } = position.coords;
+    const [weather, place] = await Promise.allSettled([
+      fetchWeather(latitude, longitude),
+      reverseGeocode(latitude, longitude),
+    ]);
+    const weatherValue = weather.status === "fulfilled" ? weather.value : null;
+    const weatherTag = normalizeWeather(weatherValue?.current?.weather_code);
+    const temperatureNumber = Math.round(Number(weatherValue?.current?.temperature_2m));
+    const placeValue = place.status === "fulfilled" ? place.value : null;
+
+    return {
+      locationLabel: placeValue?.locationLabel || fallbackContext.locationLabel,
+      locationTag: placeValue?.locationTag || fallbackContext.locationTag,
+      latitude,
+      longitude,
+      coordinateSource: "gps",
+      locationSource: placeValue ? "gps" : "fallback",
+      locationStatus: placeValue ? "success" : "reverse-error",
+      locationErrorCode: null,
+      locationErrorMessage: place.status === "rejected" ? String(place.reason?.message || place.reason) : "",
+      isSecureContext: window.isSecureContext,
+      weatherLabel: weatherLabels[weatherTag],
+      weatherTag,
+      temperature: Number.isFinite(temperatureNumber) ? `${temperatureNumber}°C` : fallbackContext.temperature,
+      isFallback: weather.status !== "fulfilled" || place.status !== "fulfilled",
+    };
+  }).catch((error) => {
+    const locationStatus = getLocationFailureStatus(error);
+    if (locationStatus === "denied" || locationStatus === "insecure" || locationStatus === "unsupported") {
+      liveEnvironmentRetryAllowed = false;
+    }
+    return {
+      locationLabel: fallbackContext.locationLabel,
+      locationTag: fallbackContext.locationTag,
+      latitude: null,
+      longitude: null,
+      coordinateSource: "fallback",
+      locationSource: "fallback",
+      locationStatus,
+      locationErrorCode: Number.isFinite(Number(error?.code)) ? Number(error.code) : null,
+      locationErrorMessage: String(error?.message || "Geolocation failed."),
+      isSecureContext: window.isSecureContext,
+      weatherLabel: fallbackContext.weatherLabel,
+      weatherTag: fallbackContext.weatherTag,
+      temperature: fallbackContext.temperature,
+      isFallback: true,
+    };
+  });
+
+  return liveEnvironmentRequest;
 }
 
 function createBaseContext(date) {
@@ -146,8 +254,10 @@ function createBaseContext(date) {
     ...fallbackContext,
     currentTime: formatClock(date),
     currentDate: formatDate(date),
+    seedDate: formatSeedDate(date),
     dayLabel: formatDay(date),
     timeTag,
+    isSecureContext: window.isSecureContext,
   };
 }
 
@@ -163,6 +273,7 @@ export function useLiveContext() {
         ...current,
         currentTime: formatClock(nextDate),
         currentDate: formatDate(nextDate),
+        seedDate: formatSeedDate(nextDate),
         dayLabel: formatDay(nextDate),
         timeTag: getTimeTag(nextDate),
       }));
@@ -177,27 +288,12 @@ export function useLiveContext() {
     async function loadContext() {
       const baseContext = createBaseContext(new Date());
       try {
-        const position = await getCurrentPosition();
-        const { latitude, longitude } = position.coords;
-        const [weather, place] = await Promise.allSettled([
-          fetchWeather(latitude, longitude),
-          reverseGeocode(latitude, longitude),
-        ]);
-
-        const weatherValue = weather.status === "fulfilled" ? weather.value : null;
-        const weatherTag = getWeatherTag(Number(weatherValue?.current?.weather_code));
-        const temperatureNumber = Math.round(Number(weatherValue?.current?.temperature_2m));
-        const placeValue = place.status === "fulfilled" ? place.value : null;
+        const environment = await requestLiveEnvironment();
 
         if (!isMounted) return;
         setContext({
           ...baseContext,
-          locationLabel: placeValue?.locationLabel || fallbackContext.locationLabel,
-          locationTag: placeValue?.locationTag || fallbackContext.locationTag,
-          weatherLabel: weatherLabels[weatherTag],
-          weatherTag,
-          temperature: Number.isFinite(temperatureNumber) ? `${temperatureNumber}°C` : fallbackContext.temperature,
-          isFallback: weather.status !== "fulfilled" || place.status !== "fulfilled",
+          ...environment,
         });
       } catch {
         if (isMounted) {
@@ -207,9 +303,11 @@ export function useLiveContext() {
     }
 
     loadContext();
+    const refreshId = window.setInterval(loadContext, 10 * 60 * 1000);
 
     return () => {
       isMounted = false;
+      window.clearInterval(refreshId);
     };
   }, []);
 
@@ -217,39 +315,28 @@ export function useLiveContext() {
 }
 
 export function getRecommendedTracks(context, minimumCount = 6) {
-  const selected = [];
-  const addUnique = (tracks) => {
-    tracks.forEach((track) => {
-      if (!selected.some((item) => item.id === track.id)) {
-        selected.push({
-          ...track,
-          moodText: `${context.currentTime} · ${context.weatherLabel} · ${context.locationLabel}에 맞춰 고른 노래`,
-        });
-      }
-    });
-  };
-
-  addUnique(localTracks.filter((track) => (
-    track.timeTags.includes(context.timeTag)
-    && track.weatherTags.includes(context.weatherTag)
-    && track.locationTags?.includes(context.locationTag)
-  )));
-  addUnique(localTracks.filter((track) => (
-    track.timeTags.includes(context.timeTag)
-    && track.weatherTags.includes(context.weatherTag)
-  )));
-  addUnique(localTracks.filter((track) => track.timeTags.includes(context.timeTag)));
-  addUnique(localTracks.filter((track) => track.weatherTags.includes(context.weatherTag)));
-  addUnique(localTracks.filter((track) => track.locationTags?.includes(context.locationTag)));
-  addUnique(defaultRecommendedTracks);
-  addUnique(localTracks);
-
-  return selected.slice(0, Math.max(minimumCount, 5));
+  return recommendTracks(
+    musicCatalogTracks,
+    context,
+    Math.max(minimumCount, 5),
+    "todaysTempo",
+  ).map((track) => ({
+    ...track,
+    moodText: `${getTimeLabel(context.timeTag)} · ${context.weatherLabel} · ${context.locationLabel}에 맞춰 고른 노래`,
+  }));
 }
 
-export function useContextRecommendations(minimumCount = 6) {
+export function useContextRecommendations(minimumCount = 6, section = "todaysTempo") {
   const { now, context } = useLiveContext();
-  const tracks = useMemo(() => getRecommendedTracks(context, minimumCount), [context, minimumCount]);
+  const recommendationSeed = createRecommendationSeed(context, section);
+  const tracks = useMemo(() => (
+    recommendTracks(musicCatalogTracks, context, Math.max(minimumCount, 5), section).map((track) => ({
+      ...track,
+      moodText: `${getTimeLabel(context.timeTag)} · ${context.weatherLabel} · ${context.locationLabel}에 맞춰 고른 노래`,
+    }))
+  // The seed and location label are stable within the active environment window.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [minimumCount, recommendationSeed, context.locationLabel, context.weatherLabel, section]);
 
-  return { now, context, tracks };
+  return { now, context: { ...context, recommendationSeed }, tracks };
 }

@@ -390,7 +390,6 @@ function PlaybackProgressRing({
   isReady,
   momentMarkers,
   onScrubStart,
-  onScrubPreview,
   onSeek,
 }) {
   const isScrubbingRef = useRef(false);
@@ -423,7 +422,11 @@ function PlaybackProgressRing({
 
     const renderProgress = () => {
       syncProgress();
-      if (!audio.paused && !audio.ended) {
+      const shouldKeepAnimating = !audio.ended && (
+        !audio.paused
+        || (pendingSeekProgressRef.current !== null && wasPlayingBeforeScrubRef.current)
+      );
+      if (shouldKeepAnimating) {
         animationFrameRef.current = window.requestAnimationFrame(renderProgress);
       } else {
         animationFrameRef.current = null;
@@ -432,7 +435,11 @@ function PlaybackProgressRing({
 
     const startProgressLoop = () => {
       syncProgress();
-      if (animationFrameRef.current === null && !audio.paused && !audio.ended) {
+      const shouldAnimate = !audio.ended && (
+        !audio.paused
+        || (pendingSeekProgressRef.current !== null && wasPlayingBeforeScrubRef.current)
+      );
+      if (animationFrameRef.current === null && shouldAnimate) {
         animationFrameRef.current = window.requestAnimationFrame(renderProgress);
       }
     };
@@ -487,7 +494,6 @@ function PlaybackProgressRing({
     const clampedProgress = getProgressFromPointer(event);
     scrubProgressRef.current = clampedProgress;
     setProgress(clampedProgress);
-    onScrubPreview(clampedProgress);
     return clampedProgress;
   };
 
@@ -606,6 +612,7 @@ function GlobalPlayer() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isAudioMetadataReady, setIsAudioMetadataReady] = useState(false);
+  const [playbackSourceTrackId, setPlaybackSourceTrackId] = useState(null);
   const [isFullPlayerOpen, setIsFullPlayerOpen] = useState(false);
   const [isFullPlayerExpanded, setIsFullPlayerExpanded] = useState(false);
   const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
@@ -695,19 +702,31 @@ function GlobalPlayer() {
     setIsPlaybackRequested((requested) => selectedSong?.audioPreview ? !requested : false);
   }, [selectedSong?.audioPreview]);
   const warmPreviewResource = useCallback((previewUrl) => {
-    if (!previewUrl || previewWarmupsRef.current.has(previewUrl)) return;
+    if (!previewUrl) return Promise.resolve(null);
+    const cachedWarmup = previewWarmupsRef.current.get(previewUrl);
+    if (cachedWarmup) return cachedWarmup.request;
 
     const controller = new AbortController();
+    const warmup = { controller, objectUrl: null, request: null };
     const request = window.fetch(previewUrl, {
       cache: "force-cache",
       mode: "cors",
       signal: controller.signal,
     })
-      .then((response) => response.ok ? response.arrayBuffer() : null)
-      .then(() => true)
-      .catch(() => false);
+      .then((response) => {
+        if (!response.ok) throw new Error(`Preview request failed: ${response.status}`);
+        return response.blob();
+      })
+      .then((blob) => {
+        if (controller.signal.aborted) return previewUrl;
+        warmup.objectUrl = URL.createObjectURL(blob);
+        return warmup.objectUrl;
+      })
+      .catch(() => previewUrl);
 
-    previewWarmupsRef.current.set(previewUrl, { controller, request });
+    warmup.request = request;
+    previewWarmupsRef.current.set(previewUrl, warmup);
+    return request;
   }, []);
 
   useEffect(() => {
@@ -732,7 +751,10 @@ function GlobalPlayer() {
     window.clearTimeout(trackTransitionTimerRef.current);
     transitionTargetRef.current = null;
     pendingTrackTransitionRef.current = null;
-    previewWarmupsRef.current.forEach(({ controller }) => controller.abort());
+    previewWarmupsRef.current.forEach(({ controller, objectUrl }) => {
+      controller.abort();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    });
     previewWarmupsRef.current.clear();
     audioDeckRefs.current.forEach((audio) => audio?.pause());
   }, []);
@@ -951,10 +973,12 @@ function GlobalPlayer() {
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return undefined;
+    let cancelled = false;
 
     isPlaybackScrubbingRef.current = false;
     pendingScrubSeekTimeRef.current = null;
     resumeAfterScrubRef.current = false;
+    setPlaybackSourceTrackId(null);
 
     if (!selectedSong?.audioPreview) {
       audio.pause();
@@ -962,6 +986,18 @@ function GlobalPlayer() {
       audio.load();
       return undefined;
     }
+
+    const nextPlayableTrack = getNextPlayableCatalogTrack(selectedSong.id);
+    const retainedPreviewUrls = new Set([
+      selectedSong.audioPreview,
+      nextPlayableTrack?.audioPreview,
+    ].filter(Boolean));
+    previewWarmupsRef.current.forEach((warmup, previewUrl) => {
+      if (retainedPreviewUrls.has(previewUrl)) return;
+      warmup.controller.abort();
+      if (warmup.objectUrl) URL.revokeObjectURL(warmup.objectUrl);
+      previewWarmupsRef.current.delete(previewUrl);
+    });
 
     warmPreviewResource(selectedSong.audioPreview);
 
@@ -972,19 +1008,39 @@ function GlobalPlayer() {
         : 0;
       setDuration(promotedDuration);
       setIsAudioMetadataReady(promotedDuration > 0 && audio.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA);
+      setPlaybackSourceTrackId(selectedSong.id);
       return undefined;
     }
 
     audio.pause();
-    audio.src = selectedSong.audioPreview;
+    audio.removeAttribute("src");
     audio.load();
-    audio.currentTime = 0;
-    return undefined;
+    const trackId = selectedSong.id;
+    warmPreviewResource(selectedSong.audioPreview).then((playbackUrl) => {
+      if (
+        cancelled
+        || !playbackUrl
+        || currentTrackRef.current?.id !== trackId
+        || audioRef.current !== audio
+      ) return;
+      audio.src = playbackUrl;
+      audio.load();
+      audio.currentTime = 0;
+      setPlaybackSourceTrackId(trackId);
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, [selectedSong?.audioPreview, selectedSong?.id, warmPreviewResource]);
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || !selectedSong?.audioPreview) return;
+    if (
+      !audio
+      || !selectedSong?.audioPreview
+      || playbackSourceTrackId !== selectedSong.id
+    ) return;
 
     if (isPlaybackRequested) {
       if (audio.paused) {
@@ -996,7 +1052,7 @@ function GlobalPlayer() {
     } else if (!audio.paused) {
       audio.pause();
     }
-  }, [isPlaybackRequested, selectedSong?.audioPreview]);
+  }, [isPlaybackRequested, playbackSourceTrackId, selectedSong?.audioPreview, selectedSong?.id]);
 
   useEffect(() => {
     if (!selectedSong?.audioPreview) {
@@ -1133,6 +1189,11 @@ function GlobalPlayer() {
   const handleAudioPause = (event) => {
     const audio = event.currentTarget;
     if (audio !== audioRef.current) return;
+    if (
+      pendingScrubSeekTimeRef.current !== null
+      && resumeAfterScrubRef.current
+      && isPlaybackRequested
+    ) return;
     const isNaturalEnding = audio.ended
       || (Number.isFinite(audio.duration) && audio.duration - audio.currentTime < 0.05 && isPlaybackRequested);
     if (!isNaturalEnding) setIsPlaying(false);
@@ -1371,17 +1432,11 @@ function GlobalPlayer() {
     resumeAfterScrubRef.current = wasPlaying;
   };
 
-  const previewScrubProgress = (progress) => {
-    const previewTime = Math.min(safeDuration, Math.max(0, progress * safeDuration));
-    setCurrentTime(previewTime);
-  };
-
   const seekToProgress = (progress, wasPlayingBeforeScrub) => {
     const nextTime = Math.min(safeDuration, Math.max(0, progress * safeDuration));
     const audio = audioRef.current;
     isPlaybackScrubbingRef.current = false;
     resumeAfterScrubRef.current = wasPlayingBeforeScrub;
-    setCurrentTime(nextTime);
 
     if (!audio || !selectedSong.audioPreview) {
       pendingScrubSeekTimeRef.current = null;
@@ -1391,13 +1446,8 @@ function GlobalPlayer() {
 
     if (Math.abs(audio.currentTime - nextTime) < 0.01) {
       pendingScrubSeekTimeRef.current = null;
-      if (wasPlayingBeforeScrub && audio.paused && !audio.ended) {
-        audio.play().catch(() => {
-          setIsPlaybackRequested(false);
-          setIsPlaying(false);
-        });
-      }
       resumeAfterScrubRef.current = false;
+      setCurrentTime(nextTime);
       return false;
     }
 
@@ -1499,7 +1549,6 @@ function GlobalPlayer() {
                     isReady={isAudioMetadataReady}
                     momentMarkers={momentMarkers}
                     onScrubStart={handleScrubStart}
-                    onScrubPreview={previewScrubProgress}
                     onSeek={seekToProgress}
                   />
                   {isDesktopRing && momentMarkers.map((moment) => {
