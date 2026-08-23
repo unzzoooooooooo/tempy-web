@@ -438,10 +438,12 @@ function Archive() {
       <section className="archive-page__section archive-page__tags-section">
         <div className="archive-page__section-head">
           <span>01</span>
-          <div><h2>Your time tags</h2><p>이번 달 음악과 함께 가장 많이 남긴 순간</p></div>
+          <div><h2 className="archive-page__section-title--galgo-mobile">Your time tags</h2><p>이번 달 음악과 함께 가장 많이 남긴 순간</p></div>
         </div>
         <div className="archive-page__tags">
-          {tags.map((tag, index) => <span key={tag}>{String(index + 1).padStart(2, "0")} · {tag}</span>)}
+          <div className="archive-page__tags-track">
+            {tags.map((tag, index) => <span key={tag}>{String(index + 1).padStart(2, "0")} · {tag}</span>)}
+          </div>
         </div>
       </section>
 

@@ -48,6 +48,8 @@ function ArchiveBlindPick() {
   const pointerXRef = useRef(null);
   const pointerActiveRef = useRef(false);
   const hoveredBarRef = useRef(null);
+  const mobileHintRef = useRef(null);
+  const mobileRevealInfoRef = useRef(null);
   const hoveredRenderIndexRef = useRef(null);
   const hintRef = useRef(null);
   const hintXRef = useRef(typeof window === "undefined" ? 0 : window.innerWidth / 2);
@@ -59,6 +61,9 @@ function ArchiveBlindPick() {
   const animationFrameRef = useRef(null);
   const closingTimeoutRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
+  const [mobileHintShift, setMobileHintShift] = useState(0);
+  const [selectedRevealTrackId, setSelectedRevealTrackId] = useState(null);
+  const [mobileRevealInfoShift, setMobileRevealInfoShift] = useState(0);
   const [hoveredTrackId, setHoveredTrackId] = useState(null);
   const [isRevealed, setIsRevealed] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -95,6 +100,64 @@ function ArchiveBlindPick() {
     targetScalesRef.current = loopItems.map(() => 1);
     loopItems.forEach((item) => applyScale(item.renderIndex, 1));
   }, [applyScale, loopItems]);
+
+  const alignMobileHint = useCallback(() => {
+    const hint = mobileHintRef.current;
+    if (!hint || !window.matchMedia("(max-width: 768px)").matches) return;
+
+    const item = hint.closest(".archive-blind-page__item");
+    if (!item) return;
+
+    const viewportPadding = 16;
+    const hintWidth = hint.getBoundingClientRect().width;
+    const itemRect = item.getBoundingClientRect();
+    const itemCenter = itemRect.left + (itemRect.width / 2);
+    const minimumCenter = viewportPadding + (hintWidth / 2);
+    const maximumCenter = window.innerWidth - viewportPadding - (hintWidth / 2);
+    const clampedCenter = Math.min(maximumCenter, Math.max(minimumCenter, itemCenter));
+    const nextShift = clampedCenter - itemCenter;
+
+    setMobileHintShift((currentShift) => (
+      Math.abs(currentShift - nextShift) < 0.5 ? currentShift : nextShift
+    ));
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!selectedId || isRevealed) return undefined;
+
+    alignMobileHint();
+    window.addEventListener("resize", alignMobileHint);
+    return () => window.removeEventListener("resize", alignMobileHint);
+  }, [alignMobileHint, isRevealed, selectedId]);
+
+  const alignMobileRevealInfo = useCallback(() => {
+    const info = mobileRevealInfoRef.current;
+    if (!info || !window.matchMedia("(max-width: 768px)").matches) return;
+
+    const item = info.closest(".archive-blind-page__item");
+    if (!item) return;
+
+    const viewportPadding = 16;
+    const infoWidth = info.getBoundingClientRect().width;
+    const itemRect = item.getBoundingClientRect();
+    const itemCenter = itemRect.left + (itemRect.width / 2);
+    const minimumCenter = viewportPadding + (infoWidth / 2);
+    const maximumCenter = window.innerWidth - viewportPadding - (infoWidth / 2);
+    const clampedCenter = Math.min(maximumCenter, Math.max(minimumCenter, itemCenter));
+    const nextShift = clampedCenter - itemCenter;
+
+    setMobileRevealInfoShift((currentShift) => (
+      Math.abs(currentShift - nextShift) < 0.5 ? currentShift : nextShift
+    ));
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!selectedRevealTrackId || !isRevealed) return undefined;
+
+    alignMobileRevealInfo();
+    window.addEventListener("resize", alignMobileRevealInfo);
+    return () => window.removeEventListener("resize", alignMobileRevealInfo);
+  }, [alignMobileRevealInfo, isRevealed, selectedRevealTrackId]);
 
   const updateHintPosition = useCallback((immediate = false) => {
     const bar = hoveredBarRef.current;
@@ -388,7 +451,10 @@ function ArchiveBlindPick() {
   const handleReveal = () => {
     if (isClosing) return;
 
-    setSelectedId(null);
+    if (!window.matchMedia("(max-width: 768px)").matches) {
+      setSelectedId(null);
+    }
+
     const visibleCount = updateRevealDelays();
     pointerActiveRef.current = false;
     hoveredBarRef.current = null;
@@ -413,11 +479,31 @@ function ArchiveBlindPick() {
     }, closeDuration);
   };
 
+  const handleItemClick = (event, item) => {
+    const isMobileLayout = window.matchMedia("(max-width: 768px)").matches;
+
+    if (isRevealed && isMobileLayout) {
+      setSelectedRevealTrackId(item.loopKey);
+      window.requestAnimationFrame(alignMobileRevealInfo);
+      return;
+    }
+
+    setSelectedId(item.loopKey);
+
+    if (!isRevealed && isMobileLayout) {
+      window.requestAnimationFrame(alignMobileHint);
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
+
   const pageClassName = [
     "archive-blind-page",
     isRevealed ? "archive-blind-page--revealed is-revealed" : "",
     isClosing ? "archive-blind-page--closing is-closing" : "",
   ].filter(Boolean).join(" ");
+  const isMobileLayout = typeof window !== "undefined"
+    && window.matchMedia("(max-width: 768px)").matches;
 
   return (
     <main
@@ -439,10 +525,10 @@ function ArchiveBlindPick() {
           <div className="archive-blind-page__track" ref={trackRef}>
             {loopItems.map((item) => (
               <button
-                className={`archive-blind-page__item archive-blind-page__item--${item.color}${selectedId === item.loopKey ? " archive-blind-page__item--selected" : ""}`}
+                className={`archive-blind-page__item archive-blind-page__item--${item.color}${selectedId === item.loopKey ? " archive-blind-page__item--selected" : ""}${selectedRevealTrackId === item.loopKey ? " archive-blind-page__item--reveal-selected" : ""}`}
                 type="button"
                 key={item.loopKey}
-                onClick={() => setSelectedId(item.loopKey)}
+                onClick={(event) => handleItemClick(event, item)}
                 style={{ "--blind-index": item.itemIndex }}
                 aria-label={isRevealed ? `${item.title} 선택` : "블라인드 픽 선택"}
               >
@@ -468,9 +554,28 @@ function ArchiveBlindPick() {
                   </span>
                 </span>
 
+                {selectedId === item.loopKey && !isRevealed && (
+                  <span
+                    className="archive-blind-page__mobile-block-hint"
+                    ref={mobileHintRef}
+                    style={{ "--mobile-hint-shift": `${mobileHintShift}px` }}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    <span className="archive-blind-page__mobile-block-hint-meta">
+                      {item.hintMeta}
+                    </span>
+                    <span className="archive-blind-page__mobile-block-hint-text">
+                      {item.hintText}
+                    </span>
+                  </span>
+                )}
+
                 <span
-                  className={`archive-blind-page__album-hover-card${isRevealed && hoveredTrackId === item.loopKey ? " is-visible" : ""}`}
-                  aria-hidden={!(isRevealed && hoveredTrackId === item.loopKey)}
+                  className={`archive-blind-page__album-hover-card${isRevealed && ((isMobileLayout && selectedRevealTrackId === item.loopKey) || (!isMobileLayout && hoveredTrackId === item.loopKey)) ? " is-visible" : ""}`}
+                  ref={selectedRevealTrackId === item.loopKey ? mobileRevealInfoRef : null}
+                  style={{ "--mobile-reveal-info-shift": `${mobileRevealInfoShift}px` }}
+                  aria-hidden={!(isRevealed && ((isMobileLayout && selectedRevealTrackId === item.loopKey) || (!isMobileLayout && hoveredTrackId === item.loopKey)))}
                 >
                   <span className="archive-blind-page__pick-meta">{item.meta}</span>
                   <span className="archive-blind-page__play">Play</span>
@@ -481,6 +586,12 @@ function ArchiveBlindPick() {
             ))}
           </div>
         </div>
+
+        {!selectedId && !isRevealed && (
+          <p className="archive-blind-page__mobile-guide">
+            색을 눌러 순간의 힌트를 확인해보세요.
+          </p>
+        )}
 
         <div
           className={`archive-blind-page__hover-hint${hoverHint.visible && !isRevealed ? " archive-blind-page__hover-hint--visible" : ""}`}

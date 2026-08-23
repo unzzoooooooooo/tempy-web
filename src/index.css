@@ -9541,6 +9541,10 @@ body::-webkit-scrollbar:horizontal,
   padding-left: 66px;
 }
 
+.archive-page__tags-track {
+  display: contents;
+}
+
 .archive-page__tags span {
   padding: 14px 20px;
   border: 1px solid #2759ed;
@@ -21166,6 +21170,11 @@ body::-webkit-scrollbar:horizontal,
   will-change: transform, opacity;
 }
 
+.archive-blind-page__mobile-block-hint,
+.archive-blind-page__mobile-guide {
+  display: none;
+}
+
 .archive-blind-page__hover-hint--visible {
   opacity: 1;
 }
@@ -28896,6 +28905,45 @@ body::-webkit-scrollbar:horizontal,
     word-break: keep-all;
   }
 
+  /* Time tags continue beyond the viewport as a two-row touch rail. */
+  .app .archive-page .archive-page__tags-section {
+    overflow-x: clip;
+  }
+
+  .app .archive-page .archive-page__tags {
+    display: block;
+    width: calc(100% + var(--mobile-page-gutter));
+    max-width: none;
+    margin-right: 0;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app .archive-page .archive-page__tags-track {
+    display: grid;
+    width: max-content;
+    min-width: max-content;
+    padding: 0 32px 8px 0;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    justify-content: start;
+    gap: 10px;
+  }
+
+  .app .archive-page .archive-page__tags::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app .archive-page .archive-page__tags-track > span {
+    white-space: nowrap;
+  }
+
   /* Liked curators stay full-size in one touch-scrollable row. */
   .app .archive-page .archive-page__people--liked {
     display: flex;
@@ -29034,6 +29082,92 @@ body::-webkit-scrollbar:horizontal,
     display: none;
   }
 
+  /* The selected color owns its mobile hint, which floats directly above it. */
+  .app .archive-blind-page .archive-blind-page__mobile-block-hint {
+    position: absolute;
+    bottom: calc(var(--blind-bar-size) + 38px);
+    left: 50%;
+    z-index: 33;
+    display: flex;
+    width: max-content;
+    max-width: min(200px, calc(100vw - 32px));
+    flex-direction: column;
+    align-items: center;
+    color: #07142b;
+    opacity: 1;
+    text-align: center;
+    pointer-events: none;
+    transform: translate3d(calc(-50% + var(--mobile-hint-shift, 0px)), 0, 0);
+    animation: archive-blind-mobile-hint-in 210ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .app .archive-blind-page :is(
+    .archive-blind-page__mobile-block-hint-meta,
+    .archive-blind-page__mobile-block-hint-text
+  ) {
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+    padding: 8px 15px;
+    background: #89abe6;
+    color: #07142b;
+    font-family: "Pretendard", sans-serif;
+    line-height: 1.15;
+    white-space: normal;
+    word-break: keep-all;
+  }
+
+  .app .archive-blind-page .archive-blind-page__mobile-guide {
+    position: absolute;
+    top: calc(50% - 88px);
+    right: var(--mobile-page-gutter);
+    left: var(--mobile-page-gutter);
+    z-index: 31;
+    display: block;
+    margin: 0;
+    color: rgba(7, 20, 43, 0.58);
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.45;
+    letter-spacing: -0.03em;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .app .archive-blind-page .archive-blind-page__mobile-block-hint-meta {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .app .archive-blind-page .archive-blind-page__mobile-block-hint-text {
+    margin-top: -1px;
+    padding: 9px 17px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.55;
+    letter-spacing: -0.035em;
+  }
+
+  .app .archive-blind-page .archive-blind-page__album-hover-card {
+    transform: translate3d(calc(-50% + var(--mobile-reveal-info-shift, 0px)), 6px, 0);
+    transition:
+      opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 200ms;
+  }
+
+  .app .archive-blind-page .archive-blind-page__album-hover-card.is-visible {
+    transform: translate3d(calc(-50% + var(--mobile-reveal-info-shift, 0px)), 0, 0);
+    transition-delay: 0s;
+  }
+
+  .app .archive-blind-page:not(.archive-blind-page--revealed)
+    .archive-blind-page__item--selected
+    .archive-blind-page__bar {
+    box-shadow: inset 0 0 0 1px rgba(241, 240, 235, 0.82);
+  }
+
   /* Home destination cards share one restrained touch response on phones. */
   .app .home-page :is(
     .discover-card,
@@ -29089,7 +29223,23 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+@keyframes archive-blind-mobile-hint-in {
+  from {
+    opacity: 0;
+    transform: translate3d(calc(-50% + var(--mobile-hint-shift, 0px)), 3px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(calc(-50% + var(--mobile-hint-shift, 0px)), 0, 0);
+  }
+}
+
 @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .app .archive-blind-page .archive-blind-page__mobile-block-hint {
+    animation: none;
+  }
+
   .app .home-page :is(
     .discover-card,
     .archive-identity-card,

@@ -968,8 +968,17 @@ function GlobalPlayer() {
         && !actionLabel.includes("이전")
         && !actionLabel.includes("다음");
       const playable = target.closest(PLAYABLE_SELECTOR);
+      const isMobileBlindHintTap = Boolean(
+        playable?.matches(".archive-blind-page__bar")
+        && playable.closest(".archive-blind-page:not(.archive-blind-page--revealed)")
+        && window.matchMedia("(max-width: 768px)").matches
+      );
 
-      if (!playable || (action && !looksLikePlayAction && !target.closest("[data-tempy-playable]"))) return;
+      if (
+        !playable
+        || isMobileBlindHintTap
+        || (action && !looksLikePlayAction && !target.closest("[data-tempy-playable]"))
+      ) return;
 
       window.dispatchEvent(new CustomEvent("tempy-play-track", {
         detail: normalizeTrackFromElement(playable),
