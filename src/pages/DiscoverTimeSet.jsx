@@ -208,7 +208,8 @@ function DiscoverTimeSet() {
                   "--time-set-offset": getRecordOffset(index),
                 }}
                 aria-hidden={!isActive}
-                key={record.title}
+                // Recommendation refreshes update a visual slot; they must not move an existing LP DOM node.
+                key={`time-set-carousel-slot-${index}`}
               >
                 <div className="time-set-detail__vinyl time-set-carousel__vinyl">
                   <span className="time-set-detail__groove time-set-detail__groove--outer" />
