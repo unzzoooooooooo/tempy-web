@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeartIcon } from "../components/TempyIcons";
 import { artistPlaylists, getArtistPlaylistThemeStyle } from "../data/artistPlaylists";
+import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 
 function ArtistCurator() {
   const navigate = useNavigate();
@@ -12,9 +13,6 @@ function ArtistCurator() {
   const trackRef = useRef(null);
   const translateRef = useRef(0);
   const maxTranslateRef = useRef(0);
-  const pendingWheelDelta = useRef(0);
-  const wheelFrame = useRef(null);
-  const inputEndTimer = useRef(null);
   const dragState = useRef(null);
   const didDrag = useRef(false);
   const isPhone = window.matchMedia("(max-width: 480px)").matches;
@@ -51,58 +49,18 @@ function ArtistCurator() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return undefined;
-
-    const handleWheel = (event) => {
-      if (window.matchMedia("(max-width: 760px)").matches) return;
-      event.preventDefault();
-      event.stopPropagation();
-
-      const horizontalInput = Math.abs(event.deltaX) > Math.abs(event.deltaY) * 0.5;
-      let movement = horizontalInput ? event.deltaX : event.deltaY;
-
-      if (!horizontalInput && event.deltaMode === WheelEvent.DOM_DELTA_LINE) movement *= 18;
-      if (!horizontalInput && event.deltaMode === WheelEvent.DOM_DELTA_PAGE) movement *= viewport.clientWidth;
-      if (Math.abs(movement) < 1) return;
-
-      if (horizontalInput) {
-        setIsDirectInput(true);
-        if (inputEndTimer.current !== null) window.clearTimeout(inputEndTimer.current);
-        inputEndTimer.current = window.setTimeout(() => {
-          inputEndTimer.current = null;
-          setIsDirectInput(false);
-        }, 100);
-      }
-
-      const eventLimit = horizontalInput ? 120 : 82;
-      const frameLimit = horizontalInput ? 180 : 116;
-      const limitedMovement = Math.max(-eventLimit, Math.min(eventLimit, movement));
-      pendingWheelDelta.current = Math.max(
-        -frameLimit,
-        Math.min(frameLimit, pendingWheelDelta.current + limitedMovement),
-      );
-
-      if (wheelFrame.current !== null) return;
-      wheelFrame.current = window.requestAnimationFrame(() => {
-        moveTo(translateRef.current + pendingWheelDelta.current);
-        pendingWheelDelta.current = 0;
-        wheelFrame.current = null;
-      });
-    };
-
-    viewport.addEventListener("wheel", handleWheel, { passive: false });
-    return () => {
-      viewport.removeEventListener("wheel", handleWheel);
-      if (wheelFrame.current !== null) window.cancelAnimationFrame(wheelFrame.current);
-      if (inputEndTimer.current !== null) window.clearTimeout(inputEndTimer.current);
-    };
-  }, []);
+  const stopWheelMotion = useSmoothHorizontalWheel({
+    containerRef: viewportRef,
+    getPosition: () => translateRef.current,
+    getMaxPosition: () => maxTranslateRef.current,
+    setPosition: moveTo,
+    onMotionChange: setIsDirectInput,
+  });
 
   const handlePointerDown = (event) => {
     if (window.matchMedia("(max-width: 760px)").matches) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    stopWheelMotion();
     didDrag.current = false;
     dragState.current = {
       pointerId: event.pointerId,

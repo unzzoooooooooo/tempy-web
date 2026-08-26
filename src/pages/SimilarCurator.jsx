@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
 import { tracks as musicCatalogTracks } from "../data/musicCatalog";
+import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 
 const similarPlaylists = [
   {
@@ -201,9 +202,6 @@ function SimilarCurator() {
   const activePlaylistIndexRef = useRef(null);
   const translateRef = useRef(0);
   const maxTranslateRef = useRef(0);
-  const pendingWheelDelta = useRef(0);
-  const wheelFrame = useRef(null);
-  const inputEndTimer = useRef(null);
   const dragState = useRef(null);
   const isMobile = window.matchMedia("(max-width: 760px)").matches;
 
@@ -312,67 +310,28 @@ function SimilarCurator() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return undefined;
-
-    const handleWheel = (event) => {
-      if (window.matchMedia("(max-width: 760px)").matches) return;
+  const stopWheelMotion = useSmoothHorizontalWheel({
+    containerRef: viewportRef,
+    getPosition: () => translateRef.current,
+    getMaxPosition: () => maxTranslateRef.current,
+    setPosition: moveTo,
+    onMotionChange: setIsDirectInput,
+    shouldIgnoreEvent: (event) => {
       const internalTrackList = event.target.closest(".similar-curator__tracks");
-      if (internalTrackList && Math.abs(event.deltaY) >= Math.abs(event.deltaX)) {
-        const canScrollUp = event.deltaY < 0 && internalTrackList.scrollTop > 0;
-        const canScrollDown = event.deltaY > 0
-          && internalTrackList.scrollTop + internalTrackList.clientHeight < internalTrackList.scrollHeight - 1;
-        if (canScrollUp || canScrollDown) return;
-      }
+      if (!internalTrackList || Math.abs(event.deltaY) < Math.abs(event.deltaX)) return false;
 
-      event.preventDefault();
-      event.stopPropagation();
-
-      const horizontalInput = Math.abs(event.deltaX) > Math.abs(event.deltaY) * 0.45;
-      let movement = horizontalInput ? event.deltaX * 1.35 : event.deltaY;
-
-      if (!horizontalInput && event.deltaMode === WheelEvent.DOM_DELTA_LINE) movement *= 18;
-      if (!horizontalInput && event.deltaMode === WheelEvent.DOM_DELTA_PAGE) movement *= viewport.clientWidth;
-      if (Math.abs(movement) < 1) return;
-
-      if (horizontalInput) {
-        setIsDirectInput(true);
-        if (inputEndTimer.current !== null) window.clearTimeout(inputEndTimer.current);
-        inputEndTimer.current = window.setTimeout(() => {
-          inputEndTimer.current = null;
-          setIsDirectInput(false);
-        }, 100);
-      }
-
-      const eventLimit = horizontalInput ? 128 : 90;
-      const frameLimit = horizontalInput ? 190 : 136;
-      const limitedMovement = Math.max(-eventLimit, Math.min(eventLimit, movement));
-      pendingWheelDelta.current = Math.max(
-        -frameLimit,
-        Math.min(frameLimit, pendingWheelDelta.current + limitedMovement),
-      );
-
-      if (wheelFrame.current !== null) return;
-      wheelFrame.current = window.requestAnimationFrame(() => {
-        moveTo(translateRef.current + pendingWheelDelta.current);
-        pendingWheelDelta.current = 0;
-        wheelFrame.current = null;
-      });
-    };
-
-    viewport.addEventListener("wheel", handleWheel, { passive: false });
-    return () => {
-      viewport.removeEventListener("wheel", handleWheel);
-      if (wheelFrame.current !== null) window.cancelAnimationFrame(wheelFrame.current);
-      if (inputEndTimer.current !== null) window.clearTimeout(inputEndTimer.current);
-    };
-  }, []);
+      const canScrollUp = event.deltaY < 0 && internalTrackList.scrollTop > 0;
+      const canScrollDown = event.deltaY > 0
+        && internalTrackList.scrollTop + internalTrackList.clientHeight < internalTrackList.scrollHeight - 1;
+      return canScrollUp || canScrollDown;
+    },
+  });
 
   const handlePointerDown = (event) => {
     if (isMobile) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     if (event.target.closest(".similar-curator__tracks")) return;
+    stopWheelMotion();
     dragState.current = {
       pointerId: event.pointerId,
       startX: event.clientX,

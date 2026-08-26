@@ -7,6 +7,7 @@ import {
   lifestylePlaylistThemes,
 } from "../data/lifestylePlaylists";
 import { getTracksByIds } from "../data/musicCatalog";
+import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 
 const playlistTracks = getTracksByIds([
   "fate-of-ophelia",
@@ -48,9 +49,6 @@ function LifestylePlaylistDetail() {
   const mobileScrollEndTimer = useRef(null);
   const translateRef = useRef(0);
   const maxTranslateRef = useRef(0);
-  const pendingWheelDelta = useRef(0);
-  const wheelFrame = useRef(null);
-  const inputEndTimer = useRef(null);
   const dragState = useRef(null);
   const didDrag = useRef(false);
 
@@ -122,56 +120,18 @@ function LifestylePlaylistDetail() {
     if (mobileScrollEndTimer.current !== null) window.clearTimeout(mobileScrollEndTimer.current);
   }, []);
 
-  useEffect(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return undefined;
-
-    const handleWheel = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const hasDeltaX = Math.abs(event.deltaX) > 1;
-      let movement = hasDeltaX ? event.deltaX * 1.45 : event.deltaY;
-
-      if (!hasDeltaX && event.deltaMode === WheelEvent.DOM_DELTA_LINE) movement *= 18;
-      if (!hasDeltaX && event.deltaMode === WheelEvent.DOM_DELTA_PAGE) movement *= viewport.clientWidth;
-      if (Math.abs(movement) < 1) return;
-
-      if (hasDeltaX) {
-        setIsDirectInput(true);
-        if (inputEndTimer.current !== null) window.clearTimeout(inputEndTimer.current);
-        inputEndTimer.current = window.setTimeout(() => {
-          inputEndTimer.current = null;
-          setIsDirectInput(false);
-        }, 110);
-      }
-
-      const eventLimit = hasDeltaX ? 120 : 88;
-      const frameLimit = hasDeltaX ? 190 : 132;
-      pendingWheelDelta.current = Math.max(
-        -frameLimit,
-        Math.min(frameLimit, pendingWheelDelta.current + Math.max(-eventLimit, Math.min(eventLimit, movement))),
-      );
-
-      if (wheelFrame.current !== null) return;
-      wheelFrame.current = window.requestAnimationFrame(() => {
-        moveTo(translateRef.current + pendingWheelDelta.current);
-        pendingWheelDelta.current = 0;
-        wheelFrame.current = null;
-      });
-    };
-
-    viewport.addEventListener("wheel", handleWheel, { passive: false });
-    return () => {
-      viewport.removeEventListener("wheel", handleWheel);
-      if (wheelFrame.current !== null) window.cancelAnimationFrame(wheelFrame.current);
-      if (inputEndTimer.current !== null) window.clearTimeout(inputEndTimer.current);
-    };
-  }, []);
+  const stopWheelMotion = useSmoothHorizontalWheel({
+    containerRef: viewportRef,
+    getPosition: () => translateRef.current,
+    getMaxPosition: () => maxTranslateRef.current,
+    setPosition: moveTo,
+    onMotionChange: setIsDirectInput,
+  });
 
   const handlePointerDown = (event) => {
     if (window.matchMedia("(max-width: 760px)").matches) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    stopWheelMotion();
     didDrag.current = false;
     dragState.current = { pointerId: event.pointerId, startX: event.clientX, startTranslate: translateRef.current };
   };

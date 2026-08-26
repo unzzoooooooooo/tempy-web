@@ -3,6 +3,7 @@ import TempyFooter from "../components/TempyFooter";
 import { HeartIcon } from "../components/TempyIcons";
 import { getArtistDisplayImage, getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
 import { getCuratorProfileImage, profileImages } from "../data/imageCatalog";
+import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 
 const CREATED_ITEMS_KEY = "tempyCreatedItems";
 const archiveDefaultTags = ["비", "버스", "성북구"];
@@ -224,6 +225,30 @@ function Archive() {
   const curatorScrollerRef = useRef(null);
   const artistScrollerRef = useRef(null);
 
+  useSmoothHorizontalWheel({
+    containerRef: curatorScrollerRef,
+    getPosition: () => curatorScrollerRef.current?.scrollLeft ?? 0,
+    getMaxPosition: () => {
+      const scroller = curatorScrollerRef.current;
+      return scroller ? scroller.scrollWidth - scroller.clientWidth : 0;
+    },
+    setPosition: (position) => {
+      if (curatorScrollerRef.current) curatorScrollerRef.current.scrollLeft = position;
+    },
+  });
+
+  useSmoothHorizontalWheel({
+    containerRef: artistScrollerRef,
+    getPosition: () => artistScrollerRef.current?.scrollLeft ?? 0,
+    getMaxPosition: () => {
+      const scroller = artistScrollerRef.current;
+      return scroller ? scroller.scrollWidth - scroller.clientWidth : 0;
+    },
+    setPosition: (position) => {
+      if (artistScrollerRef.current) artistScrollerRef.current.scrollLeft = position;
+    },
+  });
+
   useEffect(() => {
     const handleStorage = (event) => {
       if (!event.key || event.key === CREATED_ITEMS_KEY) {
@@ -311,25 +336,6 @@ function Archive() {
   }));
 
   const selectedCreatedItem = createdItems.find((item) => item.id === selectedCreatedId) || null;
-
-  const scrollHorizontal = (scroller, event) => {
-    if (!scroller) return;
-
-    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-    if (Math.abs(delta) < 2) return;
-
-    event.preventDefault();
-    const limitedDelta = Math.max(-140, Math.min(140, delta));
-    scroller.scrollBy({ left: limitedDelta * 0.9, behavior: "smooth" });
-  };
-
-  const handleCuratorWheel = (event) => {
-    scrollHorizontal(curatorScrollerRef.current, event);
-  };
-
-  const handleArtistWheel = (event) => {
-    scrollHorizontal(artistScrollerRef.current, event);
-  };
 
   const refreshCreatedItems = () => {
     setCreatedItems(readCreatedItems());
@@ -455,7 +461,6 @@ function Archive() {
         <div
           className="archive-page__people archive-page__people--scroll"
           ref={curatorScrollerRef}
-          onWheel={handleCuratorWheel}
         >
           {recommendedCurators.map((curator) => (
             <article className="archive-page__person" key={curator.name}>
@@ -474,7 +479,6 @@ function Archive() {
         <div
           className="archive-page__artists"
           ref={artistScrollerRef}
-          onWheel={handleArtistWheel}
         >
           {artists.map((artist, index) => (
             <article className="archive-page__artist" key={artist.name}>

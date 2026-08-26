@@ -1,10 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 
 function Curator() {
   const navigate = useNavigate();
   const [translateX, setTranslateX] = useState(0);
-  const [isTrackpadActive, setIsTrackpadActive] = useState(false);
+  const [isWheelActive, setIsWheelActive] = useState(false);
   const galleryRef = useRef(null);
   const trackRef = useRef(null);
   const translateXRef = useRef(0);
@@ -12,9 +13,6 @@ function Curator() {
   const dragStartX = useRef(null);
   const dragPointerId = useRef(null);
   const isDragging = useRef(false);
-  const wheelFrame = useRef(null);
-  const pendingWheelDelta = useRef(0);
-  const trackpadEndTimer = useRef(null);
   const isPhone = window.matchMedia("(max-width: 480px)").matches;
 
   useLayoutEffect(() => {
@@ -81,83 +79,18 @@ function Curator() {
     setTranslateX(clampedTranslate);
   };
 
-  useEffect(() => {
-    const gallery = galleryRef.current;
-    if (!gallery) return undefined;
-
-    const handleNativeWheel = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const hasHorizontalDelta = Math.abs(event.deltaX) > 1;
-      const isTrackpadInput = hasHorizontalDelta && !event.shiftKey;
-      let movement = hasHorizontalDelta ? event.deltaX : event.deltaY;
-      if (isTrackpadInput) movement *= 1.5;
-
-      if (!hasHorizontalDelta && event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
-        movement *= 18;
-      } else if (!hasHorizontalDelta && event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
-        movement *= gallery.clientWidth;
-      }
-
-      if (Math.abs(movement) < 1) return;
-
-      if (isTrackpadInput) {
-        setIsTrackpadActive(true);
-        if (trackpadEndTimer.current !== null) {
-          window.clearTimeout(trackpadEndTimer.current);
-        }
-
-        trackpadEndTimer.current = window.setTimeout(() => {
-          trackpadEndTimer.current = null;
-          setIsTrackpadActive(false);
-
-          const nearestPosition = translateXRef.current < maxTranslateRef.current / 2
-            ? 0
-            : maxTranslateRef.current;
-          moveTo(nearestPosition);
-        }, 120);
-      } else {
-        if (trackpadEndTimer.current !== null) {
-          window.clearTimeout(trackpadEndTimer.current);
-          trackpadEndTimer.current = null;
-        }
-        setIsTrackpadActive(false);
-      }
-
-      const movementLimit = isTrackpadInput ? 110 : 84;
-      const frameLimit = isTrackpadInput ? 180 : 126;
-      const limitedMovement = Math.max(-movementLimit, Math.min(movementLimit, movement));
-      pendingWheelDelta.current = Math.max(
-        -frameLimit,
-        Math.min(frameLimit, pendingWheelDelta.current + limitedMovement),
-      );
-
-      if (wheelFrame.current !== null) return;
-
-      wheelFrame.current = window.requestAnimationFrame(() => {
-        const nextTranslate = translateXRef.current + pendingWheelDelta.current;
-        pendingWheelDelta.current = 0;
-        wheelFrame.current = null;
-        moveTo(nextTranslate);
-      });
-    };
-
-    gallery.addEventListener("wheel", handleNativeWheel, { passive: false });
-    return () => {
-      gallery.removeEventListener("wheel", handleNativeWheel);
-      if (wheelFrame.current !== null) {
-        window.cancelAnimationFrame(wheelFrame.current);
-      }
-      if (trackpadEndTimer.current !== null) {
-        window.clearTimeout(trackpadEndTimer.current);
-      }
-    };
-  }, []);
+  const stopWheelMotion = useSmoothHorizontalWheel({
+    containerRef: galleryRef,
+    getPosition: () => translateXRef.current,
+    getMaxPosition: () => maxTranslateRef.current,
+    setPosition: moveTo,
+    onMotionChange: setIsWheelActive,
+  });
 
   const handlePointerDown = (event) => {
     if (isPhone) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    stopWheelMotion();
     dragStartX.current = event.clientX;
     dragPointerId.current = event.pointerId;
     isDragging.current = false;
@@ -219,7 +152,7 @@ function Curator() {
         onDragStart={(event) => event.preventDefault()}
       >
         <div
-          className={`curator-page__track${isTrackpadActive ? " curator-page__track--trackpad" : ""}`}
+          className={`curator-page__track${isWheelActive ? " curator-page__track--trackpad" : ""}`}
           ref={trackRef}
           style={{ transform: isPhone ? undefined : `translateX(${-translateX}px)` }}
         >
