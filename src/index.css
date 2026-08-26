@@ -26948,6 +26948,9 @@ body::-webkit-scrollbar:horizontal,
     height: 48px;
     min-height: 48px;
     padding: 0 12px;
+    border-color: var(--artist-card-line);
+    color: var(--artist-card-ink);
+    background: var(--artist-card-bg);
   }
 
   .app .artist-playlist-detail .artist-playlist-detail__actions button:not(:first-child),
@@ -26957,15 +26960,20 @@ body::-webkit-scrollbar:horizontal,
     width: 48px;
     min-width: 48px;
     padding: 0;
-    border: 1px solid #07142b;
+    border: 1px solid var(--artist-card-line);
     border-radius: 50%;
-    color: #fff1cf;
-    background: #07142b;
+    color: var(--artist-card-ink);
+    background: var(--artist-card-bg);
   }
 
   .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(2).is-active,
   .app .artist-playlist-detail .artist-playlist-detail__actions button:nth-child(3).is-active {
-    color: #ff454b;
+    color: var(--artist-card-ink);
+    opacity: 0.78;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:active {
+    opacity: 0.78;
   }
 
   .app .artist-playlist-detail .artist-playlist-detail__viewport,
@@ -27050,7 +27058,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .app .artist-playlist-detail .artist-playlist-detail__actions button:focus-visible {
-    outline: 2px solid #fff1cf;
+    outline: 2px solid var(--artist-card-ink);
     outline-offset: 3px;
   }
 }
