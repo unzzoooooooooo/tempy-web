@@ -1,95 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeartIcon } from "../components/TempyIcons";
-import { getArtistDisplayImage } from "../data/musicCatalog";
-
-const getCuratorArtistImage = (artistName) => getArtistDisplayImage(artistName);
-
-const artistPlaylists = [
-  {
-    title: "JENNIE'S RUBY MOMENTS",
-    artist: "JENNIE",
-    meta: "10곡 · 21:03",
-    likes: "1.5k",
-    author: "JENNIE",
-    image: getCuratorArtistImage("JENNIE"),
-    date: "2026.05.16",
-    theme: "ruby",
-    note: "무대 위의 강한 순간과 밤의 감정을 따라 이어지는 아티스트 큐레이션입니다.",
-  },
-  {
-    title: "SAILING THROUGH SUMMER",
-    artist: "AKMU",
-    meta: "10곡 · 31 min",
-    likes: "2.1k",
-    author: "AKMU",
-    image: getCuratorArtistImage("AKMU"),
-  },
-  {
-    title: "THE WAY I SEE THE NIGHT",
-    artist: "한로로",
-    meta: "11곡 · 42 min",
-    likes: "1.7k",
-    author: "한로로",
-    image: getCuratorArtistImage("한로로"),
-  },
-  {
-    title: "CITY LIGHTS AFTER MIDNIGHT",
-    artist: "Chappell Roan",
-    meta: "13곡 · 47 min",
-    likes: "1.5k",
-    author: "CHAPPELL ROAN",
-    image: "/images/artist-04.png",
-  },
-  {
-    title: "A QUIET SUNDAY MORNING",
-    artist: "flowerovlove",
-    meta: "9곡 · 29 min",
-    likes: "1.3k",
-    author: "FLOWEROVLOVE",
-    image: "/images/artist-05.png",
-  },
-  {
-    title: "WINDOWS DOWN, MUSIC UP",
-    artist: "Justin Bieber",
-    meta: "14곡 · 51 min",
-    likes: "1.1k",
-    author: "JUSTIN BIEBER",
-    image: "/images/artist-06.png",
-  },
-  {
-    title: "BLUE HOUR DIARY",
-    artist: "bülow",
-    meta: "10곡 · 36 min",
-    likes: "984",
-    author: "BÜLOW",
-    image: "/images/artist-07.png",
-  },
-  {
-    title: "SONGS FOR LONG WALKS",
-    artist: "LANY",
-    meta: "12곡 · 44 min",
-    likes: "912",
-    author: "LANY",
-    image: "/images/artist-08.png",
-  },
-  {
-    title: "OUR LITTLE ESCAPE",
-    artist: "Olivia Rodrigo",
-    meta: "8곡 · 27 min",
-    likes: "845",
-    author: "OLIVIA RODRIGO",
-    image: "/images/artist-13.jpg",
-  },
-  {
-    title: "FIRST LIGHT, LAST SONG",
-    artist: "Sabrina Carpenter",
-    meta: "11곡 · 40 min",
-    likes: "806",
-    author: "SABRINA CARPENTER",
-    image: "/images/artist-11.png",
-  },
-];
+import { artistPlaylists, getArtistPlaylistThemeStyle } from "../data/artistPlaylists";
 
 function ArtistCurator() {
   const navigate = useNavigate();
@@ -222,6 +134,19 @@ function ArtistCurator() {
     setIsDirectInput(false);
   };
 
+  const openPlaylist = (playlist) => {
+    navigate(`/curator/artist/${playlist.id}`);
+  };
+
+  const handleCardClick = (event, playlist) => {
+    if (didDrag.current) {
+      didDrag.current = false;
+      return;
+    }
+    if (event.target.closest("button, a, [data-tempy-playable]")) return;
+    openPlaylist(playlist);
+  };
+
   return (
     <main className="artist-curator">
       <button
@@ -268,31 +193,23 @@ function ArtistCurator() {
               {artistPlaylists.map((playlist, index) => (
                 <article
                   className="artist-curator__card"
-                  key={`${playlist.artist}-${playlist.title}`}
+                  key={playlist.id}
                   style={{
+                    ...getArtistPlaylistThemeStyle(playlist),
                     "--artist-card-index": index,
-                    cursor: index === 0 ? "pointer" : undefined,
+                    cursor: "pointer",
                   }}
-                  role={index === 0 ? "button" : undefined}
-                  tabIndex={index === 0 ? 0 : undefined}
-                  aria-label={index === 0 ? "제니의 아티스트 플레이리스트 상세 보기" : undefined}
-                  onClick={index === 0 ? () => {
-                    if (didDrag.current) {
-                      didDrag.current = false;
-                      return;
-                    }
-                    navigate("/curator/artist/playlist", {
-                      state: { playlist: { ...playlist, index } },
-                    });
-                  } : undefined}
-                  onKeyDown={index === 0 ? (event) => {
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${playlist.artist}의 아티스트 플레이리스트 상세 보기`}
+                  onClick={(event) => handleCardClick(event, playlist)}
+                  onKeyDown={(event) => {
+                    if (event.target !== event.currentTarget) return;
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      navigate("/curator/artist/playlist", {
-                        state: { playlist: { ...playlist, index } },
-                      });
+                      openPlaylist(playlist);
                     }
-                  } : undefined}
+                  }}
                 >
                   <div className="artist-curator__card-copy">
                     <span className="artist-curator__card-number">

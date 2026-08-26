@@ -1968,7 +1968,7 @@ function App() {
         <Route path="/curator/lifestyle" element={<LifestyleCurator />} />
         <Route path="/curator/lifestyle/playlist" element={<LifestylePlaylistDetail />} />
         <Route path="/curator/artist" element={<ArtistCurator />} />
-        <Route path="/curator/artist/playlist" element={<ArtistPlaylistDetail />} />
+        <Route path="/curator/artist/:playlistId" element={<ArtistPlaylistDetail />} />
         <Route path="/curator/similar" element={<SimilarCurator />} />
         <Route path="/create" element={<Create />} />
         <Route path="/archive" element={<Archive />} />

@@ -1,42 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
-import { getArtistDisplayImage, getTracksByIds } from "../data/musicCatalog";
+import { getArtistPlaylistById, getArtistPlaylistThemeStyle } from "../data/artistPlaylists";
+import { getTracksByIds } from "../data/musicCatalog";
 
-const playlistTracks = getTracksByIds([
-  "like-jennie",
-  "mantra",
-  "you-and-me",
-  "toxic-till-the-end",
-  "360",
-  "whiplash",
-  "armageddon",
-  "rich-man",
-  "puppet-show",
-  "blinding-lights",
-]);
-
-const fallbackPlaylist = {
-  title: "JENNIE'S RUBY MOMENTS",
-  artist: "JENNIE",
-  meta: "10곡 · 21:03",
-  likes: "1.5k",
-  author: "JENNIE",
-  image: getArtistDisplayImage("JENNIE"),
-  date: "2026.05.16",
-  theme: "ruby",
-  note: "무대 위의 강한 순간과 밤의 감정을 따라 이어지는 아티스트 큐레이션입니다.",
-  index: 0,
-};
-
-function ArtistPlaylistDetail() {
+function ArtistPlaylistDetailContent({ selectedPlaylist }) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const routePlaylist = location.state?.playlist || fallbackPlaylist;
-  const selectedPlaylist = {
-    ...routePlaylist,
-    image: getArtistDisplayImage(routePlaylist.artist, { trackCover: routePlaylist.image }),
-  };
+  const playlistTracks = getTracksByIds(selectedPlaylist.trackIds);
+  const durationLabel = selectedPlaylist.meta.split("·").slice(1).join("·").trim();
   const [translateX, setTranslateX] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
@@ -187,7 +158,11 @@ function ArtistPlaylistDetail() {
   const activeTrack = playlistTracks[activeTrackIndex] || playlistTracks[0];
 
   return (
-    <main className="artist-playlist-detail playlist-detail-page playlist-detail--artist" data-playlist-theme={selectedPlaylist.theme || "ruby"}>
+    <main
+      className="artist-playlist-detail playlist-detail-page playlist-detail--artist"
+      data-playlist-theme={selectedPlaylist.theme || "ruby"}
+      style={getArtistPlaylistThemeStyle(selectedPlaylist)}
+    >
       <button
         className="artist-playlist-detail__back playlist-detail-back detail-back-link"
         type="button"
@@ -199,7 +174,7 @@ function ArtistPlaylistDetail() {
 
       <div className="artist-playlist-detail__page-meta playlist-detail-top-meta" aria-hidden="true">
         <span>PLAYLIST TRACKS</span>
-        <span>{playlistTracks.length} TRACKS · 21:03</span>
+        <span>{playlistTracks.length} TRACKS · {durationLabel}</span>
       </div>
 
       <div className="artist-playlist-detail__sequence" ref={sequenceRef} onScroll={syncMobileSlide}>
@@ -220,7 +195,7 @@ function ArtistPlaylistDetail() {
           <div className="artist-playlist-detail__now">
             <div className="artist-playlist-detail__now-head">
               <span>NOW PLAYING · {String(activeTrackIndex + 1).padStart(2, "0")}</span>
-              <span>21:03</span>
+              <span>{durationLabel}</span>
             </div>
             <strong>{activeTrack.title}</strong>
             <small>{activeTrack.artist}</small>
@@ -273,7 +248,7 @@ function ArtistPlaylistDetail() {
       <section
         className="artist-playlist-detail__viewport playlist-detail-right"
         ref={viewportRef}
-        aria-label="제니의 플레이리스트 트랙"
+        aria-label={`${selectedPlaylist.artist}의 플레이리스트 트랙`}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={endDrag}
@@ -316,13 +291,24 @@ function ArtistPlaylistDetail() {
 
       <section className="artist-playlist-detail__note playlist-detail-note" aria-label="Artist curator note">
         <div className="artist-playlist-detail__note-head">
-          <span>CURATOR'S NOTE · 21:03</span>
+          <span>CURATOR'S NOTE · {durationLabel}</span>
           <span>DRAG TO EXPLORE →</span>
         </div>
-        <p>“{selectedPlaylist.note || fallbackPlaylist.note}”</p>
+        <p>“{selectedPlaylist.curatorNote}”</p>
       </section>
     </main>
   );
+}
+
+function ArtistPlaylistDetail() {
+  const { playlistId } = useParams();
+  const selectedPlaylist = getArtistPlaylistById(playlistId);
+
+  if (!selectedPlaylist) {
+    return <Navigate to="/curator/artist" replace />;
+  }
+
+  return <ArtistPlaylistDetailContent key={selectedPlaylist.id} selectedPlaylist={selectedPlaylist} />;
 }
 
 export default ArtistPlaylistDetail;

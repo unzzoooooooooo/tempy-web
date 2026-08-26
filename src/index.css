@@ -8967,7 +8967,7 @@ body::-webkit-scrollbar:horizontal,
   font-size: clamp(72px, 5.8vw, 108px);
   font-weight: 400;
   line-height: 0.8;
-  letter-spacing: -0.008em;
+  letter-spacing: 0.005em;
 }
 
 .discover-page__card-copy p {
@@ -28306,7 +28306,7 @@ body::-webkit-scrollbar:horizontal,
     height: auto;
     font-size: clamp(40px, 12vw, 47px) !important;
     line-height: 0.98 !important;
-    letter-spacing: 0.005em;
+    letter-spacing: -0.008em;
     white-space: normal;
     overflow-wrap: anywhere;
   }
@@ -29597,5 +29597,89 @@ body::-webkit-scrollbar:horizontal,
     grid-area: time;
     justify-self: end;
     align-self: start;
+  }
+}
+
+/* Artist playlist details inherit the exact visual theme used by their archive card. */
+.app .artist-playlist-detail .artist-playlist-detail__panel,
+.app .artist-playlist-detail .artist-playlist-detail__panel-copy {
+  color: var(--artist-card-ink);
+  background: var(--artist-card-bg);
+}
+
+.app .artist-playlist-detail .artist-playlist-detail__panel {
+  border-color: var(--artist-card-line);
+}
+
+.app .artist-playlist-detail .artist-playlist-detail__panel-copy > p,
+.app .artist-playlist-detail .artist-playlist-detail__now-head,
+.app .artist-playlist-detail .artist-playlist-detail__now > small {
+  color: var(--artist-card-muted);
+  opacity: 1;
+}
+
+.app .artist-playlist-detail .artist-playlist-detail__meta,
+.app .artist-playlist-detail .artist-playlist-detail__details,
+.app .artist-playlist-detail .artist-playlist-detail__now,
+.app .artist-playlist-detail .artist-playlist-detail__progress {
+  border-color: var(--artist-card-line);
+}
+
+.app .artist-playlist-detail .artist-playlist-detail__progress {
+  background: var(--artist-card-line);
+}
+
+.app .artist-playlist-detail .artist-playlist-detail__author span {
+  border-color: var(--artist-card-line);
+  color: var(--artist-card-ink);
+}
+
+.app .artist-playlist-detail .artist-playlist-detail__portrait {
+  background: transparent;
+}
+
+.app .artist-playlist-detail .artist-playlist-detail__portrait::after {
+  content: none;
+}
+
+.app .artist-playlist-detail .artist-playlist-detail__portrait img {
+  filter: none;
+}
+
+@media (min-width: 901px) {
+  .app .artist-playlist-detail .artist-playlist-detail__item .playlist-detail-track-title {
+    max-width: 100%;
+    margin-bottom: 12px;
+    overflow: hidden;
+    font-size: clamp(40px, 2.45vw, 49px);
+    letter-spacing: -0.008em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__item .playlist-detail-track-artist {
+    margin-top: 0;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button {
+    color: #07142b;
+    background: #fff1cf;
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__actions button:hover {
+    border-color: var(--artist-card-ink);
+    color: var(--artist-card-ink);
+    background: var(--artist-card-bg);
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__note {
+    right: var(--playlist-detail-gutter);
+    left: var(--playlist-detail-content-left);
+  }
+
+  .app .artist-playlist-detail .artist-playlist-detail__note p {
+    width: 100%;
+    max-width: none;
+    white-space: nowrap;
   }
 }
