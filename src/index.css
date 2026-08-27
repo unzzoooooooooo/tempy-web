@@ -14571,7 +14571,26 @@ body::-webkit-scrollbar:horizontal,
   line-height: 1.7;
 }
 
-.login-success-card button {
+.login-success-desktop-break {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .login-success-orbit {
+    width: min(78vw, 700px);
+  }
+
+  .login-success-card img {
+    width: 82px;
+    transform: translateY(-10px);
+  }
+
+  .login-success-desktop-break {
+    display: inline;
+  }
+}
+
+.login-success-card > button:last-child {
   min-width: 154px;
   height: 44px;
   margin-top: 10px;

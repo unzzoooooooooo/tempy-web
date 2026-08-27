@@ -103,7 +103,10 @@ export function LoginSuccess() {
           </button>
           <p>Catch your Tempo, Meet your Moment</p>
           <h1>Welcome!</h1>
-          <span>로그인이 완료되었어요. 이제 나만의 음악 순간으로 이동해볼게요.</span>
+          <span>
+            로그인이 완료되었어요.<br className="login-success-desktop-break" />{" "}
+            이제 나만의 음악 순간으로 이동해볼게요.
+          </span>
           <button type="button" onClick={() => navigate("/")}>
             홈으로 가기
           </button>
