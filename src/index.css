@@ -14527,9 +14527,15 @@ body::-webkit-scrollbar:horizontal,
 }
 
 .login-success-page {
+  --login-success-grid-line: rgba(88, 83, 73, 0.032);
   display: flex;
   align-items: center;
   justify-content: center;
+  background:
+    linear-gradient(var(--login-success-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--login-success-grid-line) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 47%, #fbfaf6 0%, #f7f6f1 50%, #f0f1ee 100%);
+  background-size: 112px 112px, 112px 112px, 100% 100%;
 }
 
 .login-success-orbit {
@@ -14576,6 +14582,10 @@ body::-webkit-scrollbar:horizontal,
 }
 
 @media (min-width: 769px) {
+  .login-success-page {
+    --login-success-grid-line: rgba(88, 83, 73, 0.056);
+  }
+
   .login-success-orbit {
     width: min(78vw, 700px);
   }
@@ -14587,6 +14597,25 @@ body::-webkit-scrollbar:horizontal,
 
   .login-success-desktop-break {
     display: inline;
+  }
+
+  .login-success-card > button:last-child {
+    transition: background-color 260ms ease, color 260ms ease, transform 260ms ease;
+  }
+
+  .login-success-card > button:last-child:hover {
+    color: #fff;
+    background: #f62933;
+    transform: translateY(-2px);
+  }
+
+  .login-success-card > button:last-child:active {
+    transform: translateY(0);
+  }
+
+  .login-success-card > button:last-child:focus-visible {
+    outline: 2px solid #f62933;
+    outline-offset: 3px;
   }
 }
 
