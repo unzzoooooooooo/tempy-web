@@ -69,3 +69,16 @@ export function TrackListIcon({ size = "medium", className = "" }) {
     </svg>
   );
 }
+
+export function PlayIcon({ className = "" }) {
+  return (
+    <svg
+      className={["tempy-play-icon", className].filter(Boolean).join(" ")}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M8.72 4.66Q7.3 3.82 7.3 5.48v13.04q0 1.66 1.42.82l10.62-6.47q1.42-.87 0-1.74L8.72 4.66Z" />
+    </svg>
+  );
+}

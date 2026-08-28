@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { PlayIcon } from "../components/TempyIcons";
 import { trackTraceTracks } from "../data/musicCatalog";
 import { useLiveContext } from "../utils/context";
 import { createRecommendationSeed, hashSeed, seededShuffle } from "../utils/recommendations";
@@ -71,7 +72,7 @@ function DiscoverTrackTrace() {
                   <img src={track.cover} alt={`${track.title} album cover`} />
                   <div className="track-trace-detail__artwork-meta">
                     <button type="button" aria-label={`${track.title} 재생`}>
-                      <span aria-hidden="true">▶</span> PLAY
+                      <PlayIcon /> PLAY
                     </button>
                     <span>COMMENTS {track.comments}</span>
                   </div>

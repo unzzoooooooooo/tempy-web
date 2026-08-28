@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ClockIcon, HeartIcon, ShuffleIcon, TrackListIcon } from "../components/TempyIcons";
+import { ClockIcon, HeartIcon, PlayIcon, ShuffleIcon, TrackListIcon } from "../components/TempyIcons";
 import {
   getLifestylePlaylist,
   lifestylePlaylists,
@@ -206,7 +206,7 @@ function LifestylePlaylistDetail() {
             aria-pressed={isPlaying}
             onClick={() => setIsPlaying((playing) => !playing)}
           >
-            <span>{isPlaying ? "Ⅱ" : "▶"}</span> {isPlaying ? "PAUSE" : "PLAY"}
+            <span>{isPlaying ? "Ⅱ" : <PlayIcon />}</span> {isPlaying ? "PAUSE" : "PLAY"}
           </button>
           <button
             className={`tempy-icon-button${isShuffled ? " is-active" : ""}`}

@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PlayIcon } from "../components/TempyIcons";
 import { lifestylePlaylists, lifestylePlaylistThemes } from "../data/lifestylePlaylists";
 
 function LifestyleCurator() {
@@ -136,7 +137,7 @@ function LifestyleCurator() {
 
                 <div className="lifestyle-curator__play-rail">
                   <span>{String(index + 1).padStart(2, "0")}</span>
-                  <button type="button" aria-label={`${playlist.title} 재생`}>▶</button>
+                  <button type="button" aria-label={`${playlist.title} 재생`}><PlayIcon /></button>
                   <small>TEMPY!</small>
                 </div>
               </article>

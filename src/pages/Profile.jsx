@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
-import { HeartIcon } from "../components/TempyIcons";
+import { HeartIcon, PlayIcon } from "../components/TempyIcons";
 import { getTrackById } from "../data/musicCatalog";
 import { createAlbumImageSequence, currentUserProfileImage } from "../data/imageCatalog";
 
@@ -205,7 +205,7 @@ function Profile() {
               <div className="profile-moment-card__visual">
                 <img src={card.image} alt="" draggable={false} />
                 <span aria-hidden="true" />
-                <button className="profile-moment-card__play" type="button" aria-label={`${card.title} 재생`}>▶</button>
+                <button className="profile-moment-card__play" type="button" aria-label={`${card.title} 재생`}><PlayIcon /></button>
               </div>
               <h3>{card.title}</h3>
               <p>{card.location} · {card.time}</p>
@@ -260,7 +260,7 @@ function Profile() {
                 </div>
                 <div>
                   <span>{playlist.time}</span>
-                  <button type="button" aria-label={`${playlist.title} 재생`}>▶</button>
+                  <button type="button" aria-label={`${playlist.title} 재생`}><PlayIcon /></button>
                 </div>
               </div>
             </article>

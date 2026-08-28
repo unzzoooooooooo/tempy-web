@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { PlayIcon } from "../components/TempyIcons";
 import { getTimeLabel, useContextRecommendations } from "../utils/context";
 
 const parseDuration = (duration) => {
@@ -142,7 +143,7 @@ function Now() {
               data-now-player-control
               onClick={togglePlayback}
             >
-              {isPlaying ? "Ⅱ" : "▶"}
+              {isPlaying ? "Ⅱ" : <PlayIcon />}
             </button>
             <button
               className="now-page__skip"
@@ -190,7 +191,7 @@ function Now() {
                   <span>{track.artist}</span>
                 </div>
                 <time>{track.duration}</time>
-                <button type="button" aria-label={`Play ${track.title}`}>▶</button>
+                <button type="button" aria-label={`Play ${track.title}`}><PlayIcon /></button>
               </div>
             ))}
           </div>

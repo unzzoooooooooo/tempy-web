@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
+import { PlayIcon } from "../components/TempyIcons";
 import {
   getAlbumById,
   getArtistById,
@@ -95,7 +96,7 @@ function TrackTraceAlbum() {
                 data-tempy-cover={albumTracks[0].cover}
                 data-tempy-duration={albumTracks[0].duration}
               >
-                <span aria-hidden="true">▶</span> PLAY ALBUM
+                <PlayIcon /> PLAY ALBUM
               </button>
               <button type="button">KEEP ALBUM <span aria-hidden="true">＋</span></button>
             </div>
@@ -170,7 +171,7 @@ function TrackTraceAlbum() {
                     }));
                   }}
                 >
-                  <span aria-hidden="true">{isActive && isTrackPlaying ? "Ⅱ" : "▶"}</span>
+                  <span aria-hidden="true">{isActive && isTrackPlaying ? "Ⅱ" : <PlayIcon />}</span>
                 </button>
               </li>
               );

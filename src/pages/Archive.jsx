@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import TempyFooter from "../components/TempyFooter";
-import { HeartIcon } from "../components/TempyIcons";
+import { HeartIcon, PlayIcon } from "../components/TempyIcons";
 import { getArtistDisplayImage, getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
 import { getCuratorProfileImage, profileImages } from "../data/imageCatalog";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
@@ -734,7 +734,7 @@ function PlaylistDetailView({ item, tracks }) {
               </div>
               <small>{visual.moment || "ARCHIVE MOMENT"}</small>
               <time>{track.duration || track.time || "--:--"}</time>
-              <button type="button" aria-label={`${track.title} 재생`}>▶</button>
+              <button type="button" aria-label={`${track.title} 재생`}><PlayIcon /></button>
             </article>
           );
         }) : (

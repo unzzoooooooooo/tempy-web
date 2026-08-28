@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
+import { HeartIcon, PlayIcon, ShuffleIcon } from "../components/TempyIcons";
 import { getArtistPlaylistById, getArtistPlaylistThemeStyle } from "../data/artistPlaylists";
 import { getTracksByIds } from "../data/musicCatalog";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
@@ -179,7 +179,7 @@ function ArtistPlaylistDetailContent({ selectedPlaylist }) {
             data-tempy-title={activeTrack.title}
             data-tempy-artist={activeTrack.artist}
             data-tempy-cover={activeTrack.cover}
-          ><span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span> {isPlaying ? "PAUSE" : "PLAY"}</button>
+          ><span aria-hidden="true">{isPlaying ? "Ⅱ" : <PlayIcon />}</span> {isPlaying ? "PAUSE" : "PLAY"}</button>
           <button
             className={`tempy-icon-button${isShuffled ? " is-active" : ""}`}
             type="button"

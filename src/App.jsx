@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import logoNav from "./assets/Tempy!_logo_nav.svg";
-import { HeartIcon, ShuffleIcon } from "./components/TempyIcons";
+import { HeartIcon, PlayIcon, ShuffleIcon } from "./components/TempyIcons";
 import Home from "./pages/Home";
 import Now from "./pages/Now";
 import Discover from "./pages/Discover";
@@ -1722,8 +1722,8 @@ function GlobalPlayer() {
                   disabled={isPreviewUnavailable}
                   onClick={togglePlayback}
                 >
-                  <span className="full-player__play-label--desktop" aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>
-                  <span className={`full-player__play-icon full-player__play-icon--play${isPlaying ? "" : " is-visible"}`} aria-hidden="true">▶</span>
+                  <span className="full-player__play-label--desktop" aria-hidden="true">{isPlaying ? "Ⅱ" : <PlayIcon />}</span>
+                  <span className={`full-player__play-icon full-player__play-icon--play${isPlaying ? "" : " is-visible"}`} aria-hidden="true"><PlayIcon /></span>
                   <span className={`full-player__play-icon full-player__play-icon--pause${isPlaying ? " is-visible" : ""}`} aria-hidden="true">Ⅱ</span>
                 </button>
                 <button className="full-player__next" type="button" aria-label="Next track" onClick={handleNextTrack}>
@@ -1926,7 +1926,7 @@ function GlobalPlayer() {
                   togglePlayback();
                 }}
               >
-                {isPlaying ? "Ⅱ" : "▶"}
+                {isPlaying ? "Ⅱ" : <PlayIcon />}
               </button>
             </div>
 

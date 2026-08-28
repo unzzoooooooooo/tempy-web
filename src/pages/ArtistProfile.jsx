@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
-import { HeartIcon } from "../components/TempyIcons";
+import { HeartIcon, PlayIcon } from "../components/TempyIcons";
 import {
   getAlbumById,
   getArtistById,
@@ -267,7 +267,7 @@ function ArtistProfile() {
               <div className="artist-profile__track-copy"><small>{String(index + 1).padStart(2, "0")} · FEATURED TRACK</small><h3>{track.title}</h3><p>{track.artist}</p></div>
               <div className="artist-profile__track-meta">
                 <span>{track.time}<small>MOMENT</small></span>
-                <div className="artist-profile__track-meta-bottom"><span className="tempy-icon-stat"><HeartIcon filled size="small" /> {track.likes}</span><button type="button">PLAY <b aria-hidden="true">▶</b></button></div>
+                <div className="artist-profile__track-meta-bottom"><span className="tempy-icon-stat"><HeartIcon filled size="small" /> {track.likes}</span><button type="button">PLAY <b aria-hidden="true"><PlayIcon /></b></button></div>
               </div>
             </article>
           ))}
@@ -314,7 +314,7 @@ function ArtistProfile() {
             data-tempy-duration={latestTrack.duration}
           >
             <img src={latestAlbum.cover} alt={latestAlbum.title} />
-            <div className="artist-profile__release-copy"><small>ALBUM · {latestAlbum.releaseDate}</small><h3>{latestAlbum.title}</h3><p>{artistTracks.length} Songs</p><button type="button">PLAY ALBUM <span>▶</span></button></div>
+            <div className="artist-profile__release-copy"><small>ALBUM · {latestAlbum.releaseDate}</small><h3>{latestAlbum.title}</h3><p>{artistTracks.length} Songs</p><button type="button">PLAY ALBUM <span><PlayIcon /></span></button></div>
           </div>
         </article>
 
@@ -340,7 +340,7 @@ function ArtistProfile() {
             ))}
           </div>
           <ol className="artist-profile__track-list" id="artist-most-left-tracks" role="tabpanel">
-            {leftTracksByFilter[activeTrackFilter].map((track) => <li data-tempy-playable data-tempy-id={track.id} data-tempy-title={track.title} data-tempy-artist={track.artist} data-tempy-cover={track.cover} data-tempy-duration={track.duration} key={`${activeTrackFilter}-${track.number}`}><span>{track.number}</span><strong>{track.title}<small>{track.artist}</small></strong><time>{track.time}</time><span className="tempy-icon-stat"><HeartIcon filled size="small" /> {track.likes}</span><button type="button">▶</button></li>)}
+            {leftTracksByFilter[activeTrackFilter].map((track) => <li data-tempy-playable data-tempy-id={track.id} data-tempy-title={track.title} data-tempy-artist={track.artist} data-tempy-cover={track.cover} data-tempy-duration={track.duration} key={`${activeTrackFilter}-${track.number}`}><span>{track.number}</span><strong>{track.title}<small>{track.artist}</small></strong><time>{track.time}</time><span className="tempy-icon-stat"><HeartIcon filled size="small" /> {track.likes}</span><button type="button"><PlayIcon /></button></li>)}
           </ol>
         </article>
       </section>

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
+import { HeartIcon, PlayIcon, ShuffleIcon } from "../components/TempyIcons";
 import { tracks as musicCatalogTracks } from "../data/musicCatalog";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 
@@ -448,9 +448,11 @@ function SimilarCurator() {
                         onPointerDown={(event) => event.stopPropagation()}
                         onClick={(event) => togglePlaylistPlayback(event, index)}
                       >
-                        <svg viewBox="0 0 16 16" aria-hidden="true">
-                          <path d={activePlaylistIndex === index && isPlaylistPlaying ? "M4.25 3h2.5v10h-2.5zM9.25 3h2.5v10h-2.5z" : "M5 3.25 12 8l-7 4.75z"} />
-                        </svg>
+                        {activePlaylistIndex === index && isPlaylistPlaying ? (
+                          <svg viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M4.25 3h2.5v10h-2.5zM9.25 3h2.5v10h-2.5z" />
+                          </svg>
+                        ) : <PlayIcon />}
                         {activePlaylistIndex === index && isPlaylistPlaying ? "PAUSE" : "PLAY"}
                       </button>
                       <button

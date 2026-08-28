@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
-import { HeartIcon, ShuffleIcon } from "../components/TempyIcons";
+import { HeartIcon, PlayIcon, ShuffleIcon } from "../components/TempyIcons";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
 import {
@@ -475,7 +475,7 @@ function Home() {
                   </span>
                 </div>
                 <div className="artist-info">
-                  <button>▶ Play</button>
+                  <button><PlayIcon /> Play</button>
                   <button className="tempy-icon-button" type="button" aria-label="Shuffle artist moment"><ShuffleIcon size="small" className="tempy-icon--artist-action" /></button>
                   <button className="tempy-icon-button" type="button" aria-label="Like artist moment"><HeartIcon size="small" className="tempy-icon--artist-action" /></button>
                 </div>
@@ -566,7 +566,7 @@ function Home() {
                 </div>
                 <img className="leftnow-image" src={moment.image} alt={`Moment card ${index + 1}`} />
                 <div className="leftnow-bottom">
-                  <button>▶ Play</button>
+                  <button><PlayIcon /> Play</button>
                   <button className="tempy-icon-button" type="button" aria-label="Like moment"><HeartIcon size="small" /></button>
                 </div>
               </article>
