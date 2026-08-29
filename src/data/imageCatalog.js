@@ -80,6 +80,15 @@ export const albumImages = [
   "/images/album-79.jpg",
   "/images/album-80.jpg",
   "/images/album-81.png",
+  "/images/album-82.jpg",
+  "/images/album-83.jpg",
+  "/images/album-84.jpg",
+  "/images/album-85.jpeg",
+  "/images/album-86.jpeg",
+  "/images/album-87.jpeg",
+  "/images/album-88.jpg",
+  "/images/album-89.jpg",
+  "/images/album-90.jpeg",
 ];
 
 export const artistImages = [
@@ -152,7 +161,7 @@ export const getCuratorProfileImage = (profileImage) => (
 
 export const currentUserProfileImage = "/images/profile-01.png";
 
-export const lpTextureImage = "/images/lp-texture-overlay.png.png";
+export const lpTextureImage = "/images/lp-texture-overlay-4.png";
 
 const hashSeed = (value) => {
   let hash = 2166136261;

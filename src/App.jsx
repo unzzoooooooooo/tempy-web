@@ -1556,6 +1556,7 @@ function GlobalPlayer() {
                   onKeyDown={handleDiscKeyDown}
                 >
                   <div className="full-player__disc vinyl-rotating-disc" style={vinylStyle}>
+                    <div className="full-player__disc-texture" aria-hidden="true" />
                     <div className="full-player__disc-label">
                       <img src={currentTrack.cover} alt="" draggable={false} />
                     </div>

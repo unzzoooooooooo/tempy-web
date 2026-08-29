@@ -27,6 +27,11 @@ const addedCatalogArtists = [
   { id: "allday-project", name: "ALLDAY PROJECT", profile: "/images/album-78.jpg", genres: ["K-Pop", "Hip-Hop"] },
   { id: "flor", name: "flor", profile: "/images/album-79.jpg", genres: ["Indie Pop"] },
   { id: "bruno-mars", name: "Bruno Mars", profile: "/images/album-81.png", genres: ["Pop", "R&B"] },
+  { id: "flowerovlove", name: "flowerovlove", profile: "/images/album-82.jpg", genres: ["Indie Pop"] },
+  { id: "beabadoobee", name: "beabadoobee", profile: "/images/album-85.jpeg", genres: ["Alternative", "Indie Pop"] },
+  { id: "haute-and-freddy", name: "Haute & Freddy", profile: "/images/album-86.jpeg", genres: ["Pop"] },
+  { id: "niki", name: "NIKI", profile: "/images/album-87.jpeg", genres: ["R&B", "Pop"] },
+  { id: "marshmello-jonas-brothers", name: "Marshmello x Jonas Brothers", profile: "/images/album-89.jpg", genres: ["Pop"] },
 ];
 
 const artistExperienceById = Object.freeze({
@@ -62,6 +67,11 @@ const artistExperienceById = Object.freeze({
   "allday-project": { tags: ["#BOLD", "#RHYTHM", "#CITY"], description: "단단한 비트와 자신감 있는 보컬의 교차가 도시적인 추진력을 만듭니다. 새로운 하루를 밀어붙이거나 에너지를 끌어올릴 때, Tempy에서 강하게 남은 순간을 만나보세요." },
   flor: { tags: ["#SOFT", "#INDIE", "#GLOW"], description: "부드러운 기타와 맑게 번지는 신스가 포근한 인디 팝의 공간을 만듭니다. 느린 오후나 조용한 드라이브, Tempy에서 은은하게 빛난 장면을 찾아보세요." },
   "bruno-mars": { tags: ["#GROOVE", "#ROMANCE", "#CLASSIC"], description: "탄탄한 그루브와 풍부한 보컬이 클래식한 팝의 즐거움과 로맨스를 살립니다. 함께 춤추거나 마음을 전하고 싶은 순간, Tempy에 남은 따뜻한 장면을 만나보세요." },
+  flowerovlove: { tags: ["#BREEZE", "#INDIEPOP", "#YOUTH"], description: "가벼운 기타와 밝은 보컬이 일상의 작은 설렘을 산뜻하게 펼칩니다. 햇빛 좋은 산책이나 새로운 하루를 시작할 때 자연스럽게 어울립니다." },
+  beabadoobee: { tags: ["#GUITAR", "#ALTERNATIVE", "#YOUTH"], description: "부드러운 보컬과 선명한 기타 질감이 솔직한 감정을 가까이 전합니다. 혼자 걷는 오후부터 소란스러운 밤까지 다양한 장면에 자연스럽게 스며듭니다." },
+  "haute-and-freddy": { tags: ["#POP", "#MOTION", "#GLOW"], description: "리드미컬한 팝 사운드와 매끄러운 보컬이 가볍게 움직이고 싶은 순간의 에너지를 끌어올립니다." },
+  niki: { tags: ["#ROMANCE", "#RNB", "#NIGHT"], description: "따뜻한 음색과 섬세한 R&B 편곡이 오래 남은 마음과 관계의 여운을 차분하게 비춥니다." },
+  "marshmello-jonas-brothers": { tags: ["#POP", "#SUMMER", "#DRIVE"], description: "밝은 리듬과 친숙한 보컬 하모니가 짧은 이동에도 경쾌한 속도와 여름 같은 개방감을 더합니다." },
   "tempy-archive": { tags: ["#ARCHIVE", "#DISCOVERY", "#MOMENT"], description: "서로 다른 무드와 시대의 트랙을 한곳에서 발견하도록 엮은 Tempy의 아카이브입니다. 익숙하지 않은 음악이 새로운 장면이 되는 순간을 천천히 탐색해보세요." },
   "jake-scott-john-k": { tags: ["#DUET", "#POP", "#WARM"], description: "두 보컬의 편안한 온도와 간결한 팝 편곡이 가까운 대화처럼 이어집니다. 느긋한 이동이나 누군가와 하루를 나누는 순간, Tempy에서 부드럽게 남은 장면을 만나보세요." },
   "john-k": { tags: ["#EASY", "#POP", "#DAY"], description: "담백한 보컬과 가벼운 팝 리듬이 일상의 작은 기분을 자연스럽게 끌어올립니다. 햇빛 좋은 오후나 편안한 드라이브, Tempy에서 산뜻하게 기록된 순간을 찾아보세요." },
@@ -107,6 +117,11 @@ const artistDescriptionExtensionById = Object.freeze({
   "allday-project": "서로 다른 톤의 랩과 보컬이 빠르게 교대하며 만들어내는 추진력은 도시의 복잡한 에너지를 닮아, 새로운 움직임을 시작하게 합니다.",
   flor: "섬세하게 겹친 기타와 공기처럼 퍼지는 보컬은 소리를 크게 높이지 않고도 감정을 채우며, 오래 머물고 싶은 편안한 공간을 만듭니다.",
   "bruno-mars": "리듬을 정확히 밀어내는 보컬과 생생한 악기 편곡은 익숙한 스타일에도 활력을 더해, 혼자 듣는 방까지 작은 무대처럼 바꿉니다.",
+  flowerovlove: "담백한 밴드 질감과 경쾌한 멜로디는 꾸미지 않은 청춘의 장면을 선명하게 남기며, 반복할수록 작은 디테일이 편안하게 다가옵니다.",
+  beabadoobee: "빈티지한 기타 톤과 가까이 들리는 목소리의 대비는 익숙한 인디 록 안에서도 개인적인 기억과 현재의 감정을 동시에 불러냅니다.",
+  "haute-and-freddy": "반복되는 훅과 유연한 리듬은 과하게 힘주지 않고도 몸의 흐름을 바꾸며, 짧은 감상에도 또렷한 팝의 인상을 남깁니다.",
+  niki: "말하듯 이어지는 프레이징과 따뜻한 화음은 관계의 망설임을 세밀하게 포착하며, 늦은 밤 혼자 듣는 순간에 더욱 깊은 여운을 만듭니다.",
+  "marshmello-jonas-brothers": "전자 팝의 밝은 질감과 보컬 그룹의 단단한 하모니가 자연스럽게 겹쳐져, 가벼운 드라이브와 함께 부르는 순간을 선명하게 만듭니다.",
   "tempy-archive": "장르와 분위기가 자연스럽게 교차하도록 이어져 있어, 정해진 취향 밖의 곡도 현재의 날씨와 시간에 맞는 개인적인 발견으로 남길 수 있습니다.",
   "jake-scott-john-k": "부드럽게 주고받는 멜로디와 절제된 리듬은 감정을 과장하지 않으면서도, 함께한 사람과의 평범한 시간을 오래 기억하게 합니다.",
   "john-k": "가까운 거리에서 말하듯 부르는 음색과 매끈한 리듬은 복잡한 하루의 힘을 덜어주며, 짧은 이동에도 편안한 속도를 만들어냅니다.",
@@ -169,6 +184,15 @@ const addedCatalogTracks = [
   ["future-shine", "Future Shine", "flor", "/images/album-79.jpg"],
   ["imho", "Come Over Now", "flor", "/images/album-80.jpg"],
   ["just-the-way-you-are", "Just the Way You Are", "bruno-mars", "/images/album-81.png"],
+  ["casual-lady", "Casual Lady", "flowerovlove", "/images/album-82.jpg", "03:14"],
+  ["drivers-license", "drivers license", "olivia-rodrigo", "/images/album-83.jpg", "04:02"],
+  ["vampire", "vampire", "olivia-rodrigo", "/images/album-84.jpg", "03:40"],
+  ["take-a-bite", "Take a Bite", "beabadoobee", "/images/album-85.jpeg", "02:39"],
+  ["touch-touch", "Touch Touch", "haute-and-freddy", "/images/album-86.jpeg", "04:29"],
+  ["take-a-chance-with-me", "Take A Chance With Me", "niki", "/images/album-87.jpeg", "05:04"],
+  ["yours", "Yours", "jane-and-the-boy", "/images/album-88.jpg", "02:27"],
+  ["leave-before-you-love-me", "Leave Before You Love Me", "marshmello-jonas-brothers", "/images/album-89.jpg", "02:35"],
+  ["fallen-angel", "FALLEN ANGEL", "jennie", "/images/album-90.jpeg", "03:19"],
 ];
 
 const baseArtists = [
@@ -304,7 +328,7 @@ const rawTracks = [
   ["armageddon", "Armageddon", "armageddon", "03:16"],
   ["like-jennie", "like JENNIE", "ruby", "02:03"],
   ["mantra", "Mantra", "mantra", "02:16"],
-  ...addedCatalogTracks.map(([id, title]) => [id, title, `catalog-${id}`, "--:--"]),
+  ...addedCatalogTracks.map(([id, title, , , duration]) => [id, title, `catalog-${id}`, duration || "--:--"]),
 ];
 
 // Official iTunes Search API links, matched by normalized title + artist.
@@ -679,6 +703,42 @@ const trackLinksByTrackId = Object.freeze({
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/a5/27/a8/a527a84c-9962-6673-c848-8aeeb05b4a7c/mzaf_7000909875279010673.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/just-the-way-you-are/578054234?i=578054244&uo=4",
   },
+  "casual-lady": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/03/7e/41/037e4179-7e26-9745-c696-0338817ce479/mzaf_12416053724654566596.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/casual-lady/1876362139?i=1876362141&uo=4",
+  },
+  "drivers-license": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/44/27/ed/4427edeb-3eaf-ff39-fa6f-3dfc74f92a5b/mzaf_10159458305107317580.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/drivers-license/1545042317?i=1545042666&uo=4",
+  },
+  vampire: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/70/2f/a6/702fa6b5-946c-7a8e-2dba-03de25c732d3/mzaf_12764345117177639836.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/vampire/1694767605?i=1694768031&uo=4",
+  },
+  "take-a-bite": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e5/92/43/e5924368-869b-3dd5-215b-6a4768583a51/mzaf_11306289280320643027.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/take-a-bite/1741999882?i=1741999896&uo=4",
+  },
+  "touch-touch": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/16/42/4f/16424fe9-21d6-91f6-ec06-867b0cdfe4d0/mzaf_5282779384497362069.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/touch-touch/6795697097?i=6795697099&uo=4",
+  },
+  "take-a-chance-with-me": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d7/f5/03/d7f50339-3a76-5521-0e96-27c0cf5858d1/mzaf_2093198285151202785.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/take-a-chance-with-me/1766383174?i=1766383812&uo=4",
+  },
+  yours: {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b1/cd/a9/b1cda990-85e7-546c-ff60-34ff59750860/mzaf_3619305059881646105.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/yours/1633868167?i=1633868168&uo=4",
+  },
+  "leave-before-you-love-me": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/07/db/f0/07dbf01b-559c-9f39-6763-6b8f77dbb280/mzaf_6878127403642621002.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/leave-before-you-love-me/1568213123?i=1568213204&uo=4",
+  },
+  "fallen-angel": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6c/34/f7/6c34f754-0d56-bcde-9946-84ebbc4d230c/mzaf_10651146834460646519.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/kr/album/fallen-angel/6805292680?i=6805292681&uo=4",
+  },
 });
 
 // Per-track corrections that must not rename the shared artist everywhere.
@@ -773,6 +833,15 @@ const fixedTrackOrder = Object.freeze([
   "naturally",
   "lost-the-breakup",
   "try-your-luck",
+  "casual-lady",
+  "drivers-license",
+  "vampire",
+  "take-a-bite",
+  "touch-touch",
+  "take-a-chance-with-me",
+  "yours",
+  "leave-before-you-love-me",
+  "fallen-angel",
 ]);
 
 const artistMap = new Map(artists.map((artist) => [artist.id, artist]));
