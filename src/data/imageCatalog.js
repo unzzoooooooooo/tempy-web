@@ -130,9 +130,14 @@ export const artistImageByName = Object.freeze({
   "justin bieber": "/images/artist-06.png",
   bulow: "/images/artist-07.png",
   lany: "/images/artist-08.png",
+  "olivia dean": "/images/artist-09.png",
+  xg: "/images/artist-10.png",
   "sabrina carpenter": "/images/artist-11.png",
+  lauv: "/images/artist-12.jpg",
   "olivia rodrigo": "/images/artist-13.jpg",
   "billie eilish": "/images/artist-14.jpg",
+  rose: "/images/artist-15.png",
+  honne: "/images/artist-16.jpg",
 });
 
 export const getArtistImageByName = (artistName) => (

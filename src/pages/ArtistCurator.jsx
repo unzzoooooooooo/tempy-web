@@ -1,11 +1,21 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeartIcon } from "../components/TempyIcons";
 import { artistPlaylists, getArtistPlaylistThemeStyle } from "../data/artistPlaylists";
+import { seededShuffle } from "../utils/recommendations";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
+
+const getArtistCuratorHourSeed = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hour = String(date.getHours()).padStart(2, "0");
+  return `${year}-${month}-${day}-${hour}`;
+};
 
 function ArtistCurator() {
   const navigate = useNavigate();
+  const [hourSeed, setHourSeed] = useState(() => getArtistCuratorHourSeed());
   const [translateX, setTranslateX] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
@@ -15,11 +25,33 @@ function ArtistCurator() {
   const maxTranslateRef = useRef(0);
   const dragState = useRef(null);
   const didDrag = useRef(false);
+  const previousHourSeedRef = useRef(hourSeed);
   const isPhone = window.matchMedia("(max-width: 480px)").matches;
+  const displayArtistPlaylists = useMemo(() => (
+    seededShuffle(artistPlaylists, `artist-curator-${hourSeed}`)
+  ), [hourSeed]);
 
   useLayoutEffect(() => {
     if (!window.matchMedia("(max-width: 480px)").matches) return;
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    let refreshTimer;
+
+    const scheduleNextHour = () => {
+      const now = new Date();
+      const nextHour = new Date(now);
+      nextHour.setHours(now.getHours() + 1, 0, 0, 0);
+
+      refreshTimer = window.setTimeout(() => {
+        setHourSeed(getArtistCuratorHourSeed());
+        scheduleNextHour();
+      }, Math.max(1000, nextHour.getTime() - now.getTime() + 50));
+    };
+
+    scheduleNextHour();
+    return () => window.clearTimeout(refreshTimer);
   }, []);
 
   const moveTo = (nextTranslate) => {
@@ -56,6 +88,18 @@ function ArtistCurator() {
     setPosition: moveTo,
     onMotionChange: setIsDirectInput,
   });
+
+  useEffect(() => {
+    if (previousHourSeedRef.current === hourSeed) return;
+
+    previousHourSeedRef.current = hourSeed;
+    stopWheelMotion();
+    translateRef.current = 0;
+    setTranslateX(0);
+    setScrollProgress(0);
+    setIsDirectInput(false);
+    if (viewportRef.current) viewportRef.current.scrollLeft = 0;
+  }, [hourSeed, stopWheelMotion]);
 
   const handlePointerDown = (event) => {
     if (window.matchMedia("(max-width: 760px)").matches) return;
@@ -148,7 +192,7 @@ function ArtistCurator() {
               ref={trackRef}
               style={{ transform: isPhone ? undefined : `translateX(${-translateX}px)` }}
             >
-              {artistPlaylists.map((playlist, index) => (
+              {displayArtistPlaylists.map((playlist, index) => (
                 <article
                   className="artist-curator__card"
                   key={playlist.id}

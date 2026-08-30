@@ -1,35 +1,151 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
 import { HeartIcon, PlayIcon, ShuffleIcon } from "../components/TempyIcons";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
 import {
-  getArtistCover,
   getArtistDisplayImage,
   getTrackById,
   getTracksByIds,
 } from "../data/musicCatalog";
-import { createAlbumImageSequence, getCuratorProfileImage } from "../data/imageCatalog";
-import { inferTrackTags, selectContextItems } from "../utils/recommendations";
+import { artistImages, createAlbumImageSequence, getCuratorProfileImage } from "../data/imageCatalog";
+import { inferTrackTags, seededShuffle, selectContextItems } from "../utils/recommendations";
 
 const homeAlbumImages = createAlbumImageSequence(40, "home");
 
-const createArtistMomentTrack = (id, title, artist, duration = "03:30") => ({
-  id,
-  title,
+const createArtistMomentItem = ({ artist, artistImage, title, meta, track }) => ({
   artist,
-  cover: getArtistCover(artist) || getArtistDisplayImage(artist),
-  duration,
-});
-
-const createArtistMomentItem = ({ artist, title, meta, track }) => ({
-  artist,
-  artistImage: getArtistDisplayImage(artist, { trackCover: track.cover }),
+  artistImage: artistImage || getArtistDisplayImage(artist, { trackCover: track.cover }),
   title,
   meta,
   track,
 });
+
+const artistMomentMeta = "10곡 · 21:03 · 2026.05.16";
+
+const artistMomentPool = Object.freeze([
+  createArtistMomentItem({
+    artist: "JENNIE",
+    artistImage: artistImages[0],
+    title: "JENNIE의 무대 전 워밍업 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("like-jennie"),
+  }),
+  createArtistMomentItem({
+    artist: "AKMU",
+    artistImage: artistImages[1],
+    title: "AKMU가 작업실에서 꺼내 듣는 곡들",
+    meta: artistMomentMeta,
+    track: getTrackById("good-feeling"),
+  }),
+  createArtistMomentItem({
+    artist: "한로로",
+    artistImage: artistImages[2],
+    title: "한로로와 새벽 카페에 남겨둔 음악",
+    meta: artistMomentMeta,
+    track: getTrackById("feather"),
+  }),
+  createArtistMomentItem({
+    artist: "Chappell Roan",
+    artistImage: artistImages[3],
+    title: "Chappell Roan이 무대에 오르기 전 듣는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("good-luck-babe"),
+  }),
+  createArtistMomentItem({
+    artist: "flowerovlove",
+    artistImage: artistImages[4],
+    title: "flowerovlove가 느린 오후에 듣는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("casual-lady"),
+  }),
+  createArtistMomentItem({
+    artist: "Justin Bieber",
+    artistImage: artistImages[5],
+    title: "Justin Bieber가 늦은 밤에 듣는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("blinding-lights"),
+  }),
+  createArtistMomentItem({
+    artist: "bülow",
+    artistImage: artistImages[6],
+    title: "bülow가 혼자 걷는 저녁에 듣는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("two-weeks"),
+  }),
+  createArtistMomentItem({
+    artist: "LANY",
+    artistImage: artistImages[7],
+    title: "LANY가 밤 드라이브할 때 듣는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("xxl"),
+  }),
+  createArtistMomentItem({
+    artist: "Olivia Dean",
+    artistImage: artistImages[8],
+    title: "Olivia Dean이 햇살 드는 방에서 고른 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("dive"),
+  }),
+  createArtistMomentItem({
+    artist: "XG",
+    artistImage: artistImages[9],
+    title: "XG가 퍼포먼스 전 에너지를 올리는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("puppet-show"),
+  }),
+  createArtistMomentItem({
+    artist: "Sabrina Carpenter",
+    artistImage: artistImages[10],
+    title: "Sabrina Carpenter가 준비하는 아침에 듣는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("espresso"),
+  }),
+  createArtistMomentItem({
+    artist: "Lauv",
+    artistImage: artistImages[11],
+    title: "Lauv가 늦은 귀갓길에 고른 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("i-like-me-better"),
+  }),
+  createArtistMomentItem({
+    artist: "Olivia Rodrigo",
+    artistImage: artistImages[12],
+    title: "Olivia Rodrigo가 감정을 크게 꺼내는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("vampire"),
+  }),
+  createArtistMomentItem({
+    artist: "Billie Eilish",
+    artistImage: artistImages[13],
+    title: "Billie Eilish가 조용한 밤에 고른 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("birds-of-a-feather"),
+  }),
+  createArtistMomentItem({
+    artist: "ROSÉ",
+    artistImage: artistImages[14],
+    title: "ROSÉ가 마음을 정리하는 밤의 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("toxic-till-the-end"),
+  }),
+  createArtistMomentItem({
+    artist: "HONNE",
+    artistImage: artistImages[15],
+    title: "HONNE가 도시의 불빛과 함께 듣는 플레이리스트",
+    meta: artistMomentMeta,
+    track: getTrackById("gone-are-the-days"),
+  }),
+]);
+
+const getArtistMomentHourSeed = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hour = String(date.getHours()).padStart(2, "0");
+  return `${year}-${month}-${day}-${hour}`;
+};
 
 function Home() {
   const navigate = useNavigate();
@@ -170,56 +286,31 @@ function Home() {
     });
   };
 
-  const artistCards = selectContextItems([
-    createArtistMomentItem({
-      artist: "JENNIE",
-      title: "JENNIE의 무대 전 워밍업 플레이리스트",
-      meta: "10곡 · 21:03 · 2026.05.16",
-      track: getTrackById("like-jennie"),
-    }),
-    createArtistMomentItem({
-      artist: "AKMU",
-      title: "AKMU가 작업실에서 꺼내 듣는 곡들",
-      meta: "10곡 · 21:03 · 2026.05.16",
-      track: createArtistMomentTrack("artist-moment-akmu", "Love Lee", "AKMU", "02:59"),
-    }),
-    createArtistMomentItem({
-      artist: "한로로",
-      title: "한로로와 새벽 카페에 남겨둔 음악",
-      meta: "10곡 · 21:03 · 2026.05.16",
-      track: createArtistMomentTrack("artist-moment-hanroro", "Let Me Love My Youth", "한로로", "04:08"),
-    }),
-    createArtistMomentItem({
-      artist: "Chappell Roan",
-      title: "Chappell Roan이 무대에 오르기 전 듣는 플레이리스트",
-      meta: "10곡 · 21:03 · 2026.05.16",
-      track: createArtistMomentTrack("artist-moment-wave-to-earth", "Wave", "Wave to Earth", "04:14"),
-    }),
-    createArtistMomentItem({
-      artist: "flowerovlove",
-      title: "flowerovlove가 느린 오후에 듣는 플레이리스트",
-      meta: "10곡 · 21:03 · 2026.05.16",
-      track: createArtistMomentTrack("artist-moment-laufey", "From The Start", "Laufey", "02:49"),
-    }),
-    createArtistMomentItem({
-      artist: "Justin Bieber",
-      title: "Justin Bieber가 늦은 밤에 듣는 플레이리스트",
-      meta: "10곡 · 21:03 · 2026.05.16",
-      track: createArtistMomentTrack("artist-moment-the-marias", "Velvet Morning", "The Marías", "03:36"),
-    }),
-    createArtistMomentItem({
-      artist: "bülow",
-      title: "bülow가 혼자 걷는 저녁에 듣는 플레이리스트",
-      meta: "10곡 · 21:03 · 2026.05.16",
-      track: createArtistMomentTrack("artist-moment-adoy", "City Light", "ADOY", "03:42"),
-    }),
-    createArtistMomentItem({
-      artist: "LANY",
-      title: "LANY가 밤 드라이브할 때 듣는 플레이리스트",
-      meta: "10곡 · 21:03 · 2026.05.16",
-      track: createArtistMomentTrack("artist-moment-yerin-baek", "Square", "백예린", "04:21"),
-    }),
-  ], context, "artistMoment", (item) => inferTrackTags(item.track));
+  const [artistMomentHourSeed, setArtistMomentHourSeed] = useState(() => (
+    getArtistMomentHourSeed()
+  ));
+
+  useEffect(() => {
+    let refreshTimer;
+
+    const scheduleNextHour = () => {
+      const now = new Date();
+      const nextHour = new Date(now);
+      nextHour.setHours(now.getHours() + 1, 0, 0, 0);
+
+      refreshTimer = window.setTimeout(() => {
+        setArtistMomentHourSeed(getArtistMomentHourSeed());
+        scheduleNextHour();
+      }, Math.max(1000, nextHour.getTime() - now.getTime() + 50));
+    };
+
+    scheduleNextHour();
+    return () => window.clearTimeout(refreshTimer);
+  }, []);
+
+  const artistCards = useMemo(() => (
+    seededShuffle(artistMomentPool, `home-artist-moment-${artistMomentHourSeed}`).slice(0, 8)
+  ), [artistMomentHourSeed]);
 
   const playlistTracks = getTracksByIds([
     "360",
@@ -452,7 +543,7 @@ function Home() {
             <p>좋아하는 아티스트들이 선택한 음악을 감상해보세요.</p>
           </div>
           <div className="artist-row">
-            {artistCards.map((artist, index) => (
+            {artistCards.map((artist) => (
               <article
                 className="artist-card artist-wide-card"
                 tabIndex={0}
@@ -462,7 +553,7 @@ function Home() {
                 data-tempy-artist={artist.track.artist}
                 data-tempy-cover={artist.track.cover}
                 data-tempy-duration={artist.track.duration}
-                key={`${artist.artist}-${index}`}
+                key={artist.artist}
               >
                 <img className="artist-art" src={artist.artistImage} alt={`${artist.artist} artist moment`} />
                 <div className="artist-copy" style={{ backgroundImage: `url(${artist.artistImage})` }}>
