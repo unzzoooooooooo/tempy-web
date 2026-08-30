@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { ClockIcon, HeartIcon, PlayIcon, ShuffleIcon, TrackListIcon } from "../components/TempyIcons";
 import {
   getLifestylePlaylist,
@@ -37,6 +38,7 @@ function LifestylePlaylistDetail() {
     "--playlist-panel-line": playlistTheme.line,
   };
   const [translateX, setTranslateX] = useState(0);
+  const [maxTranslate, setMaxTranslate] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -106,6 +108,7 @@ function LifestylePlaylistDetail() {
       const rightMargin = 0;
       const nextMax = Math.max(0, track.offsetLeft + track.scrollWidth - viewport.clientWidth + rightMargin);
       maxTranslateRef.current = nextMax;
+      setMaxTranslate(nextMax);
       moveTo(Math.min(translateRef.current, nextMax));
     };
 
@@ -127,6 +130,12 @@ function LifestylePlaylistDetail() {
     setPosition: moveTo,
     onMotionChange: setIsDirectInput,
   });
+
+  const scrollTrackList = (direction) => {
+    stopWheelMotion();
+    const distance = (viewportRef.current?.clientWidth || 0) * 0.68;
+    moveTo(translateRef.current + distance * direction);
+  };
 
   const handlePointerDown = (event) => {
     if (window.matchMedia("(max-width: 760px)").matches) return;
@@ -234,7 +243,7 @@ function LifestylePlaylistDetail() {
         </aside>
 
         <section
-          className="lifestyle-playlist-detail__viewport playlist-detail-right"
+          className="lifestyle-playlist-detail__viewport playlist-detail-right horizontal-scroll-host"
           ref={viewportRef}
           aria-label="Playlist tracks"
           onPointerDown={handlePointerDown}
@@ -285,6 +294,14 @@ function LifestylePlaylistDetail() {
               </article>
             ))}
           </div>
+
+          <HorizontalScrollArrows
+            canScrollLeft={maxTranslate > 2 && translateX > 2}
+            canScrollRight={maxTranslate > 2 && maxTranslate - translateX > 2}
+            onScrollLeft={() => scrollTrackList(-1)}
+            onScrollRight={() => scrollTrackList(1)}
+            label="Lifestyle playlist tracks"
+          />
 
         </section>
       </div>

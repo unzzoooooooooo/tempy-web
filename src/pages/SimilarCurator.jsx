@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { HeartIcon, PlayIcon, ShuffleIcon } from "../components/TempyIcons";
 import { tracks as musicCatalogTracks } from "../data/musicCatalog";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
@@ -190,6 +191,7 @@ const normalizedSimilarPlaylists = similarPlaylists.map((playlist, index) => ({
 function SimilarCurator() {
   const navigate = useNavigate();
   const [translateX, setTranslateX] = useState(0);
+  const [maxTranslate, setMaxTranslate] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const [activePlaylistIndex, setActivePlaylistIndex] = useState(null);
@@ -299,6 +301,7 @@ function SimilarCurator() {
       const rightPadding = 70;
       const nextMax = Math.max(0, track.scrollWidth - viewport.clientWidth + rightPadding);
       maxTranslateRef.current = nextMax;
+      setMaxTranslate(nextMax);
       moveTo(Math.min(translateRef.current, nextMax));
     };
 
@@ -326,6 +329,12 @@ function SimilarCurator() {
       return canScrollUp || canScrollDown;
     },
   });
+
+  const scrollArchive = (direction) => {
+    stopWheelMotion();
+    const distance = (viewportRef.current?.clientWidth || 0) * 0.68;
+    moveTo(translateRef.current + distance * direction);
+  };
 
   const handlePointerDown = (event) => {
     if (isMobile) return;
@@ -390,7 +399,7 @@ function SimilarCurator() {
           </div>
 
           <section
-            className="similar-curator__viewport split-page-panel__content split-archive-panel__viewport"
+            className="similar-curator__viewport split-page-panel__content split-archive-panel__viewport horizontal-scroll-host"
             ref={viewportRef}
             aria-label="Similar curator playlists"
             onPointerDown={handlePointerDown}
@@ -480,6 +489,13 @@ function SimilarCurator() {
                 </article>
               ))}
             </div>
+            <HorizontalScrollArrows
+              canScrollLeft={maxTranslate > 2 && translateX > 2}
+              canScrollRight={maxTranslate > 2 && maxTranslate - translateX > 2}
+              onScrollLeft={() => scrollArchive(-1)}
+              onScrollRight={() => scrollArchive(1)}
+              label="Similar Curator"
+            />
           </section>
 
           <div

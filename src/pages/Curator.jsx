@@ -1,10 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 
 function Curator() {
   const navigate = useNavigate();
   const [translateX, setTranslateX] = useState(0);
+  const [maxTranslate, setMaxTranslate] = useState(0);
   const [isWheelActive, setIsWheelActive] = useState(false);
   const galleryRef = useRef(null);
   const trackRef = useRef(null);
@@ -55,6 +57,7 @@ function Curator() {
       const nextMaxTranslate = Math.max(0, Math.min(translateForRightMargin, translateKeepingFirstItem));
 
       maxTranslateRef.current = nextMaxTranslate;
+      setMaxTranslate(nextMaxTranslate);
       setTranslateX((current) => {
         const nextTranslate = Math.min(current, nextMaxTranslate);
         translateXRef.current = nextTranslate;
@@ -86,6 +89,12 @@ function Curator() {
     setPosition: moveTo,
     onMotionChange: setIsWheelActive,
   });
+
+  const scrollGallery = (direction) => {
+    stopWheelMotion();
+    const distance = (galleryRef.current?.clientWidth || 0) * 0.68;
+    moveTo(translateXRef.current + distance * direction);
+  };
 
   const handlePointerDown = (event) => {
     if (isPhone) return;
@@ -142,7 +151,7 @@ function Curator() {
       </section>
 
       <section
-        className="curator-page__gallery"
+        className="curator-page__gallery horizontal-scroll-host"
         ref={galleryRef}
         aria-label="Moment curator categories"
         onPointerDown={handlePointerDown}
@@ -216,6 +225,13 @@ function Curator() {
             </article>
           ))}
         </div>
+        <HorizontalScrollArrows
+          canScrollLeft={maxTranslate > 2 && translateX > 2}
+          canScrollRight={maxTranslate > 2 && maxTranslate - translateX > 2}
+          onScrollLeft={() => scrollGallery(-1)}
+          onScrollRight={() => scrollGallery(1)}
+          label="Moment Curator"
+        />
       </section>
     </main>
   );

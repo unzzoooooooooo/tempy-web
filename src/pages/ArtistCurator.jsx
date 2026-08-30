@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { HeartIcon } from "../components/TempyIcons";
 import { artistPlaylists, getArtistPlaylistThemeStyle } from "../data/artistPlaylists";
 import { seededShuffle } from "../utils/recommendations";
@@ -17,6 +18,7 @@ function ArtistCurator() {
   const navigate = useNavigate();
   const [hourSeed, setHourSeed] = useState(() => getArtistCuratorHourSeed());
   const [translateX, setTranslateX] = useState(0);
+  const [maxTranslate, setMaxTranslate] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const viewportRef = useRef(null);
@@ -70,6 +72,7 @@ function ArtistCurator() {
       const rightPadding = 52;
       const nextMax = Math.max(0, track.scrollWidth - viewport.clientWidth + rightPadding);
       maxTranslateRef.current = nextMax;
+      setMaxTranslate(nextMax);
       moveTo(Math.min(translateRef.current, nextMax));
     };
 
@@ -88,6 +91,12 @@ function ArtistCurator() {
     setPosition: moveTo,
     onMotionChange: setIsDirectInput,
   });
+
+  const scrollArchive = (direction) => {
+    stopWheelMotion();
+    const distance = (viewportRef.current?.clientWidth || 0) * 0.68;
+    moveTo(translateRef.current + distance * direction);
+  };
 
   useEffect(() => {
     if (previousHourSeedRef.current === hourSeed) return;
@@ -178,7 +187,7 @@ function ArtistCurator() {
           </div>
 
           <section
-            className="artist-curator__viewport split-page-panel__content split-archive-panel__viewport"
+            className="artist-curator__viewport split-page-panel__content split-archive-panel__viewport horizontal-scroll-host"
             ref={viewportRef}
             aria-label="Artist curator playlists"
             onPointerDown={handlePointerDown}
@@ -234,6 +243,13 @@ function ArtistCurator() {
                 </article>
               ))}
             </div>
+            <HorizontalScrollArrows
+              canScrollLeft={maxTranslate > 2 && translateX > 2}
+              canScrollRight={maxTranslate > 2 && maxTranslate - translateX > 2}
+              onScrollLeft={() => scrollArchive(-1)}
+              onScrollRight={() => scrollArchive(1)}
+              label="Artist Curator"
+            />
           </section>
 
           <div

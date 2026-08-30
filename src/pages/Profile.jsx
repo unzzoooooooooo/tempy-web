@@ -1,8 +1,11 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { HeartIcon, PlayIcon } from "../components/TempyIcons";
 import { getTrackById } from "../data/musicCatalog";
 import { createAlbumImageSequence, currentUserProfileImage } from "../data/imageCatalog";
+import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
 const profileAlbumImages = createAlbumImageSequence(8, "profile-archive");
 
@@ -101,6 +104,11 @@ function ProfileSectionHeader({ index, title, description, actionLabel, actionTo
 }
 
 function Profile() {
+  const playlistScrollerRef = useRef(null);
+  const playlistControls = useNativeHorizontalScrollArrows({
+    containerRef: playlistScrollerRef,
+    itemSelector: ".profile-playlist-card",
+  });
   return (
     <main className="profile-page">
       <section className="profile-hero">
@@ -234,8 +242,9 @@ function Profile() {
           actionTo="/create"
         />
 
-        <div className="profile-playlist-row">
-          {playlists.map((playlist, index) => (
+        <div className="horizontal-scroll-host profile-playlist-scroll-host">
+          <div ref={playlistScrollerRef} className="profile-playlist-row">
+            {playlists.map((playlist, index) => (
             <article
               className="profile-playlist-card"
               data-tempy-playable
@@ -264,7 +273,15 @@ function Profile() {
                 </div>
               </div>
             </article>
-          ))}
+            ))}
+          </div>
+          <HorizontalScrollArrows
+            canScrollLeft={playlistControls.canScrollLeft}
+            canScrollRight={playlistControls.canScrollRight}
+            onScrollLeft={playlistControls.scrollLeft}
+            onScrollRight={playlistControls.scrollRight}
+            label="Created Playlists"
+          />
         </div>
       </section>
 

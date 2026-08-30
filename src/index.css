@@ -3649,12 +3649,43 @@ header.header {
   letter-spacing: -0.015em;
 }
 
-.tempo-carousel {
+.horizontal-scroll-host {
   position: relative;
 }
 
-.tempo-carousel__next {
+.horizontal-scroll-arrows {
+  display: contents;
+}
+
+.horizontal-scroll-arrow {
   display: none;
+}
+
+.home-horizontal-scroll {
+  --horizontal-arrow-inline: clamp(-26px, -1.35vw, -18px);
+  display: flow-root;
+}
+
+.home-horizontal-scroll--tempo {
+  --horizontal-arrow-y: clamp(136px, 8.85vw, 170px);
+}
+
+.home-horizontal-scroll--artist {
+  --horizontal-arrow-y: calc(40px + clamp(137.5px, 9.1vw, 175px));
+}
+
+.home-horizontal-scroll--leftnow {
+  --horizontal-arrow-y: calc(40px + clamp(175px, 11.2vw, 215px));
+}
+
+.home-horizontal-scroll--curator {
+  --horizontal-arrow-y: calc(40px + clamp(59px, 3.95vw, 76px));
+}
+
+.archive-horizontal-scroll,
+.artist-profile__track-flow-host,
+.profile-playlist-scroll-host {
+  display: flow-root;
 }
 
 .album-row {
@@ -3675,10 +3706,9 @@ header.header {
 }
 
 @media (min-width: 769px) and (hover: hover) and (pointer: fine) {
-  .tempo-carousel__next {
+  .horizontal-scroll-arrow {
     position: absolute;
-    top: clamp(136px, 8.85vw, 170px);
-    right: clamp(-26px, -1.35vw, -18px);
+    top: var(--horizontal-arrow-y, 50%);
     z-index: 4;
     display: grid;
     width: 28px;
@@ -3698,14 +3728,26 @@ header.header {
     transition: opacity 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
   }
 
-  .tempo-carousel__next svg {
+  .horizontal-scroll-arrow--previous {
+    left: var(--horizontal-arrow-inline, 14px);
+  }
+
+  .horizontal-scroll-arrow--next {
+    right: var(--horizontal-arrow-inline, 14px);
+  }
+
+  .horizontal-scroll-arrow svg {
     display: block;
     width: 14px;
     height: 40px;
     overflow: visible;
   }
 
-  .tempo-carousel__next path {
+  .horizontal-scroll-arrow--previous svg {
+    transform: rotate(180deg);
+  }
+
+  .horizontal-scroll-arrow path {
     fill: none;
     stroke: currentColor;
     stroke-width: 3.6;
@@ -3713,31 +3755,31 @@ header.header {
     stroke-linejoin: round;
   }
 
-  .tempo-carousel:hover .tempo-carousel__next.is-available,
-  .tempo-carousel:focus-within .tempo-carousel__next.is-available {
+  .horizontal-scroll-host:hover .horizontal-scroll-arrow.is-available,
+  .horizontal-scroll-host:focus-within .horizontal-scroll-arrow.is-available {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(-50%);
   }
 
-  .tempo-carousel__next:hover {
+  .horizontal-scroll-arrow:hover {
     background: rgba(255, 255, 255, 0.78);
     box-shadow: 0 6px 18px rgba(7, 20, 43, 0.11), inset 0 0 0 1px rgba(255, 255, 255, 0.34);
   }
 
-  .tempo-carousel__next:focus-visible {
+  .horizontal-scroll-arrow:focus-visible {
     outline: 2px solid #ff3038;
     outline-offset: 3px;
   }
 
-  .tempo-carousel__next:disabled {
+  .horizontal-scroll-arrow:disabled {
     opacity: 0;
     pointer-events: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tempo-carousel__next {
+  .horizontal-scroll-arrow {
     transition-duration: 1ms;
   }
 }

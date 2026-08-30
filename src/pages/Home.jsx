@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { HeartIcon, PlayIcon, ShuffleIcon } from "../components/TempyIcons";
 import { useContextRecommendations } from "../utils/context";
 import { calculatePointerRepel } from "../utils/pointerRepel";
@@ -11,6 +12,7 @@ import {
 } from "../data/musicCatalog";
 import { artistImages, createAlbumImageSequence, getCuratorProfileImage } from "../data/imageCatalog";
 import { inferTrackTags, seededShuffle, selectContextItems } from "../utils/recommendations";
+import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
 const homeAlbumImages = createAlbumImageSequence(40, "home");
 
@@ -147,48 +149,41 @@ const getArtistMomentHourSeed = (date = new Date()) => {
   return `${year}-${month}-${day}-${hour}`;
 };
 
+function HomeHorizontalCarousel({
+  children,
+  className,
+  itemSelector,
+  label,
+  stepItems = 2.2,
+  variant,
+}) {
+  const containerRef = useRef(null);
+  const controls = useNativeHorizontalScrollArrows({ containerRef, itemSelector, stepItems });
+
+  return (
+    <div className={`horizontal-scroll-host home-horizontal-scroll home-horizontal-scroll--${variant}`}>
+      <div className={className} ref={containerRef}>
+        {children}
+      </div>
+      <HorizontalScrollArrows
+        canScrollLeft={controls.canScrollLeft}
+        canScrollRight={controls.canScrollRight}
+        onScrollLeft={controls.scrollLeft}
+        onScrollRight={controls.scrollRight}
+        label={label}
+      />
+    </div>
+  );
+}
+
 function Home() {
   const navigate = useNavigate();
   const logoLetterRefs = useRef([]);
   const logoMotionRefs = useRef([]);
   const logoAnimationRef = useRef(null);
   const prefersReducedMotionRef = useRef(false);
-  const tempoCarouselRef = useRef(null);
-  const [canScrollTempoRight, setCanScrollTempoRight] = useState(false);
   const { context, tracks: tempoTracks } = useContextRecommendations(10);
   const tempoAlbums = tempoTracks.slice(0, 10);
-
-  const updateTempoCarouselState = useCallback(() => {
-    const carousel = tempoCarouselRef.current;
-    if (!carousel) return;
-
-    const remainingScroll = carousel.scrollWidth - carousel.clientWidth - carousel.scrollLeft;
-    setCanScrollTempoRight(remainingScroll > 2);
-  }, []);
-
-  const scrollTempoCarouselRight = useCallback(() => {
-    const carousel = tempoCarouselRef.current;
-    if (!carousel) return;
-
-    carousel.scrollBy({
-      left: carousel.clientWidth * 0.68,
-      behavior: "smooth",
-    });
-  }, []);
-
-  useEffect(() => {
-    const carousel = tempoCarouselRef.current;
-    if (!carousel) return undefined;
-
-    const animationFrame = window.requestAnimationFrame(updateTempoCarouselState);
-    const resizeObserver = new ResizeObserver(updateTempoCarouselState);
-    resizeObserver.observe(carousel);
-
-    return () => {
-      window.cancelAnimationFrame(animationFrame);
-      resizeObserver.disconnect();
-    };
-  }, [tempoAlbums.length, updateTempoCarouselState]);
 
   const navigateHomeCard = (path) => {
     navigate(path);
@@ -518,12 +513,13 @@ function Home() {
             <span className="tag">{context.locationLabel}</span>
             <span className="tag">{context.weatherLabel} · {context.temperature}</span>
           </div>
-          <div className="tempo-carousel">
-            <div
-              className="album-row"
-              ref={tempoCarouselRef}
-              onScroll={updateTempoCarouselState}
-            >
+          <HomeHorizontalCarousel
+            className="album-row"
+            itemSelector=".album-card"
+            label="Today's Tempo"
+            stepItems={1.2}
+            variant="tempo"
+          >
               {tempoAlbums.map((album, index) => (
                 <article
                   className="album-card"
@@ -548,19 +544,7 @@ function Home() {
                   </div>
                 </article>
               ))}
-            </div>
-            <button
-              className={`tempo-carousel__next${canScrollTempoRight ? " is-available" : ""}`}
-              type="button"
-              aria-label="Today's Tempo 앨범 더 보기"
-              disabled={!canScrollTempoRight}
-              onClick={scrollTempoCarouselRight}
-            >
-              <svg aria-hidden="true" viewBox="0 0 14 44">
-                <path d="M4 3L10 22L4 41" />
-              </svg>
-            </button>
-          </div>
+          </HomeHorizontalCarousel>
         </section>
 
         <section id="discover" className="section discover-section">
@@ -593,7 +577,12 @@ function Home() {
             <h2>Artist's Moment</h2>
             <p>좋아하는 아티스트들이 선택한 음악을 감상해보세요.</p>
           </div>
-          <div className="artist-row">
+          <HomeHorizontalCarousel
+            className="artist-row"
+            itemSelector=".artist-card"
+            label="Artist's Moment"
+            variant="artist"
+          >
             {artistCards.map((artist) => (
               <article
                 className="artist-card artist-wide-card"
@@ -623,7 +612,7 @@ function Home() {
                 </div>
               </article>
             ))}
-          </div>
+          </HomeHorizontalCarousel>
         </section>
 
         <section className="section playlist-section">
@@ -677,7 +666,12 @@ function Home() {
             <h2>Moments Left Now</h2>
             <p>같은 시간과 날씨에 사람들이 선택한 노래를 감상해보세요.</p>
           </div>
-          <div className="leftnow-row">
+          <HomeHorizontalCarousel
+            className="leftnow-row"
+            itemSelector=".leftnow-card"
+            label="Moments Left Now"
+            variant="leftnow"
+          >
             {moments.map((moment, index) => (
               <article
                 className="leftnow-card"
@@ -713,7 +707,7 @@ function Home() {
                 </div>
               </article>
             ))}
-          </div>
+          </HomeHorizontalCarousel>
         </section>
 
         <section className="section curator-section">
@@ -721,7 +715,12 @@ function Home() {
             <h2>Moment Curator</h2>
             <p>현재 가장 인기있는 큐레이터가 만든 플레이리스트를 감상해보세요.</p>
           </div>
-          <div className="curator-row">
+          <HomeHorizontalCarousel
+            className="curator-row"
+            itemSelector=".curator-item"
+            label="Moment Curator"
+            variant="curator"
+          >
             {curators.map((curator, index) => (
               <div className="curator-item" tabIndex={0} key={`${curator.image}-${index}`}>
                 <img className="curator-circle" src={curator.image} alt={`${curator.name} profile`} />
@@ -729,7 +728,7 @@ function Home() {
                 <span className="home-desktop-copy">{curator.desktopName}</span>
               </div>
             ))}
-          </div>
+          </HomeHorizontalCarousel>
         </section>
 
         <section id="archive" className="section archive-section">

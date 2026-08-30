@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import TempyFooter from "../components/TempyFooter";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { HeartIcon, PlayIcon } from "../components/TempyIcons";
 import { getArtistDisplayImage, getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
 import { getCuratorProfileImage, profileImages } from "../data/imageCatalog";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
+import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
 const CREATED_ITEMS_KEY = "tempyCreatedItems";
 const archiveDefaultTags = ["비", "버스", "성북구"];
@@ -224,6 +226,14 @@ function Archive() {
   const [selectedArchiveDate, setSelectedArchiveDate] = useState(null);
   const curatorScrollerRef = useRef(null);
   const artistScrollerRef = useRef(null);
+  const curatorScrollControls = useNativeHorizontalScrollArrows({
+    containerRef: curatorScrollerRef,
+    itemSelector: ".archive-page__person",
+  });
+  const artistScrollControls = useNativeHorizontalScrollArrows({
+    containerRef: artistScrollerRef,
+    itemSelector: ".archive-page__artist",
+  });
 
   useSmoothHorizontalWheel({
     containerRef: curatorScrollerRef,
@@ -458,16 +468,25 @@ function Archive() {
           <span>02</span>
           <div><h2 className="archive-page__section-title--galgo-mobile">Curators like you</h2><p>나와 가장 비슷한 시간과 취향을 가진 큐레이터</p></div>
         </div>
-        <div
-          className="archive-page__people archive-page__people--scroll"
-          ref={curatorScrollerRef}
-        >
-          {recommendedCurators.map((curator) => (
-            <article className="archive-page__person" key={curator.name}>
-              <div><img src={curator.image} alt={`${curator.name} profile`} /><span>{curator.match}</span></div>
-              <strong>{curator.name}</strong><small>{curator.note}</small>
-            </article>
-          ))}
+        <div className="horizontal-scroll-host archive-horizontal-scroll">
+          <div
+            className="archive-page__people archive-page__people--scroll"
+            ref={curatorScrollerRef}
+          >
+            {recommendedCurators.map((curator) => (
+              <article className="archive-page__person" key={curator.name}>
+                <div><img src={curator.image} alt={`${curator.name} profile`} /><span>{curator.match}</span></div>
+                <strong>{curator.name}</strong><small>{curator.note}</small>
+              </article>
+            ))}
+          </div>
+          <HorizontalScrollArrows
+            canScrollLeft={curatorScrollControls.canScrollLeft}
+            canScrollRight={curatorScrollControls.canScrollRight}
+            onScrollLeft={curatorScrollControls.scrollLeft}
+            onScrollRight={curatorScrollControls.scrollRight}
+            label="Curators like you"
+          />
         </div>
       </section>
 
@@ -476,16 +495,25 @@ function Archive() {
           <span>03</span>
           <div><h2 className="archive-page__section-title--galgo-mobile">Most played artists</h2><p>이번 달 가장 자주 찾은 아티스트</p></div>
         </div>
-        <div
-          className="archive-page__artists"
-          ref={artistScrollerRef}
-        >
-          {artists.map((artist, index) => (
-            <article className="archive-page__artist" key={artist.name}>
-              <img src={artist.image} alt={artist.name} />
-              <div><span>0{index + 1}</span><h3>{artist.name}</h3><small>{artist.count}</small></div>
-            </article>
-          ))}
+        <div className="horizontal-scroll-host archive-horizontal-scroll">
+          <div
+            className="archive-page__artists"
+            ref={artistScrollerRef}
+          >
+            {artists.map((artist, index) => (
+              <article className="archive-page__artist" key={artist.name}>
+                <img src={artist.image} alt={artist.name} />
+                <div><span>0{index + 1}</span><h3>{artist.name}</h3><small>{artist.count}</small></div>
+              </article>
+            ))}
+          </div>
+          <HorizontalScrollArrows
+            canScrollLeft={artistScrollControls.canScrollLeft}
+            canScrollRight={artistScrollControls.canScrollRight}
+            onScrollLeft={artistScrollControls.scrollLeft}
+            onScrollRight={artistScrollControls.scrollRight}
+            label="Most played artists"
+          />
         </div>
       </section>
 

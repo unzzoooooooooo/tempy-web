@@ -1,12 +1,20 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { PlayIcon } from "../components/TempyIcons";
 import { trackTraceTracks } from "../data/musicCatalog";
 import { useLiveContext } from "../utils/context";
 import { createRecommendationSeed, hashSeed, seededShuffle } from "../utils/recommendations";
+import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
 function DiscoverTrackTrace() {
   const navigate = useNavigate();
+  const trackScrollerRef = useRef(null);
+  const trackControls = useNativeHorizontalScrollArrows({
+    containerRef: trackScrollerRef,
+    itemSelector: ".track-trace-detail__card",
+    stepItems: 1.2,
+  });
   const { context } = useLiveContext();
   const shuffleSeed = createRecommendationSeed(context, "trackTrace");
   const tracks = useMemo(() => (
@@ -51,13 +59,13 @@ function DiscoverTrackTrace() {
       </section>
 
       <section className="track-trace-detail__gallery split-page-panel split-archive-panel" aria-label="Track Trace albums">
-        <div className="split-page-panel__inner split-archive-panel__inner track-trace-detail__gallery-inner">
+        <div className="split-page-panel__inner split-archive-panel__inner track-trace-detail__gallery-inner horizontal-scroll-host">
           <div className="track-trace-detail__gallery-heading split-page-panel__header split-archive-panel__header">
             <span>TRACK ARCHIVE</span>
             <span>{tracks.length} TRACKS</span>
           </div>
 
-          <div className="track-trace-detail__track split-page-panel__content split-archive-panel__viewport">
+          <div ref={trackScrollerRef} className="track-trace-detail__track split-page-panel__content split-archive-panel__viewport">
             {tracks.map((track, index) => (
               <article
                 className="track-trace-detail__card"
@@ -99,6 +107,14 @@ function DiscoverTrackTrace() {
               </article>
             ))}
           </div>
+
+          <HorizontalScrollArrows
+            canScrollLeft={trackControls.canScrollLeft}
+            canScrollRight={trackControls.canScrollRight}
+            onScrollLeft={trackControls.scrollLeft}
+            onScrollRight={trackControls.scrollRight}
+            label="Track Trace"
+          />
 
           <p className="track-trace-detail__hint split-page-panel__footer split-archive-panel__footer">DRAG TO EXPLORE&nbsp;&nbsp; →</p>
         </div>

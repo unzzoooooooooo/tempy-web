@@ -1,7 +1,9 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { PlayIcon } from "../components/TempyIcons";
 import { lifestylePlaylists, lifestylePlaylistThemes } from "../data/lifestylePlaylists";
+import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
 function LifestyleCurator() {
   const navigate = useNavigate();
@@ -9,6 +11,10 @@ function LifestyleCurator() {
   const archiveRef = useRef(null);
   const dragState = useRef(null);
   const didDrag = useRef(false);
+  const archiveControls = useNativeHorizontalScrollArrows({
+    containerRef: archiveRef,
+    itemSelector: ".lifestyle-curator__card",
+  });
 
   useLayoutEffect(() => {
     if (!window.matchMedia("(max-width: 480px)").matches) return;
@@ -75,7 +81,7 @@ function LifestyleCurator() {
       </aside>
 
       <div className="lifestyle-curator__archive split-page-panel split-archive-panel">
-        <div className="split-page-panel__inner split-archive-panel__inner lifestyle-curator__archive-inner">
+        <div className="split-page-panel__inner split-archive-panel__inner lifestyle-curator__archive-inner horizontal-scroll-host">
           <div className="lifestyle-curator__archive-head split-page-panel__header split-archive-panel__header" aria-hidden="true">
             <span>PLAYLIST ARCHIVE</span>
             <span>01 — 12</span>
@@ -143,6 +149,14 @@ function LifestyleCurator() {
               </article>
             ))}
           </section>
+
+          <HorizontalScrollArrows
+            canScrollLeft={archiveControls.canScrollLeft}
+            canScrollRight={archiveControls.canScrollRight}
+            onScrollLeft={archiveControls.scrollLeft}
+            onScrollRight={archiveControls.scrollRight}
+            label="Lifestyle Curator"
+          />
 
           <div className="lifestyle-curator__explore split-page-panel__footer split-archive-panel__footer" aria-hidden="true">
             <div className="lifestyle-curator__scroll-line">

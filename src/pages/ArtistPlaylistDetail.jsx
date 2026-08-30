@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { HeartIcon, PlayIcon, ShuffleIcon } from "../components/TempyIcons";
 import { getArtistPlaylistById, getArtistPlaylistThemeStyle } from "../data/artistPlaylists";
 import { getTracksByIds } from "../data/musicCatalog";
@@ -10,6 +11,7 @@ function ArtistPlaylistDetailContent({ selectedPlaylist }) {
   const playlistTracks = getTracksByIds(selectedPlaylist.trackIds);
   const durationLabel = selectedPlaylist.meta.split("·").slice(1).join("·").trim();
   const [translateX, setTranslateX] = useState(0);
+  const [maxTranslate, setMaxTranslate] = useState(0);
   const [isDirectInput, setIsDirectInput] = useState(false);
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -58,6 +60,7 @@ function ArtistPlaylistDetailContent({ selectedPlaylist }) {
 
       const nextMax = Math.max(0, track.scrollWidth - viewport.clientWidth);
       maxTranslateRef.current = nextMax;
+      setMaxTranslate(nextMax);
       moveTo(Math.min(translateRef.current, nextMax));
     };
 
@@ -80,6 +83,12 @@ function ArtistPlaylistDetailContent({ selectedPlaylist }) {
     setPosition: moveTo,
     onMotionChange: setIsDirectInput,
   });
+
+  const scrollTrackList = (direction) => {
+    stopWheelMotion();
+    const distance = (viewportRef.current?.clientWidth || 0) * 0.68;
+    moveTo(translateRef.current + distance * direction);
+  };
 
   const handlePointerDown = (event) => {
     if (window.matchMedia("(max-width: 760px)").matches) return;
@@ -204,7 +213,7 @@ function ArtistPlaylistDetailContent({ selectedPlaylist }) {
       </aside>
 
       <section
-        className="artist-playlist-detail__viewport playlist-detail-right"
+        className="artist-playlist-detail__viewport playlist-detail-right horizontal-scroll-host"
         ref={viewportRef}
         aria-label={`${selectedPlaylist.artist}의 플레이리스트 트랙`}
         onPointerDown={handlePointerDown}
@@ -244,6 +253,13 @@ function ArtistPlaylistDetailContent({ selectedPlaylist }) {
             </article>
           ))}
         </div>
+        <HorizontalScrollArrows
+          canScrollLeft={maxTranslate > 2 && translateX > 2}
+          canScrollRight={maxTranslate > 2 && maxTranslate - translateX > 2}
+          onScrollLeft={() => scrollTrackList(-1)}
+          onScrollRight={() => scrollTrackList(1)}
+          label="Artist playlist tracks"
+        />
       </section>
       </div>
 
