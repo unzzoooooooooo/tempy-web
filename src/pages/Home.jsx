@@ -153,8 +153,42 @@ function Home() {
   const logoMotionRefs = useRef([]);
   const logoAnimationRef = useRef(null);
   const prefersReducedMotionRef = useRef(false);
+  const tempoCarouselRef = useRef(null);
+  const [canScrollTempoRight, setCanScrollTempoRight] = useState(false);
   const { context, tracks: tempoTracks } = useContextRecommendations(10);
   const tempoAlbums = tempoTracks.slice(0, 10);
+
+  const updateTempoCarouselState = useCallback(() => {
+    const carousel = tempoCarouselRef.current;
+    if (!carousel) return;
+
+    const remainingScroll = carousel.scrollWidth - carousel.clientWidth - carousel.scrollLeft;
+    setCanScrollTempoRight(remainingScroll > 2);
+  }, []);
+
+  const scrollTempoCarouselRight = useCallback(() => {
+    const carousel = tempoCarouselRef.current;
+    if (!carousel) return;
+
+    carousel.scrollBy({
+      left: carousel.clientWidth * 0.68,
+      behavior: "smooth",
+    });
+  }, []);
+
+  useEffect(() => {
+    const carousel = tempoCarouselRef.current;
+    if (!carousel) return undefined;
+
+    const animationFrame = window.requestAnimationFrame(updateTempoCarouselState);
+    const resizeObserver = new ResizeObserver(updateTempoCarouselState);
+    resizeObserver.observe(carousel);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      resizeObserver.disconnect();
+    };
+  }, [tempoAlbums.length, updateTempoCarouselState]);
 
   const navigateHomeCard = (path) => {
     navigate(path);
@@ -484,31 +518,48 @@ function Home() {
             <span className="tag">{context.locationLabel}</span>
             <span className="tag">{context.weatherLabel} · {context.temperature}</span>
           </div>
-          <div className="album-row">
-            {tempoAlbums.map((album, index) => (
-              <article
-                className="album-card"
-                tabIndex={0}
-                data-tempy-playable
-                data-tempy-id={album.id}
-                data-tempy-title={album.title}
-                data-tempy-artist={album.artist}
-                data-tempy-cover={album.cover || album.image}
-                data-tempy-duration={album.duration}
-                key={`${album.id}-${index}`}
-              >
-                <div className="album-image-wrap">
-                  <img className="album-image" src={album.cover || album.image} alt={`${album.title} album cover`} />
-                </div>
-                <div className="album-meta">
-                  <button className="album-play" aria-label={`Play ${album.title}`}>{index + 1}</button>
-                  <div>
-                    <strong>{album.title}</strong>
-                    <span>{album.artist}</span>
+          <div className="tempo-carousel">
+            <div
+              className="album-row"
+              ref={tempoCarouselRef}
+              onScroll={updateTempoCarouselState}
+            >
+              {tempoAlbums.map((album, index) => (
+                <article
+                  className="album-card"
+                  tabIndex={0}
+                  data-tempy-playable
+                  data-tempy-id={album.id}
+                  data-tempy-title={album.title}
+                  data-tempy-artist={album.artist}
+                  data-tempy-cover={album.cover || album.image}
+                  data-tempy-duration={album.duration}
+                  key={`${album.id}-${index}`}
+                >
+                  <div className="album-image-wrap">
+                    <img className="album-image" src={album.cover || album.image} alt={`${album.title} album cover`} />
                   </div>
-                </div>
-              </article>
-            ))}
+                  <div className="album-meta">
+                    <button className="album-play" aria-label={`Play ${album.title}`}>{index + 1}</button>
+                    <div>
+                      <strong>{album.title}</strong>
+                      <span>{album.artist}</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <button
+              className={`tempo-carousel__next${canScrollTempoRight ? " is-available" : ""}`}
+              type="button"
+              aria-label="Today's Tempo 앨범 더 보기"
+              disabled={!canScrollTempoRight}
+              onClick={scrollTempoCarouselRight}
+            >
+              <svg aria-hidden="true" viewBox="0 0 14 44">
+                <path d="M4 3L10 22L4 41" />
+              </svg>
+            </button>
           </div>
         </section>
 
