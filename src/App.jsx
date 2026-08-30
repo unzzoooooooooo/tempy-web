@@ -609,10 +609,7 @@ function GlobalPlayer() {
   const pendingScrubSeekTimeRef = useRef(null);
   const resumeAfterScrubRef = useRef(false);
   const commentPanelRef = useRef(null);
-  const trackTransitionTimerRef = useRef(null);
   const currentTrackRef = useRef(null);
-  const transitionTargetRef = useRef(null);
-  const pendingTrackTransitionRef = useRef(null);
   const [isDesktopRing, setIsDesktopRing] = useState(() => window.matchMedia("(min-width: 901px)").matches);
   const [isMobileViewport, setIsMobileViewport] = useState(() => window.matchMedia("(max-width: 768px)").matches);
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -633,7 +630,6 @@ function GlobalPlayer() {
   const [momentInput, setMomentInput] = useState("");
   const [hoveredCommentPoint, setHoveredCommentPoint] = useState(null);
   const [selectedCommentPoint, setSelectedCommentPoint] = useState(null);
-  const [trackTransition, setTrackTransition] = useState({ phase: "idle", direction: "next" });
   const setFirstAudioDeckRef = useCallback((audio) => {
     audioDeckRefs.current[0] = audio;
     if (activeAudioDeckRef.current === 0) audioRef.current = audio;
@@ -758,9 +754,6 @@ function GlobalPlayer() {
   }, []);
 
   useEffect(() => () => {
-    window.clearTimeout(trackTransitionTimerRef.current);
-    transitionTargetRef.current = null;
-    pendingTrackTransitionRef.current = null;
     previewWarmupsRef.current.forEach(({ controller, objectUrl }) => {
       controller.abort();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
@@ -853,11 +846,7 @@ function GlobalPlayer() {
       const requestedTrackInput = event.detail?.track || event.detail;
       const requestedTrack = normalizeMusicItem(requestedTrackInput);
       if (!requestedTrack || requestedTrack.id === currentTrackRef.current?.id) return;
-      window.clearTimeout(trackTransitionTimerRef.current);
-      transitionTargetRef.current = null;
-      pendingTrackTransitionRef.current = null;
       currentTrackRef.current = requestedTrack;
-      setTrackTransition({ phase: "idle", direction: "next" });
       setCurrentTrack(requestedTrack);
       setIsShuffleEnabled(Boolean(event.detail?.shuffle));
       setIsPlaybackRequested(Boolean(requestedTrack.audioPreview));
@@ -1192,7 +1181,6 @@ function GlobalPlayer() {
     setIsSaved(false);
     setHoveredCommentPoint(null);
     setSelectedCommentPoint(null);
-    setTrackTransition({ phase: "idle", direction: "next" });
 
     nextAudio.play().catch(() => {
       setIsPlaybackRequested(false);
@@ -1227,7 +1215,7 @@ function GlobalPlayer() {
       return;
     }
     if (promotePreloadedTrack(nextTrack)) return;
-    transitionToTrack(nextTrack, "next", true);
+    selectTrack(nextTrack, true);
   };
 
   const handleAudioError = (event) => {
@@ -1248,9 +1236,6 @@ function GlobalPlayer() {
     isPlaybackScrubbingRef.current = false;
     pendingScrubSeekTimeRef.current = null;
     resumeAfterScrubRef.current = false;
-    window.clearTimeout(trackTransitionTimerRef.current);
-    transitionTargetRef.current = null;
-    pendingTrackTransitionRef.current = null;
     if (currentTrack) {
       window.dispatchEvent(new CustomEvent("tempy-player-progress", {
         detail: { trackId: currentTrack.id, currentTime, isPlaying: false },
@@ -1302,66 +1287,15 @@ function GlobalPlayer() {
     return true;
   };
 
-  const runTrackTransition = ({ track, direction, shouldPlay }) => {
-    const isPhone = window.matchMedia("(max-width: 393px)").matches;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    // Desktop and tablet players switch tracks immediately. The existing
-    // phone-only transition remains isolated to the mobile breakpoint.
-    if (!isPhone || reduceMotion) {
-      selectTrack(track, shouldPlay);
-      return;
-    }
-
-    const finishTransition = () => {
-      transitionTargetRef.current = null;
-      setTrackTransition({ phase: "idle", direction });
-      const pendingTransition = pendingTrackTransitionRef.current;
-      pendingTrackTransitionRef.current = null;
-      if (pendingTransition && pendingTransition.track.id !== currentTrackRef.current?.id) {
-        runTrackTransition(pendingTransition);
-      }
-    };
-
-    const nextCover = track.cover || track.image;
-    if (nextCover) {
-      const preload = new Image();
-      preload.src = nextCover;
-    }
-
-    transitionTargetRef.current = track;
-    setTrackTransition({ phase: "exit", direction });
-    trackTransitionTimerRef.current = window.setTimeout(() => {
-      selectTrack(track, shouldPlay);
-      setTrackTransition({ phase: "enter", direction });
-      trackTransitionTimerRef.current = window.setTimeout(finishTransition, 190);
-    }, 150);
-  };
-
-  const transitionToTrack = (track, direction, shouldPlay = isPlaybackRequested) => {
-    const selectedTrack = normalizeMusicItem(track);
-    if (!selectedTrack || selectedTrack.id === currentTrackRef.current?.id) return;
-
-    const transitionRequest = { track: selectedTrack, direction, shouldPlay };
-    if (transitionTargetRef.current) {
-      pendingTrackTransitionRef.current = transitionRequest;
-      return;
-    }
-
-    runTrackTransition(transitionRequest);
-  };
-
   const handlePreviousTrack = () => {
     if (isShuffleEnabled) {
       handleRandomTrack();
       return;
     }
-    const navigationBase = pendingTrackTransitionRef.current?.track
-      || transitionTargetRef.current
-      || currentTrackRef.current;
+    const navigationBase = currentTrackRef.current;
     const navigationBaseIndex = Math.max(0, playerPlaylist.findIndex((track) => track.id === navigationBase?.id));
     const nextIndex = (navigationBaseIndex - 1 + playerPlaylist.length) % playerPlaylist.length;
-    transitionToTrack(playerPlaylist[nextIndex], "previous", isPlaybackRequested);
+    selectTrack(playerPlaylist[nextIndex], isPlaybackRequested);
   };
 
   const handleNextTrack = () => {
@@ -1369,19 +1303,17 @@ function GlobalPlayer() {
       handleRandomTrack();
       return;
     }
-    const navigationBase = pendingTrackTransitionRef.current?.track
-      || transitionTargetRef.current
-      || currentTrackRef.current;
+    const navigationBase = currentTrackRef.current;
     const navigationBaseIndex = Math.max(0, playerPlaylist.findIndex((track) => track.id === navigationBase?.id));
     const nextIndex = (navigationBaseIndex + 1) % playerPlaylist.length;
-    transitionToTrack(playerPlaylist[nextIndex], "next", isPlaybackRequested);
+    selectTrack(playerPlaylist[nextIndex], isPlaybackRequested);
   };
 
   function handleRandomTrack() {
     if (playerPlaylist.length <= 1) return;
     const candidates = playerPlaylist.filter((track) => track.id !== currentTrack.id);
     const randomTrack = candidates[Math.floor(Math.random() * candidates.length)];
-    transitionToTrack(randomTrack, "next", true);
+    selectTrack(randomTrack, true);
   }
 
   const handleMomentSubmit = (event) => {
@@ -1423,8 +1355,6 @@ function GlobalPlayer() {
     isPlaying ? "full-player--playing" : "",
     isFullPlayerExpanded ? "full-player--expanded" : "",
     isMobileViewport && isMobilePanelOpen ? "full-player--mobile-panel-open" : "",
-    trackTransition.phase !== "idle" ? `full-player--track-${trackTransition.phase}` : "",
-    `full-player--track-${trackTransition.direction}`,
   ].filter(Boolean).join(" ");
 
   const openMobilePanel = () => {
@@ -1830,11 +1760,7 @@ function GlobalPlayer() {
                         key={track.id}
                         aria-current={isCurrentTrack ? "true" : undefined}
                         aria-label={`${track.title} by ${track.artist}${hasPreview ? " 재생" : " Preview unavailable"}`}
-                        onClick={() => transitionToTrack(
-                          track,
-                          index >= currentTrackIndex ? "next" : "previous",
-                          true,
-                        )}
+                        onClick={() => selectTrack(track, true)}
                       >
                         <span>{String(index + 1).padStart(2, "0")}</span>
                         <img src={track.cover || track.image} alt="" draggable={false} />
