@@ -334,6 +334,7 @@ const parseTrackDuration = (durationValue) => {
 
 const PLAYER_RING_CENTER = 50;
 const PLAYER_RING_RADIUS = 46;
+const MOMENT_CLUSTER_WINDOW_SECONDS = 3;
 const getCircularPoint = (progressValue) => {
   const progress = Math.min(1, Math.max(0, progressValue));
   const angle = (progress * 360) - 90;
@@ -345,6 +346,134 @@ const getCircularPoint = (progressValue) => {
     x,
     y,
   };
+};
+
+const formatMomentTime = (seconds) => {
+  const safeSeconds = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
+  const minutes = Math.floor(safeSeconds / 60);
+  const restSeconds = Math.floor(safeSeconds % 60);
+  return `${minutes}:${String(restSeconds).padStart(2, "0")}`;
+};
+
+const MOCK_MOMENT_USERS = [
+  ["오늘은까눌레", "/images/profile-01.png"],
+  ["bluehour", "/images/profile-02.png"],
+  ["roomtone", "/images/profile-03.png"],
+  ["hostless", "/images/profile-04.png"],
+  ["mellowday", "/images/profile-05.png"],
+  ["softstatic", "/images/profile-06.png"],
+  ["만두두왕", "/images/profile-07.png"],
+  ["moonletter", "/images/profile-08.png"],
+];
+
+const MOCK_MOMENT_COMMENTS = [
+  "첫 소절부터 공기가 부드럽게 열리는 느낌이에요.",
+  "해 질 무렵에 들으면 더 잘 어울리는 구간 같아요.",
+  "여기서 악기 사이의 여백이 갑자기 선명해져요.",
+  "이어폰으로 들으면 작은 숨소리까지 오래 남아요.",
+  "오늘 지나온 장면들이 천천히 겹쳐지는 것 같아요.",
+  "이 리듬이 시작되면 걷는 속도도 자연스럽게 달라져요.",
+  "후렴 직전의 잠깐 멈추는 감각이 가장 좋아요.",
+  "비 오는 창밖을 보고 있을 때 떠오를 것 같은 순간이에요.",
+  "목소리가 가까워지는 이 부분을 자꾸 다시 듣게 돼요.",
+  "마지막 음이 사라지기 전의 온도를 기억하고 싶어요.",
+  "밤이 조금 깊어진 뒤에 들으면 더 크게 와닿아요.",
+  "갑자기 오래된 사진 한 장이 떠오르는 구간이에요.",
+];
+
+const createMomentSeed = (value) => {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+};
+
+const createSeededMomentRandom = (initialSeed) => {
+  let seed = initialSeed;
+  return () => {
+    seed += 0x6D2B79F5;
+    let value = seed;
+    value = Math.imul(value ^ (value >>> 15), value | 1);
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+const createMockTrackMoments = (trackId) => {
+  const random = createSeededMomentRandom(createMomentSeed(trackId));
+  const clusterCount = 3 + Math.floor(random() * 3);
+  const generatedMoments = [];
+
+  for (let clusterIndex = 0; clusterIndex < clusterCount; clusterIndex += 1) {
+    const interval = clusterCount === 1 ? 0 : 24 / (clusterCount - 1);
+    const centerTimestamp = 4 + (clusterIndex * interval) + ((random() - 0.5) * 1.4);
+    const peopleCount = 1 + Math.floor(random() * 5);
+
+    for (let personIndex = 0; personIndex < peopleCount; personIndex += 1) {
+      const timestampOffset = personIndex === 0 ? 0 : (random() - 0.5) * 2.4;
+      const timestamp = Math.min(29.5, Math.max(1.5, centerTimestamp + timestampOffset));
+      const userIndex = Math.floor(random() * MOCK_MOMENT_USERS.length);
+      const commentIndex = (
+        Math.floor(random() * MOCK_MOMENT_COMMENTS.length)
+        + clusterIndex
+        + personIndex
+      ) % MOCK_MOMENT_COMMENTS.length;
+      const [user, profileImage] = MOCK_MOMENT_USERS[userIndex];
+
+      generatedMoments.push({
+        id: `${trackId}-moment-${clusterIndex + 1}-${personIndex + 1}`,
+        trackId,
+        timestamp,
+        user,
+        profileImage,
+        comment: MOCK_MOMENT_COMMENTS[commentIndex],
+      });
+    }
+  }
+
+  return generatedMoments;
+};
+
+const clusterTrackMoments = (moments, duration) => {
+  const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : 30;
+  const sortedMoments = moments
+    .filter((moment) => Number.isFinite(moment.timestamp))
+    .map((moment) => ({ ...moment, timestamp: Math.min(safeDuration, Math.max(0, moment.timestamp)) }))
+    .sort((left, right) => left.timestamp - right.timestamp);
+
+  const clusters = [];
+  sortedMoments.forEach((moment) => {
+    const activeCluster = clusters.at(-1);
+    if (activeCluster && moment.timestamp - activeCluster.startTimestamp <= MOMENT_CLUSTER_WINDOW_SECONDS) {
+      activeCluster.comments.push(moment);
+      activeCluster.totalTimestamp += moment.timestamp;
+      return;
+    }
+
+    clusters.push({
+      id: `moment-cluster-${moment.id}`,
+      startTimestamp: moment.timestamp,
+      totalTimestamp: moment.timestamp,
+      comments: [moment],
+    });
+  });
+
+  return clusters.map((cluster) => {
+    const timestamp = cluster.totalTimestamp / cluster.comments.length;
+    const firstComment = cluster.comments[0];
+    return {
+      id: cluster.id,
+      trackId: firstComment.trackId,
+      timestamp,
+      time: formatMomentTime(timestamp),
+      comments: cluster.comments,
+      peopleCount: cluster.comments.length,
+      profiles: cluster.comments.map((comment) => comment.profileImage),
+      point: getCircularPoint(timestamp / safeDuration),
+    };
+  });
 };
 
 const getCircularProgressPath = (progress) => {
@@ -404,8 +533,6 @@ function PlaybackProgressRing({
 }) {
   const isScrubbingRef = useRef(false);
   const scrubProgressRef = useRef(0);
-  const pendingSeekProgressRef = useRef(null);
-  const wasPlayingBeforeScrubRef = useRef(false);
   const animationFrameRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
@@ -414,7 +541,7 @@ function PlaybackProgressRing({
     if (!audio) return undefined;
 
     const syncProgress = () => {
-      if (isScrubbingRef.current || pendingSeekProgressRef.current !== null) return;
+      if (isScrubbingRef.current) return;
       const liveDuration = audio.duration;
       const liveTime = audio.currentTime;
       const nextProgress = Number.isFinite(liveDuration) && liveDuration > 0 && Number.isFinite(liveTime)
@@ -432,10 +559,7 @@ function PlaybackProgressRing({
 
     const renderProgress = () => {
       syncProgress();
-      const shouldKeepAnimating = !audio.ended && (
-        !audio.paused
-        || (pendingSeekProgressRef.current !== null && wasPlayingBeforeScrubRef.current)
-      );
+      const shouldKeepAnimating = !audio.ended && !audio.paused;
       if (shouldKeepAnimating) {
         animationFrameRef.current = window.requestAnimationFrame(renderProgress);
       } else {
@@ -445,17 +569,14 @@ function PlaybackProgressRing({
 
     const startProgressLoop = () => {
       syncProgress();
-      const shouldAnimate = !audio.ended && (
-        !audio.paused
-        || (pendingSeekProgressRef.current !== null && wasPlayingBeforeScrubRef.current)
-      );
+      const shouldAnimate = !audio.ended && !audio.paused;
       if (animationFrameRef.current === null && shouldAnimate) {
         animationFrameRef.current = window.requestAnimationFrame(renderProgress);
       }
     };
 
-    const finishPendingSeek = () => {
-      pendingSeekProgressRef.current = null;
+    const finishSeek = () => {
+      syncProgress();
       startProgressLoop();
     };
 
@@ -471,7 +592,7 @@ function PlaybackProgressRing({
     audio.addEventListener("playing", startProgressLoop);
     audio.addEventListener("pause", stopAndSyncProgress);
     audio.addEventListener("seeking", syncProgress);
-    audio.addEventListener("seeked", finishPendingSeek);
+    audio.addEventListener("seeked", finishSeek);
     audio.addEventListener("timeupdate", syncProgress);
     audio.addEventListener("loadedmetadata", syncProgress);
     audio.addEventListener("durationchange", syncProgress);
@@ -486,7 +607,7 @@ function PlaybackProgressRing({
       audio.removeEventListener("playing", startProgressLoop);
       audio.removeEventListener("pause", stopAndSyncProgress);
       audio.removeEventListener("seeking", syncProgress);
-      audio.removeEventListener("seeked", finishPendingSeek);
+      audio.removeEventListener("seeked", finishSeek);
       audio.removeEventListener("timeupdate", syncProgress);
       audio.removeEventListener("loadedmetadata", syncProgress);
       audio.removeEventListener("durationchange", syncProgress);
@@ -511,11 +632,7 @@ function PlaybackProgressRing({
     if (!isReady) return;
     event.preventDefault();
     isScrubbingRef.current = true;
-    pendingSeekProgressRef.current = null;
-    wasPlayingBeforeScrubRef.current = Boolean(
-      audioRef.current && !audioRef.current.paused && !audioRef.current.ended,
-    );
-    onScrubStart(wasPlayingBeforeScrubRef.current);
+    onScrubStart();
     event.currentTarget.setPointerCapture?.(event.pointerId);
     previewFromPointer(event);
   };
@@ -530,11 +647,9 @@ function PlaybackProgressRing({
     const finalProgress = event.type === "pointercancel"
       ? scrubProgressRef.current
       : previewFromPointer(event);
-    pendingSeekProgressRef.current = finalProgress;
     isScrubbingRef.current = false;
     event.currentTarget.releasePointerCapture?.(event.pointerId);
-    const didSeek = onSeek(finalProgress, wasPlayingBeforeScrubRef.current);
-    if (!didSeek) pendingSeekProgressRef.current = null;
+    onSeek(finalProgress);
   };
 
   const progressPath = getCircularProgressPath(progress);
@@ -559,6 +674,16 @@ function PlaybackProgressRing({
         strokeOpacity={progress > 0.001 ? 1 : 0}
       />
       <circle className="full-player__start-dot" cx={PLAYER_RING_CENTER} cy={PLAYER_RING_CENTER - PLAYER_RING_RADIUS} r="1.2" aria-hidden="true" />
+      {momentMarkers.map((moment) => (
+        <circle
+          className="full-player__moment-dot"
+          key={moment.id}
+          cx={moment.point.x}
+          cy={moment.point.y}
+          r="0.72"
+          aria-hidden="true"
+        />
+      ))}
       <circle
         className="full-player__progress-dot"
         cx={progressDotPoint.x}
@@ -570,16 +695,6 @@ function PlaybackProgressRing({
         onPointerUp={handlePointerEnd}
         onPointerCancel={handlePointerEnd}
       />
-      {momentMarkers.map((moment) => (
-        <circle
-          className="full-player__moment-dot"
-          key={moment.id}
-          cx={moment.point.x}
-          cy={moment.point.y}
-          r="0.85"
-          aria-hidden="true"
-        />
-      ))}
       <circle
         className="full-player__seek-hit"
         cx={PLAYER_RING_CENTER}
@@ -606,8 +721,6 @@ function GlobalPlayer() {
   const promotedTrackIdRef = useRef(null);
   const previewWarmupsRef = useRef(new Map());
   const isPlaybackScrubbingRef = useRef(false);
-  const pendingScrubSeekTimeRef = useRef(null);
-  const resumeAfterScrubRef = useRef(false);
   const commentPanelRef = useRef(null);
   const currentTrackRef = useRef(null);
   const [isDesktopRing, setIsDesktopRing] = useState(() => window.matchMedia("(min-width: 901px)").matches);
@@ -638,70 +751,7 @@ function GlobalPlayer() {
     audioDeckRefs.current[1] = audio;
     if (activeAudioDeckRef.current === 1) audioRef.current = audio;
   }, []);
-  const [moments, setMoments] = useState([
-    {
-      id: "moment-01",
-      profile: "/images/profile-01.png",
-      name: "오늘은까눌레",
-      time: "0:42",
-      text: "이 부분에서 오늘 하루가 살짝 정리되는 느낌이에요.",
-      peopleCount: 4,
-      profiles: [
-        "/images/profile-01.png",
-        "/images/profile-02.png",
-        "/images/profile-03.png",
-        "/images/profile-04.png",
-      ],
-      comments: [
-        { name: "오늘은까눌레", profile: "/images/profile-01.png", text: "이 부분에서 갑자기 마음이 벅차올라요." },
-        { name: "bluehour", profile: "/images/profile-02.png", text: "노을 보면서 들으면 정말 좋아요." },
-        { name: "roomtone", profile: "/images/profile-03.png", text: "여기부터 곡의 분위기가 완전히 달라지는 느낌." },
-        { name: "hostless", profile: "/images/profile-04.png", text: "이 순간을 오래 기억하고 싶어요." },
-      ],
-    },
-    {
-      id: "moment-02",
-      profile: "/images/profile-04.png",
-      name: "hostless",
-      time: "1:18",
-      text: "비 오는 퇴근길에 들으면 창밖 색이 더 깊어져요.",
-      peopleCount: 3,
-      profiles: [
-        "/images/profile-04.png",
-        "/images/profile-05.png",
-        "/images/profile-06.png",
-      ],
-      comments: [
-        { name: "roomtone", profile: "/images/profile-04.png", text: "이어폰으로 들으면 공간감이 더 크게 느껴져요." },
-        { name: "bluehour", profile: "/images/profile-05.png", text: "퇴근길에 가장 좋아하는 구간이에요." },
-        { name: "hostless", profile: "/images/profile-06.png", text: "비가 오는 날이면 꼭 다시 찾게 돼요." },
-      ],
-    },
-    {
-      id: "moment-03",
-      profile: "/images/profile-07.png",
-      name: "만두두왕",
-      time: "2:09",
-      text: "후렴 직전의 숨 고르는 순간이 제일 좋아요.",
-      peopleCount: 6,
-      profiles: [
-        "/images/profile-07.png",
-        "/images/profile-08.png",
-        "/images/profile-02.png",
-        "/images/profile-03.png",
-        "/images/profile-05.png",
-        "/images/profile-06.png",
-      ],
-      comments: [
-        { name: "만두두왕", profile: "/images/profile-07.png", text: "마지막으로 갈수록 감정이 깊어져요." },
-        { name: "softstatic", profile: "/images/profile-08.png", text: "계속 반복해서 듣게 되는 부분이에요." },
-        { name: "bluehour", profile: "/images/profile-02.png", text: "후렴 직전의 여백이 정말 좋아요." },
-        { name: "roomtone", profile: "/images/profile-03.png", text: "여기서 곡의 온도가 달라지는 것 같아요." },
-        { name: "hostless", profile: "/images/profile-05.png", text: "밤에 들으면 더 깊게 남아요." },
-        { name: "mellowday", profile: "/images/profile-06.png", text: "마지막 음까지 놓치고 싶지 않아요." },
-      ],
-    },
-  ]);
+  const [momentsByTrack, setMomentsByTrack] = useState({});
   const selectedSong = currentTrack;
   currentTrackRef.current = currentTrack;
   const togglePlayback = useCallback(() => {
@@ -797,6 +847,37 @@ function GlobalPlayer() {
   }, [isDesktopRing, selectedCommentPoint]);
 
   useEffect(() => {
+    if (!isDesktopRing || !hoveredCommentPoint) return undefined;
+
+    const frameId = window.requestAnimationFrame(() => {
+      const preview = document.querySelector(".full-player__moment-summary");
+      if (!(preview instanceof HTMLElement)) return;
+
+      const previewRect = preview.getBoundingClientRect();
+      const headerRect = document.querySelector(".header")?.getBoundingClientRect();
+      const sidePanelRect = document.querySelector(".full-player__side")?.getBoundingClientRect();
+      const safeInset = 12;
+      const safeTop = Math.max(safeInset, (headerRect?.bottom || 0) + safeInset);
+      const safeRight = sidePanelRect && sidePanelRect.left > 0
+        ? Math.min(window.innerWidth - safeInset, sidePanelRect.left - safeInset)
+        : window.innerWidth - safeInset;
+      const safeBottom = window.innerHeight - safeInset;
+      let correctionX = 0;
+      let correctionY = 0;
+
+      if (previewRect.left < safeInset) correctionX = safeInset - previewRect.left;
+      else if (previewRect.right > safeRight) correctionX = safeRight - previewRect.right;
+
+      if (previewRect.top < safeTop) correctionY = safeTop - previewRect.top;
+      else if (previewRect.bottom > safeBottom) correctionY = safeBottom - previewRect.bottom;
+
+      preview.style.translate = `${correctionX}px ${correctionY}px`;
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [hoveredCommentPoint, isDesktopRing]);
+
+  useEffect(() => {
     if (previousPathRef.current === location.pathname) return;
     previousPathRef.current = location.pathname;
     setIsFullPlayerOpen(false);
@@ -816,30 +897,71 @@ function GlobalPlayer() {
   }, []);
 
   useEffect(() => {
-    if (!isMobileViewport || !isFullPlayerOpen) return undefined;
+    if (!isFullPlayerOpen) return undefined;
 
-    const pageScrollY = window.scrollY;
-    const previousHtmlOverflow = document.documentElement.style.overflow;
-    const previousBodyOverflow = document.body.style.overflow;
-    const previousBodyPosition = document.body.style.position;
-    const previousBodyTop = document.body.style.top;
-    const previousBodyWidth = document.body.style.width;
+    const scrollingElement = document.scrollingElement || document.documentElement;
+    const htmlElement = document.documentElement;
+    const bodyElement = document.body;
+    const pageScrollX = scrollingElement.scrollLeft;
+    const pageScrollY = scrollingElement.scrollTop;
+    const scrollLockTargets = [...new Set([scrollingElement, bodyElement])];
+    const lockProperties = ["overflow", "overscroll-behavior"];
+    const previousLockStyles = scrollLockTargets.map((element) => ({
+      element,
+      properties: lockProperties.map((property) => ({
+        property,
+        value: element.style.getPropertyValue(property),
+        priority: element.style.getPropertyPriority(property),
+      })),
+    }));
+    const previousBodyPosition = bodyElement.style.position;
+    const previousBodyTop = bodyElement.style.top;
+    const previousBodyLeft = bodyElement.style.left;
+    const previousBodyWidth = bodyElement.style.width;
+    const previousBodyPaddingRight = bodyElement.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const bodyPaddingRight = Number.parseFloat(window.getComputedStyle(bodyElement).paddingRight) || 0;
 
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${pageScrollY}px`;
-    document.body.style.width = "100%";
+    scrollLockTargets.forEach((element) => {
+      element.style.setProperty("overflow", "hidden", "important");
+      element.style.setProperty("overscroll-behavior", "none");
+    });
+    bodyElement.style.position = "fixed";
+    bodyElement.style.top = `-${pageScrollY}px`;
+    bodyElement.style.left = `-${pageScrollX}px`;
+    bodyElement.style.width = "100%";
+    if (scrollbarWidth > 0) {
+      bodyElement.style.paddingRight = `${bodyPaddingRight + scrollbarWidth}px`;
+    }
 
     return () => {
-      document.documentElement.style.overflow = previousHtmlOverflow;
-      document.body.style.overflow = previousBodyOverflow;
-      document.body.style.position = previousBodyPosition;
-      document.body.style.top = previousBodyTop;
-      document.body.style.width = previousBodyWidth;
-      window.scrollTo(0, pageScrollY);
+      previousLockStyles.forEach(({ element, properties }) => {
+        properties.forEach(({ property, value, priority }) => {
+          if (value) element.style.setProperty(property, value, priority);
+          else element.style.removeProperty(property);
+        });
+      });
+      bodyElement.style.position = previousBodyPosition;
+      bodyElement.style.top = previousBodyTop;
+      bodyElement.style.left = previousBodyLeft;
+      bodyElement.style.width = previousBodyWidth;
+      bodyElement.style.paddingRight = previousBodyPaddingRight;
+
+      const previousScrollBehavior = htmlElement.style.getPropertyValue("scroll-behavior");
+      const previousScrollBehaviorPriority = htmlElement.style.getPropertyPriority("scroll-behavior");
+      htmlElement.style.setProperty("scroll-behavior", "auto", "important");
+      window.scrollTo(pageScrollX, pageScrollY);
+      if (previousScrollBehavior) {
+        htmlElement.style.setProperty(
+          "scroll-behavior",
+          previousScrollBehavior,
+          previousScrollBehaviorPriority,
+        );
+      } else {
+        htmlElement.style.removeProperty("scroll-behavior");
+      }
     };
-  }, [isFullPlayerOpen, isMobileViewport]);
+  }, [isFullPlayerOpen]);
 
   useEffect(() => {
     const handlePlayRequest = (event) => {
@@ -984,8 +1106,6 @@ function GlobalPlayer() {
     let cancelled = false;
 
     isPlaybackScrubbingRef.current = false;
-    pendingScrubSeekTimeRef.current = null;
-    resumeAfterScrubRef.current = false;
     setPlaybackSourceTrackId(null);
 
     if (!selectedSong?.audioPreview) {
@@ -1107,27 +1227,14 @@ function GlobalPlayer() {
       || audio !== audioRef.current
       || !Number.isFinite(audio.currentTime)
       || isPlaybackScrubbingRef.current
-      || pendingScrubSeekTimeRef.current !== null
     ) return;
     setCurrentTime(audio.currentTime);
   };
 
   const handleAudioSeeked = (event) => {
     const audio = event.currentTarget;
-    if (audio !== audioRef.current || pendingScrubSeekTimeRef.current === null) return;
-    const resolvedTime = Number.isFinite(audio.currentTime)
-      ? audio.currentTime
-      : pendingScrubSeekTimeRef.current;
-    pendingScrubSeekTimeRef.current = null;
-    setCurrentTime(resolvedTime);
-
-    if (resumeAfterScrubRef.current && audio.paused && !audio.ended) {
-      audio.play().catch(() => {
-        setIsPlaybackRequested(false);
-        setIsPlaying(false);
-      });
-    }
-    resumeAfterScrubRef.current = false;
+    if (audio !== audioRef.current || !Number.isFinite(audio.currentTime)) return;
+    setCurrentTime(audio.currentTime);
   };
 
   const handleAudioLoaded = (event) => {
@@ -1166,8 +1273,6 @@ function GlobalPlayer() {
     preloadedTrackRef.current = null;
     promotedTrackIdRef.current = track.id;
     isPlaybackScrubbingRef.current = false;
-    pendingScrubSeekTimeRef.current = null;
-    resumeAfterScrubRef.current = false;
     currentTrackRef.current = track;
 
     if (nextAudio.currentTime !== 0) nextAudio.currentTime = 0;
@@ -1196,11 +1301,6 @@ function GlobalPlayer() {
   const handleAudioPause = (event) => {
     const audio = event.currentTarget;
     if (audio !== audioRef.current) return;
-    if (
-      pendingScrubSeekTimeRef.current !== null
-      && resumeAfterScrubRef.current
-      && isPlaybackRequested
-    ) return;
     const isNaturalEnding = audio.ended
       || (Number.isFinite(audio.duration) && audio.duration - audio.currentTime < 0.05 && isPlaybackRequested);
     if (!isNaturalEnding) setIsPlaying(false);
@@ -1234,8 +1334,6 @@ function GlobalPlayer() {
     preloadedTrackRef.current = null;
     promotedTrackIdRef.current = null;
     isPlaybackScrubbingRef.current = false;
-    pendingScrubSeekTimeRef.current = null;
-    resumeAfterScrubRef.current = false;
     if (currentTrack) {
       window.dispatchEvent(new CustomEvent("tempy-player-progress", {
         detail: { trackId: currentTrack.id, currentTime, isPlaying: false },
@@ -1252,7 +1350,6 @@ function GlobalPlayer() {
     setIsRecording(false);
     setHoveredCommentPoint(null);
     setSelectedCommentPoint(null);
-    setTrackTransition({ phase: "idle", direction: "next" });
   };
 
   if (!currentTrack) {
@@ -1265,11 +1362,6 @@ function GlobalPlayer() {
   }
 
   const playerPlaylist = musicCatalogTracks;
-
-  const currentTrackIndex = Math.max(
-    0,
-    playerPlaylist.findIndex((track) => track.id === currentTrack.id),
-  );
 
   const selectTrack = (track, shouldPlay = isPlaybackRequested) => {
     const selectedTrack = normalizeMusicItem(track);
@@ -1316,34 +1408,43 @@ function GlobalPlayer() {
     selectTrack(randomTrack, true);
   }
 
+  const moments = momentsByTrack[currentTrack.id] || createMockTrackMoments(currentTrack.id);
+
   const handleMomentSubmit = (event) => {
     event.preventDefault();
     const text = momentInput.trim();
     if (!text) return;
 
-    setMoments((currentMoments) => [
-      ...currentMoments,
-      {
-        id: `moment-${Date.now()}`,
-        profile: "/images/profile-03.png",
-        name: "you",
-        time: formatTime(currentTime),
-        text,
-        peopleCount: 1,
-        profiles: ["/images/profile-03.png"],
-        comments: [{ name: "you", profile: "/images/profile-03.png", text }],
-      },
-    ]);
+    const trackId = currentTrack.id;
+    const timestamp = Number.isFinite(currentTime) ? Number(currentTime.toFixed(2)) : 0;
+    const newMoment = {
+      id: `${trackId}-moment-${Date.now()}`,
+      trackId,
+      timestamp,
+      user: "you",
+      profileImage: "/images/profile-03.png",
+      comment: text,
+    };
+
+    setMomentsByTrack((currentMomentsByTrack) => ({
+      ...currentMomentsByTrack,
+      [trackId]: [
+        ...(currentMomentsByTrack[trackId] || createMockTrackMoments(trackId)),
+        newMoment,
+      ],
+    }));
     setMomentInput("");
   };
 
   const vinylStyle = { "--global-player-cover": `url(${currentTrack.cover})` };
   const safeDuration = isAudioMetadataReady && Number.isFinite(duration) && duration > 0 ? duration : 1;
+  const markerDuration = isAudioMetadataReady && Number.isFinite(duration) && duration > 0
+    ? duration
+    : selectedSong.audioPreview
+      ? 30
+      : parseTrackDuration(currentTrack.duration);
   const isPreviewUnavailable = !selectedSong.audioPreview;
-  const momentMarkers = moments.map((moment) => ({
-    ...moment,
-    point: getCircularPoint(parseTrackDuration(moment.time) / safeDuration),
-  }));
+  const momentMarkers = clusterTrackMoments(moments, markerDuration);
   const hoveredMoment = isDesktopRing
     ? momentMarkers.find((moment) => moment.id === hoveredCommentPoint)
     : null;
@@ -1375,47 +1476,38 @@ function GlobalPlayer() {
     openMobilePanel();
   };
 
-  const handleScrubStart = (wasPlaying) => {
+  const handleScrubStart = () => {
     isPlaybackScrubbingRef.current = true;
-    pendingScrubSeekTimeRef.current = null;
-    resumeAfterScrubRef.current = wasPlaying;
   };
 
-  const seekToProgress = (progress, wasPlayingBeforeScrub) => {
+  const seekToProgress = (progress) => {
     const nextTime = Math.min(safeDuration, Math.max(0, progress * safeDuration));
     const audio = audioRef.current;
     isPlaybackScrubbingRef.current = false;
-    resumeAfterScrubRef.current = wasPlayingBeforeScrub;
 
     if (!audio || !selectedSong.audioPreview) {
-      pendingScrubSeekTimeRef.current = null;
-      resumeAfterScrubRef.current = false;
       return false;
     }
 
-    if (Math.abs(audio.currentTime - nextTime) < 0.01) {
-      pendingScrubSeekTimeRef.current = null;
-      resumeAfterScrubRef.current = false;
-      setCurrentTime(nextTime);
-      return false;
-    }
-
-    pendingScrubSeekTimeRef.current = nextTime;
     audio.currentTime = nextTime;
+    setCurrentTime(nextTime);
     return true;
   };
 
   const toggleCommentPoint = (event, momentId) => {
     event.preventDefault();
     event.stopPropagation();
+    const marker = momentMarkers.find((moment) => moment.id === momentId);
+    if (marker && isAudioMetadataReady) {
+      seekToProgress(marker.timestamp / safeDuration);
+    }
+    setSidePanelMode("moments");
     setSelectedCommentPoint((selectedId) => selectedId === momentId ? null : momentId);
   };
 
   const handleCommentPointKeyDown = (event, momentId) => {
     if (event.key !== "Enter" && event.key !== " ") return;
-    event.preventDefault();
-    event.stopPropagation();
-    setSelectedCommentPoint((selectedId) => selectedId === momentId ? null : momentId);
+    toggleCommentPoint(event, momentId);
   };
 
   return (
@@ -1502,21 +1594,29 @@ function GlobalPlayer() {
                     onSeek={seekToProgress}
                   />
                   {isDesktopRing && momentMarkers.map((moment) => {
-                    const peopleCount = moment.peopleCount || moment.comments?.length || 1;
-                    const profiles = moment.profiles?.length ? moment.profiles : [moment.profile];
-                    const horizontalDirection = moment.point.x > 68
-                      ? "full-player__moment-anchor--left"
-                      : moment.point.x < 32
-                        ? "full-player__moment-anchor--right"
-                        : "full-player__moment-anchor--center";
-                    const verticalDirection = moment.point.y < 24
-                      ? "full-player__moment-anchor--below"
-                      : "full-player__moment-anchor--above";
+                    const peopleCount = moment.comments.length;
+                    const profiles = moment.profiles;
+                    const firstComment = moment.comments[0];
+                    const deltaX = moment.point.x - PLAYER_RING_CENTER;
+                    const deltaY = moment.point.y - PLAYER_RING_CENTER;
+                    const isNavbarCollisionZone = moment.point.y < 24;
+                    const outwardDirection = isNavbarCollisionZone
+                      ? deltaX < 0
+                        ? "top-safe-left"
+                        : "top-safe-right"
+                      : Math.abs(deltaX) >= Math.abs(deltaY)
+                        ? deltaX >= 0
+                          ? "right"
+                          : "left"
+                        : deltaY >= 0
+                          ? "bottom"
+                          : "top";
+                    const verticalHemisphere = deltaY < 0 ? "upper" : "lower";
                     const isHovered = hoveredMoment?.id === moment.id;
 
                     return (
                       <div
-                        className={`full-player__moment-anchor ${horizontalDirection} ${verticalDirection}`}
+                        className={`full-player__moment-anchor full-player__moment-anchor--out-${outwardDirection} full-player__moment-anchor--${verticalHemisphere}`}
                         key={`comment-trigger-${moment.id}`}
                         style={{ left: `${moment.point.x}%`, top: `${moment.point.y}%` }}
                         onMouseEnter={() => setHoveredCommentPoint(moment.id)}
@@ -1539,15 +1639,24 @@ function GlobalPlayer() {
 
                         {isHovered && (
                           <div className="full-player__moment-summary" role="tooltip">
-                            <span className="full-player__moment-summary-profiles">
-                              {profiles.slice(0, 3).map((profile, profileIndex) => (
-                                <img src={profile} alt="" key={`${moment.id}-profile-${profileIndex}`} draggable={false} />
-                              ))}
+                            <span className="full-player__moment-summary-head">
+                              <time>{moment.time}</time>
+                              <strong>{firstComment.user}{peopleCount > 1 ? ` 외 ${peopleCount - 1}명` : ""}</strong>
                             </span>
-                            {peopleCount > 3 && (
-                              <span className="full-player__moment-summary-count">+{peopleCount - 3}</span>
+                            <span className="full-player__moment-summary-people">
+                              <span className="full-player__moment-summary-profiles">
+                                {profiles.slice(0, 3).map((profile, profileIndex) => (
+                                  <img src={profile} alt="" key={`${moment.id}-profile-${profileIndex}`} draggable={false} />
+                                ))}
+                              </span>
+                              {peopleCount > 3 && (
+                                <span className="full-player__moment-summary-count">+{peopleCount - 3}</span>
+                              )}
+                            </span>
+                            <span className="full-player__moment-summary-comment">“{firstComment.comment}”</span>
+                            {peopleCount > 1 && (
+                              <small className="full-player__moment-summary-more">+{peopleCount - 1} more</small>
                             )}
-                            <span className="full-player__moment-summary-total">{peopleCount} people</span>
                           </div>
                         )}
                       </div>
@@ -1585,19 +1694,15 @@ function GlobalPlayer() {
                 </header>
 
                 <div className="full-player__comment-panel-list">
-                  {(selectedMoment.comments || [{
-                    name: selectedMoment.name,
-                    profile: selectedMoment.profile,
-                    text: selectedMoment.text,
-                  }]).slice(0, 3).map((comment, commentIndex) => (
+                  {selectedMoment.comments.slice(0, 3).map((comment, commentIndex) => (
                     <article className="full-player__comment-card" key={`${selectedMoment.id}-comment-${commentIndex}`}>
-                      <img src={comment.profile} alt="" draggable={false} />
+                      <img src={comment.profileImage} alt="" draggable={false} />
                       <div>
                         <header>
-                          <strong>{comment.name}</strong>
+                          <strong>{comment.user}</strong>
                           <time>{selectedMoment.time}</time>
                         </header>
-                        <p>{comment.text}</p>
+                        <p>{comment.comment}</p>
                       </div>
                     </article>
                   ))}
@@ -1785,13 +1890,13 @@ function GlobalPlayer() {
                 <div className="full-player__moment-list">
                   {moments.map((moment) => (
                     <article className="full-player__moment" key={moment.id}>
-                      <img src={moment.profile} alt="" draggable={false} />
+                      <img src={moment.profileImage} alt="" draggable={false} />
                       <div>
                         <header>
-                          <strong>{moment.name}</strong>
-                          <time>{moment.time}</time>
+                          <strong>{moment.user}</strong>
+                          <time>{formatMomentTime(moment.timestamp)}</time>
                         </header>
-                        <p>{moment.text}</p>
+                        <p>{moment.comment}</p>
                       </div>
                     </article>
                   ))}
