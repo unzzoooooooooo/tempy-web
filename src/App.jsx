@@ -1295,7 +1295,8 @@ function GlobalPlayer() {
   };
 
   const handleAudioPlaying = (event) => {
-    if (event.currentTarget === audioRef.current) setIsPlaying(true);
+    if (event.currentTarget !== audioRef.current) return;
+    setIsPlaying(true);
   };
 
   const handleAudioPause = (event) => {
