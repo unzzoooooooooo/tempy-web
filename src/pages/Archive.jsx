@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
 import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { HeartIcon, PlayIcon } from "../components/TempyIcons";
 import { getArtistDisplayImage, getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
 import { getCuratorProfileImage, profileImages } from "../data/imageCatalog";
+import { getCuratorProfileByUsername } from "../data/curatorProfiles";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
@@ -316,6 +318,7 @@ function Archive() {
   ].map((curator) => ({
     ...curator,
     image: getCuratorProfileImage(curator.image),
+    profileId: getCuratorProfileByUsername(curator.name)?.id,
   }));
 
   const artists = [
@@ -343,6 +346,7 @@ function Archive() {
   ].map((curator) => ({
     ...curator,
     image: getCuratorProfileImage(curator.image),
+    profileId: getCuratorProfileByUsername(curator.name)?.id,
   }));
 
   const selectedCreatedItem = createdItems.find((item) => item.id === selectedCreatedId) || null;
@@ -474,10 +478,10 @@ function Archive() {
             ref={curatorScrollerRef}
           >
             {recommendedCurators.map((curator) => (
-              <article className="archive-page__person" key={curator.name}>
+              <Link className="archive-page__person" to={`/curator/${curator.profileId}`} key={curator.name}>
                 <div><img src={curator.image} alt={`${curator.name} profile`} /><span>{curator.match}</span></div>
                 <strong>{curator.name}</strong><small>{curator.note}</small>
-              </article>
+              </Link>
             ))}
           </div>
           <HorizontalScrollArrows
@@ -524,10 +528,10 @@ function Archive() {
         </div>
         <div className="archive-page__people archive-page__people--liked">
           {likedCurators.map((curator) => (
-            <article className="archive-page__person" key={curator.name}>
+            <Link className="archive-page__person" to={`/curator/${curator.profileId}`} key={curator.name}>
               <div><img src={curator.image} alt={`${curator.name} profile`} /><span><HeartIcon size="small" /></span></div>
               <strong>{curator.name}</strong><small>MOMENT CURATOR</small>
-            </article>
+            </Link>
           ))}
         </div>
       </section>

@@ -17,6 +17,7 @@ import LifestylePlaylistDetail from "./pages/LifestylePlaylistDetail";
 import ArtistCurator from "./pages/ArtistCurator";
 import ArtistPlaylistDetail from "./pages/ArtistPlaylistDetail";
 import SimilarCurator from "./pages/SimilarCurator";
+import CuratorProfile from "./pages/CuratorProfile";
 import Create from "./pages/Create";
 import Archive from "./pages/Archive";
 import ArchiveBlindPick from "./pages/ArchiveBlindPick";
@@ -2003,6 +2004,7 @@ function App() {
         <Route path="/curator/artist" element={<ArtistCurator />} />
         <Route path="/curator/artist/:playlistId" element={<ArtistPlaylistDetail />} />
         <Route path="/curator/similar" element={<SimilarCurator />} />
+        <Route path="/curator/:curatorId" element={<CuratorProfile />} />
         <Route path="/create" element={<Create />} />
         <Route path="/archive" element={<Archive />} />
         <Route path="/archive/blind-pick" element={<ArchiveBlindPick />} />

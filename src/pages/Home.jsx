@@ -11,6 +11,7 @@ import {
   getTracksByIds,
 } from "../data/musicCatalog";
 import { artistImages, createAlbumImageSequence, getCuratorProfileImage } from "../data/imageCatalog";
+import { homeMomentCurators } from "../data/curatorProfiles";
 import { inferTrackTags, seededShuffle, selectContextItems } from "../utils/recommendations";
 import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
@@ -412,46 +413,11 @@ function Home() {
     curatorImage: curatorProfileImages[(index + 3) % curatorProfileImages.length],
   })), context, "momentsLeftNow");
 
-  const curatorPool = [
-    { image: "/images/profile-01.png", name: "만두두왕" },
-    { image: "/images/profile-02.png", name: "오늘은까눌레" },
-    { image: "/images/profile-03.png", name: "hostless" },
-    { image: "/images/profile-04.png", name: "hostless" },
-    { image: "/images/profile-05.png", name: "hostless" },
-    { image: "/images/profile-06.png", name: "hostless" },
-    { image: "/images/profile-07.png", name: "hostless" },
-    { image: "/images/profile-08.png", name: "hostless" },
-    { image: "/images/profile-06.png", name: "hostless" },
-    { image: "/images/profile-01.png", name: "hostless" },
-    { image: "/images/profile-04.png", name: "hostless" },
-    { image: "/images/profile-07.png", name: "hostless" },
-    { image: "/images/profile-08.png", name: "hostless" },
-    { image: "/images/profile-03.png", name: "hostless" },
-    { image: "/images/profile-05.png", name: "hostless" },
-  ];
-
-  const desktopCuratorNames = [
-    "만두두왕",
-    "오늘은까눌레",
-    "hostless",
-    "새벽버스",
-    "느린파도",
-    "종이비행기",
-    "모과차",
-    "귤껍질수집가",
-    "비누향",
-    "moonletter",
-    "작은소음",
-    "bluehour",
-    "오래된헤드폰",
-    "여름끝",
-    "midnightnote",
-  ];
-
-  const curators = selectContextItems(curatorPool.map((curator, index) => ({
-    ...curator,
-    desktopName: desktopCuratorNames[index],
-    image: getCuratorProfileImage(curator.image),
+  const curators = selectContextItems(homeMomentCurators.map((curator, index) => ({
+    id: curator.id,
+    name: curator.username,
+    desktopName: curator.username,
+    image: getCuratorProfileImage(curator.profileImage),
     tags: inferTrackTags(tempoAlbums[index % tempoAlbums.length]),
   })), context, "momentCurator");
 
@@ -722,11 +688,11 @@ function Home() {
             variant="curator"
           >
             {curators.map((curator, index) => (
-              <div className="curator-item" tabIndex={0} key={`${curator.image}-${index}`}>
+              <Link className="curator-item" to={`/curator/${curator.id}`} key={`${curator.id}-${index}`}>
                 <img className="curator-circle" src={curator.image} alt={`${curator.name} profile`} />
                 <span className="home-mobile-copy">{curator.name}</span>
                 <span className="home-desktop-copy">{curator.desktopName}</span>
-              </div>
+              </Link>
             ))}
           </HomeHorizontalCarousel>
         </section>
