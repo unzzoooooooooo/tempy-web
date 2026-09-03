@@ -31773,6 +31773,22 @@ body::-webkit-scrollbar:horizontal,
 
 /* MacBook / compact desktop sizing. Keep the large-desktop and mobile layouts intact. */
 @media (min-width: 1400px) and (max-width: 1799px) {
+  /* Moment Curator: retain the horizontal track and expose its full vertical content. */
+  .app .curator-page {
+    height: auto;
+    min-height: calc(100vh + 146px);
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
+  .app .curator-page .curator-page__gallery {
+    bottom: auto;
+    height: calc(100vh + 60px);
+    padding-bottom: 40px;
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
   /* Discover: Time Set */
   .time-set-detail {
     grid-template-columns: minmax(360px, 32%) minmax(0, 1fr);
@@ -31830,16 +31846,16 @@ body::-webkit-scrollbar:horizontal,
 
   /* Now Clock */
   .now-page__selected-body {
-    grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
-    gap: 14px;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: 0;
     width: 100%;
     padding: 12px 0 16px;
   }
 
   .now-page__cover-wrap {
-    width: min(100%, 306px);
-    max-width: 306px;
-    max-height: 306px;
+    width: min(100%, 260px);
+    max-width: 260px;
+    max-height: 260px;
     aspect-ratio: 1 / 1;
   }
 
@@ -32032,5 +32048,176 @@ body::-webkit-scrollbar:horizontal,
   .full-player__track-row small,
   .full-player__track-row time {
     font-size: 11px;
+  }
+
+  /* Home: use the four-column width efficiently and keep playlist titles intact. */
+  .app .home-page .playlist-grid {
+    column-gap: 32px;
+  }
+
+  .app .home-page .playlist-row {
+    padding-inline: 0;
+    column-gap: 12px;
+  }
+
+  .app .home-page .playlist-row strong {
+    display: block;
+    overflow: visible;
+    font-size: 17px;
+    line-height: 1.28;
+    text-overflow: clip;
+    white-space: nowrap;
+    -webkit-line-clamp: unset;
+  }
+
+  /* Lifestyle Curator: keep card geometry and enlarge only its record artwork. */
+  .app .lifestyle-curator .lifestyle-curator__lp {
+    width: 228px;
+  }
+
+  /* Artist/Lifestyle playlist details: compact only the shared left card. */
+  .app .playlist-detail-page .playlist-detail-back {
+    top: 54px;
+  }
+
+  .app .playlist-detail-page .playlist-detail-left {
+    top: 120px;
+    height: min(680px, calc(100% - 168px));
+  }
+
+  .app .playlist-detail--artist .playlist-detail-left {
+    height: min(690px, calc(100% - 168px));
+  }
+
+  .app .playlist-detail-page .artist-playlist-detail__panel-copy {
+    min-height: 0;
+    padding-block: 24px;
+    flex: 0 0 344px;
+  }
+
+  .app .playlist-detail-page .artist-playlist-detail__panel-copy h1 {
+    margin-bottom: 13px;
+  }
+
+  .app .playlist-detail-page .artist-playlist-detail__now {
+    margin-top: 18px;
+    padding-top: 13px;
+  }
+
+  .app .playlist-detail-page .artist-playlist-detail__now > strong {
+    margin-top: 9px;
+  }
+
+  .app .playlist-detail-page .artist-playlist-detail__progress {
+    margin-top: 10px;
+  }
+
+  .app .playlist-detail-page .artist-playlist-detail__portrait {
+    flex: 1 1 auto;
+  }
+
+  .app .playlist-detail-page .artist-playlist-detail__portrait img {
+    object-position: center 28%;
+  }
+
+  .app .playlist-detail-page .lifestyle-playlist-detail__panel {
+    padding-block: 24px;
+  }
+
+  .app .playlist-detail-page .lifestyle-playlist-detail__eyebrow {
+    margin-bottom: 16px;
+  }
+
+  .app .playlist-detail-page .lifestyle-playlist-detail__meta {
+    margin-block: 14px 11px;
+  }
+
+  .app .playlist-detail-page .lifestyle-playlist-detail__now-playing {
+    margin-top: 15px;
+    padding-block: 11px 12px;
+  }
+
+  .app .playlist-detail-page .lifestyle-playlist-detail__controller {
+    padding-top: 12px;
+  }
+
+  .app .playlist-detail-page .lifestyle-playlist-detail__small-controls {
+    margin-top: 11px;
+  }
+
+  .app .playlist-detail-page .lifestyle-playlist-detail__actions {
+    margin-top: 12px;
+  }
+
+  /* Lifestyle detail note: reserve a compact, non-overlapping stats column. */
+  .app .playlist-detail--lifestyle .playlist-detail-note .lifestyle-playlist-detail__archive-copy {
+    padding-right: 304px;
+    box-sizing: border-box;
+  }
+
+  .app .playlist-detail--lifestyle .playlist-detail-note .lifestyle-playlist-detail__stats {
+    top: 58px;
+    gap: 6px;
+  }
+
+  .app .playlist-detail--lifestyle .lifestyle-playlist-detail__stat {
+    width: 94px;
+    height: 56px;
+    min-height: 56px;
+    padding: 6px 8px;
+    grid-template-columns: 18px minmax(0, 1fr);
+    column-gap: 6px;
+    row-gap: 2px;
+  }
+
+  .app .playlist-detail--lifestyle .lifestyle-playlist-detail__stat > span {
+    width: 18px;
+    height: 18px;
+    font-size: 15px;
+  }
+
+  .app .playlist-detail--lifestyle .lifestyle-playlist-detail__stat strong {
+    font-size: 15px;
+  }
+
+  .app .playlist-detail--lifestyle .lifestyle-playlist-detail__stat small {
+    font-size: 7px;
+  }
+
+  /* Profile: keep the Time Tags composition inside the compact-desktop canvas. */
+  .app .profile-tags-layout {
+    width: calc(100% - 72px);
+    grid-template-columns: minmax(0, 34%) minmax(0, 66%);
+  }
+
+  .app .profile-sentence-card {
+    padding-inline: 28px;
+  }
+
+  .app .profile-tag-orbits {
+    padding-inline: 18px;
+    grid-template-columns: repeat(6, minmax(0, 144px));
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .app .profile-tag-orbit {
+    width: 100%;
+    padding: 11px;
+    gap: 7px;
+  }
+
+  /* Create detail headings: loosen only the Galgo tracking on compact desktop. */
+  .app .create-detail-page:is(
+    .create-detail-page--moment,
+    .create-detail-page--playlist
+  ) .create-detail-header h2 {
+    letter-spacing: -0.015em !important;
+    white-space: nowrap;
+  }
+
+  /* Create Moment Card: break only the side description's final phrase. */
+  .app .create-detail-page--moment .create-detail-description-moment-tail {
+    display: block;
   }
 }

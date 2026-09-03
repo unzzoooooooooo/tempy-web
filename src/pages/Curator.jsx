@@ -88,6 +88,7 @@ function Curator() {
     getMaxPosition: () => maxTranslateRef.current,
     setPosition: moveTo,
     onMotionChange: setIsWheelActive,
+    disabledMediaQuery: "(max-width: 760px), (min-width: 1400px) and (max-width: 1799px)",
   });
 
   const scrollGallery = (direction) => {

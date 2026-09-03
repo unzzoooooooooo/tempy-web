@@ -2613,7 +2613,7 @@ function CreateDetail({
               {isMoment ? (
                 <>
                   지금의 시간 · 날씨 · 위치를 담아{" "}<br className="create-detail-description-break" />
-                  1곡짜리 순간 큐레이션을 남겨요
+                  1곡짜리{" "}<span className="create-detail-description-moment-tail">순간 큐레이션을 남겨요</span>
                 </>
               ) : (
                 <>
