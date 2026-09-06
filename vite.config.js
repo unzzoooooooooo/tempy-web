@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// For a custom domain, change the build base to '/'. Local development stays at '/'.
-const pagesBase = '/tempy-web/'
+// Production is served from the root of https://tempy.studio/.
+const pagesBase = '/'
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
