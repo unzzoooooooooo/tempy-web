@@ -163,7 +163,12 @@ function HomeHorizontalCarousel({
 
   return (
     <div className={`horizontal-scroll-host home-horizontal-scroll home-horizontal-scroll--${variant}`}>
-      <div className={className} ref={containerRef}>
+      <div
+        className={className}
+        ref={containerRef}
+        data-fade-left={variant === "leftnow" ? controls.canScrollLeft : undefined}
+        data-fade-right={variant === "leftnow" ? controls.canScrollRight : undefined}
+      >
         {children}
       </div>
       <HorizontalScrollArrows

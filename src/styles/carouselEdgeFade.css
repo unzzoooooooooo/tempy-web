@@ -1,0 +1,24 @@
+/* Same 64px opacity curve as Moments Left Now; opt-in content carousels only. */
+.carousel-edge-fade {
+  --carousel-edge-mask: linear-gradient(to right,
+    rgb(0 0 0 / 0) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 0),
+    rgb(0 0 0 / 0.42) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 0.125),
+    rgb(0 0 0 / 0.68) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 0.25),
+    rgb(0 0 0 / 0.82) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 0.375),
+    rgb(0 0 0 / 0.91) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 0.5),
+    rgb(0 0 0 / 0.96) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 0.625),
+    rgb(0 0 0 / 0.985) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 0.75),
+    rgb(0 0 0 / 0.997) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 0.875),
+    rgb(0 0 0 / 1) calc(var(--carousel-edge-start) + var(--carousel-fade-left) * 1),
+    rgb(0 0 0 / 1) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 1),
+    rgb(0 0 0 / 0.997) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 0.875),
+    rgb(0 0 0 / 0.985) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 0.75),
+    rgb(0 0 0 / 0.96) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 0.625),
+    rgb(0 0 0 / 0.91) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 0.5),
+    rgb(0 0 0 / 0.82) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 0.375),
+    rgb(0 0 0 / 0.68) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 0.25),
+    rgb(0 0 0 / 0.42) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 0.125),
+    rgb(0 0 0 / 0) calc(var(--carousel-edge-end) - var(--carousel-fade-right) * 0));
+  -webkit-mask-image: var(--carousel-edge-mask);
+  mask-image: var(--carousel-edge-mask);
+}

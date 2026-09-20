@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
+import "./styles/carouselEdgeFade.css";
+import { useCarouselEdgeFade } from "./utils/useCarouselEdgeFade";
 import logoNav from "./assets/Tempy!_logo_nav.svg";
 import { HeartIcon, PlayIcon, ShuffleIcon } from "./components/TempyIcons";
 import Home from "./pages/Home";
@@ -1983,6 +1985,8 @@ function GlobalPlayer() {
 }
 
 function App() {
+  const location = useLocation();
+  useCarouselEdgeFade(location.key);
   return (
     <div className="app">
       <TempyCursor />

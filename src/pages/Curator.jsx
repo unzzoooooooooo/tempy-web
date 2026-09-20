@@ -50,6 +50,27 @@ function Curator() {
       const firstItem = track?.firstElementChild;
       if (!gallery || !track || !firstItem) return;
 
+      // Absolute desktop galleries do not contribute their translated LPs to
+      // page height. Reserve only the content's bottom edge plus breathing room.
+      const page = gallery.parentElement;
+      if (window.getComputedStyle(gallery).position === "absolute") {
+        const pageTop = page.getBoundingClientRect().top;
+        const galleryTop = gallery.getBoundingClientRect().top - pageTop;
+        const contentBottom = Math.max(...Array.from(track.children, (item) => (
+          item.getBoundingClientRect().bottom - pageTop
+        )));
+        page.style.setProperty("--curator-required-height", `${Math.ceil(contentBottom + 24)}px`);
+        // Preserve the arrow position when extra page height is required.
+        const compactDesktop = window.matchMedia("(min-width: 1400px) and (max-width: 1799px)").matches;
+        const originalGalleryHeight = compactDesktop
+          ? window.innerHeight + 60
+          : window.innerHeight - galleryTop;
+        gallery.style.setProperty("--horizontal-arrow-y", `${originalGalleryHeight / 2}px`);
+      } else {
+        page.style.removeProperty("--curator-required-height");
+        gallery.style.removeProperty("--horizontal-arrow-y");
+      }
+
       const rightMargin = 64;
       const minimumVisibleFirstItem = 64;
       const translateForRightMargin = track.offsetLeft + track.scrollWidth - gallery.clientWidth + rightMargin;
