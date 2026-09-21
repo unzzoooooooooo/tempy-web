@@ -3923,7 +3923,17 @@ header.header {
   border-radius: 6px;
 }
 
-.home-page .leftnow-section :is(.leftnow-card, .leftnow-image) {
+/* Subtle card corners are scoped to the four home sections only. */
+.home-page :is(
+  .discover-section .discover-card,
+  .artist-section .artist-card,
+  .leftnow-section .leftnow-card,
+  .archive-section .archive-card
+) {
+  border-radius: 6px;
+}
+
+.home-page .leftnow-section .leftnow-image {
   border-radius: 0;
 }
 
