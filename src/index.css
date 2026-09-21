@@ -7128,6 +7128,12 @@ body::-webkit-scrollbar:horizontal,
 }
 
 @media (min-width: 1181px) and (hover: hover) and (pointer: fine) {
+  /* Keep the 3px hover lift inside the scrollport without moving the covers. */
+  .app .home-page .tempo-section .album-row {
+    margin-top: -3px;
+    padding-top: 3px;
+  }
+
   .app .home-page .album-card {
     cursor: pointer;
     transition:
@@ -7216,6 +7222,12 @@ body::-webkit-scrollbar:horizontal,
   .app .home-page .artist-card:is(:hover, :focus-visible) {
     outline: 0;
     transform: translateY(-4px);
+  }
+
+  /* Reserve the 4px hover lift inside the scrollport without moving the cards. */
+  .app .home-page :is(.artist-row, .leftnow-row) {
+    margin-top: 36px;
+    padding-top: 4px;
   }
 
   .app .home-page .artist-art {
