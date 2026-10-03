@@ -10088,6 +10088,13 @@ body::-webkit-scrollbar:horizontal,
     display: none;
   }
 
+  /* Extend only the Tempo status rail to the right viewport edge. */
+  .app .home-page .tempo-section > .tag-row {
+    width: calc(100% + 20px);
+    max-width: none;
+    margin-right: -20px;
+  }
+
   .home-page .tag {
     width: auto;
     min-width: max-content;
