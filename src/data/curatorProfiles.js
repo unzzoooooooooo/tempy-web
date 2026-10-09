@@ -48,7 +48,7 @@ const curatorSeeds = [
   { id: "nightloop", username: "nightloop", profileImage: "/images/profile-08.png", bio: "한밤중에 반복해서 듣게 되는 짧고 강한 훅을 기록해요.", tags: ["night", "loop", "synth", "drive"], activeTime: "23:30 – 02:30", mood: "Dark / Focused", genre: "Synth Pop", style: "Repeat Listener", stats: [32, 8, "2.2k"], offset: 16 },
   { id: "dawnzip", username: "dawnzip", profileImage: "/images/profile-04.png", bio: "새벽의 장면을 짧게 압축해 음악과 함께 보관합니다.", tags: ["dawn", "archive", "soft", "city"], activeTime: "04:30 – 07:00", mood: "Pale / Quiet", genre: "Ambient Indie", style: "Dawn Archivist", stats: [21, 5, "1.1k"], offset: 17 },
   { id: "rainyroom", username: "rainyroom", profileImage: "/images/profile-05.png", bio: "비 오는 방 안에서 더 또렷하게 들리는 목소리를 좋아해요.", tags: ["rain", "room", "voice", "slow"], activeTime: "19:00 – 23:00", mood: "Rainy / Intimate", genre: "Indie Ballad", style: "Indoor Listener", stats: [37, 9, "2.6k"], offset: 1 },
-  { id: "slowtempo", username: "slowtempo", profileImage: "/images/profile-09.jpg", bio: "빠르게 지나가는 하루에서 속도를 낮춰 주는 곡을 고릅니다.", tags: ["slow", "tempo", "rest", "warm"], activeTime: "13:00 – 17:00", mood: "Slow / Restful", genre: "Chill Pop", style: "Tempo Keeper", stats: [25, 6, "1.3k"], offset: 4 },
+  { id: "slowtempo", username: "poco a poco", profileImage: "/images/profile-09.jpg", bio: "빠르게 지나가는 하루에서 속도를 낮춰 주는 곡을 고릅니다.", tags: ["slow", "tempo", "rest", "warm"], activeTime: "13:00 – 17:00", mood: "Slow / Restful", genre: "Chill Pop", style: "Tempo Keeper", stats: [25, 6, "1.3k"], offset: 4 },
   { id: "cloudtea", username: "cloudtea", profileImage: "/images/profile-02.png", bio: "흐린 날과 따뜻한 차 사이에 어울리는 부드러운 선곡을 남겨요.", tags: ["cloud", "tea", "mellow", "acoustic"], activeTime: "14:00 – 18:30", mood: "Cloudy / Warm", genre: "Acoustic Indie", style: "Cloudy-day Sipper", stats: [23, 6, "1.2k"], offset: 6 },
   { id: "roomtone", username: "roomtone", profileImage: "/images/profile-04.png", bio: "공간의 잔향과 작은 숨소리까지 들리는 음악을 모읍니다.", tags: ["room", "tone", "ambient", "detail"], activeTime: "20:30 – 00:30", mood: "Detailed / Quiet", genre: "Ambient R&B", style: "Room-tone Observer", stats: [30, 8, "2.0k"], offset: 8 },
   { id: "slowday", username: "slowday", profileImage: "/images/profile-07.png", bio: "아무 일정 없는 날처럼 느슨하고 편안한 음악을 좋아합니다.", tags: ["slowday", "easy", "home", "sunset"], activeTime: "10:30 – 16:00", mood: "Easy / Soft", genre: "Soft Pop", style: "Unhurried Listener", stats: [20, 5, "960"], offset: 10 },
@@ -117,3 +117,9 @@ export const getCuratorProfile = (curatorId) => curatorProfileMap.get(curatorId)
 export const getCuratorProfileByUsername = (username) => curatorProfiles.find(
   (curator) => curator.username.toLocaleLowerCase() === String(username).toLocaleLowerCase(),
 );
+
+// Stable curator identities for Moment Playlist, retaining existing profile assets.
+export const momentPlaylistCurators = [
+  "hostless", "quince-tea", "mandudu-king", "paper-plane",
+  "dawn-bus", "tangerine-peel", "canele-today", "slow-wave",
+].map(getCuratorProfile);

@@ -14,7 +14,7 @@ const trackItems = getTracksByIds([
   ...track,
   id: index + 1,
   trackId: track.id,
-  time: track.duration.replace(/^0/, ""),
+  time: track.duration,
 }));
 const trackCoverImages = Object.fromEntries(trackItems.map((track) => [track.id, track.cover]));
 
@@ -2982,7 +2982,7 @@ function CreateResult({ type, momentData, playlistData, onRetry, onBackToCreate,
                         <span><small>CREATED</small><strong>방금 전</strong></span>
                         <span><small>VISIBILITY</small><strong>{momentData.visibility}</strong></span>
                         <span><small>TRACKS</small><strong>01</strong></span>
-                        <span><small>DURATION</small><strong>{momentData.selectedTrack.time || "--:--"}</strong></span>
+                        <span><small>DURATION</small><strong>{momentData.selectedTrack.duration}</strong></span>
                       </div>
                       <div className="create-result-meta">
                         {[momentData.timeStamp.weather, momentData.timeStamp.temperature, momentData.visibility].map((item) => (

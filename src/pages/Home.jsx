@@ -1,3 +1,4 @@
+import heroLogoSvg from "../assets/logo_icon.svg?raw";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TempyFooter from "../components/TempyFooter";
@@ -11,7 +12,7 @@ import {
   getTracksByIds,
 } from "../data/musicCatalog";
 import { artistImages, createAlbumImageSequence, getCuratorProfileImage } from "../data/imageCatalog";
-import { homeMomentCurators } from "../data/curatorProfiles";
+import { homeMomentCurators, momentPlaylistCurators } from "../data/curatorProfiles";
 import { inferTrackTags, seededShuffle, selectContextItems } from "../utils/recommendations";
 import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
@@ -181,6 +182,9 @@ function HomeHorizontalCarousel({
     </div>
   );
 }
+
+// Keep the supplied SVG artwork intact while exposing its letters to the existing motion refs.
+const heroLogoArtwork = heroLogoSvg.replace(/<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
 
 function Home() {
   const navigate = useNavigate();
@@ -362,19 +366,19 @@ function Home() {
     "toxic-till-the-end",
   ]);
   const playlistItems = selectContextItems([
-    { image: null, title: "유독 여유가 필요한 날", artist: "hostless", context: "10 tracks · slow afternoon", tags: ["slow", "mellow", "afternoon"] },
-    { image: homeAlbumImages[0], title: "비가 그친 뒤 걷는 밤", artist: "hostless", context: "비 온 뒤의 잔잔한 흐름", tags: ["rainy", "night", "reflective"] },
-    { image: homeAlbumImages[1], title: "창가에 기대 듣는 노래", artist: "hostless", context: "soft mood · 32 min", tags: ["soft", "calm", "reflective"] },
-    { image: homeAlbumImages[2], title: "아무 말 없이 머물고 싶은 오후", artist: "hostless", context: "말보다 조용한 9곡", tags: ["quiet", "afternoon", "mellow"] },
-    { image: homeAlbumImages[3], title: "새벽을 천천히 넘기는 음악", artist: "hostless", context: "late night · low tempo", tags: ["dawn", "night", "slow", "ambient"] },
-    { image: homeAlbumImages[4], title: "집으로 돌아가는 길의 온도", artist: "hostless", context: "퇴근길을 위한 28 min", tags: ["evening", "drive", "warm", "city"] },
-    { image: homeAlbumImages[5], title: "햇살이 길게 남은 방", artist: "hostless", context: "warm light · 11 tracks", tags: ["bright", "warm", "light"] },
-    { image: homeAlbumImages[6], title: "도시의 불빛이 켜질 무렵", artist: "hostless", context: "blue hour city mood", tags: ["city", "lateAfternoon", "evening", "groove"] },
-    { image: homeAlbumImages[7], title: "혼자 걷기 좋은 저녁", artist: "hostless", context: "가벼운 걸음의 리듬", tags: ["evening", "chill", "groove"] },
-    { image: homeAlbumImages[8], title: "생각이 많아지는 늦은 밤", artist: "hostless", context: "deep focus · 36 min", tags: ["night", "reflective", "moody"] },
-    { image: homeAlbumImages[9], title: "작은 용기가 필요한 순간", artist: "hostless", context: "조금씩 선명해지는 8곡", tags: ["fresh", "bright", "upbeat"] },
-    { image: homeAlbumImages[10], title: "주말 아침을 여는 플레이리스트", artist: "hostless", context: "weekend morning · bright", tags: ["morning", "fresh", "bright", "acoustic"] },
-  ].map((item, index) => ({ ...item, track: playlistTracks[index] })), context, "momentPlaylist");
+    { image: null, title: "유독 여유가 필요한 날", context: "10 tracks · slow afternoon", tags: ["slow", "mellow", "afternoon"] },
+    { image: homeAlbumImages[0], title: "비가 그친 뒤 걷는 밤", context: "비 온 뒤의 잔잔한 흐름", tags: ["rainy", "night", "reflective"] },
+    { image: homeAlbumImages[1], title: "창가에 기대 듣는 노래", context: "soft mood · 32 min", tags: ["soft", "calm", "reflective"] },
+    { image: homeAlbumImages[2], title: "아무 말 없이 머물고 싶은 오후", context: "말보다 조용한 9곡", tags: ["quiet", "afternoon", "mellow"] },
+    { image: homeAlbumImages[3], title: "새벽을 천천히 넘기는 음악", context: "late night · low tempo", tags: ["dawn", "night", "slow", "ambient"] },
+    { image: homeAlbumImages[4], title: "집으로 돌아가는 길의 온도", context: "퇴근길을 위한 28 min", tags: ["evening", "drive", "warm", "city"] },
+    { image: homeAlbumImages[5], title: "햇살이 길게 남은 방", context: "warm light · 11 tracks", tags: ["bright", "warm", "light"] },
+    { image: homeAlbumImages[6], title: "도시의 불빛이 켜질 무렵", context: "blue hour city mood", tags: ["city", "lateAfternoon", "evening", "groove"] },
+    { image: homeAlbumImages[7], title: "혼자 걷기 좋은 저녁", context: "가벼운 걸음의 리듬", tags: ["evening", "chill", "groove"] },
+    { image: homeAlbumImages[8], title: "생각이 많아지는 늦은 밤", context: "deep focus · 36 min", tags: ["night", "reflective", "moody"] },
+    { image: homeAlbumImages[9], title: "작은 용기가 필요한 순간", context: "조금씩 선명해지는 8곡", tags: ["fresh", "bright", "upbeat"] },
+    { image: homeAlbumImages[10], title: "주말 아침을 여는 플레이리스트", context: "weekend morning · bright", tags: ["morning", "fresh", "bright", "acoustic"] },
+  ].map((item, index) => ({ ...item, track: playlistTracks[index], curator: momentPlaylistCurators[index % momentPlaylistCurators.length] })), context, "momentPlaylist");
 
   const curatorProfileImages = [
     "/images/profile-03.png",
@@ -443,18 +447,38 @@ function Home() {
                   className="hero-wordmark__svg"
                   width="357"
                   height="234"
-                  viewBox="0 0 357 234"
+                  viewBox="0 -79 985 646"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
                   role="img"
                   aria-hidden="true"
                 >
-                  <path ref={(node) => { logoLetterRefs.current[0] = node; }} className="hero-wordmark__letter" d="M19.1692 17.4665H0V0H57.2035V17.4665H38.3385V181.262H19.1692V17.4665Z" fill="#F62933" />
-                  <path ref={(node) => { logoLetterRefs.current[1] = node; }} className="hero-wordmark__letter" d="M101.739 131.353V166.308C101.739 174.61 99.1524 181.118 93.9797 185.856C88.8071 190.593 82.7651 192.962 75.8754 192.962C68.9858 192.962 62.9872 190.638 57.9233 186.011C52.8593 181.384 50.3164 174.898 50.3164 166.618V70.6522C50.3164 62.3507 52.8593 55.8865 57.9233 51.2598C62.9872 46.633 68.9858 44.3086 75.8754 44.3086C82.7651 44.3086 88.8071 46.633 93.9797 51.2598C99.1524 55.9087 101.739 62.4614 101.739 70.9622V117.761H68.8771V166.928C68.8771 170.094 69.6378 172.463 71.1592 174.034C72.6805 175.606 74.4627 176.403 76.484 176.403C78.5052 176.403 80.2222 175.606 81.6566 174.034C83.0693 172.463 83.7865 170.094 83.7865 166.928V131.375H101.739V131.353ZM83.7865 61.443H68.8771V104.102H83.7865V61.443Z" fill="#F62933" />
-                  <path ref={(node) => { logoLetterRefs.current[2] = node; }} className="hero-wordmark__letter" d="M113.908 26.3647H132.165V37.6105H133.99C134.186 34.6441 135.512 31.8769 137.946 29.309C140.38 26.741 143.836 25.457 148.291 25.457C156.202 25.457 161.266 29.5082 163.505 37.6105H166.243C166.439 34.6441 168.026 31.8769 170.96 29.309C173.894 26.741 177.61 25.457 182.066 25.457C193.824 25.457 199.714 34.2456 199.714 51.8228V172.959H181.153V51.5129C181.153 48.5465 180.588 46.0228 179.479 43.964C178.371 41.8831 176.48 40.8647 173.85 40.8647C170.807 40.8647 168.721 41.9052 167.613 43.964C166.504 46.0449 165.939 48.6572 165.939 51.8228V172.959H147.378V51.5129C147.378 48.5465 146.813 46.0228 145.705 43.964C144.596 41.8831 142.706 40.8647 140.076 40.8647C137.033 40.8647 135.012 41.9052 133.99 43.964C132.969 46.0449 132.469 48.6572 132.469 51.8228V172.959H113.908V26.3647Z" fill="#F62933" />
-                  <path ref={(node) => { logoLetterRefs.current[3] = node; }} className="hero-wordmark__letter" d="M229.86 40.6303V51.8762H231.686C231.882 48.9097 233.251 46.1425 235.794 43.5746C238.337 41.0066 241.923 39.7227 246.595 39.7227C258.354 39.7227 264.243 48.5113 264.243 66.0884V162.342C264.243 179.92 258.354 188.708 246.595 188.708C242.14 188.708 238.684 187.513 236.25 185.144C233.816 182.775 232.49 180.008 232.295 176.842H230.165V234.002H211.908V40.6303H229.86ZM238.076 175.381C240.706 175.381 242.531 174.341 243.553 172.26C244.574 170.179 245.074 167.567 245.074 164.423V64.0075C245.074 60.8419 244.509 58.2296 243.401 56.1487C242.292 54.0678 240.51 53.0494 238.076 53.0494C234.837 53.0494 232.708 54.1342 231.686 56.3037C230.665 58.4731 230.165 61.2403 230.165 64.6052V163.826C230.165 171.529 232.794 175.381 238.076 175.381Z" fill="#F62933" />
-                  <path ref={(node) => { logoLetterRefs.current[4] = node; }} className="hero-wordmark__letter" d="M284.033 199.922H295.596L298.943 168.221H296.204C292.14 168.221 288.945 166.693 286.619 163.639C284.294 160.584 282.816 156.377 282.207 151.042L272.471 21.3164H289.814L299.247 151.042H300.464L313.243 21.3164H330.891L312.026 198.151C311.418 203.287 309.483 207.537 306.245 210.88C303.007 214.245 297.53 215.905 289.814 215.905H284.033V199.922Z" fill="#F62933" />
-                  <path ref={(node) => { logoLetterRefs.current[5] = node; }} className="hero-wordmark__letter" d="M339.66 88.044V38.8398H357V88.044L354.332 161.6H342.061L339.66 88.044ZM340.194 167.321H356.733V191.17H340.194V167.321Z" fill="#F62933" />
+                  <g
+                    className="hero-wordmark__artwork"
+                    ref={(node) => {
+                      if (!node) {
+                        logoLetterRefs.current = [];
+                        return;
+                      }
+
+                      const artwork = node.querySelector(":scope > g");
+                      const letters = Array.from(artwork.children).slice(0, 6);
+                      let icon = artwork.querySelector(":scope > .hero-wordmark__icon");
+                      if (!icon) {
+                        icon = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                        icon.classList.add("hero-wordmark__icon");
+                        // Keep the icon's paths, use and mask together without altering the asset.
+                        Array.from(artwork.children).slice(6).forEach((part) => icon.appendChild(part));
+                        artwork.appendChild(icon);
+                      }
+                      logoLetterRefs.current = [...letters, icon];
+                      logoLetterRefs.current.forEach((part) => {
+                        part.classList.add("hero-wordmark__letter");
+                      });
+                    }}
+                    dangerouslySetInnerHTML={{ __html: heroLogoArtwork }}
+                  />
                 </svg>
               </Link>
               <p className="hero-subtitle">Catch your Tempo, Meet your Moment</p>
@@ -618,12 +642,12 @@ function Home() {
                   <span className="playlist-author">
                     <img
                       className="home-desktop-avatar"
-                      src={curatorProfileImages[index % curatorProfileImages.length]}
+                      src={item.curator.profileImage}
                       alt=""
                       aria-hidden="true"
                     />
                     <i aria-hidden="true">○</i>
-                    {item.artist}
+                    {item.curator.username}
                   </span>
                   <span className="playlist-stats tempy-icon-stat"><HeartIcon size="small" /> 1.5k&nbsp;&nbsp;⟲ 3891</span>
                 </div>

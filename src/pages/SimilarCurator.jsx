@@ -7,7 +7,7 @@ import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 
 const similarPlaylists = [
   {
-    title: "20년차 카페 사장님의 새벽 플레이리스트",
+    title: "느린 일요일 아침을 위한 커피와 재즈",
     author: "새벽의 점장",
     meta: "12곡 · 42 min",
     likes: "1.5k",
@@ -20,7 +20,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "퇴근 후 골목을 천천히 걷는 디자이너",
+    title: "퇴근 후 혼자 걷는 한강의 저녁",
     author: "낮은 조도",
     meta: "10곡 · 34 min",
     likes: "982",
@@ -33,7 +33,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "비 오는 날 서점 문을 여는 사람",
+    title: "비 오는 날 오래 머무는 창가의 음악",
     author: "책등 사이",
     meta: "11곡 · 39 min",
     likes: "1.2k",
@@ -46,7 +46,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "첫차를 기다리는 방송 작가의 메모",
+    title: "새벽까지 이어지는 느린 플레이리스트",
     author: "새벽 원고",
     meta: "9곡 · 31 min",
     likes: "744",
@@ -59,7 +59,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "낡은 필름 카메라를 들고 떠난 주말",
+    title: "도시를 벗어나는 주말 드라이브",
     author: "35mm",
     meta: "13곡 · 46 min",
     likes: "1.1k",
@@ -72,7 +72,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "식물을 돌보며 하루를 시작하는 편집자",
+    title: "햇빛 좋은 오후의 식물과 레코드",
     author: "초록 문장",
     meta: "10곡 · 36 min",
     likes: "889",
@@ -85,7 +85,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "작은 바에서 마감 불을 끄는 바텐더",
+    title: "불을 낮춘 방에서 하루를 닫는 순간",
     author: "마지막 잔",
     meta: "12곡 · 44 min",
     likes: "1.4k",
@@ -98,7 +98,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "도시락을 싸는 엄마의 조용한 오전",
+    title: "늦은 밤 주방에서 만드는 따뜻한 한 끼",
     author: "따뜻한 칸",
     meta: "8곡 · 28 min",
     likes: "638",
@@ -111,7 +111,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "혼자 여행 온 밤의 게스트하우스",
+    title: "낯선 밤에 익숙한 온기를 찾는 음악",
     author: "낯선 방",
     meta: "14곡 · 49 min",
     likes: "1.0k",
@@ -124,7 +124,7 @@ const similarPlaylists = [
     ],
   },
   {
-    title: "새 프로젝트를 시작하는 개발자의 심야",
+    title: "조용히 마음을 정리하고 싶은 밤",
     author: "빌드 완료",
     meta: "11곡 · 41 min",
     likes: "920",

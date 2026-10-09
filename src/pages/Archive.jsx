@@ -5,7 +5,7 @@ import { HorizontalScrollArrows } from "../components/HorizontalScrollArrows";
 import { HeartIcon, PlayIcon } from "../components/TempyIcons";
 import { getArtistDisplayImage, getTracksByIds, normalizeMusicItem } from "../data/musicCatalog";
 import { getCuratorProfileImage, profileImages } from "../data/imageCatalog";
-import { getCuratorProfileByUsername } from "../data/curatorProfiles";
+import { getCuratorProfile, getCuratorProfileByUsername } from "../data/curatorProfiles";
 import { useSmoothHorizontalWheel } from "../utils/useSmoothHorizontalWheel";
 import { useNativeHorizontalScrollArrows } from "../utils/useNativeHorizontalScrollArrows";
 
@@ -21,7 +21,7 @@ const archiveTrackItems = getTracksByIds([
   ...track,
   id: index + 1,
   trackId: track.id,
-  time: track.duration.replace(/^0/, ""),
+  time: track.duration,
 }));
 const archiveTrackVisuals = Object.fromEntries(archiveTrackItems.map((track, index) => [
   track.id,
@@ -313,7 +313,7 @@ function Archive() {
     { image: "/images/profile-04.png", name: "dawnzip", match: "72%", note: "DAWN ARCHIVE" },
     { image: "/images/profile-05.png", name: "rainyroom", match: "69%", note: "RAIN CURATOR" },
     { image: "/images/profile-07.png", name: "bluehour", match: "67%", note: "BLUE HOUR" },
-    { image: profileImages[8], name: "slowtempo", match: "64%", note: "SLOW TEMPO" },
+    { image: profileImages[8], name: getCuratorProfile("slowtempo").username, match: "64%", note: "SLOW TEMPO" },
     { image: profileImages[1], name: "cloudtea", match: "61%", note: "CLOUD TEA" },
   ].map((curator) => ({
     ...curator,
@@ -765,7 +765,7 @@ function PlaylistDetailView({ item, tracks }) {
                 <span>{track.artist}</span>
               </div>
               <small>{visual.moment || "ARCHIVE MOMENT"}</small>
-              <time>{track.duration || track.time || "--:--"}</time>
+              <time>{track.duration || track.time}</time>
               <button type="button" aria-label={`${track.title} 재생`}><PlayIcon /></button>
             </article>
           );

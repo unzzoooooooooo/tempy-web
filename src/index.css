@@ -6582,6 +6582,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .hero-copy {
+    translate: 0 -20px;
     padding-left: clamp(200px, 10.6vw, 272px);
     padding-top: clamp(36px, 1.88vw, 48px);
   }
@@ -6667,11 +6668,11 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .home-page .lp-large__disc:hover {
-    transform: translateY(-24px);
+    transform: translateY(-36px);
   }
 
   .home-page .hero-visual:has(.lp-large__disc:hover)::after {
-    translate: 0 -24px;
+    translate: 0 -36px;
   }
 }
 
@@ -32298,5 +32299,61 @@ body::-webkit-scrollbar:horizontal,
   /* Create Moment Card: break only the side description's final phrase. */
   .app .create-detail-page--moment .create-detail-description-moment-tail {
     display: block;
+  }
+}
+
+/* Enlarge only the desktop artwork, retaining the logo's layout box and slogan. */
+@media (min-width: 769px) {
+  .home-page .hero-wordmark__svg {
+    scale: 1.1;
+    transform-origin: left center;
+  }
+}
+
+/* Both Archive rows use Moment Curator's circle scale, outline and easing. */
+@media (min-width: 769px) and (hover: hover) and (pointer: fine) {
+  .app .archive-page :is(.archive-page__people--scroll, .archive-page__people--liked) {
+    /* Compensated headroom keeps the circles in place inside the scroll clip. */
+    padding-top: 12px;
+    margin-top: -12px;
+  }
+
+  .archive-page__people .archive-page__person {
+    cursor: pointer;
+  }
+
+  .archive-page__people .archive-page__person > div {
+    border-radius: 50%;
+    outline: 1px solid transparent;
+    outline-offset: 3px;
+    transition:
+      transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      outline-color 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .archive-page__people .archive-page__person > strong {
+    transition: color 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .archive-page__people .archive-page__person:is(:hover, :focus-visible) > strong {
+    color: #2759ed;
+  }
+
+  .archive-page__people .archive-page__person:first-child > div {
+    transform-origin: left center;
+  }
+
+  .archive-page__people .archive-page__person:is(:hover, :focus-visible) > div {
+    outline-color: rgba(39, 89, 237, 0.2);
+    box-shadow: 0 8px 18px rgba(7, 20, 43, 0.11);
+    transform: scale(1.025);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-page__people .archive-page__person > strong,
+  .archive-page__people .archive-page__person > div {
+    transition: none;
   }
 }
