@@ -6582,7 +6582,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .hero-copy {
-    translate: 0 -20px;
+    translate: 0 -52px;
     padding-left: clamp(200px, 10.6vw, 272px);
     padding-top: clamp(36px, 1.88vw, 48px);
   }
@@ -6592,7 +6592,7 @@ body::-webkit-scrollbar:horizontal,
   }
 
   .hero-subtitle {
-    margin-top: clamp(34px, 1.77vw, 45px);
+    margin-top: calc(clamp(34px, 1.77vw, 45px) + 14px);
     font-size: clamp(24px, 1.22vw, 31px);
   }
 
@@ -32310,6 +32310,18 @@ body::-webkit-scrollbar:horizontal,
   }
 }
 
+/* Large-desktop logo only: preserve the layout box and compact-screen sizing. */
+@media (min-width: 2200px) {
+  .home-page .hero-wordmark__svg {
+    scale: 1.32;
+  }
+
+  /* Release only the imported artwork's canvas clip, preserving paths and masks. */
+  .home-page .hero-wordmark__artwork > g {
+    clip-path: none;
+  }
+}
+
 /* Both Archive rows use Moment Curator's circle scale, outline and easing. */
 @media (min-width: 769px) and (hover: hover) and (pointer: fine) {
   .app .archive-page :is(.archive-page__people--scroll, .archive-page__people--liked) {
@@ -32355,5 +32367,16 @@ body::-webkit-scrollbar:horizontal,
   .archive-page__people .archive-page__person > strong,
   .archive-page__people .archive-page__person > div {
     transition: none;
+  }
+}
+
+/* Restore the original LP hover on large desktop; compact breakpoints stay intact. */
+@media (min-width: 2200px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .home-page .lp-large__disc:hover {
+    transform: translateY(-24px);
+  }
+
+  .home-page .hero-visual:has(.lp-large__disc:hover)::after {
+    translate: 0 -24px;
   }
 }

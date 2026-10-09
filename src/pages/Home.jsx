@@ -240,12 +240,18 @@ function Home() {
       }
     };
 
-    const renderLogoLetters = () => {
-      const ease = 0.11;
+    const largeLogoQuery = window.matchMedia("(min-width: 2200px)");
+    let previousLogoFrame = null;
+    const renderLogoLetters = (timestamp) => {
+      const elapsed = previousLogoFrame === null ? 16.67 : Math.min(timestamp - previousLogoFrame, 50);
+      previousLogoFrame = timestamp;
 
       logoLetterRefs.current.forEach((letter, index) => {
         if (!letter) return;
 
+        // Fixed per-element inertia, normalized for both 60 Hz and high-refresh displays.
+        const responseTime = [155, 165, 175, 170, 160, 150, 175][index];
+        const ease = largeLogoQuery.matches ? 1 - Math.exp(-elapsed / responseTime) : 0.085;
         const motion = getLogoMotion(index);
         motion.currentX += (motion.targetX - motion.currentX) * ease;
         motion.currentY += (motion.targetY - motion.currentY) * ease;
@@ -294,8 +300,10 @@ function Home() {
   const handleHeroLogoMove = (event) => {
     if (prefersReducedMotionRef.current) return;
 
-    const maxMove = 18;
-    const influenceRadius = 190;
+    const largeLogo = window.matchMedia("(min-width: 2200px)").matches;
+    const maxMove = largeLogo ? 46 : 28;
+    const influenceRadius = largeLogo ? 220 : 190;
+    const movementWeights = [0.94, 1, 1.06, 1.04, 0.98, 0.92, 0.84];
 
     logoLetterRefs.current.forEach((letter, index) => {
       if (!letter) return;
@@ -307,7 +315,7 @@ function Home() {
         pointerX: event.clientX,
         pointerY: event.clientY,
         influenceRadius,
-        maxX: maxMove,
+        maxX: largeLogo ? maxMove * movementWeights[index] : (index === 6 ? maxMove * 0.9 : maxMove),
       });
 
       if (!repel.isActive) {
