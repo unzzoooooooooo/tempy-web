@@ -6,6 +6,16 @@ import { getArtistImageByName } from "./imageCatalog.js";
  * not be verified from the bundled asset alone.
  */
 const addedCatalogArtists = [
+  { id: "adela", name: "ADÉLA", profile: "/images/album-109.jpeg", genres: [] },
+  { id: "kiiikiii", name: "KiiiKiii", profile: "/images/album-117.jpg", genres: [] },
+  { id: "sailorr", name: "SAILORR", profile: "/images/album-118.jpg", genres: [] },
+  { id: "jordana-bryant", name: "Jordana Bryant", profile: "/images/album-119.jpg", genres: [] },
+  { id: "pretty-bleak", name: "PRETTY BLEAK", profile: "/images/album-120.png", genres: [] },
+  { id: "seiko-matsuda", name: "松田聖子", profile: "/images/album-122.jpeg", genres: [] },
+  { id: "mizuki", name: "MIZUKI", profile: "/images/album-123.jpg", genres: [] },
+  { id: "gorillaz", name: "Gorillaz", profile: "/images/album-124.jpg", genres: [] },
+  { id: "reiko-takahashi", name: "高橋玲子", profile: "/images/ablum-125.jpg", genres: [] },
+  { id: "holly-humberstone", name: "Holly Humberstone", profile: "/images/album-127.png", genres: [] },
   { id: "sabrina-carpenter", name: "Sabrina Carpenter", profile: "/images/album-33.png", genres: ["Pop"] },
   { id: "maisie-peters", name: "Maisie Peters", profile: "/images/album-41.png", genres: ["Pop", "Singer-Songwriter"] },
   { id: "chappell-roan", name: "Chappell Roan", profile: "/images/album-42.png", genres: ["Pop"] },
@@ -47,6 +57,16 @@ const addedCatalogArtists = [
 ];
 
 const artistExperienceById = Object.freeze({
+  "adela": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "ADÉLA의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "kiiikiii": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "KiiiKiii의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "sailorr": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "SAILORR의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "jordana-bryant": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Jordana Bryant의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "pretty-bleak": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "PRETTY BLEAK의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "seiko-matsuda": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "松田聖子의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "mizuki": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "MIZUKI의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "gorillaz": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Gorillaz의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "reiko-takahashi": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "高橋玲子의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "holly-humberstone": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Holly Humberstone의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
   "taylor-swift": { tags: ["#STORY", "#MEMORY", "#MIDNIGHT"], description: "선명한 멜로디와 구체적인 가사로 관계와 시간의 변화를 포착합니다. 밝은 드라이브부터 혼자 기억을 되짚는 밤까지, Tempy에서 노래마다 달라지는 이야기의 온도를 따라가보세요." },
   "billie-eilish": { tags: ["#NIGHT", "#INTIMATE", "#AFTERGLOW"], description: "낮게 속삭이는 보컬과 넓은 여백, 미니멀한 전자음이 내밀한 감정을 가까이 끌어옵니다. 불을 낮춘 늦은 밤이나 혼자 머무는 시간에 특히 깊게 스며들며, Tempy에서는 그 고요 속에서 시작된 리스너들의 장면을 탐색할 수 있습니다.", portrait: { title: "Quiet Blue Hours", time: "00:14", note: "소리가 잦아든 밤, 가장 사적인 감정이 음악 가까이에 머뭅니다.", moods: [["REFLECTIVE", 78], ["ROMANTIC", 41], ["ENERGETIC", 24]], words: ["blue room", "midnight", "solitude"] } },
   newjeans: { tags: ["#YOUTH", "#BREEZE", "#CITY"], description: "가볍게 튀는 리듬과 맑은 보컬이 일상의 속도를 산뜻하게 바꿉니다. 친구와 걷는 오후나 도시를 오가는 순간, Tempy에서 자연스럽게 겹쳐진 젊은 장면들을 만나보세요." },
@@ -109,6 +129,16 @@ const artistExperienceById = Object.freeze({
 });
 
 const artistDescriptionExtensionById = Object.freeze({
+  "adela": "",
+  "kiiikiii": "",
+  "sailorr": "",
+  "jordana-bryant": "",
+  "pretty-bleak": "",
+  "seiko-matsuda": "",
+  "mizuki": "",
+  "gorillaz": "",
+  "reiko-takahashi": "",
+  "holly-humberstone": "",
   "taylor-swift": "어쿠스틱한 고백에서 정교한 신스 팝까지 사운드의 폭이 넓지만, 언제나 한 장면을 또렷하게 기억하게 하는 서사가 중심에 있습니다.",
   "billie-eilish": "작게 흔들리는 숨과 갑자기 깊어지는 저음은 긴장과 고요를 동시에 만들고, 넓은 공간감 속의 작은 소리까지 감정의 일부로 들리게 합니다.",
   newjeans: "과하게 힘주지 않은 프로덕션과 반복되는 훅은 짧은 이동이나 사진을 남기는 순간에도 자연스럽게 스며들어, 익숙한 하루를 새로운 기억처럼 바꿉니다.",
@@ -248,6 +278,26 @@ const addedCatalogTracks = [
   ["catching-bodies", "Catching Bodies", "sekou", "/images/album-106.jpg", "03:06"],
   ["just-a-feeling", "Just a Feeling", "jane-and-the-boy", "/images/album-107.jpg", "03:01"],
   ["starry-eyed", "Starry Eyed", "jane-and-the-boy", "/images/album-108.jpg", "03:06"],
+  // album-125 was supplied as ablum-125.jpg; preserve the original filename.
+  ["aint-in-la", "Ain't In LA", "adela", "/images/album-109.jpeg", "03:04"],
+  ["delulu", "Delulu", "kiiikiii", "/images/album-110.jpg", "02:24"],
+  ["the-weekend-sza", "The Weekend", "sza", "/images/album-111.jpeg", "04:32"],
+  ["belly", "BELLY", "sailorr", "/images/album-112.jpg", "02:30"],
+  ["down-bad", "DOWN BAD", "sailorr", "/images/album-113.jpg", "02:12"],
+  ["sleepy-eyes", "Sleepy Eyes", "the-aces", "/images/album-114.jpg", "03:19"],
+  ["memories-beabadoobee", "Memories", "beabadoobee", "/images/album-115.jpeg", "02:48"],
+  ["i-do-me", "I DO ME", "kiiikiii", "/images/album-116.jpeg", "03:10"],
+  ["pop-off-pop-off", "Pop Off Pop Off", "kiiikiii", "/images/album-117.jpg", "02:21"],
+  ["sincerity", "SINCERITY", "sailorr", "/images/album-118.jpg", "02:47"],
+  ["too-little-too-late", "Too Little Too Late", "jordana-bryant", "/images/album-119.jpg", "02:39"],
+  ["blackberries-west-gippsland", "blackberries west gippsland", "pretty-bleak", "/images/album-120.png", "02:26"],
+  ["sweet-memories", "SWEET MEMORIES", "seiko-matsuda", "/images/album-121.jpg", "04:35"],
+  ["akai-sweet-pea", "赤いスイートピー", "seiko-matsuda", "/images/album-122.jpeg", "03:41"],
+  ["just-you-and-i", "Just You & I", "mizuki", "/images/album-123.jpg", "02:48"],
+  ["on-melancholy-hill", "On Melancholy Hill", "gorillaz", "/images/album-124.jpg", "03:53"],
+  ["sunset-road", "サンセット・ロード", "reiko-takahashi", "/images/ablum-125.jpg", "04:18"],
+  ["kiss-n-tell", "KISS N TELL", "aespa", "/images/album-126.jpeg", "02:46"],
+  ["blue-dream", "Blue Dream", "holly-humberstone", "/images/album-127.png", "03:20"],
 ];
 
 const baseArtists = [
@@ -866,6 +916,84 @@ const trackLinksByTrackId = Object.freeze({
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/1d/3f/e4/1d3fe4b9-b0ae-516f-a6d5-5d70ff3daf40/mzaf_13062467651250003242.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/us/album/starry-eyed/1548941243?i=1548941244&uo=4",
   },
+  // New entries: verified iTunes title + artist matches (including JP romanizations).
+  // PRETTY BLEAK uses an AU lookup result.
+  "aint-in-la": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/0a/a9/6f/0aa96f71-8e83-d68d-06bb-a92f95041fd6/mzaf_13423692857576784151.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/aint-in-la/6807192580?i=6807192838&uo=4",
+  },
+  "delulu": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ef/4a/31/ef4a315d-6a5c-9c19-5351-b0274eadb07d/mzaf_4199897924569923006.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/delulu/1866860579?i=1866860606&uo=4",
+  },
+  "the-weekend-sza": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e2/1c/9b/e21c9bed-7445-ec77-41e1-9337324322e2/mzaf_7026983697526197206.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/the-weekend/1239977075?i=1239977718&uo=4",
+  },
+  "belly": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d6/33/48/d633489c-dc3a-0f9f-6b45-7afa7870953d/mzaf_1392043197784286350.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/belly/1809267067?i=1809267290&uo=4",
+  },
+  "down-bad": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/68/f9/16/68f9169e-9ee5-50d9-21a6-04c8b82dacb3/mzaf_11332945310119432185.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/down-bad/1809267067?i=1809267073&uo=4",
+  },
+  "sleepy-eyes": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/75/fb/6a/75fb6a67-5b84-b06b-1fd3-e0437e5f0d1f/mzaf_2028847627010619783.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/sleepy-eyes/1596522152?i=1596522588&uo=4",
+  },
+  "memories-beabadoobee": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/21/01/71/210171b7-5b4b-d359-d435-9c484c2a8909/mzaf_10420759455690848988.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/memories/6781644608?i=6781644626&uo=4",
+  },
+  "i-do-me": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/8e/57/4e/8e574e26-8147-8430-6ace-93a8eb7a01d6/mzaf_5228116227050500579.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/i-do-me/1795471738?i=1795471747&uo=4",
+  },
+  "pop-off-pop-off": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b0/d2/0f/b0d20fdb-b402-cd95-48a2-3a7bd9cada41/mzaf_11607706321025427027.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/pop-off-pop-off/6796609538?i=6796609794&uo=4",
+  },
+  "sincerity": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/f8/eb/5b/f8eb5b30-031b-5aa0-a4c4-ec6322000836/mzaf_7146145021168684997.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/sincerity/1832078705?i=1832078707&uo=4",
+  },
+  "too-little-too-late": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/51/bc/02/51bc02f7-4f88-0a14-e8ff-406cc06aa3d2/mzaf_14614255646186345255.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/too-little-too-late/6770744633?i=6770744634&uo=4",
+  },
+  "blackberries-west-gippsland": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/02/96/49/029649b2-d245-7bc3-5906-d9ac67f7fcaa/mzaf_12235852891440569102.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/au/album/blackberries-west-gippsland/6794604423?i=6794604427&uo=4",
+  },
+  "sweet-memories": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/79/75/ed/7975ed26-9b05-ca5e-7c06-1a30f0dc9e45/mzaf_8115072416556786680.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/sweet-memories/1536759774?i=1536760008&uo=4",
+  },
+  "akai-sweet-pea": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/72/96/4e/72964ea2-f1e9-cf79-90d6-e382eb99eea7/mzaf_1821273017518340997.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/akai-sweet-pea/1536761438?i=1536761447&uo=4",
+  },
+  "just-you-and-i": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/68/27/63/68276351-79e8-0557-d46d-2f4ad9712ccc/mzaf_6713214771786731173.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/jp/album/just-you-i/1884809892?i=1884809894&uo=4",
+  },
+  "on-melancholy-hill": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/83/87/f2/8387f25a-10a5-555b-e92e-fdb847a8d4f3/mzaf_10224209639070324902.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/on-melancholy-hill/850569437?i=850569480&uo=4",
+  },
+  "sunset-road": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f7/53/60/f75360be-7fec-34e7-a4ff-4da3802d9126/mzaf_5132648128953444413.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/sunset-road/1443707739?i=1443707943&uo=4",
+  },
+  "kiss-n-tell": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/8a/fc/c6/8afcc647-576d-9f46-cdee-546d3805fff5/mzaf_9430478958861012510.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/jp/album/kiss-n-tell/6790246891?i=6790246893&uo=4",
+  },
+  "blue-dream": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a9/90/04/a99004b2-f62b-c6a5-4e97-b6377bb64fb9/mzaf_8143897890680645302.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/jp/album/blue-dream/1873991816?i=1873992181&uo=4",
+  },
 });
 
 // Per-track corrections that must not rename the shared artist everywhere.
@@ -987,6 +1115,25 @@ const fixedTrackOrder = Object.freeze([
   "catching-bodies",
   "just-a-feeling",
   "starry-eyed",
+  "aint-in-la",
+  "delulu",
+  "the-weekend-sza",
+  "belly",
+  "down-bad",
+  "sleepy-eyes",
+  "memories-beabadoobee",
+  "i-do-me",
+  "pop-off-pop-off",
+  "sincerity",
+  "too-little-too-late",
+  "blackberries-west-gippsland",
+  "sweet-memories",
+  "akai-sweet-pea",
+  "just-you-and-i",
+  "on-melancholy-hill",
+  "sunset-road",
+  "kiss-n-tell",
+  "blue-dream",
 ]);
 
 const artistMap = new Map(artists.map((artist) => [artist.id, artist]));
@@ -1040,7 +1187,7 @@ const normalizeIdentity = (value = "") => String(value)
   .replace(/[\u0300-\u036f]/g, "")
   .normalize("NFC")
   .toLowerCase()
-  .replace(/[^a-z0-9가-힣]+/g, " ")
+  .replace(/[^a-z0-9가-힣\u3040-\u30ff\u3400-\u9fff]+/g, " ")
   .trim();
 
 const getTrackIdentity = (title, artist) => `${normalizeIdentity(title)}::${normalizeIdentity(artist)}`;

@@ -2706,7 +2706,7 @@ button {
   display: grid;
   width: min(56%, 360px);
   justify-items: center;
-  gap: 6px;
+  gap: 12px;
   color: #fff8df;
   text-align: center;
   text-shadow: 0 2px 10px rgba(7, 20, 43, 0.42);
