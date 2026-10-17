@@ -744,6 +744,12 @@ function GlobalPlayer() {
   const [volume, setVolume] = useState(72);
   const [sidePanelMode, setSidePanelMode] = useState("playlist");
   const [momentInput, setMomentInput] = useState("");
+  const [trackSearch, setTrackSearch] = useState("");
+  const normalizedTrackSearch = trackSearch.trim().toLowerCase();
+  const filteredTrackRows = musicCatalogTracks
+    .map((track, index) => ({ track, index }))
+    .filter(({ track }) => track.title.toLowerCase().includes(normalizedTrackSearch)
+      || track.artist.toLowerCase().includes(normalizedTrackSearch));
   const [hoveredCommentPoint, setHoveredCommentPoint] = useState(null);
   const [selectedCommentPoint, setSelectedCommentPoint] = useState(null);
   const setFirstAudioDeckRef = useCallback((audio) => {
@@ -1848,10 +1854,22 @@ function GlobalPlayer() {
             </div>
 
             {sidePanelMode === "playlist" ? (
-              <div className="full-player__panel-content">
+              <div className="full-player__panel-content full-player__playlist">
                 <h2>Track lists</h2>
-                <div className="full-player__track-list" aria-label={`${musicCatalogTracks.length} catalog tracks`}>
-                  {musicCatalogTracks.map((track, index) => {
+                <input
+                  className="full-player__track-search"
+                  type="search"
+                  aria-label="Search by track or artist"
+                  aria-controls="full-player-track-list"
+                  placeholder="Search tracks"
+                  value={trackSearch}
+                  onChange={(event) => setTrackSearch(event.target.value)}
+                />
+                <div id="full-player-track-list" className="full-player__track-list" aria-label={`${filteredTrackRows.length} catalog tracks`}>
+                  {filteredTrackRows.length === 0 && (
+                    <p className="full-player__track-search-empty" role="status">No tracks found</p>
+                  )}
+                  {filteredTrackRows.map(({ track, index }) => {
                     const isCurrentTrack = track.id === selectedSong.id;
                     const isMockTrack = Boolean(track.isMockTrack || track.isMock);
                     const hasPreview = Boolean(track.audioPreview);

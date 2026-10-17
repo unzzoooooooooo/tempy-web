@@ -3010,6 +3010,44 @@ button {
   scrollbar-gutter: stable;
 }
 
+.full-player__playlist {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.full-player__track-search {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  margin: 0 0 12px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #fbfbf4;
+  color: #07142b;
+  font: inherit;
+  font-size: 16px;
+  box-shadow: none;
+  appearance: none;
+}
+
+.full-player__track-search::placeholder {
+  color: #a3a5ab;
+  opacity: 1;
+}
+
+.full-player__track-search:focus-visible {
+  outline: 2px solid #fff8df;
+  outline-offset: 3px;
+}
+
+.full-player__track-search-empty {
+  margin: 12px 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+}
+
+
 .full-player__track-row {
   display: grid;
   grid-template-columns: 32px 48px minmax(0, 1fr) auto;

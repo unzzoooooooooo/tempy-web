@@ -48,7 +48,7 @@ const curatorSeeds = [
   { id: "nightloop", username: "nightloop", profileImage: "/images/profile-08.png", bio: "한밤중에 반복해서 듣게 되는 짧고 강한 훅을 기록해요.", tags: ["night", "loop", "synth", "drive"], activeTime: "23:30 – 02:30", mood: "Dark / Focused", genre: "Synth Pop", style: "Repeat Listener", stats: [32, 8, "2.2k"], offset: 16 },
   { id: "dawnzip", username: "dawnzip", profileImage: "/images/profile-04.png", bio: "새벽의 장면을 짧게 압축해 음악과 함께 보관합니다.", tags: ["dawn", "archive", "soft", "city"], activeTime: "04:30 – 07:00", mood: "Pale / Quiet", genre: "Ambient Indie", style: "Dawn Archivist", stats: [21, 5, "1.1k"], offset: 17 },
   { id: "rainyroom", username: "rainyroom", profileImage: "/images/profile-05.png", bio: "비 오는 방 안에서 더 또렷하게 들리는 목소리를 좋아해요.", tags: ["rain", "room", "voice", "slow"], activeTime: "19:00 – 23:00", mood: "Rainy / Intimate", genre: "Indie Ballad", style: "Indoor Listener", stats: [37, 9, "2.6k"], offset: 1 },
-  { id: "slowtempo", username: "poco a poco", profileImage: "/images/profile-09.jpg", bio: "빠르게 지나가는 하루에서 속도를 낮춰 주는 곡을 고릅니다.", tags: ["slow", "tempo", "rest", "warm"], activeTime: "13:00 – 17:00", mood: "Slow / Restful", genre: "Chill Pop", style: "Tempo Keeper", stats: [25, 6, "1.3k"], offset: 4 },
+  { id: "slowtempo", username: "poco a poco", profileImage: "/images/profile-09.jpg", bio: "몽환적인 인디부터 선명한 팝까지, 시간이 흐르며 달라지는 분위기를 기록합니다.", tags: ["dreamy", "altpop", "groove", "night"], activeTime: "16:00 – 22:00", mood: "Dreamy / Bold", genre: "Alt Pop", style: "Slow Burn", stats: [25, 3, "1.3k"], offset: 4 },
   { id: "cloudtea", username: "cloudtea", profileImage: "/images/profile-02.png", bio: "흐린 날과 따뜻한 차 사이에 어울리는 부드러운 선곡을 남겨요.", tags: ["cloud", "tea", "mellow", "acoustic"], activeTime: "14:00 – 18:30", mood: "Cloudy / Warm", genre: "Acoustic Indie", style: "Cloudy-day Sipper", stats: [23, 6, "1.2k"], offset: 6 },
   { id: "roomtone", username: "roomtone", profileImage: "/images/profile-04.png", bio: "공간의 잔향과 작은 숨소리까지 들리는 음악을 모읍니다.", tags: ["room", "tone", "ambient", "detail"], activeTime: "20:30 – 00:30", mood: "Detailed / Quiet", genre: "Ambient R&B", style: "Room-tone Observer", stats: [30, 8, "2.0k"], offset: 8 },
   { id: "slowday", username: "slowday", profileImage: "/images/profile-07.png", bio: "아무 일정 없는 날처럼 느슨하고 편안한 음악을 좋아합니다.", tags: ["slowday", "easy", "home", "sunset"], activeTime: "10:30 – 16:00", mood: "Easy / Soft", genre: "Soft Pop", style: "Unhurried Listener", stats: [20, 5, "960"], offset: 10 },
@@ -64,6 +64,26 @@ const getCurrentRotationTracks = (offset, curatorIndex) => [
   curatorTrackPool[(offset + (curatorIndex % 8) + 1) % curatorTrackPool.length],
   curatorTrackPool[(offset + ((curatorIndex * 5) % 9) + 9) % curatorTrackPool.length],
 ];
+
+// Curator-specific content keeps poco a poco independent of the shared seed rotation.
+const curatorContentById = {
+  slowtempo: {
+    summary: "해 질 무렵부터 밤까지, 천천히 선명해지는 음악을 기록하는 사람",
+    currentRotationTrackIds: ["candlelight", "bluebird", "kiss-it-better"],
+    recentMoments: [
+      { trackId: "candlelight", time: "16:40", title: "해가 완전히 지기 전", text: "기타와 목소리가 겹치는 구간부터 오후의 분위기를 바꿔 봅니다.", scene: "AFTERNOON LIGHT" },
+      { trackId: "bluebird", time: "18:10", title: "창밖 색이 천천히 바뀌는 시간", text: "창밖을 보며 듣다가 어느새 리듬을 따라가게 됩니다.", scene: "BLUE HOUR" },
+      { trackId: "last-sunset", time: "19:05", title: "마지막 빛이 남아 있던 순간", text: "해가 지는 동안 길게 이어지는 사운드를 끝까지 듣습니다.", scene: "LAST LIGHT" },
+      { trackId: "zen", time: "21:50", title: "마지막엔 조금 더 선명하게", text: "밤의 마지막 선곡은 비트와 목소리가 또렷한 곡으로 고릅니다.", scene: "NIGHT FOCUS" },
+    ],
+    playlists: [
+      { id: "slowtempo-playlist-1", title: "해 질 무렵의 느린 점화", description: "몽환적인 기타와 부드러운 리듬으로 시작하는 늦은 오후", trackIds: ["candlelight", "bluebird", "last-sunset"], duration: "11 min" },
+      { id: "slowtempo-playlist-2", title: "도시가 파랗게 식는 시간", description: "해가 지고 인디와 알앤비가 자연스럽게 이어지는 시간", trackIds: ["bluebird", "glide-cover", "kiss-it-better"], duration: "11 min" },
+      { id: "slowtempo-playlist-3", title: "잔잔하게 시작해서 선명해지는 밤", description: "부드러운 그루브에서 조금 더 대담한 팝으로 넘어가는 흐름", trackIds: ["kiss-it-better", "my-kink-is-karma", "zen"], duration: "11 min" },
+    ],
+    favoriteTrackIds: ["candlelight", "bluebird", "kiss-it-better", "zen", "my-kink-is-karma", "glide-cover"],
+  },
+};
 
 export const curatorProfiles = curatorSeeds.map((curator, curatorIndex, allCurators) => {
   const recentTrackIds = getRotatedTracks(curator.offset, 4);
@@ -105,6 +125,7 @@ export const curatorProfiles = curatorSeeds.map((curator, curatorIndex, allCurat
     currentRotationTrackIds: getCurrentRotationTracks(curator.offset, curatorIndex),
     favoriteTrackIds: getRotatedTracks(curator.offset + 5, 6),
     similarCurators: [1, 3, 6, 9].map((step) => allCurators[(curatorIndex + step) % allCurators.length].id),
+    ...curatorContentById[curator.id],
   };
 });
 

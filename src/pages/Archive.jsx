@@ -313,7 +313,7 @@ function Archive() {
     { image: "/images/profile-04.png", name: "dawnzip", match: "72%", note: "DAWN ARCHIVE" },
     { image: "/images/profile-05.png", name: "rainyroom", match: "69%", note: "RAIN CURATOR" },
     { image: "/images/profile-07.png", name: "bluehour", match: "67%", note: "BLUE HOUR" },
-    { image: profileImages[8], name: getCuratorProfile("slowtempo").username, match: "64%", note: "SLOW TEMPO" },
+    { image: profileImages[8], name: getCuratorProfile("slowtempo").username, match: "64%", note: "SUNSET TO NIGHT" },
     { image: profileImages[1], name: "cloudtea", match: "61%", note: "CLOUD TEA" },
   ].map((curator) => ({
     ...curator,

@@ -47,7 +47,7 @@ function CuratorProfile() {
 
   const isFollowing = followedCurators.has(curator.id);
   const rotationLead = tracks.rotation[0];
-  const curatorSummary = `${curator.tags.slice(0, 2).join("와 ")}의 결을 오래 기록하는 사람`;
+  const curatorSummary = curator.summary || `${curator.tags.slice(0, 2).join("와 ")}의 결을 오래 기록하는 사람`;
   const similarCurators = curator.similarCurators
     .map(getCuratorProfile)
     .filter((profile) => profile && profile.id !== curator.id);

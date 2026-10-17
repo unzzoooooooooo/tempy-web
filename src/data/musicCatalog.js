@@ -6,6 +6,19 @@ import { getArtistImageByName } from "./imageCatalog.js";
  * not be verified from the bundled asset alone.
  */
 const addedCatalogArtists = [
+  { id: "a20-a20-lite", name: "A20 & A20 LITE", profile: "/images/album-141.jpg", genres: [] },
+  { id: "umi", name: "UMI", profile: "/images/alblum-140.jpg", genres: [] },
+  { id: "sunset-rollercoaster", name: "Sunset Rollercoaster", profile: "/images/album-128.jpg", genres: [] },
+  { id: "chs", name: "CHS", profile: "/images/album-130.jpeg", genres: [] },
+  { id: "mitski", name: "Mitski", profile: "/images/album-131.jpg", genres: [] },
+  { id: "rihanna", name: "Rihanna", profile: "/images/album-132.jpg", genres: [] },
+  { id: "lf-system", name: "LF SYSTEM", profile: "/images/album-133.jpg", genres: [] },
+  { id: "mr-belt-wezol", name: "Mr.Belt & Wezol", profile: "/images/album-134.jpg", genres: [] },
+  { id: "gadjo", name: "Gadjo", profile: "/images/album-135.jpg", genres: [] },
+  { id: "peggy-gou", name: "Peggy Gou", profile: "/images/album-136.jpg", genres: [] },
+  { id: "antor-54-ultra", name: "ANTOR, 54 Ultra", profile: "/images/album-137.jpg", genres: [] },
+  { id: "disko-junkie", name: "Disko Junkie", profile: "/images/album-138.jpg", genres: [] },
+  { id: "angelo-ferreri", name: "Angelo Ferreri", profile: "/images/album-139.jpg", genres: [] },
   { id: "adela", name: "ADÉLA", profile: "/images/album-109.jpeg", genres: [] },
   { id: "kiiikiii", name: "KiiiKiii", profile: "/images/album-117.jpg", genres: [] },
   { id: "sailorr", name: "SAILORR", profile: "/images/album-118.jpg", genres: [] },
@@ -57,6 +70,19 @@ const addedCatalogArtists = [
 ];
 
 const artistExperienceById = Object.freeze({
+  "a20-a20-lite": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "A20 & A20 LITE의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  umi: { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "UMI의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "sunset-rollercoaster": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Sunset Rollercoaster의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "chs": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "CHS의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "mitski": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Mitski의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "rihanna": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Rihanna의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "lf-system": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "LF SYSTEM의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "mr-belt-wezol": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Mr.Belt & Wezol의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "gadjo": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Gadjo의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "peggy-gou": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Peggy Gou의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "antor-54-ultra": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "ANTOR, 54 Ultra의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "disko-junkie": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Disko Junkie의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
+  "angelo-ferreri": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "Angelo Ferreri의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
   "adela": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "ADÉLA의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
   "kiiikiii": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "KiiiKiii의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
   "sailorr": { tags: ["#MUSIC", "#DISCOVERY", "#MOMENT"], description: "SAILORR의 음악과 함께 일상에 남은 순간을 탐색해보세요." },
@@ -129,6 +155,19 @@ const artistExperienceById = Object.freeze({
 });
 
 const artistDescriptionExtensionById = Object.freeze({
+  "a20-a20-lite": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  umi: "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "sunset-rollercoaster": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "chs": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "mitski": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "rihanna": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "lf-system": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "mr-belt-wezol": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "gadjo": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "peggy-gou": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "antor-54-ultra": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "disko-junkie": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
+  "angelo-ferreri": "Tempy에 기록된 리스너들의 장면을 음악과 함께 만나보세요.",
   "adela": "",
   "kiiikiii": "",
   "sailorr": "",
@@ -298,6 +337,22 @@ const addedCatalogTracks = [
   ["sunset-road", "サンセット・ロード", "reiko-takahashi", "/images/ablum-125.jpg", "04:18"],
   ["kiss-n-tell", "KISS N TELL", "aespa", "/images/album-126.jpeg", "02:46"],
   ["blue-dream", "Blue Dream", "holly-humberstone", "/images/album-127.png", "03:20"],
+  ["candlelight", "Candlelight (feat. OHHYUK)", "sunset-rollercoaster", "/images/album-128.jpg", "03:17"],
+  ["bluebird", "Bluebird", "sunset-rollercoaster", "/images/album-129.jpg", "03:37"],
+  ["last-sunset", "LAST SUNSET", "chs", "/images/album-130.jpeg", "04:35"],
+  ["glide-cover", "Glide (cover)", "mitski", "/images/album-131.jpg", "03:41"],
+  ["my-kink-is-karma", "My Kink Is Karma", "chappell-roan", "/images/album-45.png", "03:42"],
+  ["kiss-it-better", "Kiss It Better", "rihanna", "/images/album-132.jpg", "04:13"],
+  ["zen", "ZEN", "jennie", "/images/album-31.png", "03:21"],
+  ["afraid-to-feel", "Afraid To Feel", "lf-system", "/images/album-133.jpg", "02:57"],
+  ["homeless", "Homeless", "mr-belt-wezol", "/images/album-134.jpg", "03:48"],
+  ["im-watching-you", "I’m Watching You (So Many Times)", "gadjo", "/images/album-135.jpg", "02:41"],
+  ["starry-night-edit", "Starry Night - Edit", "peggy-gou", "/images/album-136.jpg", "03:53"],
+  ["talk-to-you", "Talk To You (feat. 54 Ultra)", "antor-54-ultra", "/images/album-137.jpg", "03:11"],
+  ["i-like-to-party", "I Like To Party", "disko-junkie", "/images/album-138.jpg", "05:54"],
+  ["oh-honey", "Oh Honey", "angelo-ferreri", "/images/album-139.jpg", "02:29"],
+  ["butterfly-ii", "Butterfly II", "umi", "/images/alblum-140.jpg", "02:03"],
+  ["neon-a20-lite", "NEON", "a20-a20-lite", "/images/album-141.jpg", "03:28"],
 ];
 
 const baseArtists = [
@@ -440,6 +495,15 @@ const rawTracks = [
 // KR results are preferred; US is used only when KR has no exact match.
 // Tempy streams these remote previews and does not bundle audio files.
 const trackLinksByTrackId = Object.freeze({
+  // iTunes credits A2O & A2O LITE (letter O); retain the requested A20 display spelling.
+  "neon-a20-lite": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/40/43/b8/4043b833-ec96-7807-fd8c-f74a62e777f3/mzaf_2462934578689260207.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/neon/6820428726?i=6820428730&uo=4",
+  },
+  "butterfly-ii": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/47/a6/fe/47a6fe91-efa7-8942-92ad-bcbaa20ce63d/mzaf_15239019786727996406.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/butterfly-ii/1780933529?i=1780933530&uo=4",
+  },
   "fate-of-ophelia": {
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4b/07/28/4b07285f-b50c-7aff-cb40-2d732256b703/mzaf_16739866530441939982.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/kr/album/the-fate-of-ophelia/1833328839?i=1833328840&uo=4",
@@ -994,6 +1058,64 @@ const trackLinksByTrackId = Object.freeze({
     audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a9/90/04/a99004b2-f62b-c6a5-4e97-b6377bb64fb9/mzaf_8143897890680645302.plus.aac.p.m4a",
     trackViewUrl: "https://music.apple.com/jp/album/blue-dream/1873991816?i=1873992181&uo=4",
   },
+  // Verified iTunes US results; KR returned no matches. Durations use trackTimeMillis.
+  // ANOTR preview retains the requested display credit "ANTOR, 54 Ultra".
+  "candlelight": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/01/e3/0c/01e30cfd-12b9-ec37-96ad-28a1345f094e/mzaf_16521526890076588382.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/candlelight-feat-ohhyuk/1752999086?i=1752999097&uo=4",
+  },
+  "bluebird": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/08/3e/ba/083eba95-bc47-c4bf-a198-74abff82be5e/mzaf_13502467433324153713.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/bluebird/1830256521?i=1830256693&uo=4",
+  },
+  "last-sunset": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/9a/4f/4b/9a4f4b5b-a040-4b5e-208e-959f3f783e2d/mzaf_1367035222302694993.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/last-sunset/1574821692?i=1574821693&uo=4",
+  },
+  "glide-cover": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/d9/2b/44/d92b44b8-ca23-eac0-5672-43b6537389cb/mzaf_4026191720718853140.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/glide-cover/1618212810?i=1618212812&uo=4",
+  },
+  "my-kink-is-karma": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/23/c4/9c/23c49cd0-ab1c-7b72-3bef-b27f8b25cd8a/mzaf_8428534750024548158.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/my-kink-is-karma/1700326212?i=1700326214&uo=4",
+  },
+  "kiss-it-better": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4f/3f/ba/4f3fba9a-cd7c-d6ad-87a1-85890eb8efa1/mzaf_15946848101938454788.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/kiss-it-better/1443230958?i=1443231163&uo=4",
+  },
+  "zen": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e3/68/b9/e368b970-e604-4fc4-57ec-da6310a8585d/mzaf_10669578372185117004.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/zen/1800280826?i=1800281495&uo=4",
+  },
+  "afraid-to-feel": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/18/b4/14/18b41476-c956-d3c0-4729-20588fdca4aa/mzaf_2051664411258468805.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/afraid-to-feel/1616903929?i=1616903944&uo=4",
+  },
+  "homeless": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/dd/3f/b4/dd3fb49f-b692-40b2-b39c-435aa15c6b95/mzaf_7671882687464877157.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/homeless/1528982110?i=1528982126&uo=4",
+  },
+  "im-watching-you": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c0/6f/32/c06f3210-25ae-e0ca-bfab-08a8dcfd3189/mzaf_1804904838185438264.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/im-watching-you-so-many-times/1642850376?i=1642850378&uo=4",
+  },
+  "starry-night-edit": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ad/d7/70/add770ea-1334-824e-c260-19e22698bd5e/mzaf_1788295963436476235.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/starry-night-edit/1678111472?i=1678111750&uo=4",
+  },
+  "talk-to-you": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/aa/c0/52/aac05210-37d4-0d74-5013-48156d87d74c/mzaf_573344203389765709.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/talk-to-you-feat-54-ultra/1870514329?i=1870514330&uo=4",
+  },
+  "i-like-to-party": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/e8/d6/4f/e8d64fea-6ddc-0a73-7bf6-3c07d5b101b7/mzaf_17983944372626059257.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/i-like-to-party/1525832396?i=1525832397&uo=4",
+  },
+  "oh-honey": {
+    audioPreview: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/66/8d/04/668d0467-fa06-a582-30b8-0704e99977ae/mzaf_2785818312101365427.plus.aac.p.m4a",
+    trackViewUrl: "https://music.apple.com/us/album/oh-honey/1699987388?i=1699987389&uo=4",
+  },
 });
 
 // Per-track corrections that must not rename the shared artist everywhere.
@@ -1134,6 +1256,22 @@ const fixedTrackOrder = Object.freeze([
   "sunset-road",
   "kiss-n-tell",
   "blue-dream",
+  "candlelight",
+  "bluebird",
+  "last-sunset",
+  "glide-cover",
+  "my-kink-is-karma",
+  "kiss-it-better",
+  "zen",
+  "afraid-to-feel",
+  "homeless",
+  "im-watching-you",
+  "starry-night-edit",
+  "talk-to-you",
+  "i-like-to-party",
+  "oh-honey",
+  "butterfly-ii",
+  "neon-a20-lite",
 ]);
 
 const artistMap = new Map(artists.map((artist) => [artist.id, artist]));
